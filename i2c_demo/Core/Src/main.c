@@ -21,7 +21,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "INA238.h"
+#include "INA260.h"
+#include "stm32h5xx_hal.h"
+#include "stm32h5xx_hal_dma.h"
+#include <stdint.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -64,6 +68,26 @@ static void MX_ICACHE_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+/* I2C1上INA238设备数量 */
+#define I2C1_INA238_NUM 13
+/* I2C2上INA238设备数量 */
+#define I2C2_INA238_NUM 13
+
+/* 数据缓冲区 */
+// 存储INA260设备的数据
+static INA260_DataTypeDef ina260_data;
+// 存储I2C1和I2C2所有INA238设备的数据
+static INA238_DataTypeDef ina238_data1[I2C1_INA238_NUM];
+static INA238_DataTypeDef ina238_data2[I2C2_INA238_NUM];
+
+/* 设备地址列表 */
+const uint8_t i2c1_dev_addrs[I2C1_INA238_NUM] = {0x40, 0x41, 0x42, 0x43, 0x44,
+                                                 0x45, 0x46, 0x47, 0x48, 0x49,
+                                                 0x4A, 0x4B, 0x4C};
+const uint8_t i2c2_dev_addrs[I2C2_INA238_NUM] = {0x40, 0x41, 0x42, 0x43, 0x45,
+                                                 0x46, 0x47, 0x48, 0x49, 0x4A,
+                                                 0x4B, 0x4C, 0x4D};
+
 /* USER CODE END 0 */
 
 /**
@@ -101,6 +125,21 @@ int main(void)
   MX_ICACHE_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_Delay(2);
+  // INA260初始化
+  INA260_Init(&hsmbus2, INA260_DEV_ADDR);
+  // INA238初始化
+  for (uint8_t i = 0; i < I2C1_INA238_NUM; i++) {
+    /* 每个设备独立初始化 */
+    INA238_Init(&hsmbus1, i2c1_dev_addrs[i], R_SHUNT, MAX_CURRENT);
+  }
+  for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
+    /* 每个设备独立初始化 */
+    INA238_Init(&hsmbus2, i2c2_dev_addrs[i], R_SHUNT, MAX_CURRENT);
+  }
+  /* 等待配置生效 */
+  HAL_Delay(5);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -110,6 +149,16 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+    /* 读取 I2C1 上的INA238设备 */
+    INA238_ReadBusDevices(&hsmbus1, i2c1_dev_addrs, I2C1_INA238_NUM,
+                          ina238_data1, R_SHUNT, MAX_CURRENT);
+    /* 读取 I2C2 上的INA238设备 */
+    INA238_ReadBusDevices(&hsmbus2, i2c2_dev_addrs, I2C2_INA238_NUM,
+                          ina238_data2, R_SHUNT, MAX_CURRENT);
+    /* 读取 INA260个设备 */
+    INA260_ReadAllData(&hsmbus2, INA260_DEV_ADDR, &ina260_data);
+    HAL_Delay(500);
   }
   /* USER CODE END 3 */
 }
