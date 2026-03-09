@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "dac_driver.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,7 +62,9 @@ static void MX_SPI1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+DAC_HandleTypeDef hdac_dac0; // SS0 (PA4)
+DAC_HandleTypeDef hdac_dac1; // SS1 (PA3)
+DAC_HandleTypeDef hdac_dac2; // SS2 (PA2)
 /* USER CODE END 0 */
 
 /**
@@ -101,13 +103,22 @@ int main(void)
   MX_ICACHE_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-
+  // 初始化三个DAC设备
+  DAC_Init(&hdac_dac0, DAC_TYPE_7568, GPIOA, GPIO_PIN_4, &hspi1);
+  DAC_Init(&hdac_dac1, DAC_TYPE_7568, GPIOA, GPIO_PIN_3, &hspi1);
+  DAC_Init(&hdac_dac2, DAC_TYPE_7563, GPIOA, GPIO_PIN_2, &hspi1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    DAC_SetVoltage(&hdac_dac0, DAC7568_CH_A, 2048); // 芯片0通道A输出中间值2.5
+    DAC_SetVoltage(&hdac_dac2, DAC7563_CH_A, 2048); // 芯片2通道A输出中间值1.25
+    HAL_Delay(500);
+    DAC_SetVoltage(&hdac_dac0, DAC7568_CH_A, 4095); // 芯片0通道A输出满量程3.3
+    DAC_SetVoltage(&hdac_dac2, DAC7563_CH_A, 4095); // 芯片2通道A输出满量程2.5
+    HAL_Delay(500);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
