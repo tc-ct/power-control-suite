@@ -13,7 +13,7 @@ find_package(hidapi REQUIRED)
 add_executable(${PROJECT_NAME}
     main.cpp
     usb_driver.cpp
-    protocol.cpp
+    proto.cpp
     log.cpp
 )
 

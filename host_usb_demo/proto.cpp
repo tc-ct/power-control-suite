@@ -18,7 +18,7 @@
  *
  * FLYINGCHIP RESERVES ALL RIGHTS NOT EXPRESSLY GRANTED TO YOU HEREUNDER.
  */
-#include "protocol.h"
+#include "proto.h"
 #include <cstring>
 
 void Protocol_PackVoltageConfig(VoltageConfigPacket* pkt, uint8_t channel, uint16_t voltage_mv, uint16_t current_ma) {

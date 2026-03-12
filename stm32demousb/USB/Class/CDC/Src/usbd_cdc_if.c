@@ -103,7 +103,11 @@ USBD_CDC_LineCodingTypeDef linecoding =
 static int8_t Usbd_CDC_Init(void)
 {
   hUsbDeviceFS.classId = CDC_InstID;
-  USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBuffer, sizeof("MY CDC is Working!\r\n"), CDC_InstID);
+#ifdef USE_USBD_COMPOSITE
+  SBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBuffer, sizeof("MY CDC is Working!\r\n"), CDC_InstID);
+#else
+  USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBuffer, sizeof("MY CDC is Working!\r\n"));
+#endif /* USE_USBD_COMPOSITE */
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBuffer);
   return (USBD_OK);
   return (0);

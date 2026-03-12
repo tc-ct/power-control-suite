@@ -21,10 +21,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stm32h5xx_hal.h"
 #include "usbd_core.h"
-#include "usbd_cdc.h"
-#include "usbd_cdc_if.h"
-#include "usbd_hid.h"
+// #include "usbd_cdc.h"
+// #include "usbd_cdc_if.h"
+#include "usbd_customhid.h"
+#include "usbd_customhid_if.h"
 #include "usbd_desc.h"
 #include "usbd_composite_builder.h"
 /* USER CODE END Includes */
@@ -52,10 +54,12 @@ PCD_HandleTypeDef hpcd_USB_DRD_FS;
 
 /* USER CODE BEGIN PV */
 uint8_t CDC_EpAdd_Inst[3] = {CDC_IN_EP, CDC_OUT_EP, CDC_CMD_EP}; 	/* CDC Endpoint Addresses array */
-uint8_t HID_EpAdd_Inst = HID_EPIN_ADDR;								/* HID Endpoint Address array */
+// uint8_t HID_EpAdd_Inst = HID_EPIN_ADDR;								/* HID Endpoint Address array */
+uint8_t CustomHID_EpAdress[2] = {CUSTOM_HID_EPIN_ADDR, CUSTOM_HID_EPOUT_ADDR};								/* HID Endpoint Address array */
 USBD_HandleTypeDef hUsbDeviceFS;
-uint8_t hid_report_buffer[4];
-uint8_t HID_InstID = 0, CDC_InstID = 0;
+uint8_t hid_report_buffer[64];
+uint8_t HID_InstID = 0, CDC_InstID = 0, CUSTOMHID_InstID = 0;
+uint8_t Sample_State = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,10 +83,9 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  hid_report_buffer[0] = 0;   /* Buttons – first 3 bits [LSB] */
+  hid_report_buffer[0] = ADC_REPORT_ID;   /* Buttons – first 3 bits [LSB] */
   hid_report_buffer[1] = 100; /* X axis 8 bits value signed */
-  hid_report_buffer[2] = 0;   /* Y axis 8 bits value signed*/
-  hid_report_buffer[3] = 0;   /* Wheel 8 bits value signed*/
+  hid_report_buffer[3] = 255;   /* Wheel 8 bits value signed*/
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -111,34 +114,60 @@ int main(void)
   if(USBD_Init(&hUsbDeviceFS, &Class_Desc, 0) != USBD_OK)
     Error_Handler();
   /* Store HID Instance Class ID */
-  HID_InstID = hUsbDeviceFS.classId;
+  CUSTOMHID_InstID = hUsbDeviceFS.classId;
   /* Register the HID Class */
-  if(USBD_RegisterClassComposite(&hUsbDeviceFS, USBD_HID_CLASS, CLASS_TYPE_HID, &HID_EpAdd_Inst) != USBD_OK)
+#ifdef USE_USBD_COMPOSITE
+  if(USBD_RegisterClassComposite(&hUsbDeviceFS, USBD_CUSTOM_HID_CLASS, CLASS_TYPE_CHID, CustomHID_EpAdress) != USBD_OK)
+#else
+    /* Add Supported Class */
+  if(USBD_RegisterClass(&hUsbDeviceFS, &USBD_CUSTOM_HID) != USBD_OK)
+#endif /* USE_USBD_COMPOSITE */
     Error_Handler();
+
   /* Store the HID Class */
-  CDC_InstID = hUsbDeviceFS.classId;
+  // CDC_InstID = hUsbDeviceFS.classId;
   /* Register CDC Class First Instance */
-  if(USBD_RegisterClassComposite(&hUsbDeviceFS, USBD_CDC_CLASS, CLASS_TYPE_CDC, CDC_EpAdd_Inst) != USBD_OK)
-    Error_Handler();
-  /* Add CDC Interface Class */
+  // if(USBD_RegisterClassComposite(&hUsbDeviceFS, USBD_CDC_CLASS, CLASS_TYPE_CDC, CDC_EpAdd_Inst) != USBD_OK)
+  //   Error_Handler();
+
+#ifdef USE_USBD_COMPOSITE
+  /* Add Custom HID Interface Class */
+  if (USBD_CMPSIT_SetClassID(&hUsbDeviceFS, CLASS_TYPE_CHID, 0) != 0xFF)
+  {
+    USBD_CUSTOM_HID_RegisterInterface(&hUsbDeviceFS, &USBD_CustomHID_fops);
+  }
+
+  // /* Add CDC Interface Class */
   if (USBD_CMPSIT_SetClassID(&hUsbDeviceFS, CLASS_TYPE_CDC, 0) != 0xFF)
   {
     USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_CDC_Template_fops);
   }
+#else
+  /* Add Custom HID callbacks */
+  USBD_CUSTOM_HID_RegisterInterface(&hUsbDeviceFS, &USBD_CustomHID_fops);
+
+#endif /* USE_USBD_COMPOSITE */
+
+
   USBD_Start(&hUsbDeviceFS);
   /* USER CODE END 2 */
+
+  // printf("run: file %s on line %d\r\n", __FILE__, __LINE__);
+  for(int i = 1; i < 64; i++){
+    hid_report_buffer[i] = i;
+  }
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-    // if(HAL_GPIO_ReadPin(USER_BT_GPIO_Port, USER_BT_Pin) == GPIO_PIN_SET)
-    {
-      // USBD_HID_SendReport(&hUsbDeviceFS, hid_report_buffer, 4, HID_InstID);
-      USBD_CDC_TransmitPacket(&hUsbDeviceFS, CDC_InstID);
-      HAL_Delay(1000);
+    // todo: use timer
+    if(Sample_State == 1){
+      USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, hid_report_buffer, 64);
+      HAL_Delay(100);
     }
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

@@ -59,15 +59,17 @@ extern "C" {
 /* CustomHID Class Config */
 #define CUSTOM_HID_HS_BINTERVAL                     0x05U
 #define CUSTOM_HID_FS_BINTERVAL                     0x05U
-#define USBD_CUSTOMHID_OUTREPORT_BUF_SIZE           0x02U
-#define USBD_CUSTOM_HID_REPORT_DESC_SIZE            163U
+#define USBD_CUSTOMHID_OUTREPORT_BUF_SIZE           0x40U
+#define USBD_CUSTOM_HID_REPORT_DESC_SIZE            165U
 /* Activate the IAD option */
 #define USBD_COMPOSITE_USE_IAD						1U
 /* Activate the composite builder */
-#define USE_USBD_COMPOSITE
+// #define USE_USBD_COMPOSITE
 /* Activate CustomHID and CDC classes in composite builder */
-#define USBD_CMPSIT_ACTIVATE_CDC                    1U
-#define USBD_CMPSIT_ACTIVATE_HID  					1U
+// #define USBD_CMPSIT_ACTIVATE_CDC                    1U
+// #define USBD_CMPSIT_ACTIVATE_HID                    1U
+#define USBD_CMPSIT_ACTIVATE_CUSTOMHID              1U
+
 /* Define the number of supported classes */
 #define USBD_MAX_SUPPORTED_CLASS                       2U
 /* Define the number of endpoints per class */
@@ -75,9 +77,14 @@ extern "C" {
 /* Define the number of maximum interfaces per class */
 #define USBD_MAX_CLASS_INTERFACES                      2U
 /* Classes Endpoint Addresses */
-#define HID_EPIN_ADDR                              	0x81U
+// #define HID_EPIN_ADDR                              	0x81U
+
+/* The definition of endpoint numbers must respect the order of classes instantiation  */
+#define CUSTOM_HID_EPIN_ADDR                        0x81U
+#define CUSTOM_HID_EPOUT_ADDR                       0x01U  /* EP1 for data OUT */
+
 #define CDC_IN_EP                                   0x82U  /* EP1 for data IN */
-#define CDC_OUT_EP                                  0x01U  /* EP1 for data OUT */
+#define CDC_OUT_EP                                  0x02U  /* EP1 for data OUT */
 #define CDC_CMD_EP                                  0x83U  /* EP2 for CDC commands */
 /** @defgroup USBD_Exported_Macros
   * @{
@@ -103,7 +110,7 @@ extern "C" {
 #if (USBD_DEBUG_LEVEL > 0U)
 #define  USBD_UsrLog(...)   do { \
                                  printf(__VA_ARGS__); \
-                                 printf("\n"); \
+                                 printf("\r\n"); \
                                } while (0)
 #else
 #define USBD_UsrLog(...) do {} while (0)
@@ -112,7 +119,7 @@ extern "C" {
 #define  USBD_ErrLog(...) do { \
                                printf("ERROR: ") ; \
                                printf(__VA_ARGS__); \
-                               printf("\n"); \
+                               printf("\r\n"); \
                              } while (0)
 #else
 #define USBD_ErrLog(...) do {} while (0)
@@ -121,7 +128,7 @@ extern "C" {
 #define  USBD_DbgLog(...)   do { \
                                  printf("DEBUG : ") ; \
                                  printf(__VA_ARGS__); \
-                                 printf("\n"); \
+                                 printf("\r\n"); \
                                } while (0)
 #else
 #define USBD_DbgLog(...) do {} while (0)

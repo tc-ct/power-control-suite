@@ -25,7 +25,7 @@
 
 #include "log.h"
 #include "usb_driver.h"
-#include "protocol.h"
+#include "proto.h"
 
 // 设备 VID/PID
 constexpr uint16_t STM32_VID = 0x0483;
@@ -97,9 +97,9 @@ int main(int argc, char* argv[]) {
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
     // 测试3：停止采样（可选）
-    // LOG_INFO("Test 3: Stop sampling");
-    // uint8_t stop_cmd[] = {0x03, 0x00};
-    // dev.send(stop_cmd, sizeof(stop_cmd));
+    LOG_INFO("Test 3: Stop sampling");
+    uint8_t stop_cmd[] = {0x03, 0x00};
+    dev.send(stop_cmd, sizeof(stop_cmd));
 
     LOG_INFO("Test finished. Press Enter to exit...");
     std::cin.get();

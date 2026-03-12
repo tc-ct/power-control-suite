@@ -18,8 +18,8 @@
  *
  * FLYINGCHIP RESERVES ALL RIGHTS NOT EXPRESSLY GRANTED TO YOU HEREUNDER.
  */
-#ifndef PROTOCOL_H
-#define PROTOCOL_H
+#ifndef PROTO_H
+#define PROTO_H
 
 #include <stdint.h>
 
@@ -53,4 +53,4 @@ void Protocol_PackVoltageConfig(VoltageConfigPacket* pkt, uint8_t channel, uint1
 // 解析采样数据包
 void Protocol_ParseSampleData(const uint8_t* data, int length, SampleDataPacket* out);
 
-#endif // PROTOCOL_H
+#endif // PROTO_H

@@ -16,14 +16,17 @@ set(MX_Include_Dirs
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/CMSIS/Device/ST/STM32H5xx/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/CMSIS/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Core/Inc
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/CDC/Inc
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/HID/Inc
+    # ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/CDC/Inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/CustomHID/Inc
     ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/CompositeBuilder/Inc
 )
 
 # STM32CubeMX generated application sources
 set(MX_Application_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/uart.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/dac_driver.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/usbd_customhid_if.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/uart.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/stm32h5xx_it.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Src/stm32h5xx_hal_msp.c
@@ -58,10 +61,10 @@ set(STM32_Drivers_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Core/Src/usbd_ioreq.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Core/Src/usbd_desc.c
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/CDC/Src/usbd_cdc_if.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/CDC/Src/usbd_cdc.c
+    # ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/CDC/Src/usbd_cdc_if.c
+    # ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/CDC/Src/usbd_cdc.c
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/HID/Src/usbd_hid.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/CustomHID/Src/usbd_customhid.c
 
     ${CMAKE_CURRENT_SOURCE_DIR}/../../USB/Class/CompositeBuilder/Src/usbd_composite_builder.c
 )
