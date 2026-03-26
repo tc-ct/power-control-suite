@@ -57,7 +57,7 @@ uint8_t CDC_EpAdd_Inst[3] = {CDC_IN_EP, CDC_OUT_EP, CDC_CMD_EP}; 	/* CDC Endpoin
 // uint8_t HID_EpAdd_Inst = HID_EPIN_ADDR;								/* HID Endpoint Address array */
 uint8_t CustomHID_EpAdress[2] = {CUSTOM_HID_EPIN_ADDR, CUSTOM_HID_EPOUT_ADDR};								/* HID Endpoint Address array */
 USBD_HandleTypeDef hUsbDeviceFS;
-uint8_t hid_report_buffer[64];
+uint8_t hid_report_buffer[SAMPLE_REPORT_SIZE];
 uint8_t HID_InstID = 0, CDC_InstID = 0, CUSTOMHID_InstID = 0;
 uint8_t Sample_State = 0;
 /* USER CODE END PV */
@@ -153,7 +153,7 @@ int main(void)
   /* USER CODE END 2 */
 
   // printf("run: file %s on line %d\r\n", __FILE__, __LINE__);
-  for(int i = 1; i < 64; i++){
+  for(int i = 1; i < SAMPLE_REPORT_SIZE; i++){
     hid_report_buffer[i] = i;
   }
 
@@ -164,7 +164,7 @@ int main(void)
     /* USER CODE END WHILE */
     // todo: use timer
     if(Sample_State == 1){
-      USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, hid_report_buffer, 64);
+      USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, hid_report_buffer, SAMPLE_REPORT_SIZE);
       HAL_Delay(100);
     }
 

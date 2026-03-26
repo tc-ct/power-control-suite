@@ -28,7 +28,7 @@
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 #define SAMPLE_REPORT_ID           0x01
-#define SAMPLE_REPORT_COUNT        0x3f
+#define SAMPLE_REPORT_COUNT        0x7f
 
 #define LED2_REPORT_ID           0x02
 #define LED2_REPORT_COUNT        0x01
@@ -42,6 +42,8 @@
 #define KEY_REPORT_ID            0x05
 #define TAMPER_REPORT_ID         0x06
 #define ADC_REPORT_ID            0x07
+
+#define SAMPLE_REPORT_SIZE       (SAMPLE_REPORT_COUNT + 1)
 
 /* User can use this section to tailor ADCx instance used and associated
    resources */

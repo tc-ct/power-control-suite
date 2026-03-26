@@ -110,7 +110,7 @@ void USBDriver::setReceiveCallback(ReceiveCallback cb) {
 }
 
 void USBDriver::receiveLoop() {
-    uint8_t buffer[64];
+    uint8_t buffer[128];
     while (running_) {
         int bytes = hid_read(static_cast<hid_device*>(handle), buffer, sizeof(buffer));
         if (bytes > 0 && callback_) {

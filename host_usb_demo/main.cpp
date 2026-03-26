@@ -37,7 +37,7 @@ void onDataReceived(const uint8_t* data, int length) {
     LOG_INFO("RX #%d: %d bytes", ++count, length);
 
     // 尝试解析为采样数据包
-    if (length >= sizeof(SampleDataPacket)) {
+    if (0) {
         SampleDataPacket pkt;
         Protocol_ParseSampleData(data, length, &pkt);
         LOG_INFO("  Sample: time=%u ms, CH1=%u mV/%u mA, CH2=%u mV/%u mA",
