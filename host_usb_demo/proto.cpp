@@ -20,17 +20,47 @@
  */
 #include "proto.h"
 #include <cstring>
+#include <cstdio>
 
-void Protocol_PackVoltageConfig(VoltageConfigPacket* pkt, uint8_t channel, uint16_t voltage_mv, uint16_t current_ma) {
+void Protocol_PackVoltageConfig(VoltageConfigPacket* pkt,uint8_t device_id ,uint8_t channel, uint16_t voltage_mv) {
     memset(pkt, 0, sizeof(VoltageConfigPacket));
     pkt->cmd_id = 0x01;
+    pkt->device_id = device_id;
     pkt->channel = channel;
     pkt->voltage_mv = voltage_mv;
-    pkt->current_ma = current_ma;
+}
+
+void Protocol_PackPinConfig(PinConfigPacket* pkt, uint8_t port, uint16_t pin, uint8_t level) {
+    memset(pkt, 0, sizeof(PinConfigPacket));
+    pkt->cmd_id = 0x02;
+    pkt->port = port;
+    pkt->pin = pin;
+    pkt->level = level;
 }
 
 void Protocol_ParseSampleData(const uint8_t* data, int length, SampleDataPacket* out) {
     if (length >= static_cast<int>(sizeof(SampleDataPacket))) {
         memcpy(out, data, sizeof(SampleDataPacket));
     }
+    
+    switch (out->type) {
+        case I2C_DATA_VBUS:
+            printf("  I2C_DATA_VBUS: ");
+            break;
+        case I2C_DATA_CURRENT:
+            printf("  I2C_DATA_CURRENT: ");
+            break;
+        default:
+            printf("  Unknown type %d: ", out->type);
+            break;
+    }
+    printf("\n");
+    for (int i = 0; i < 13; ++i) {
+            printf("%.8f ", out->i2c_data[i]);
+    }           
+    printf("\n");
+    for (int i = 13; i < 27; ++i) {
+            printf("%.8f ", out->i2c_data[i]);
+    }    
+    printf("\n");
 }
