@@ -53,6 +53,8 @@ public:
     // 获取底层设备句柄（仅供测试使用）
     void* getNativeHandle() const { return handle; }
 
+    int receive(const uint8_t* data, size_t length);
+
 private:
     uint16_t vid_;
     uint16_t pid_;

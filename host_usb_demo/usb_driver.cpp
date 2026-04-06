@@ -119,3 +119,11 @@ void USBDriver::receiveLoop() {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
+
+
+int USBDriver::receive(const uint8_t* data, size_t length) {
+    int bytes = hid_read(static_cast<hid_device*>(handle), const_cast<uint8_t*>(data), length);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    return bytes;
+}
