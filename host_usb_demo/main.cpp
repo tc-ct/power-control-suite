@@ -158,7 +158,7 @@ int main(int argc, char* argv[]) {
     PowerController power(&g_powers_config);
     power.ConfigVoltages(dev);
 
-    // Start sampling 
+    // Start sampling
     SendStartSample(dev, SAMPLE_TYPE_VOLTAGE);  // Assuming 4 corresponds to voltage type
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 

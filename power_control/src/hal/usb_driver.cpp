@@ -1,0 +1,163 @@
+/*
+ * Copyright (C) 2024 - FlyingChip Technology (Shanghai) Co., Ltd. All rights reserved.
+ *
+ * This file contains information that is proprietary to FlyingChip.
+ * The holder of this file shall treat all information contained herein as
+ * confidential, use the information only for its intended purpose, illustrate
+ * the copyright of FlyingChip and not duplicate, disclose, modificate or disseminate
+ * any of this information in any manner unless FlyingChip has otherwise
+ * provided express written permission.
+ * Use of the file may require a license of intellectual property from FlyingChip.
+ * This file conveys no express or implied licenses to any intellectual property
+ * rights belonging to FlyingChip.
+ *
+ * ALL INFORMATION CONTAINED IN THIS FILE IS FURNISHED “AS IS”.
+ * FLYINGCHIP DISCLAIMS ANY AND ALL TYPES OF WARRANTIES, EXPRESS, IMPLIED, OR
+ * STATUTORY, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY OR FITNESS FOR
+ * A PARTICULAR PURPOSE WITH RESPECT TO THE INFORMATION PROVIDE HEREUNDER.
+ *
+ * FLYINGCHIP RESERVES ALL RIGHTS NOT EXPRESSLY GRANTED TO YOU HEREUNDER.
+ */
+#include "usb_driver.h"
+#include "log.h"
+#include <hidapi.h>
+#include <cstring>
+#include <thread>
+#include <chrono>
+
+std::vector<USBDeviceInfo> USBDriver::queryDevices(uint16_t vid, uint16_t pid) {
+    std::vector<USBDeviceInfo> devices;
+    hid_device_info* devs = hid_enumerate(vid, pid);
+    for (hid_device_info* cur = devs; cur; cur = cur->next) {
+        USBDeviceInfo info;
+        info.path = cur->path ? cur->path : "";
+        if (cur->manufacturer_string) {
+            info.manufacturer = cur->manufacturer_string;
+        }
+        if (cur->product_string) {
+            info.product = cur->product_string;
+        }
+        info.interface_number = cur->interface_number;
+        devices.push_back(info);
+    }
+    hid_free_enumeration(devs);
+    return devices;
+}
+
+USBDriver::USBDriver(uint16_t vid, uint16_t pid)
+    : vid_(vid), pid_(pid), handle(nullptr), running_(false) {
+    if (hid_init() != 0) {
+        LOG_ERROR("hid_init failed");
+    }
+}
+
+USBDriver::~USBDriver() {
+    close();
+    hid_exit();
+}
+
+bool USBDriver::open() {
+    std::vector<USBDeviceInfo> devices = queryDevices(vid_, pid_);
+    if (devices.empty()) {
+        LOG_ERROR("No device found with VID=0x%04X, PID=0x%04X", vid_, pid_);
+        return false;
+    }
+
+    return open(devices.front().path);
+}
+
+bool USBDriver::open(const std::string& path) {
+    if (path.empty()) {
+        LOG_ERROR("Device path is empty");
+        return false;
+    }
+
+    close();
+
+    std::vector<USBDeviceInfo> devices = queryDevices(vid_, pid_);
+    if (devices.empty()) {
+        LOG_ERROR("No device found with VID=0x%04X, PID=0x%04X", vid_, pid_);
+        return false;
+    }
+
+    // 打印设备信息
+    LOG_INFO("Found device(s):");
+    for (const USBDeviceInfo& device : devices) {
+        LOG_INFO("  Path: %s", device.path.c_str());
+        LOG_INFO("  Manufacturer: %ls", device.manufacturer.empty() ? L"Unknown" : device.manufacturer.c_str());
+        LOG_INFO("  Product: %ls", device.product.empty() ? L"Unknown" : device.product.c_str());
+        LOG_INFO("  Interface: %d", device.interface_number);
+    }
+
+    handle = hid_open_path(path.c_str());
+
+    if (!handle) {
+        LOG_ERROR("Failed to open device: %s", path.c_str());
+        return false;
+    }
+
+    hid_set_nonblocking(static_cast<hid_device*>(handle), 1);
+    LOG_INFO("Device opened successfully: %s", path.c_str());
+    return true;
+}
+
+void USBDriver::close() {
+    running_ = false;
+    if (receive_thread_.joinable()) {
+        receive_thread_.join();
+    }
+    if (handle) {
+        hid_close(static_cast<hid_device*>(handle));
+        handle = nullptr;
+    }
+}
+
+bool USBDriver::send(const uint8_t* data, size_t length) {
+    if (!handle) {
+        LOG_ERROR("Device not open");
+        return false;
+    }
+    if (length > 64) {
+        LOG_ERROR("Data length exceeds 64 bytes");
+        return false;
+    }
+
+    uint8_t report[65] = {1};  // 报告 ID = 1
+    memcpy(report + 1, data, length);
+
+    int written = hid_write(static_cast<hid_device*>(handle), report, length + 1);
+    if (written < 0) {
+        const wchar_t* err = hid_error(static_cast<hid_device*>(handle));
+        LOG_ERROR("hid_write failed: %ls", err);
+        return false;
+    }
+    LOG_INFO("Sent %zu bytes", length);
+    return true;
+}
+
+void USBDriver::setReceiveCallback(ReceiveCallback cb) {
+    callback_ = cb;
+    if (!running_) {
+        running_ = true;
+        receive_thread_ = std::thread(&USBDriver::receiveLoop, this);
+    }
+}
+
+void USBDriver::receiveLoop() {
+    uint8_t buffer[128];
+    while (running_) {
+        int bytes = hid_read(static_cast<hid_device*>(handle), buffer, sizeof(buffer));
+        if (bytes > 0 && callback_) {
+            callback_(buffer, bytes);
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+
+int USBDriver::receive(const uint8_t* data, size_t length) {
+    int bytes = hid_read(static_cast<hid_device*>(handle), const_cast<uint8_t*>(data), length);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    return bytes;
+}
