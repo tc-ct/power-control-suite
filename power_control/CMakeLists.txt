@@ -24,6 +24,12 @@ set(PROJECT_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow.ui
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/mainwindow.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/config_service.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/device_session_service.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/sampling_state_machine.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/debug_window.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/waveform_widget.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/waveform_recorder.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/log.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/file_parse.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hal/power_control.cpp
@@ -96,7 +102,7 @@ endif()
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/third_party/hidapi/bin/hidapi.dll"
+        "${CMAKE_SOURCE_DIR}/third_party/bin/hidapi.dll"
         $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
@@ -107,10 +113,4 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         "$<TARGET_FILE_DIR:${PROJECT_NAME}>/config/power_config.json")
 
 
-# Qt部署命令
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND "windeployqt"
-    --verbose 1
-    \"$<TARGET_FILE:${PROJECT_NAME}>\"
-    COMMENT "Deploying Qt libraries for ${PROJECT_NAME}..."
-)
+

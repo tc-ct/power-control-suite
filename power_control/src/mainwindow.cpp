@@ -5,31 +5,230 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QBoxLayout>
+#include <QApplication>
+#include <QEvent>
 #include <QHeaderView>
-#include <QListWidgetItem>
+#include <QKeyEvent>
+#include <QMouseEvent>
 #include <QMetaObject>
 #include <QMessageBox>
+#include <QMenu>
+#include <QMenuBar>
+#include <QPainter>
 #include <QSignalBlocker>
+#include <QStyle>
+#include <QStyledItemDelegate>
+#include <QStyleOptionButton>
 #include <QTableWidgetItem>
+#include <QVBoxLayout>
+#include <algorithm>
+#include <chrono>
+#include <cmath>
 #include <cstring>
+#include <thread>
 
-#include "file_parse.h"
-#include "stm32_comm.h"
+#include "config_service.h"
+#include "device_session_service.h"
+#include "debug_window.h"
+#include "waveform_recorder.h"
+#include "waveform_widget.h"
 
 namespace {
 constexpr uint16_t kDefaultVid = 0x0483;
 constexpr uint16_t kDefaultPid = 0x5750;
+
+QString buildDeviceDisplayName(const USBDeviceInfo& device) {
+    const QString product = device.product.empty()
+        ? QStringLiteral("Unknown")
+        : QString::fromWCharArray(device.product.c_str());
+    const QString manufacturer = device.manufacturer.empty()
+        ? QStringLiteral("Unknown")
+        : QString::fromWCharArray(device.manufacturer.c_str());
+    return product != QStringLiteral("Unknown") ? product : manufacturer;
+}
+
+class CenteredCheckBoxDelegate final : public QStyledItemDelegate
+{
+public:
+    using QStyledItemDelegate::QStyledItemDelegate;
+
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
+        QStyleOptionViewItem viewOption(option);
+        initStyleOption(&viewOption, index);
+        viewOption.text.clear();
+        viewOption.icon = QIcon();
+        viewOption.features &= ~QStyleOptionViewItem::HasCheckIndicator;
+
+        const QWidget* widget = viewOption.widget;
+        QStyle* style = widget ? widget->style() : QApplication::style();
+        style->drawControl(QStyle::CE_ItemViewItem, &viewOption, painter, widget);
+
+        QStyleOptionButton checkBoxOption;
+        checkBoxOption.state |= QStyle::State_Enabled;
+        checkBoxOption.state |= (index.data(Qt::CheckStateRole).toInt() == Qt::Checked)
+            ? QStyle::State_On
+            : QStyle::State_Off;
+        if (option.state & QStyle::State_MouseOver) {
+            checkBoxOption.state |= QStyle::State_MouseOver;
+        }
+
+        const QRect indicatorRect = style->subElementRect(QStyle::SE_CheckBoxIndicator, &checkBoxOption, widget);
+        checkBoxOption.rect = QStyle::alignedRect(
+            option.direction,
+            Qt::AlignCenter,
+            indicatorRect.size(),
+            option.rect);
+        style->drawControl(QStyle::CE_CheckBox, &checkBoxOption, painter, widget);
+    }
+
+    bool editorEvent(
+        QEvent* event,
+        QAbstractItemModel* model,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index) override {
+        const Qt::ItemFlags flags = index.flags();
+        if (!(flags & Qt::ItemIsUserCheckable) || !(flags & Qt::ItemIsEnabled)) {
+            return false;
+        }
+
+        if (event->type() == QEvent::MouseButtonRelease) {
+            auto* mouseEvent = static_cast<QMouseEvent*>(event);
+            QStyleOptionButton checkBoxOption;
+            const QWidget* widget = option.widget;
+            QStyle* style = widget ? widget->style() : QApplication::style();
+            const QRect indicatorRect = style->subElementRect(QStyle::SE_CheckBoxIndicator, &checkBoxOption, widget);
+            const QRect alignedRect = QStyle::alignedRect(
+                option.direction,
+                Qt::AlignCenter,
+                indicatorRect.size(),
+                option.rect);
+            if (!alignedRect.contains(mouseEvent->position().toPoint())) {
+                return false;
+            }
+        } else if (event->type() == QEvent::KeyPress) {
+            const auto* keyEvent = static_cast<QKeyEvent*>(event);
+            if (keyEvent->key() != Qt::Key_Space && keyEvent->key() != Qt::Key_Select) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        const Qt::CheckState nextState = index.data(Qt::CheckStateRole).toInt() == Qt::Checked
+            ? Qt::Unchecked
+            : Qt::Checked;
+        return model->setData(index, nextState, Qt::CheckStateRole);
+    }
+};
 }
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+    session_service_ = std::make_unique<DeviceSessionService>(kDefaultVid, kDefaultPid, this);
+    config_service_ = std::make_unique<ConfigService>();
+    waveform_recorder_ = std::make_unique<WaveformRecorder>();
+    connect(
+        session_service_.get(),
+        &DeviceSessionService::samplePacketReceived,
+        this,
+        &MainWindow::onDataReceived);
 
-    ui->sampleTableWidget->horizontalHeader()->setStretchLastSection(true);
-    ui->sampleTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->setupUi(this);
+    resize(width(), 760);
+
+    QMenu* toolsMenu = menuBar()->addMenu(QStringLiteral("Tools"));
+    QAction* debugInterfaceAction = toolsMenu->addAction(QStringLiteral("Debug Interface"));
+    connect(debugInterfaceAction, &QAction::triggered, this, &MainWindow::onOpenDebugInterface);
+    test_mode_action_ = toolsMenu->addAction(QStringLiteral("测试模式"));
+    test_mode_action_->setCheckable(true);
+    connect(test_mode_action_, &QAction::toggled, this, &MainWindow::onToggleTestMode);
+    record_button_ = new QPushButton(QStringLiteral("开始录制"), this);
+    record_button_->setEnabled(false);
+    ui->statusLayout->insertWidget(3, record_button_);
+    connect(record_button_, &QPushButton::clicked, this, &MainWindow::onToggleRecording);
+
+    const int buttonWidth = qMax(
+        112,
+        qMax(
+            qMax(ui->browseConfigButton->sizeHint().width(), ui->loadConfigButton->sizeHint().width()),
+            qMax(ui->queryButton->sizeHint().width(), ui->openButton->sizeHint().width())));
+    const int buttonHeight = 24;
+    for (QPushButton* button : {ui->browseConfigButton, ui->loadConfigButton, ui->queryButton, ui->openButton}) {
+        button->setMinimumWidth(buttonWidth);
+        button->setMinimumHeight(buttonHeight);
+    }
+
+    const int leftLabelWidth = qMax(ui->configPathLabel->sizeHint().width(), ui->deviceNameLabel->sizeHint().width());
+    ui->configPathLabel->setMinimumWidth(leftLabelWidth);
+    ui->deviceNameLabel->setMinimumWidth(leftLabelWidth);
+
+    ui->configLayout->setStretch(0, 0);
+    ui->configLayout->setStretch(1, 1);
+    ui->configLayout->setStretch(2, 0);
+    ui->configLayout->setStretch(3, 0);
+
+    ui->controlLayout->setStretch(0, 0);
+    ui->controlLayout->setStretch(1, 1);
+    ui->controlLayout->setStretch(2, 0);
+    ui->controlLayout->setStretch(3, 0);
+
+    auto* waveformLayout = new QVBoxLayout(ui->waveformHost);
+    waveformLayout->setContentsMargins(0, 0, 0, 0);
+    waveform_widget_ = new WaveformWidget(ui->waveformHost);
+    waveformLayout->addWidget(waveform_widget_);
+
+    if (QBoxLayout* mainLayout = qobject_cast<QBoxLayout*>(ui->centralwidget->layout())) {
+        mainLayout->setStretch(0, 0);
+        mainLayout->setStretch(1, 1);
+        mainLayout->setStretch(2, 0);
+    }
+
+    ui->sampleGroupBox->setMinimumHeight(420);
+    ui->sampleTableWidget->setMinimumHeight(320);
+
+    QHeaderView* sampleHeader = ui->sampleTableWidget->horizontalHeader();
+    sampleHeader->setStretchLastSection(false);
+    sampleHeader->setSectionResizeMode(QHeaderView::ResizeToContents);
+    sampleHeader->setSectionResizeMode(1, QHeaderView::Stretch);
+    sampleHeader->setSectionResizeMode(5, QHeaderView::Fixed);
+    ui->sampleTableWidget->setColumnWidth(5, 78);
     ui->sampleTableWidget->verticalHeader()->setVisible(false);
+    ui->sampleTableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->sampleTableWidget->verticalHeader()->setDefaultSectionSize(20);
+    ui->sampleTableWidget->verticalHeader()->setMinimumSectionSize(20);
+    ui->sampleTableWidget->setAlternatingRowColors(true);
+    ui->sampleTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->sampleTableWidget->setItemDelegateForColumn(2, new CenteredCheckBoxDelegate(ui->sampleTableWidget));
+    ui->sampleTableWidget->setItemDelegateForColumn(4, new CenteredCheckBoxDelegate(ui->sampleTableWidget));
+    ui->sampleTableWidget->setStyleSheet(
+        "QTableWidget {"
+        "   font-size: 11px;"
+        "   gridline-color: #d9dee7;"
+        "   alternate-background-color: #f7f9fc;"
+        "   selection-background-color: #cfe3ff;"
+        "   selection-color: #1f2937;"
+        "}"
+        "QHeaderView::section {"
+        "   font-size: 15px;"
+        "   font-weight: 600;"
+        "   color: #334155;"
+        "   background-color: #eef2f7;"
+        "   border: 0px;"
+        "   border-bottom: 1px solid #d9dee7;"
+        "   padding: 1px 6px;"
+        "}"
+        "QTableWidget::item {"
+        "   padding: 1px 6px;"
+        "}"
+    );
+    for (int column : {0, 2, 3, 4, 5}) {
+        if (QTableWidgetItem* headerItem = ui->sampleTableWidget->horizontalHeaderItem(column)) {
+            headerItem->setTextAlignment(Qt::AlignCenter);
+        }
+    }
 
     connect(ui->queryButton, &QPushButton::clicked, this, &MainWindow::onQueryDevices);
     connect(ui->openButton, &QPushButton::clicked, this, &MainWindow::onToggleOpenDevice);
@@ -52,10 +251,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    if (usb_driver_) {
-        usb_driver_->close();
-    }
-
+    stopRecording(false);
+    stopTestModeThread();
     delete ui;
 }
 
@@ -89,26 +286,35 @@ void MainWindow::appendLog(const QString& message) {
 }
 
 void MainWindow::refreshSampleTable() {
+    if (!config_service_) {
+        return;
+    }
+
+    const PowersConfig& config = config_service_->config();
     const QSignalBlocker blocker(ui->sampleTableWidget);
     refreshing_sample_table_ = true;
     ui->sampleTableWidget->setRowCount(SAMPLE_DATA_COUNT);
 
     for (int sampleId = 0; sampleId < SAMPLE_DATA_COUNT; ++sampleId) {
-        const SampleConfig& cfg = power_configs_.sample_cfg[sampleId];
+        const SampleConfig& cfg = config.sample_cfg[sampleId];
         const QString name = cfg.name[0] == '\0'
             ? QStringLiteral("Sample %1").arg(sampleId)
             : QString::fromLocal8Bit(cfg.name);
-        ui->sampleTableWidget->setItem(sampleId, 0, new QTableWidgetItem(QString::number(sampleId)));
+        QTableWidgetItem* idItem = new QTableWidgetItem(QString::number(sampleId));
+        idItem->setTextAlignment(Qt::AlignCenter);
+        ui->sampleTableWidget->setItem(sampleId, 0, idItem);
         ui->sampleTableWidget->setItem(sampleId, 1, new QTableWidgetItem(name));
 
         QTableWidgetItem* voltEnItem = new QTableWidgetItem();
         voltEnItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
         voltEnItem->setCheckState(cfg.volt_en ? Qt::Checked : Qt::Unchecked);
+        voltEnItem->setTextAlignment(Qt::AlignCenter);
         ui->sampleTableWidget->setItem(sampleId, 2, voltEnItem);
 
         QTableWidgetItem* currEnItem = new QTableWidgetItem();
         currEnItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
         currEnItem->setCheckState(cfg.current_en ? Qt::Checked : Qt::Unchecked);
+        currEnItem->setTextAlignment(Qt::AlignCenter);
         ui->sampleTableWidget->setItem(sampleId, 4, currEnItem);
 
         const QString voltText = has_sampled_volt_[sampleId]
@@ -117,14 +323,19 @@ void MainWindow::refreshSampleTable() {
         const QString currText = has_sampled_curr_[sampleId]
             ? QString::number(sampled_curr_[sampleId])
             : QStringLiteral("--");
-        ui->sampleTableWidget->setItem(sampleId, 3, new QTableWidgetItem(voltText));
-        ui->sampleTableWidget->setItem(sampleId, 5, new QTableWidgetItem(currText));
+        QTableWidgetItem* voltValueItem = new QTableWidgetItem(voltText);
+        voltValueItem->setTextAlignment(Qt::AlignCenter);
+        ui->sampleTableWidget->setItem(sampleId, 3, voltValueItem);
+
+        QTableWidgetItem* currValueItem = new QTableWidgetItem(currText);
+        currValueItem->setTextAlignment(Qt::AlignCenter);
+        ui->sampleTableWidget->setItem(sampleId, 5, currValueItem);
     }
     refreshing_sample_table_ = false;
 }
 
 void MainWindow::onSampleTableItemChanged(QTableWidgetItem* item) {
-    if (!item || refreshing_sample_table_) {
+    if (!item || refreshing_sample_table_ || !config_service_) {
         return;
     }
 
@@ -133,24 +344,19 @@ void MainWindow::onSampleTableItemChanged(QTableWidgetItem* item) {
         return;
     }
 
+    PowersConfig& config = config_service_->mutableConfig();
     if (item->column() == 2) {
-        power_configs_.sample_cfg[row].volt_en = (item->checkState() == Qt::Checked);
+        config.sample_cfg[row].volt_en = (item->checkState() == Qt::Checked);
     } else if (item->column() == 4) {
-        power_configs_.sample_cfg[row].current_en = (item->checkState() == Qt::Checked);
+        config.sample_cfg[row].current_en = (item->checkState() == Qt::Checked);
     }
 }
 
-void MainWindow::onDataReceived(const uint8_t* data, int length) {
-    if (!data || length < static_cast<int>(sizeof(SampleDataPacket))) {
-        return;
+void MainWindow::onDataReceived(const SampleDataPacket& packet) {
+    if (waveform_recorder_) {
+        waveform_recorder_->appendPacket(packet);
     }
-
-    SampleDataPacket packet{};
-    memcpy(&packet, data, sizeof(SampleDataPacket));
-
-    QMetaObject::invokeMethod(this, [this, packet]() {
-        updateSampleValuesFromPacket(packet);
-    }, Qt::QueuedConnection);
+    updateSampleValuesFromPacket(packet);
 }
 
 void MainWindow::updateSampleValuesFromPacket(const SampleDataPacket& packet) {
@@ -168,6 +374,11 @@ void MainWindow::updateSampleValuesFromPacket(const SampleDataPacket& packet) {
         return;
     }
 
+    if (waveform_widget_) {
+        const PowersConfig* config = config_service_ ? &config_service_->config() : nullptr;
+        waveform_widget_->updateFromPacket(packet, config);
+    }
+
     const QSignalBlocker blocker(ui->sampleTableWidget);
     for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
         if (QTableWidgetItem* voltItem = ui->sampleTableWidget->item(i, 3)) {
@@ -180,121 +391,257 @@ void MainWindow::updateSampleValuesFromPacket(const SampleDataPacket& packet) {
 }
 
 void MainWindow::refreshDeviceList() {
-    ui->deviceList->clear();
     ui->deviceComboBox->clear();
 
-    for (const USBDeviceInfo& device : devices_) {
-        const QString product = device.product.empty()
-            ? QStringLiteral("Unknown")
-            : QString::fromWCharArray(device.product.c_str());
-        const QString manufacturer = device.manufacturer.empty()
-            ? QStringLiteral("Unknown")
-            : QString::fromWCharArray(device.manufacturer.c_str());
-        const QString displayName = product != QStringLiteral("Unknown")
-            ? product
-            : manufacturer;
+    if (!session_service_) {
+        return;
+    }
+
+    for (const USBDeviceInfo& device : session_service_->devices()) {
+        const QString displayName = buildDeviceDisplayName(device);
         const QString path = QString::fromLocal8Bit(device.path.c_str());
         const QString text = QStringLiteral("%1").arg(displayName);
-
-        QListWidgetItem* item = new QListWidgetItem(text, ui->deviceList);
-        item->setData(Qt::UserRole, path);
 
         ui->deviceComboBox->addItem(text, path);
     }
 
-    if (!devices_.empty()) {
-        ui->deviceList->setCurrentRow(0);
+    if (!session_service_->devices().empty()) {
         ui->deviceComboBox->setCurrentIndex(0);
     }
 }
 
 void MainWindow::updateConnectionState() {
-    const bool isOpen = usb_driver_ && usb_driver_->isOpen();
+    const bool isOpen = session_service_ && session_service_->isOpen();
+    const bool isSampling = session_service_ && session_service_->isSampling();
     ui->openButton->setText(isOpen ? QStringLiteral("关闭设备") : QStringLiteral("打开设备"));
     ui->statusValueLabel->setText(isOpen ? QStringLiteral("已连接") : QStringLiteral("未连接"));
     ui->sampleToggleButton->setEnabled(isOpen);
-
-    if (!isOpen) {
-        sampling_started_ = false;
+    ui->sampleToggleButton->setText(isSampling ? QStringLiteral("停止采样") : QStringLiteral("开始采样"));
+    if (record_button_) {
+        const bool isRecording = waveform_recorder_ && waveform_recorder_->isRecording();
+        record_button_->setEnabled(isRecording || isOpen || test_mode_running_.load());
+        record_button_->setText(isRecording ? QStringLiteral("停止录制") : QStringLiteral("开始录制"));
     }
-    ui->sampleToggleButton->setText(sampling_started_ ? QStringLiteral("停止采样") : QStringLiteral("开始采样"));
+}
+
+QString MainWindow::selectedDevicePath() const {
+    if (ui->deviceComboBox->currentIndex() >= 0) {
+        return ui->deviceComboBox->currentData().toString();
+    }
+    if (session_service_ && !session_service_->devices().empty()) {
+        return QString::fromLocal8Bit(session_service_->devices().front().path.c_str());
+    }
+    return {};
 }
 
 void MainWindow::onQueryDevices() {
-    devices_ = USBDriver::queryDevices(kDefaultVid, kDefaultPid);
+    if (!session_service_) {
+        return;
+    }
+
+    session_service_->queryDevices();
     refreshDeviceList();
 
     appendLog(QStringLiteral("查询完成: 共 %1 个设备")
-                  .arg(devices_.size()));
+                  .arg(session_service_->devices().size()));
 }
 
 void MainWindow::onToggleOpenDevice() {
-    if (usb_driver_ && usb_driver_->isOpen()) {
-        if (sampling_started_) {
-            if(power_configs_.volt_sample_en) SendStopSample(*usb_driver_, SAMPLE_TYPE_VOLTAGE);
-            if(power_configs_.curr_sample_en) SendStopSample(*usb_driver_, SAMPLE_TYPE_CURRENT);
-            sampling_started_ = false;
+    if (!session_service_) {
+        return;
+    }
+
+    if (session_service_->isOpen()) {
+        if (session_service_->isSampling()) {
+            const PowersConfig& config = config_service_->config();
+            session_service_->stopSampling(config);
         }
-        usb_driver_->close();
+        session_service_->closeDevice();
         appendLog(QStringLiteral("设备已关闭"));
         updateConnectionState();
         return;
     }
 
-    if (devices_.empty()) {
+    if (session_service_->devices().empty()) {
         onQueryDevices();
-        if (devices_.empty()) {
+        if (session_service_->devices().empty()) {
             QMessageBox::information(this, QStringLiteral("未发现设备"), QStringLiteral("当前默认配置下没有可打开的设备。"));
             return;
         }
     }
 
-    QString path;
-    if (ui->deviceComboBox->currentIndex() >= 0) {
-        path = ui->deviceComboBox->currentData().toString();
-    } else {
-        QListWidgetItem* currentItem = ui->deviceList->currentItem();
-        if (currentItem) {
-            path = currentItem->data(Qt::UserRole).toString();
-        } else {
-            path = QString::fromLocal8Bit(devices_.front().path.c_str());
-        }
+    const QString path = selectedDevicePath();
+    if (path.isEmpty()) {
+        appendLog(QStringLiteral("未找到可用设备路径"));
+        return;
     }
 
-    usb_driver_ = std::make_unique<USBDriver>(kDefaultVid, kDefaultPid);
-    if (!usb_driver_->open(path.toLocal8Bit().constData())) {
+    if (!session_service_->openDevice(path)) {
         appendLog(QStringLiteral("打开设备失败: %1").arg(path));
         updateConnectionState();
         return;
     }
-
-    usb_driver_->setReceiveCallback([this](const uint8_t* data, int length) {
-        onDataReceived(data, length);
-    });
 
     appendLog(QStringLiteral("设备已打开: %1").arg(path));
     updateConnectionState();
 }
 
 void MainWindow::onToggleSampling() {
-    if (!usb_driver_ || !usb_driver_->isOpen()) {
+    if (!session_service_ || !session_service_->isOpen()) {
         QMessageBox::information(this, QStringLiteral("未连接设备"), QStringLiteral("请先打开设备后再开始采样。"));
         return;
     }
 
-    if (!sampling_started_) {
-        if(power_configs_.volt_sample_en) SendStartSample(*usb_driver_, SAMPLE_TYPE_VOLTAGE);
-        if(power_configs_.curr_sample_en) SendStartSample(*usb_driver_, SAMPLE_TYPE_CURRENT);
-        sampling_started_ = true;
+    if (!session_service_->isSampling()) {
+        if (test_mode_running_.load()) {
+            if (test_mode_action_) {
+                const QSignalBlocker blocker(test_mode_action_);
+                test_mode_action_->setChecked(false);
+            }
+            stopTestModeThread();
+        }
+        if (waveform_widget_) {
+            waveform_widget_->clearSamples();
+        }
+        const PowersConfig& config = config_service_->config();
+        session_service_->startSampling(config);
         appendLog(QStringLiteral("开始采样"));
     } else {
-        if(power_configs_.volt_sample_en) SendStopSample(*usb_driver_, SAMPLE_TYPE_VOLTAGE);
-        if(power_configs_.curr_sample_en) SendStopSample(*usb_driver_, SAMPLE_TYPE_CURRENT);
-        sampling_started_ = false;
+        const PowersConfig& config = config_service_->config();
+        session_service_->stopSampling(config);
         appendLog(QStringLiteral("停止采样"));
     }
 
     updateConnectionState();
+}
+
+void MainWindow::onToggleTestMode(bool enabled) {
+    if (enabled) {
+        startTestModeThread();
+        return;
+    }
+    stopTestModeThread();
+}
+
+void MainWindow::startTestModeThread() {
+    if (test_mode_running_.load()) {
+        return;
+    }
+
+    if (session_service_ && session_service_->isSampling()) {
+        if (test_mode_action_) {
+            const QSignalBlocker blocker(test_mode_action_);
+            test_mode_action_->setChecked(false);
+        }
+        appendLog(QStringLiteral("设备采样中，无法启动测试模式"));
+        return;
+    }
+
+    test_mode_running_.store(true);
+    appendLog(QStringLiteral("测试模式已启动"));
+    updateConnectionState();
+
+    test_mode_thread_ = std::thread([this]() {
+        using namespace std::chrono_literals;
+        uint32_t tick = 0;
+
+        while (test_mode_running_.load()) {
+            SampleDataPacket packet{};
+            packet.report_id = 0;
+            packet.timestamp = tick * 80;
+            packet.type = (tick % 2 == 0) ? I2C_DATA_VBUS : I2C_DATA_CURRENT;
+
+            for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
+                const float basePhase = static_cast<float>(tick) * 0.16f + static_cast<float>(i) * 0.22f;
+                const float volt = 12000.0f + 1200.0f * std::sin(basePhase);
+                const float curr = 850.0f + 260.0f * std::sin(basePhase + 1.1f);
+                packet.channel_volt_mv[i] = static_cast<uint16_t>(std::max(0.0f, volt));
+                packet.channel_curr_ma[i] = static_cast<uint16_t>(std::max(0.0f, curr));
+            }
+
+            QMetaObject::invokeMethod(this, [this, packet]() {
+                onDataReceived(packet);
+            }, Qt::QueuedConnection);
+
+            std::this_thread::sleep_for(40ms);
+            ++tick;
+        }
+    });
+}
+
+void MainWindow::stopTestModeThread() {
+    const bool wasRunning = test_mode_running_.exchange(false);
+    if (test_mode_thread_.joinable()) {
+        test_mode_thread_.join();
+    }
+    if (wasRunning) {
+        appendLog(QStringLiteral("测试模式已停止"));
+    }
+    updateConnectionState();
+}
+
+void MainWindow::onToggleRecording() {
+    if (!waveform_recorder_) {
+        return;
+    }
+
+    if (!waveform_recorder_->isRecording()) {
+        if (!(test_mode_running_.load() || (session_service_ && session_service_->isOpen()))) {
+            QMessageBox::information(this, QStringLiteral("无法录制"), QStringLiteral("请先打开设备或启动测试模式。"));
+            return;
+        }
+        const QString defaultDirectory = currentConfigPath().isEmpty()
+            ? QCoreApplication::applicationDirPath()
+            : QFileInfo(QDir::fromNativeSeparators(currentConfigPath())).absolutePath();
+        waveform_recorder_->start(defaultDirectory);
+        appendLog(QStringLiteral("波形录制已开始"));
+        updateConnectionState();
+        return;
+    }
+
+    stopRecording(true);
+}
+
+void MainWindow::stopRecording(bool exportFile) {
+    if (!waveform_recorder_ || !waveform_recorder_->isRecording()) {
+        return;
+    }
+
+    waveform_recorder_->stop();
+    updateConnectionState();
+
+    if (!exportFile) {
+        waveform_recorder_->clear();
+        return;
+    }
+
+    if (!waveform_recorder_->hasData()) {
+        appendLog(QStringLiteral("录制结束，但没有采样数据可导出"));
+        QMessageBox::information(this, QStringLiteral("录制完成"), QStringLiteral("本次录制没有采样数据。"));
+        return;
+    }
+
+    const QString filePath = QFileDialog::getSaveFileName(
+        this,
+        QStringLiteral("保存波形录制"),
+        waveform_recorder_->defaultFilePath(),
+        QStringLiteral("CSV Files (*.csv);;All Files (*.*)"));
+
+    if (filePath.isEmpty()) {
+        appendLog(QStringLiteral("已取消保存波形录制"));
+        waveform_recorder_->clear();
+        return;
+    }
+
+    if (waveform_recorder_->exportCsv(filePath)) {
+        QMessageBox::information(this, QStringLiteral("保存成功"), QStringLiteral("波形录制已保存到: %1").arg(QDir::toNativeSeparators(filePath)));
+        appendLog(QStringLiteral("波形录制保存成功: %1").arg(QDir::toNativeSeparators(filePath)));
+        appendLog(QStringLiteral("波形录制已保存"));
+    } else {
+        QMessageBox::warning(this, QStringLiteral("保存失败"), QStringLiteral("无法写入文件: %1").arg(QDir::toNativeSeparators(filePath)));
+        appendLog(QStringLiteral("波形录制保存失败: %1").arg(QDir::toNativeSeparators(filePath)));
+    }
+    waveform_recorder_->clear();
 }
 
 void MainWindow::onBrowseConfig() {
@@ -326,16 +673,30 @@ void MainWindow::onLoadConfig() {
         return;
     }
 
-    PowersConfig loadedConfig{};
-    const QByteArray pathBytes = filePath.toLocal8Bit();
-    if (!LoadPowerConfig(pathBytes.constData(), &loadedConfig)) {
-        QMessageBox::warning(this, QStringLiteral("配置加载失败"), QStringLiteral("power_config.json 解析失败，请检查文件格式。"));
+    QString errorMessage;
+    if (!config_service_ || !config_service_->load(filePath, &errorMessage)) {
+        QMessageBox::warning(this, QStringLiteral("配置加载失败"), errorMessage.isEmpty() ? QStringLiteral("配置加载失败") : errorMessage);
         appendLog(QStringLiteral("配置加载失败: %1").arg(QDir::toNativeSeparators(filePath)));
         return;
     }
 
-    power_configs_ = loadedConfig;
     refreshSampleTable();
     addConfigPathOption(filePath);
     appendLog(QStringLiteral("配置加载成功: %1").arg(QDir::toNativeSeparators(filePath)));
+}
+
+void MainWindow::onOpenDebugInterface() {
+    auto* debugWindow = new DebugInterfaceWindow([this]() -> USBDriver* {
+        return session_service_ ? session_service_->driver() : nullptr;
+    });
+
+    debug_windows_.push_back(debugWindow);
+    connect(debugWindow, &QObject::destroyed, this, [this, debugWindow]() {
+        const auto it = std::remove(debug_windows_.begin(), debug_windows_.end(), debugWindow);
+        debug_windows_.erase(it, debug_windows_.end());
+    });
+
+    debugWindow->show();
+    debugWindow->raise();
+    debugWindow->activateWindow();
 }

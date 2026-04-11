@@ -58,6 +58,13 @@
            </item>
          <item>
           <layout class="QHBoxLayout" name="controlLayout">
+                <item>
+              <widget class="QLabel" name="deviceNameLabel">
+               <property name="text">
+                <string>设备名称</string>
+               </property>
+              </widget>
+                </item>
               <item>
                <widget class="QComboBox" name="deviceComboBox"/>
               </item>
@@ -119,7 +126,14 @@
           </layout>
          </item>
          <item>
-          <widget class="QListWidget" name="deviceList"/>
+          <widget class="QWidget" name="waveformHost">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>180</height>
+            </size>
+           </property>
+          </widget>
          </item>
         </layout>
       </widget>
