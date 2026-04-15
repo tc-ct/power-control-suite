@@ -22,6 +22,7 @@
 #include "usbd_customhid_if.h"
 #include "main.h"
 #include "dac_driver.h"
+#include "proto_pkg.h"
 #include <stdint.h>
 
 /* Private typedef ----------------------------------------------------------- */
@@ -41,8 +42,10 @@ extern uint8_t CUSTOMHID_InstID;
 extern uint8_t current_sampling_enabled;
 extern uint8_t voltage_sampling_enabled;
 extern uint8_t pending_cmd;
-VoltageConfigPacket_t pending_config; 
-SampleConfigPacket Sample;
+VoltageConfigPacket_t pending_config;
+SequenceConfigPacket_t pending_sequence;
+uint8_t pending_power_on;
+uint8_t pending_power_off;
 __ALIGN_BEGIN static uint8_t
   CustomHID_ReportDesc[USBD_CUSTOM_HID_REPORT_DESC_SIZE] __ALIGN_END = {
   0x06, 0xFF, 0x00,             /* USAGE_PAGE (Vendor Page: 0xFF00) */
@@ -210,18 +213,19 @@ static int8_t CustomHID_DeInit(void)
   */
 static int8_t CustomHID_OutEvent(uint8_t event_idx, uint8_t cmd_id, uint8_t *data)
 {
-  VoltageConfigPacket_t* cfg = (VoltageConfigPacket_t*)data;
-  USBD_UsrLog("VoltageConfigPacket_t event_idx= %d cmd_id=%d %d %d %d", event_idx, cfg->cmd_id, cfg->channel, cfg->voltage_mv, cfg->voltage_mv);
+ // VoltageConfigPacket_t* cfg = (VoltageConfigPacket_t*)data;
+ // USBD_UsrLog("VoltageConfigPacket_t event_idx= %d cmd_id=%d %d %d %d", event_idx, cfg->cmd_id, cfg->channel, cfg->voltage_mv, cfg->voltage_mv);
 
   switch (cmd_id) {
   case CMD_SET_VOLTAGE: /* Config voltage */
+  {
     memcpy(&pending_config, data, sizeof(VoltageConfigPacket_t));
     pending_cmd = 1;
     break;
-
+  }
   case CMD_SET_PIN: /* Config Pin */
   {
-    PinConfigPacket *pin = (PinConfigPacket *)data;
+    struct PinConfigPacket *pin = (struct PinConfigPacket *)data;
     GPIO_TypeDef *port = NULL;
     // 根据 port 数字选择对应的 GPIO 端口（需要提前定义映射）
     switch (pin->port) {
@@ -242,17 +246,29 @@ static int8_t CustomHID_OutEvent(uint8_t event_idx, uint8_t cmd_id, uint8_t *dat
     }
   } break;
 
+  case CMD_POWER_ON: /* Power-up sequence */
+  {
+    memcpy(&pending_sequence, data, sizeof(SequenceConfigPacket_t));
+    pending_power_on = 1;
+  } break;
+
+  case CMD_POWER_OFF: /* Power-off all supplies */
+  {
+    pending_power_off = 1;
+  } break;
+
   case CMD_START_SAMPLING: /* Start sampling */
-    Sample.state = *(data + 1);
-    Sample.type = *(data + 2);
-    switch (Sample.type) {
-    case 0x04: // 电压采样
-      voltage_sampling_enabled = Sample.state;
+  {
+    struct SampleConfigPacket *sample = (struct SampleConfigPacket *)data;
+    switch (sample->type) {
+    case SAMPLE_TYPE_VOLTAGE: // 电压采样
+      voltage_sampling_enabled = sample->state;
       break;
-    case 0x05: // 电流采样
-      current_sampling_enabled = Sample.state;
+    case SAMPLE_TYPE_CURRENT: // 电流采样
+      current_sampling_enabled = sample->state;
       break;
     }
+  }
     break;
 
   default:

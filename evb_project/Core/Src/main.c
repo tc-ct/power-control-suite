@@ -32,7 +32,9 @@
 #include "INA260.h"
 #include "stm32h5xx_hal_gpio.h"
 #include <stdint.h>
+#include <stdio.h>
 #include "dac_driver.h"
+#include "proto_pkg.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -116,16 +118,107 @@ uint8_t current_sampling_enabled;
 uint8_t voltage_sampling_enabled;
 uint8_t pending_cmd;
 extern VoltageConfigPacket_t pending_config;
+extern SequenceConfigPacket_t pending_sequence;
+extern uint8_t pending_power_on;
+extern uint8_t pending_power_off;
+
+static const uint8_t power_enable_ports[POWER_SUPPLY_COUNT] = {
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0};
+static const uint8_t power_enable_pins[POWER_SUPPLY_COUNT] = {
+    6, 7, 8, 9, 10, 11, 1, 3, 0, 4, 0, 2, 5, 13, 0, 1, 15, 14};
+
+static GPIO_TypeDef *GetPowerEnablePort(uint8_t port_index)
+{
+  switch (port_index) {
+  case 0:
+    return GPIOB;
+  case 1:
+    return GPIOC;
+  default:
+    return NULL;
+  }
+}
+
+static uint16_t GetPowerEnablePinMask(uint8_t pin_index)
+{
+  if (pin_index >= 16) {
+    return 0;
+  }
+  uint16_t pin_mask = 1 << (pin_index & 0x0F);
+  return pin_mask;
+}
+
+static void ExecutePowerOnSequence(const SequenceConfigPacket_t *sequence)
+{
+  // 创建一个数组来存储电源ID和顺序
+  typedef struct {
+    uint8_t power_id;
+    uint8_t order;
+    uint16_t delay;
+  } PowerStep;
+  PowerStep steps[POWER_SUPPLY_COUNT];
+  
+  for (uint8_t i = 0; i < POWER_SUPPLY_COUNT; ++i) {
+    steps[i].power_id = i;  // i 是电源ID
+    steps[i].order = sequence->sequence[i];  // sequence[i] 是电源 i 的上电顺序值
+    steps[i].delay = sequence->interval_ms[i];
+  }
+  
+  // 冒泡排序按 order 升序（从小到大）
+  for (uint8_t i = 0; i < POWER_SUPPLY_COUNT - 1; ++i) {
+    for (uint8_t j = 0; j < POWER_SUPPLY_COUNT - i - 1; ++j) {
+      if (steps[j].order > steps[j + 1].order) {
+        PowerStep temp = steps[j];
+        steps[j] = steps[j + 1];
+        steps[j + 1] = temp;
+      }
+    }
+  }
+  
+  // 按排序后的顺序执行上电
+  for (uint8_t i = 0; i < POWER_SUPPLY_COUNT; ++i) {
+    uint8_t power_id = steps[i].power_id;
+    GPIO_TypeDef *port = GetPowerEnablePort(power_enable_ports[power_id]);
+    uint16_t pin_mask = GetPowerEnablePinMask(power_enable_pins[power_id]);
+    if (port != NULL && pin_mask != 0) {
+      HAL_GPIO_WritePin(port, pin_mask, GPIO_PIN_SET);
+    }
+    
+    if (steps[i].delay != 0) {
+      HAL_Delay(steps[i].delay);
+    }
+  }
+}
+
+static void ExecutePowerOff(void)
+{
+  for (uint8_t power_id = 0; power_id < POWER_SUPPLY_COUNT; ++power_id) {
+    GPIO_TypeDef *port = GetPowerEnablePort(power_enable_ports[power_id]);
+    uint16_t pin_mask = GetPowerEnablePinMask(power_enable_pins[power_id]);
+    if (port != NULL && pin_mask != 0) {
+      HAL_GPIO_WritePin(port, pin_mask, GPIO_PIN_RESET);
+    }
+  }
+
+  for (uint8_t ch = 0; ch < 8; ++ch) {
+    DAC_SetVoltage(&hdac_dac[0], ch, 0);
+    DAC_SetVoltage(&hdac_dac[1], ch, 0);
+  }
+  DAC_SetVoltage(&hdac_dac[2], 0, 0);
+  DAC_SetVoltage(&hdac_dac[2], 1, 0);
+}
 
 void SendSampleReport(uint8_t type, float *values) {
-    uint32_t timestamp = HAL_GetTick();
-    memset(hid_report_buffer, 0, sizeof(hid_report_buffer));
-    hid_report_buffer[0] = ADC_REPORT_ID;
-    hid_report_buffer[1] = type;
-    memcpy(&hid_report_buffer[2], &timestamp, sizeof(timestamp));
-    memcpy(&hid_report_buffer[6], values, sizeof(adc_values));
-    USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, hid_report_buffer, SAMPLE_REPORT_SIZE);
-//    HAL_Delay(20);
+  SampleDataPacket_t *pkt = (SampleDataPacket_t *)hid_report_buffer;
+  memset(pkt, 0, sizeof(SAMPLE_REPORT_SIZE));
+  uint32_t timestamp = HAL_GetTick();
+
+  pkt->report_id = ADC_REPORT_ID;
+  pkt->type = type;
+  memcpy(&pkt->timestamp, &timestamp, sizeof(timestamp));
+  memcpy(&pkt->values, values, SAMPLE_DATA_COUNT * sizeof(float));
+
+  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t *)pkt, SAMPLE_REPORT_SIZE);
 }
 
 
@@ -254,7 +347,17 @@ int main(void)
     if (pending_cmd) {
       pending_cmd = 0;
       DAC_SetVoltage(&hdac_dac[pending_config.device_id],
-                     pending_config.channel, pending_config.voltage_mv);
+                     pending_config.channel, pending_config.dac_value);
+    }
+
+    if (pending_power_off) {
+      pending_power_off = 0;
+      ExecutePowerOff();
+    }
+
+    if (pending_power_on) {
+      pending_power_on = 0;
+      ExecutePowerOnSequence(&pending_sequence);
     }
 
     if (current_sampling_enabled) {
@@ -266,12 +369,12 @@ int main(void)
       }
       // 读取 I2C2
       for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
-        INA238_ReadData(&hsmbus2, i2c2_dev_addrs[i], &adc_values[13+i],
+        INA238_ReadData(&hsmbus2, i2c2_dev_addrs[i], &adc_values[I2C1_INA238_NUM+i],
                         INA238_DATA_CURRENT,MAX_CURRENT2);
       }
-      INA260_ReadData(&hsmbus2, INA260_DEV_ADDR, &adc_values[26],
+      INA260_ReadData(&hsmbus2, INA260_DEV_ADDR, &adc_values[I2C1_INA238_NUM+I2C2_INA238_NUM],
                       INA260_DATA_CURRENT);
-      HAL_Delay(2);
+      // HAL_Delay(2);
       SendSampleReport(I2C_DATA_CURRENT, adc_values);
     }
 
@@ -284,12 +387,12 @@ int main(void)
       }
       // 读取 I2C2
       for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
-        INA238_ReadData(&hsmbus2, i2c2_dev_addrs[i], &adc_values[13+i],
+        INA238_ReadData(&hsmbus2, i2c2_dev_addrs[i], &adc_values[I2C1_INA238_NUM+i],
                         INA238_DATA_VBUS,MAX_CURRENT2);
       }
-      INA260_ReadData(&hsmbus2, INA260_DEV_ADDR, &adc_values[26],
+      INA260_ReadData(&hsmbus2, INA260_DEV_ADDR, &adc_values[I2C1_INA238_NUM+I2C2_INA238_NUM],
                       INA260_DATA_BUS_VOLTAGE);
-      HAL_Delay(2);
+      // HAL_Delay(2);
       SendSampleReport(I2C_DATA_VBUS, adc_values);
     }
 

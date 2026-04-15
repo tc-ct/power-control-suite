@@ -28,6 +28,7 @@
 #include "file_parse.h"
 #include "power_config.h"
 
+//define DEBUG
 // 打包电压配置命令（直接返回指针和长度，由调用者保证缓冲区足够）
 void Protocol_PackVoltageConfig(VoltageConfigPacket* pkt,uint8_t device_id ,uint8_t channel, uint16_t voltage_mv);
 // 解析采样数据包
@@ -38,6 +39,7 @@ void Protocol_PackPinConfig(PinConfigPacket* pkt, uint8_t port, uint16_t pin, ui
 void Protocol_PackSampleConfig(SampleConfigPacket* pkt, uint8_t state, uint8_t type);
 
 void SendPowerOn(USBDriver& dev, PowersConfig* cfg);
+void SendPowerOff(USBDriver& dev, PowersConfig* cfg);
 void SendVoltageConfig(USBDriver& dev, PowerSupplyConfig* cfg);
 void SendPinConfig(USBDriver& dev, int port, int pin, int level);
 void SendStartSample(USBDriver& dev, int type);

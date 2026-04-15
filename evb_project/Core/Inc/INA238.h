@@ -76,11 +76,6 @@ typedef enum {
     INA238_DATA_DEVICE_ID,   /* 器件ID */
 } INA238_Data_Type;
 
-/* 发送数据类型枚举 */
-typedef enum {
-    I2C_DATA_VBUS=0,       
-    I2C_DATA_CURRENT,                
-} I2C_Data_Type;
 
 /* 公共函数声明 */
 HAL_StatusTypeDef INA238_Init(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,

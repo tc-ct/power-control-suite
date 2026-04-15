@@ -73,5 +73,7 @@ HAL_StatusTypeDef INA260_ReadManufacturerID(SMBUS_HandleTypeDef *hsmbus, uint8_t
                                             uint16_t *mfr_id);
 HAL_StatusTypeDef INA260_ReadDieID(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
                                    uint16_t *die_id);
+HAL_StatusTypeDef INA260_ReadRawData(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
+                                 uint16_t *reg16, INA260_Data_Type data_type);
 
 #endif

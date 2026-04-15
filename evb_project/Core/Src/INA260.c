@@ -146,6 +146,48 @@ HAL_StatusTypeDef INA260_Init(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr) {
     return status;
 }
 
+
+/**
+ * @brief 读取 INA260 指定类型的测量数据
+ * @param hsmbus     SMBUS 句柄
+ * @param dev_addr   7位设备地址
+ * @param data_type  要读取的数据类型
+ * @param value      输出值指针 (浮点数)
+ * @return HAL_OK / HAL_ERROR / HAL_TIMEOUT
+ */
+HAL_StatusTypeDef INA260_ReadRawData(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
+                                 uint16_t *reg16, INA260_Data_Type data_type)
+{
+    HAL_StatusTypeDef status;
+
+    if (reg16 == NULL) return HAL_ERROR;
+
+    /* 等待转换完成（确保数据是最新的）*/
+    status = WaitForConversion(hsmbus, dev_addr);
+    if (status != HAL_OK) {
+        return status;
+    }
+
+    switch (data_type)
+    {
+        case INA260_DATA_CURRENT:
+            status = ReadReg16_IT(hsmbus, dev_addr, INA260_REG_CURRENT, reg16);
+            break;
+
+        case INA260_DATA_BUS_VOLTAGE:
+            status = ReadReg16_IT(hsmbus, dev_addr, INA260_REG_BUSVOLTAGE, reg16);
+            /* 清除 bit15（该位始终为0） */
+            *reg16 = *reg16 & 0x7FFF;   /* 返回原始寄存器值，去除bit15 */
+            break;
+
+        default:
+            status = HAL_ERROR;
+            break;
+    }
+
+    return status;
+}
+
 /**
  * @brief 读取 INA260 指定类型的测量数据
  * @param hsmbus     SMBUS 句柄

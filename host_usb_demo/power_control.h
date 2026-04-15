@@ -20,7 +20,7 @@ private:
 
 	PowersConfig* configs_;
 
-	static const int kDacMaxCode = 4096;
+	static const int kDacMaxCode = 4095;
     static const int kSampleCount = 10;
 	static const int kMaxCalibrationIterations = 5;
 };

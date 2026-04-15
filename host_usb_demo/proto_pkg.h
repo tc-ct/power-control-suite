@@ -94,7 +94,8 @@ uint8_t bytes[DOWNLOAD_PACKET_SIZE];           // 整个数据包的字节视图
 typedef struct SampleConfigPacket{
 union {
 struct {
-    uint8_t  state;      // 开启关闭采样
+    uint8_t  cmd_id;      // 命令ID: CMD_START_SAMPLING
+    uint8_t  state;       // 开启关闭采样
     uint8_t  type;        // 采样类型
     uint8_t  volt_en;     // 是否采样电压
     uint8_t  current_en;  // 是否采样电流
@@ -128,10 +129,9 @@ typedef struct SampleDataPacket{
 union {
 struct {
     uint8_t report_id;     // 报告ID（通常为0）
-    uint8_t type;     // 数据类型
-    uint32_t timestamp;           // 时间戳(ms)
-    uint16_t channel_volt_mv[SAMPLE_DATA_COUNT]; // 通道 电压
-    uint16_t channel_curr_ma[SAMPLE_DATA_COUNT]; // 通道 电流
+    uint8_t type;          // 数据类型
+    uint32_t timestamp;    // 时间戳(ms)
+    float values[SAMPLE_DATA_COUNT]; // 通道采样值（float）
 };
 uint8_t bytes[USB_REPORT_SIZE];           // 整个数据包的字节视图
 };
