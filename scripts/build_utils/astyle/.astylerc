@@ -1,0 +1,17 @@
+#this is the default astyle option file
+--formatted               #Display only the files that have been formatted.
+--style=linux             #Linux brace style
+--indent-col1-comments    #Indent C++ comments beginning in column one.
+--indent=force-tab=8      #Indent using all 8 byte tab
+--attach-closing-while    #Attach the closing 'while' of a 'do-while' statement to the closing brace.
+--break-blocks            #Pad empty lines around header blocks (e.g. 'if', 'for', 'while'...).
+--pad-oper                #Insert space padding around operators.
+--pad-comma               #Insert space padding after commas.
+--pad-header              #Insert space padding between a header (e.g. 'if', 'for', 'while'...) and the following paren.
+--align-pointer=name      #Attach a pointer or reference operator (*, &, or ^) to variable name (right).
+--attach-return-type-decl #Attach the return type to the function name.
+--break-one-line-headers  #Break one line headers (e.g. 'if', 'while', 'else', ...) from a statement residing on the same line.
+--break-after-logical     #The logical conditionals is placed last on the previous line.
+--remove-braces           #Remove braces from a single statement on a single line
+--indent-switches
+--suffix=none

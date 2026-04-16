@@ -39,6 +39,7 @@ add_executable(${CMAKE_PROJECT_NAME}
     Core/Src/INA238.c
     Core/Src/dac_driver.c
     Core/Src/user_callback.c     
+    Core/Src/usb_message_handler.c
 
     USB/Core/Src/usbd_conf.c
     USB/Core/Src/usbd_core.c

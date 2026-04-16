@@ -58,33 +58,12 @@ float PowerController::GetAverageVoltage(USBDriver& dev, int means_pt, int sampl
             sum += volt;
             ++valid_count;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     if (valid_count == 0) {
         LOG_ERROR("No valid voltage readings for means_pt %d", means_pt);
         return -1.0f;
     }
     return sum / valid_count;
-}
-
-// Read and log voltage deviation for a given power rail.
-void PowerController::LogVoltageInfo(USBDriver& dev, int power_id, float target_voltage) const {
-    if (!IsValidPowerId(power_id)) {
-        LOG_ERROR("Invalid power ID %d", power_id);
-        return;
-    }
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
-    float actual_voltage = GetActualVoltage(dev, power_id);
-    if (actual_voltage < 0) {
-        LOG_ERROR("Failed to read actual voltage for power ID %d", power_id);
-        return;
-    }
-
-    float error = actual_voltage - target_voltage;
-    LOG_INFO("Power ID %d: target=%.3f V, actual=%.3f V, error=%.3f V",
-             power_id, target_voltage, actual_voltage, error);
 }
 
 // Enable one power rail through its GPIO enable pin.
@@ -95,8 +74,6 @@ void PowerController::EnablePower(USBDriver& dev, int power_id) const {
     }
     const auto& cfg = configs_->supplies[power_id];
     SendPinConfig(dev, cfg.enable_port, cfg.enable_pin, true);
-
-
 }
 
 // Program one rail DAC output to the requested target voltage.
@@ -111,16 +88,13 @@ void PowerController::ConfigVoltage(USBDriver& dev, int power_id, float target_v
 
 // Apply all configured voltages, then enable rails, and run optional calibration.
 void PowerController::ConfigVoltages(USBDriver& dev) const {
-
-    // enable rails by configured power-up sequence
-    SendPowerOn(dev, configs_);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     // config all voltages first
     for (int power_id = 0; power_id < POWER_SUPPLY_COUNT; ++power_id) {
         const auto& cfg = configs_->supplies[power_id];
         ConfigVoltage(dev, power_id, cfg.tgt_volt);
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+    // enable rails by configured power-up sequence
+    SendPowerOn(dev, configs_);
 
     if(configs_->calibration_en) {
         LOG_INFO("Calibration enabled, starting calibration process...");
@@ -158,10 +132,6 @@ void PowerController::ConfigVoltages(USBDriver& dev) const {
         }
         LOG_INFO("==========================================");
     }
-    else {
-       SendPowerOn(dev, configs_);
-    }
-
 }
 
 
@@ -180,8 +150,7 @@ void PowerController::CalibrateVoltage(USBDriver& dev, int power_id) const {
 
     float current_target = target_voltage;
     for (int iter = 0; iter < kMaxCalibrationIterations; ++iter) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
+        // std::this_thread::sleep_for(std::chrono::milliseconds(500));
         actual_voltage = GetAverageVoltage(dev, cfg.means_pt, kSampleCount);
         if (actual_voltage < 0) {
             LOG_ERROR("Failed to read voltage, abort calibration");

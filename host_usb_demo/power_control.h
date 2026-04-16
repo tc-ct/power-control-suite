@@ -7,7 +7,6 @@
 class PowerController {
 public:
 	PowerController(PowersConfig* configs);
-	void LogVoltageInfo(USBDriver& dev, int power_id, float target_voltage) const;
     void ConfigVoltages(USBDriver& dev) const;
     void EnablePower(USBDriver& dev, int power_id) const;
 

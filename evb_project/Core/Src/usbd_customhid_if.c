@@ -23,6 +23,7 @@
 #include "main.h"
 #include "dac_driver.h"
 #include "proto_pkg.h"
+#include "usb_message_handler.h"
 #include <stdint.h>
 
 /* Private typedef ----------------------------------------------------------- */
@@ -34,18 +35,7 @@ static int8_t CustomHID_DeInit(void);
 static int8_t CustomHID_OutEvent(uint8_t event_idx, uint8_t cmd_id, uint8_t *data);
 
 /* Private variables --------------------------------------------------------- */
-ALIGN_32BYTES (uint32_t ADCConvertedValue[8]) = {0};
-uint32_t ADC_Prev_ConvertedValue = 0;
-uint8_t SendBuffer[2];
-extern USBD_HandleTypeDef hUsbDeviceFS;
-extern uint8_t CUSTOMHID_InstID;
-extern uint8_t current_sampling_enabled;
-extern uint8_t voltage_sampling_enabled;
-extern uint8_t pending_cmd;
-VoltageConfigPacket_t pending_config;
-SequenceConfigPacket_t pending_sequence;
-uint8_t pending_power_on;
-uint8_t pending_power_off;
+// extern USBD_HandleTypeDef hUsbDeviceFS;
 __ALIGN_BEGIN static uint8_t
   CustomHID_ReportDesc[USBD_CUSTOM_HID_REPORT_DESC_SIZE] __ALIGN_END = {
   0x06, 0xFF, 0x00,             /* USAGE_PAGE (Vendor Page: 0xFF00) */
@@ -213,70 +203,9 @@ static int8_t CustomHID_DeInit(void)
   */
 static int8_t CustomHID_OutEvent(uint8_t event_idx, uint8_t cmd_id, uint8_t *data)
 {
- // VoltageConfigPacket_t* cfg = (VoltageConfigPacket_t*)data;
- // USBD_UsrLog("VoltageConfigPacket_t event_idx= %d cmd_id=%d %d %d %d", event_idx, cfg->cmd_id, cfg->channel, cfg->voltage_mv, cfg->voltage_mv);
+  (void)UsbMsg_Enqueue(event_idx, cmd_id, data, DOWNLOAD_PACKET_SIZE);
 
-  switch (cmd_id) {
-  case CMD_SET_VOLTAGE: /* Config voltage */
-  {
-    memcpy(&pending_config, data, sizeof(VoltageConfigPacket_t));
-    pending_cmd = 1;
-    break;
-  }
-  case CMD_SET_PIN: /* Config Pin */
-  {
-    struct PinConfigPacket *pin = (struct PinConfigPacket *)data;
-    GPIO_TypeDef *port = NULL;
-    // 根据 port 数字选择对应的 GPIO 端口（需要提前定义映射）
-    switch (pin->port) {
-    case 0:
-      port = GPIOB;
-      break;
-    case 1:
-      port = GPIOC;
-      break;
-    default:
-      break;
-    }
-    if (port != NULL) {
-      // GPIO_PIN 是 16 位掩码，但这里 pin 是引脚编号（如 12），需转换为掩码
-      uint16_t pin_mask = 1 << (pin->pin & 0x0F); // 假设 pin 在 0~15 范围
-      GPIO_PinState state = (pin->level == 1) ? GPIO_PIN_SET : GPIO_PIN_RESET;
-      HAL_GPIO_WritePin(port, pin_mask, state);
-    }
-  } break;
 
-  case CMD_POWER_ON: /* Power-up sequence */
-  {
-    memcpy(&pending_sequence, data, sizeof(SequenceConfigPacket_t));
-    pending_power_on = 1;
-  } break;
-
-  case CMD_POWER_OFF: /* Power-off all supplies */
-  {
-    pending_power_off = 1;
-  } break;
-
-  case CMD_START_SAMPLING: /* Start sampling */
-  {
-    struct SampleConfigPacket *sample = (struct SampleConfigPacket *)data;
-    switch (sample->type) {
-    case SAMPLE_TYPE_VOLTAGE: // 电压采样
-      voltage_sampling_enabled = sample->state;
-      break;
-    case SAMPLE_TYPE_CURRENT: // 电流采样
-      current_sampling_enabled = sample->state;
-      break;
-    }
-  }
-    break;
-
-  default:
-    break;
-  }
-
-  /* Start next USB packet transfer once data processing is completed */
-  USBD_CUSTOM_HID_ReceivePacket(&hUsbDeviceFS);
 
   return (0);
 }

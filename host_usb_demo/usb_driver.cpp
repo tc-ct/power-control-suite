@@ -18,12 +18,15 @@
  *
  * FLYINGCHIP RESERVES ALL RIGHTS NOT EXPRESSLY GRANTED TO YOU HEREUNDER.
  */
+
+#include "proto_pkg.h"
 #include "usb_driver.h"
 #include "log.h"
 #include <hidapi.h>
 #include <cstring>
 #include <thread>
 #include <chrono>
+#include <cstdlib>
 
 USBDriver::USBDriver(uint16_t vid, uint16_t pid)
     : vid_(vid), pid_(pid), handle(nullptr), running_(false) {
@@ -110,13 +113,12 @@ void USBDriver::setReceiveCallback(ReceiveCallback cb) {
 }
 
 void USBDriver::receiveLoop() {
-    uint8_t buffer[128];
+    uint8_t buffer[USB_REPORT_SIZE];
     while (running_) {
-        int bytes = hid_read(static_cast<hid_device*>(handle), buffer, sizeof(buffer));
+        int bytes = hid_read_timeout(static_cast<hid_device*>(handle), buffer, sizeof(buffer), USB_TIMEOUT_MS);
         if (bytes > 0 && callback_) {
             callback_(buffer, bytes);
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
@@ -125,27 +127,13 @@ int USBDriver::receive(const uint8_t* data, size_t length) {
     if (!handle) {
         return -1;
     }
-
-    // 阻塞等待数据，最多等待500ms
-    const int timeout_ms = 500;
-    const int check_interval_ms = 10;
-    int elapsed = 0;
-
-    while (elapsed < timeout_ms) {
-        int bytes = hid_read(static_cast<hid_device*>(handle), const_cast<uint8_t*>(data), length);
-        if (bytes > 0) {
-            return bytes;  // 成功读取到数据
-        }
-        if (bytes < 0) {
-            const wchar_t* err = hid_error(static_cast<hid_device*>(handle));
-            LOG_ERROR("hid_read failed: %ls", err ? err : L"unknown");
-            return -1;  // 错误
-        }
-        // 没有数据，继续等待
-        std::this_thread::sleep_for(std::chrono::milliseconds(check_interval_ms));
-        elapsed += check_interval_ms;
+    int bytes = hid_read_timeout(static_cast<hid_device*>(handle), const_cast<uint8_t*>(data), length, USB_TIMEOUT_MS);
+    if (bytes > 0) {
+        return bytes;  // 成功读取到数据
     }
 
-    LOG_ERROR("Receive timeout after %d ms", timeout_ms);
-    return -1;  // 超时
+    const wchar_t* err = hid_error(static_cast<hid_device*>(handle));
+    LOG_ERROR("hid_read failed: %ls", err ? err : L"unknown");
+    std::abort();
+    return -1;  // 错误
 }

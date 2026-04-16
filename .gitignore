@@ -5,3 +5,4 @@ mx.scratch
 .settings
 .clangd
 CMakeLists.txt.user
+**agents/
