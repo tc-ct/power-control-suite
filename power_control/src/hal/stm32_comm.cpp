@@ -3,6 +3,7 @@
 #include <array>
 #include <cstring>
 #include <cstdio>
+#include <cstdlib>
 
 #include "log.h"
 #include "stm32_comm.h"
@@ -27,35 +28,40 @@ void Protocol_PackPinConfig(PinConfigPacket* pkt, uint8_t port, uint16_t pin, ui
 
 void Protocol_PackSampleConfig(SampleConfigPacket* pkt, uint8_t state, uint8_t type) {
     memset(pkt, 0, sizeof(SampleConfigPacket));
+    pkt->cmd_id = CMD_START_SAMPLING;
     pkt->state = state;
     pkt->type = type;
 }
 
 void Protocol_ParseSampleData(const uint8_t* data, int length, SampleDataPacket* out) {
-    if (length >= static_cast<int>(sizeof(SampleDataPacket))) {
-        memcpy(out, data, sizeof(SampleDataPacket));
+    if (length < static_cast<int>(sizeof(SampleDataPacket))) {
+        LOG_ERROR("Received sample data too short: %d bytes, expected %zu bytes", length, sizeof(SampleDataPacket));
+        return;
     }
+
+    memcpy(out, data, sizeof(SampleDataPacket));
     
-    switch (out->type) {
-        case I2C_DATA_VBUS:
-            printf("  I2C_DATA_VBUS: ");
-            break;
-        case I2C_DATA_CURRENT:
-            printf("  I2C_DATA_CURRENT: ");
-            break;
-        default:
-            printf("  Unknown type %d: ", out->type);
-            break;
-    }
-    printf("\n");
-    for (int i = 0; i < 13; ++i) {
-            printf("%.8f ", out->channel_volt_mv[i]);
-    }           
-    printf("\n");
-    for (int i = 13; i < 27; ++i) {
-            printf("%.8f ", out->channel_volt_mv[i]);
-    }    
-    printf("\n");
+    // 只在调试模式下打印采样数据，避免刷屏
+    // switch (out->type) {
+    //     case I2C_DATA_VBUS:
+    //         LOG_INFO("  I2C_DATA_VBUS: ");
+    //         break;
+    //     case I2C_DATA_CURRENT:
+    //         LOG_INFO("  I2C_DATA_CURRENT: ");
+    //         break;
+    //     default:
+    //         LOG_INFO("  Unknown type %d: ", out->type);
+    //         break;
+    // }
+    // LOG_INFO("\n");
+    // for (int i = 0; i < 13; ++i) {
+    //         LOG_INFO("%.8f ", out->values[i]);
+    // }           
+    // LOG_INFO("\n");
+    // for (int i = 13; i < 27; ++i) {
+    //         LOG_INFO("%.8f ", out->values[i]);
+    // }    
+    // LOG_INFO("\n");
 }
 
 void SendVoltageConfig(USBDriver& dev, PowerSupplyConfig* cfg) {
@@ -68,14 +74,12 @@ void SendPinConfig(USBDriver& dev, int port, int pin, int level) {
     PinConfigPacket pin_cfg;
     Protocol_PackPinConfig(&pin_cfg, port, pin, level);
     dev.send(reinterpret_cast<uint8_t*>(&pin_cfg), sizeof(pin_cfg));
-    // std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 void SendSampleConfig(USBDriver& dev, int state, int type) {
     SampleConfigPacket sample_cfg;
     Protocol_PackSampleConfig(&sample_cfg, state, type);
     dev.send(reinterpret_cast<uint8_t*>(&sample_cfg), sizeof(sample_cfg));
-    // std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 void SendStartSample(USBDriver& dev, int type) {
@@ -98,8 +102,8 @@ void SendPowerOn(USBDriver& dev, PowersConfig* cfg) {
     dev.send(reinterpret_cast<uint8_t*>(&pkt), sizeof(pkt));
 }
 
-void SendPowerOff(USBDriver& dev, int power_id) {
-    uint8_t cmd[2] = {CMD_POWER_OFF, static_cast<uint8_t>(power_id)};
+void SendPowerOff(USBDriver& dev, PowersConfig* cfg) {
+    uint8_t cmd[1] = {CMD_POWER_OFF};
     dev.send(cmd, sizeof(cmd));
 }
 
@@ -111,25 +115,27 @@ float GetActualVoltage(USBDriver& dev, int means_pt) {
     }
 
     // Start sampling voltage data
-    SendStartSample(dev, SAMPLE_TYPE_VOLTAGE);  // Assuming 4 corresponds to voltage type
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    SendStartSample(dev, SAMPLE_TYPE_VOLTAGE);
+    // wait stm32 to sample data, so need to sleep
+    // std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     // get voltage from stm32
     uint8_t buffer[USB_REPORT_SIZE];
     float voltages[SAMPLE_DATA_COUNT] = {0.0f};
-    dev.receive(buffer, USB_REPORT_SIZE);
+    int bytes = dev.receive(buffer, USB_REPORT_SIZE);
     SampleDataPacket pkt;
-    Protocol_ParseSampleData(buffer, USB_REPORT_SIZE, &pkt);
+    Protocol_ParseSampleData(buffer, bytes, &pkt);
     if (pkt.type == I2C_DATA_VBUS) {
         memcpy(voltages, pkt.channel_volt_mv, sizeof(voltages));
     } else {
         LOG_ERROR("Received sample data with unexpected type %d", pkt.type);
+        std::abort();
         return -1.0f;
     }
     LOG_INFO("Voltage data[%d]=%.4f", idx, voltages[idx]);
 
     // Stop sampling
     SendStopSample(dev, SAMPLE_TYPE_VOLTAGE);
-
+    
     return voltages[idx];
 }

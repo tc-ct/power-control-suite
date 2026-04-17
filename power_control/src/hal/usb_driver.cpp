@@ -18,12 +18,15 @@
  *
  * FLYINGCHIP RESERVES ALL RIGHTS NOT EXPRESSLY GRANTED TO YOU HEREUNDER.
  */
+
+#include "proto_pkg.h"
 #include "usb_driver.h"
 #include "log.h"
 #include <hidapi.h>
 #include <cstring>
 #include <thread>
 #include <chrono>
+#include <cstdlib>
 
 std::vector<USBDeviceInfo> USBDriver::queryDevices(uint16_t vid, uint16_t pid) {
     std::vector<USBDeviceInfo> devices;
@@ -131,7 +134,7 @@ bool USBDriver::send(const uint8_t* data, size_t length) {
         LOG_ERROR("hid_write failed: %ls", err);
         return false;
     }
-    LOG_INFO("Sent %zu bytes", length);
+  //  LOG_INFO("Sent %zu bytes", length);
     return true;
 }
 
@@ -144,20 +147,27 @@ void USBDriver::setReceiveCallback(ReceiveCallback cb) {
 }
 
 void USBDriver::receiveLoop() {
-    uint8_t buffer[128];
+    uint8_t buffer[USB_REPORT_SIZE];
     while (running_) {
-        int bytes = hid_read(static_cast<hid_device*>(handle), buffer, sizeof(buffer));
+        int bytes = hid_read_timeout(static_cast<hid_device*>(handle), buffer, sizeof(buffer), USB_TIMEOUT_MS);
         if (bytes > 0 && callback_) {
             callback_(buffer, bytes);
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
 
 int USBDriver::receive(const uint8_t* data, size_t length) {
-    int bytes = hid_read(static_cast<hid_device*>(handle), const_cast<uint8_t*>(data), length);
+    if (!handle) {
+        return -1;
+    }
+    int bytes = hid_read_timeout(static_cast<hid_device*>(handle), const_cast<uint8_t*>(data), length, USB_TIMEOUT_MS);
+    if (bytes > 0) {
+        return bytes;  // 成功读取到数据
+    }
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    return bytes;
+    const wchar_t* err = hid_error(static_cast<hid_device*>(handle));
+    LOG_ERROR("hid_read failed: %ls", err ? err : L"unknown");
+    std::abort();
+    return -1;  // 错误
 }

@@ -38,6 +38,7 @@ void Protocol_PackPinConfig(PinConfigPacket* pkt, uint8_t port, uint16_t pin, ui
 void Protocol_PackSampleConfig(SampleConfigPacket* pkt, uint8_t state, uint8_t type);
 
 void SendPowerOn(USBDriver& dev, PowersConfig* cfg);
+void SendPowerOff(USBDriver& dev, PowersConfig* cfg);
 void SendVoltageConfig(USBDriver& dev, PowerSupplyConfig* cfg);
 void SendPinConfig(USBDriver& dev, int port, int pin, int level);
 void SendStartSample(USBDriver& dev, int type);

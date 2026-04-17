@@ -94,7 +94,8 @@ uint8_t bytes[DOWNLOAD_PACKET_SIZE];           // 整个数据包的字节视图
 typedef struct SampleConfigPacket{
 union {
 struct {
-    uint8_t  state;      // 开启关闭采样
+    uint8_t  cmd_id;      // 命令ID: CMD_START_SAMPLING
+    uint8_t  state;       // 开启关闭采样
     uint8_t  type;        // 采样类型
     uint8_t  volt_en;     // 是否采样电压
     uint8_t  current_en;  // 是否采样电流

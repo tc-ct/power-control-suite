@@ -7,7 +7,6 @@
 class PowerController {
 public:
 	PowerController(PowersConfig* configs);
-	void LogVoltageInfo(USBDriver& dev, int power_id, float target_voltage) const;
     void ConfigVoltages(USBDriver& dev) const;
     void EnablePower(USBDriver& dev, int power_id) const;
 
@@ -20,7 +19,7 @@ private:
 
 	PowersConfig* configs_;
 
-	static const int kDacMaxCode = 4096;
+	static const int kDacMaxCode = 4095;
     static const int kSampleCount = 10;
 	static const int kMaxCalibrationIterations = 5;
 };

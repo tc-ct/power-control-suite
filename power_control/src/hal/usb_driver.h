@@ -29,6 +29,8 @@
 #include <string>
 #include <vector>
 
+#define USB_TIMEOUT_MS 500
+
 // 接收回调函数类型
 using ReceiveCallback = std::function<void(const uint8_t* data, int length)>;
 

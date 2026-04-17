@@ -134,6 +134,74 @@ static bool parse_power_supplies(const nlohmann::json& supplies, PowerSupplyConf
     return true;
 }
 
+static bool parse_power_sample_object(const nlohmann::json& item, SampleConfig* cfg, int* out_sample_id) {
+    if (!cfg || !out_sample_id) {
+        return false;
+    }
+
+    memset(cfg, 0, sizeof(*cfg));
+
+    try {
+        if (!item.contains("id") || !item.contains("volt_en") || !item.contains("curr_en")) {
+            return false;
+        }
+
+        const int sample_id = item["id"];
+        if (sample_id < 0 || sample_id >= SAMPLE_DATA_COUNT) {
+            return false;
+        }
+
+        *out_sample_id = sample_id;
+        cfg->volt_en = item["volt_en"];
+        cfg->current_en = item["curr_en"];
+
+        if (item.contains("n") && item["n"].is_string()) {
+            const std::string name = item["n"];
+            strncpy(cfg->name, name.c_str(), sizeof(cfg->name) - 1);
+            cfg->name[sizeof(cfg->name) - 1] = '\0';
+        } else {
+            cfg->name[0] = '\0';
+        }
+
+        return true;
+    } catch (const nlohmann::json::exception&) {
+        return false;
+    }
+}
+
+static bool parse_power_samples(const nlohmann::json& samples, SampleConfig out_samples[SAMPLE_DATA_COUNT]) {
+    if (!samples.is_array() || samples.size() != SAMPLE_DATA_COUNT) {
+        return false;
+    }
+
+    std::array<SampleConfig, SAMPLE_DATA_COUNT> temp_configs{};
+    std::array<bool, SAMPLE_DATA_COUNT> loaded = {false};
+    int loaded_count = 0;
+
+    for (const auto& item : samples) {
+        int sample_id = -1;
+        SampleConfig cfg;
+        if (!parse_power_sample_object(item, &cfg, &sample_id)) {
+            return false;
+        }
+
+        if (loaded[sample_id]) {
+            return false;
+        }
+
+        temp_configs[sample_id] = cfg;
+        loaded[sample_id] = true;
+        loaded_count++;
+    }
+
+    if (loaded_count != SAMPLE_DATA_COUNT) {
+        return false;
+    }
+
+    memcpy(out_samples, temp_configs.data(), sizeof(temp_configs));
+    return true;
+}
+
 bool LoadPowerConfig(const char* file_path, PowersConfig* out_configs) {
     if (!file_path || !out_configs) {
         return false;
@@ -175,6 +243,12 @@ bool LoadPowerConfig(const char* file_path, PowersConfig* out_configs) {
 
         if (j.contains("power_supplies")) {
             if (!parse_power_supplies(j["power_supplies"], out_configs->supplies)) {
+                return false;
+            }
+        }
+
+        if (j.contains("power_samples")) {
+            if (!parse_power_samples(j["power_samples"], out_configs->sample_cfg)) {
                 return false;
             }
         }

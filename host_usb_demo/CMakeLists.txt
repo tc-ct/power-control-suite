@@ -18,16 +18,21 @@ find_package(hidapi REQUIRED)
 # 添加可执行文件
 add_executable(${PROJECT_NAME}
     main.cpp
-    power_control.cpp
-    stm32_comm.cpp
-    usb_driver.cpp
     log.cpp
-    file_parse.cpp
+    hal/file_parse.cpp
+    hal/power_control.cpp
+    hal/stm32_comm.cpp
+    hal/usb_driver.cpp
 )
 
 
 target_link_libraries(${PROJECT_NAME} PRIVATE hidapi::hidapi)
-target_include_directories(${PROJECT_NAME} PRIVATE ${HIDAPI_INCLUDE_DIRS} ./third_party)
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${HIDAPI_INCLUDE_DIRS}
+    ./third_party
+    ./hal
+)
 
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

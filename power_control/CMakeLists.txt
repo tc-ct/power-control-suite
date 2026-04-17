@@ -31,7 +31,7 @@ set(PROJECT_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/waveform_widget.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/waveform_recorder.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/log.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/file_parse.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/hal/file_parse.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hal/power_control.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hal/stm32_comm.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/hal/usb_driver.cpp
