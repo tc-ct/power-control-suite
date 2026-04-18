@@ -28,14 +28,12 @@
 #include "usbd_customhid_if.h"
 #include "usbd_desc.h"
 #include "usbd_composite_builder.h"
-#include "INA238.h"
-#include "INA260.h"
 #include "stm32h5xx_hal_gpio.h"
 #include <stdint.h>
 #include <stdio.h>
-#include "dac_driver.h"
-#include "proto_pkg.h"
 #include "usb_message_handler.h"
+#include "sample_handler.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,7 +56,7 @@
 SMBUS_HandleTypeDef hsmbus1;
 SMBUS_HandleTypeDef hsmbus2;
 
-I3C_HandleTypeDef hi3c2;
+// I3C_HandleTypeDef hi3c2;
 
 SPI_HandleTypeDef hspi1;
 DMA_HandleTypeDef handle_GPDMA1_Channel1;
@@ -80,7 +78,7 @@ static void MX_GPIO_Init(void);
 static void MX_GPDMA1_Init(void);
 static void MX_I2C2_SMBUS_Init(void);
 static void MX_I2C1_SMBUS_Init(void);
-static void MX_I3C2_Init(void);
+// static void MX_I3C2_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_USART1_UART_Init(void);
@@ -91,46 +89,16 @@ static void MX_USART1_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-DAC_HandleTypeDef hdac_dac[3]; // SS0 (PA4)
-
-/* I2C1上INA238设备数量 */
-#define I2C1_INA238_NUM 13
-/* I2C2上INA238设备数量 */
-#define I2C2_INA238_NUM 13
-
-/* 数据缓冲区 */
-float adc_values[27];
-
-/* 设备地址列表 */
-const uint8_t i2c1_dev_addrs[I2C1_INA238_NUM] = {0x40, 0x41, 0x42, 0x43, 0x44,
-                                                 0x45, 0x46, 0x47, 0x48, 0x49,
-                                                 0x4A, 0x4B, 0x4C};
-const uint8_t i2c2_dev_addrs[I2C2_INA238_NUM] = {0x40, 0x41, 0x42, 0x43, 0x45,
-                                                 0x46, 0x47, 0x48, 0x49, 0x4A,
-                                                 0x4B, 0x4C, 0x4D};
 //                   USB
-uint8_t CDC_EpAdd_Inst[3] = {CDC_IN_EP, CDC_OUT_EP, CDC_CMD_EP}; 	/* CDC Endpoint Addresses array */
+// uint8_t CDC_EpAdd_Inst[3] = {CDC_IN_EP, CDC_OUT_EP, CDC_CMD_EP}; 	/* CDC Endpoint Addresses array */
 // uint8_t HID_EpAdd_Inst = HID_EPIN_ADDR;								/* HID Endpoint Address array */
 uint8_t CustomHID_EpAdress[2] = {CUSTOM_HID_EPIN_ADDR, CUSTOM_HID_EPOUT_ADDR};								/* HID Endpoint Address array */
 USBD_HandleTypeDef hUsbDeviceFS;
-uint8_t hid_report_buffer[SAMPLE_REPORT_SIZE];
+// uint8_t hid_report_buffer[SAMPLE_REPORT_SIZE];
 uint8_t HID_InstID = 0, CDC_InstID = 0, CUSTOMHID_InstID = 0;
 volatile uint8_t current_sampling_enabled = 0;
 volatile uint8_t voltage_sampling_enabled = 0;
-
-void SendSampleReport(uint8_t type, float *values) {
-  SampleDataPacket_t *pkt = (SampleDataPacket_t *)hid_report_buffer;
-  memset(pkt, 0, sizeof(SAMPLE_REPORT_SIZE));
-  uint32_t timestamp = HAL_GetTick();
-
-  pkt->report_id = ADC_REPORT_ID;
-  pkt->type = type;
-  memcpy(&pkt->timestamp, &timestamp, sizeof(timestamp));
-  memcpy(&pkt->values, values, SAMPLE_DATA_COUNT * sizeof(float));
-
-  USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, (uint8_t *)pkt, SAMPLE_REPORT_SIZE);
-}
-
+volatile uint8_t sampling_enabled_once = 0;
 
 /* USER CODE END 0 */
 
@@ -168,46 +136,14 @@ int main(void)
   MX_GPDMA1_Init();
   MX_I2C2_SMBUS_Init();
   MX_I2C1_SMBUS_Init();
-  MX_I3C2_Init();
+  // MX_I3C2_Init();
   MX_SPI1_Init();
   MX_TIM1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-    // 初始化三个DAC设备
-  DAC_Init(&hdac_dac[0], DAC_TYPE_7568, GPIOA, GPIO_PIN_4, &hspi1);
-  DAC_Init(&hdac_dac[1], DAC_TYPE_7568, GPIOA, GPIO_PIN_3, &hspi1);
-  DAC_Init(&hdac_dac[2], DAC_TYPE_7563, GPIOA, GPIO_PIN_2, &hspi1);
 
-  /* 显式禁用内部参考，确保使用外部参考 */
-  DAC_DisableInternalRef(&hdac_dac[0]);
-  DAC_DisableInternalRef(&hdac_dac[1]);
-  DAC_DisableInternalRef(&hdac_dac[2]);
-
-  // INA260初始化
-  INA260_Init(&hsmbus2, INA260_DEV_ADDR);
-  // INA238初始化
-  for (uint8_t i = 0; i < I2C1_INA238_NUM; i++) {
-    //每个设备独立初始化
-    INA238_Init(&hsmbus1, i2c1_dev_addrs[i], R_SHUNT1, MAX_CURRENT1);
-  }
-  for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
-    //每个设备独立初始化 
-    INA238_Init(&hsmbus2, i2c2_dev_addrs[i], R_SHUNT2, MAX_CURRENT2);
-  }
-  //等待配置生效 
-  HAL_Delay(2);
-
-
-  for (uint8_t i = 0; i < 8; i++) {
-    //每个设备独立初始化 
-    DAC_SetVoltage(&hdac_dac[0], i, 0);
-    DAC_SetVoltage(&hdac_dac[1], i, 0);
-  }
-  DAC_SetVoltage(&hdac_dac[2], 0, 0);
-  DAC_SetVoltage(&hdac_dac[2], 1, 0);
-  //开启中断定时器
-  //HAL_TIM_Base_Start_IT(&htim1);
+  InitSampleDev();
 
 //                                           USB
   USBD_UsrLog("\r\n=== Welcome to stm32 custom-hid driver! ===");
@@ -246,8 +182,6 @@ int main(void)
 
   UsbMsg_Reset();
   USBD_Start(&hUsbDeviceFS);
-//HAL_GPIO_WritePin(GPIOC,GPIO_PIN_12,GPIO_PIN_SET);
-//DAC_SetVoltage(&hdac_dac[1], DAC7568_CH_C, 200);
 
   /* USER CODE END 2 */
 
@@ -258,40 +192,26 @@ int main(void)
     while (UsbMsg_ProcessNext()) {
     }
 
+    // if(sampling_enabled_once) {
+    //   ClearSampleData();
+    //   // SampleCurrentData();
+    //   SampleVoltageData();
+    //   SendSampleReport();
+    //   USBD_ErrLog("Start sampling once ");
+    //   sampling_enabled_once = 0;
+    // }
+
+    ClearSampleData();
+
     if (current_sampling_enabled) {
-      // 读取 I2C1
-      memset(adc_values, 0, sizeof(adc_values));
-      for (uint8_t i = 0; i < I2C1_INA238_NUM; i++) {
-        INA238_ReadData(&hsmbus1, i2c1_dev_addrs[i], &adc_values[i],
-                        INA238_DATA_CURRENT,MAX_CURRENT1);
-      }
-      // 读取 I2C2
-      for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
-        INA238_ReadData(&hsmbus2, i2c2_dev_addrs[i], &adc_values[I2C1_INA238_NUM+i],
-                        INA238_DATA_CURRENT,MAX_CURRENT2);
-      }
-      INA260_ReadData(&hsmbus2, INA260_DEV_ADDR, &adc_values[I2C1_INA238_NUM+I2C2_INA238_NUM],
-                      INA260_DATA_CURRENT);
-      // HAL_Delay(2);
-      SendSampleReport(I2C_DATA_CURRENT, adc_values);
+      SampleCurrentData();
+    }
+    if (voltage_sampling_enabled) {
+      SampleVoltageData();
     }
 
-    if (voltage_sampling_enabled) {
-      // 读取 I2C1
-      memset(adc_values, 0, sizeof(adc_values));
-      for (uint8_t i = 0; i < I2C1_INA238_NUM; i++) {
-        INA238_ReadData(&hsmbus1, i2c1_dev_addrs[i], &adc_values[i],
-                        INA238_DATA_VBUS,MAX_CURRENT1);
-      }
-      // 读取 I2C2
-      for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
-        INA238_ReadData(&hsmbus2, i2c2_dev_addrs[i], &adc_values[I2C1_INA238_NUM+i],
-                        INA238_DATA_VBUS,MAX_CURRENT2);
-      }
-      INA260_ReadData(&hsmbus2, INA260_DEV_ADDR, &adc_values[I2C1_INA238_NUM+I2C2_INA238_NUM],
-                      INA260_DATA_BUS_VOLTAGE);
-      // HAL_Delay(2);
-      SendSampleReport(I2C_DATA_VBUS, adc_values);
+    if(current_sampling_enabled || voltage_sampling_enabled) {
+      SendSampleReport();
     }
 
     /* USER CODE END WHILE */
@@ -494,69 +414,69 @@ static void MX_I2C2_SMBUS_Init(void)
 
 }
 
-/**
-  * @brief I3C2 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_I3C2_Init(void)
-{
+// /**
+//   * @brief I3C2 Initialization Function
+//   * @param None
+//   * @retval None
+//   */
+// static void MX_I3C2_Init(void)
+// {
 
-  /* USER CODE BEGIN I3C2_Init 0 */
+//   /* USER CODE BEGIN I3C2_Init 0 */
 
-  /* USER CODE END I3C2_Init 0 */
+//   /* USER CODE END I3C2_Init 0 */
 
-  I3C_FifoConfTypeDef sFifoConfig = {0};
-  I3C_CtrlConfTypeDef sCtrlConfig = {0};
+//   I3C_FifoConfTypeDef sFifoConfig = {0};
+//   I3C_CtrlConfTypeDef sCtrlConfig = {0};
 
-  /* USER CODE BEGIN I3C2_Init 1 */
+//   /* USER CODE BEGIN I3C2_Init 1 */
 
-  /* USER CODE END I3C2_Init 1 */
-  hi3c2.Instance = I3C2;
-  hi3c2.Mode = HAL_I3C_MODE_CONTROLLER;
-  hi3c2.Init.CtrlBusCharacteristic.SDAHoldTime = HAL_I3C_SDA_HOLD_TIME_0_5;
-  hi3c2.Init.CtrlBusCharacteristic.WaitTime = HAL_I3C_OWN_ACTIVITY_STATE_0;
-  hi3c2.Init.CtrlBusCharacteristic.SCLPPLowDuration = 0x1e;
-  hi3c2.Init.CtrlBusCharacteristic.SCLI3CHighDuration = 0x13;
-  hi3c2.Init.CtrlBusCharacteristic.SCLODLowDuration = 0x1e;
-  hi3c2.Init.CtrlBusCharacteristic.SCLI2CHighDuration = 0x00;
-  hi3c2.Init.CtrlBusCharacteristic.BusFreeDuration = 0x0d;
-  hi3c2.Init.CtrlBusCharacteristic.BusIdleDuration = 0x3e;
-  if (HAL_I3C_Init(&hi3c2) != HAL_OK)
-  {
-    Error_Handler();
-  }
+//   /* USER CODE END I3C2_Init 1 */
+//   hi3c2.Instance = I3C2;
+//   hi3c2.Mode = HAL_I3C_MODE_CONTROLLER;
+//   hi3c2.Init.CtrlBusCharacteristic.SDAHoldTime = HAL_I3C_SDA_HOLD_TIME_0_5;
+//   hi3c2.Init.CtrlBusCharacteristic.WaitTime = HAL_I3C_OWN_ACTIVITY_STATE_0;
+//   hi3c2.Init.CtrlBusCharacteristic.SCLPPLowDuration = 0x1e;
+//   hi3c2.Init.CtrlBusCharacteristic.SCLI3CHighDuration = 0x13;
+//   hi3c2.Init.CtrlBusCharacteristic.SCLODLowDuration = 0x1e;
+//   hi3c2.Init.CtrlBusCharacteristic.SCLI2CHighDuration = 0x00;
+//   hi3c2.Init.CtrlBusCharacteristic.BusFreeDuration = 0x0d;
+//   hi3c2.Init.CtrlBusCharacteristic.BusIdleDuration = 0x3e;
+//   if (HAL_I3C_Init(&hi3c2) != HAL_OK)
+//   {
+//     Error_Handler();
+//   }
 
-  /** Configure FIFO
-  */
-  sFifoConfig.RxFifoThreshold = HAL_I3C_RXFIFO_THRESHOLD_1_4;
-  sFifoConfig.TxFifoThreshold = HAL_I3C_TXFIFO_THRESHOLD_1_4;
-  sFifoConfig.ControlFifo = HAL_I3C_CONTROLFIFO_DISABLE;
-  sFifoConfig.StatusFifo = HAL_I3C_STATUSFIFO_DISABLE;
-  if (HAL_I3C_SetConfigFifo(&hi3c2, &sFifoConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
+//   /** Configure FIFO
+//   */
+//   sFifoConfig.RxFifoThreshold = HAL_I3C_RXFIFO_THRESHOLD_1_4;
+//   sFifoConfig.TxFifoThreshold = HAL_I3C_TXFIFO_THRESHOLD_1_4;
+//   sFifoConfig.ControlFifo = HAL_I3C_CONTROLFIFO_DISABLE;
+//   sFifoConfig.StatusFifo = HAL_I3C_STATUSFIFO_DISABLE;
+//   if (HAL_I3C_SetConfigFifo(&hi3c2, &sFifoConfig) != HAL_OK)
+//   {
+//     Error_Handler();
+//   }
 
-  /** Configure controller
-  */
-  sCtrlConfig.DynamicAddr = 0;
-  sCtrlConfig.StallTime = 0x00;
-  sCtrlConfig.HotJoinAllowed = DISABLE;
-  sCtrlConfig.ACKStallState = DISABLE;
-  sCtrlConfig.CCCStallState = DISABLE;
-  sCtrlConfig.TxStallState = DISABLE;
-  sCtrlConfig.RxStallState = DISABLE;
-  sCtrlConfig.HighKeeperSDA = DISABLE;
-  if (HAL_I3C_Ctrl_Config(&hi3c2, &sCtrlConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN I3C2_Init 2 */
+//   /** Configure controller
+//   */
+//   sCtrlConfig.DynamicAddr = 0;
+//   sCtrlConfig.StallTime = 0x00;
+//   sCtrlConfig.HotJoinAllowed = DISABLE;
+//   sCtrlConfig.ACKStallState = DISABLE;
+//   sCtrlConfig.CCCStallState = DISABLE;
+//   sCtrlConfig.TxStallState = DISABLE;
+//   sCtrlConfig.RxStallState = DISABLE;
+//   sCtrlConfig.HighKeeperSDA = DISABLE;
+//   if (HAL_I3C_Ctrl_Config(&hi3c2, &sCtrlConfig) != HAL_OK)
+//   {
+//     Error_Handler();
+//   }
+//   /* USER CODE BEGIN I3C2_Init 2 */
 
-  /* USER CODE END I3C2_Init 2 */
+//   /* USER CODE END I3C2_Init 2 */
 
-}
+// }
 
 /**
   * @brief SPI1 Initialization Function

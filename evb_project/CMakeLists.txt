@@ -31,6 +31,8 @@ message("Build type: " ${CMAKE_BUILD_TYPE})
 # Enable CMake support for ASM and C languages
 enable_language(C ASM)
 
+set(HAL_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../common/hal")
+
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME}
     Core/Src/usbd_customhid_if.c
@@ -39,6 +41,7 @@ add_executable(${CMAKE_PROJECT_NAME}
     Core/Src/INA238.c
     Core/Src/dac_driver.c
     Core/Src/user_callback.c     
+    Core/Src/sample_handler.c
     Core/Src/usb_message_handler.c
 
     USB/Core/Src/usbd_conf.c
@@ -71,6 +74,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     USB/Core/Inc
     USB/Class/CustomHID/Inc
     USB/Class/CompositeBuilder/Inc
+    ${HAL_SRC_DIR}
 )
 
 # Add project symbols (macros)

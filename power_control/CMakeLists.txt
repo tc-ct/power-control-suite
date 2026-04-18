@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 追加路径（保留原有内容）
 list(APPEND CMAKE_PREFIX_PATH "./third_party/")
 
+set(HAL_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../common/hal")
 
 # 查找hidapi库
 find_package(hidapi REQUIRED)
@@ -31,16 +32,16 @@ set(PROJECT_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/waveform_widget.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/waveform_recorder.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/log.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hal/file_parse.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hal/power_control.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hal/stm32_comm.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hal/usb_driver.cpp
+    ${HAL_SRC_DIR}/file_parse.cpp
+    ${HAL_SRC_DIR}/power_control.cpp
+    ${HAL_SRC_DIR}/stm32_comm.cpp
+    ${HAL_SRC_DIR}/usb_driver.cpp
 )
 
 set(PROJECT_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hal
+    ${HAL_SRC_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party
     ${HIDAPI_INCLUDE_DIRS}
 )

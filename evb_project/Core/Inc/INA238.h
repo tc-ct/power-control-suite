@@ -25,9 +25,6 @@
 
 #include "stm32h5xx_hal.h"
 
-/* -------------------------- 私有定义 -------------------------- */
-#define INA238_TIMEOUT      100     /* 传输超时时间 (ms) */
-#define INA238_CONV_TIMEOUT 100      /* 转换等待超时 (ms) */
 
 /* 寄存器地址 (与数据手册一致) */
 #define INA238_REG_CONFIG       0x00
@@ -42,16 +39,6 @@
 #define INA238_REG_MANUFACTURER 0x3E
 #define INA238_REG_DEVICE_ID    0x3F
 
-/* 默认配置 (连续测量分流+总线+温度，转换时间1052μs，不平均) */
-#define INA238_ADC_CONFIG_VAL   0xB344    //0xBC85
-/* ADCRANGE = 0 (±163.84mV) */
-#define INA238_CONFIG_VAL       0x0010    //10000
-
-/* 分流电阻和最大电流 (根据实际硬件修改) */
-#define R_SHUNT1      0.015f   /* 15mΩ */
-#define R_SHUNT2      1.0f   /* 1mΩ */
-#define MAX_CURRENT1  2.7306666f    /* 2.73A */
-#define MAX_CURRENT2  0.04096f    /* 0.273A */
 
 /* INA238 数据结构体 */
 typedef struct {
@@ -82,6 +69,8 @@ HAL_StatusTypeDef INA238_Init(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
                               float r_shunt, float max_current);
 HAL_StatusTypeDef INA238_ReadData(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
                                   float *value,INA238_Data_Type data_type,float max_current);
+HAL_StatusTypeDef INA238_ReadRawData(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
+                                  uint16_t* reg16, INA238_Data_Type data_type,float max_current);
 HAL_StatusTypeDef INA238_ReadAllData(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
                                      INA238_DataTypeDef *data, float current_lsb);
 void INA238_ReadBusDevices(SMBUS_HandleTypeDef *hsmbus, const uint8_t *dev_addrs,

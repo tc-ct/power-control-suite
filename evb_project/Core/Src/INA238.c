@@ -25,8 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "user_callback.h"
-
-
+#include "adc_def.h"
 
 
 /* I2C1 / I2C2 句柄 (由 CubeMX 生成，此处仅为 extern 声明) */
@@ -190,11 +189,51 @@ HAL_StatusTypeDef INA238_Init(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
     if (status != HAL_OK) return status;
 
     /* 3. 计算 SHUNT_CAL */
-    current_lsb = max_current / 32768.0f;               /* CURRENT_LSB = 最大电流 / 2^15 */
+    current_lsb = INA238_CURRENT_LSB(max_current);       /* CURRENT_LSB = 最大电流 / 2^15 */
     shunt_cal = (uint16_t)(819.2e6f * current_lsb * r_shunt * 4);
     status = INA238_WriteReg_IT(hsmbus, dev_addr, INA238_REG_SHUNT_CAL, shunt_cal);
     return status;
 }
+
+/**
+ * @brief 读取 INA238 指定类型的测量数据
+ * @param hsmbus     SMBUS 句柄
+ * @param dev_addr   7位设备地址
+ * @param data_type  要读取的数据类型
+ * @param value      输出值指针
+ * @return HAL_OK / HAL_ERROR / HAL_TIMEOUT
+ */
+HAL_StatusTypeDef INA238_ReadRawData(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
+                                  uint16_t *reg16, INA238_Data_Type data_type,float max_current)
+{
+    HAL_StatusTypeDef ret;
+
+    /* 等待转换完成（确保数据是最新的）*/
+    if (INA238_WaitForConversion(hsmbus, dev_addr) != HAL_OK) {
+        return HAL_TIMEOUT;
+    }
+
+    switch (data_type)
+    {
+        case INA238_DATA_VSHUNT:
+            ret = INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_VSHUNT, reg16);
+            break;
+
+        case INA238_DATA_VBUS:
+            ret = INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_VBUS, reg16);
+            break;
+
+        case INA238_DATA_CURRENT:
+            ret = INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_CURRENT, reg16);
+            break;
+        default:
+            ret = HAL_ERROR;
+            break;
+    }
+    return ret;
+
+}
+
 
 /**
  * @brief 读取 INA238 指定类型的测量数据
@@ -223,35 +262,35 @@ HAL_StatusTypeDef INA238_ReadData(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
         case INA238_DATA_VSHUNT:
             ret = INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_VSHUNT, &reg16);
             if (ret == HAL_OK) {
-                *value = (int16_t)reg16 * 0.005f;   /* 5μV/LSB -> mV */
+                *value = (int16_t)reg16 * INA238_VSHUNT_LSB_MV;   /* 5μV/LSB -> mV */
             }
             break;
 
         case INA238_DATA_VBUS:
             ret = INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_VBUS, &reg16);
             if (ret == HAL_OK) {
-                *value = reg16 * 0.003125f;         /* 3.125mV/LSB -> V */
+                *value = reg16 * INA238_VBUS_LSB_V;         /* 3.125mV/LSB -> V */
             }
             break;
 
         case INA238_DATA_CURRENT:
             ret = INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_CURRENT, &reg16);
             if (ret == HAL_OK) {
-                *value = (int16_t)reg16 * max_current / 32768.0f;
+                *value = (int16_t)reg16 * INA238_CURRENT_LSB(max_current);
             }
             break;
 
         case INA238_DATA_POWER:
             ret = INA238_ReadReg24_IT(hsmbus, dev_addr, INA238_REG_POWER, &reg24);
             if (ret == HAL_OK) {
-                *value = reg24 * max_current / 32768.0f * 0.2f;
+                *value = reg24 * INA238_CURRENT_LSB(max_current) * INA238_POWER_LSB_MULTIPLIER;
             }
             break;
 
         case INA238_DATA_TEMP:
             ret = INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_DIETEMP, &reg16);
             if (ret == HAL_OK) {
-                *value = (int16_t)(reg16 >> 4) * 0.125f;   /* 125m°C/LSB -> ℃ */
+                *value = (int16_t)(reg16 >> 4) * INA238_TEMP_LSB_C;   /* 125m°C/LSB -> ℃ */
             }
             break;
 
@@ -300,11 +339,11 @@ HAL_StatusTypeDef INA238_ReadAllData(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_ad
 
     /* 1. 分流电压 (mV) */
     if (INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_VSHUNT, &reg16) != HAL_OK) goto err;
-    data->vshunt_mv = (int16_t)reg16 * 0.005f;   /* 5μV/LSB -> mV */
+    data->vshunt_mv = (int16_t)reg16 * INA238_VSHUNT_LSB_MV;   /* 5μV/LSB -> mV */
 
     /* 2. 总线电压 (V) */
     if (INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_VBUS, &reg16) != HAL_OK) goto err;
-    data->vbus_v = reg16 * 0.003125f;            /* 3.125mV/LSB -> V */
+    data->vbus_v = reg16 * INA238_VBUS_LSB_V;            /* 3.125mV/LSB -> V */
 
     /* 3. 电流 (A) */
     if (INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_CURRENT, &reg16) != HAL_OK) goto err;
@@ -312,11 +351,11 @@ HAL_StatusTypeDef INA238_ReadAllData(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_ad
 
     /* 4. 功率 (W) */
     if (INA238_ReadReg24_IT(hsmbus, dev_addr, INA238_REG_POWER, &reg24) != HAL_OK) goto err;
-    data->power_w = reg24 * current_lsb * 0.2f;
+    data->power_w = reg24 * current_lsb * INA238_POWER_LSB_MULTIPLIER;
 
     /* 5. 温度 (℃) */
     if (INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_DIETEMP, &reg16) != HAL_OK) goto err;
-    data->temp_c = (int16_t)(reg16 >> 4) * 0.125f; /* 125m°C/LSB */
+    data->temp_c = (int16_t)(reg16 >> 4) * INA238_TEMP_LSB_C; /* 125m°C/LSB */
 
     /* 6. 厂商ID / 设备ID (通信验证) */
     if (INA238_ReadReg16_IT(hsmbus, dev_addr, INA238_REG_MANUFACTURER, &data->mfr_id) != HAL_OK) goto err;
@@ -341,7 +380,7 @@ err:
  */
 void INA238_ReadBusDevices(SMBUS_HandleTypeDef *hsmbus, const uint8_t *dev_addrs, uint8_t dev_num,
                            INA238_DataTypeDef *all_data, float r_shunt, float max_current) {
-    float current_lsb = max_current / 32768.0f;
+    float current_lsb = INA238_CURRENT_LSB(max_current);
 
     for (uint8_t i = 0; i < dev_num; i++) {       
         /* 读取数据 */

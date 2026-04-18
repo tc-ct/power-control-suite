@@ -20,8 +20,8 @@
  *
  * FlyingChip RESERVES ALL RIGHTS NOT EXPRESSLY GRANTED TO YOU HEREUNDER.
  */
-#ifndef USB_MESSAGE_HANDLER_H
-#define USB_MESSAGE_HANDLER_H
+#ifndef SAMPLE_HANDLER_H
+#define SAMPLE_HANDLER_H
 
 #include <stdint.h>
 
@@ -29,13 +29,14 @@
 extern "C" {
 #endif
 
-void UsbMsg_Reset(void);
-uint8_t UsbMsg_Enqueue(uint8_t event_idx, uint8_t cmd_id, const uint8_t *data, uint16_t len);
-uint8_t UsbMsg_ProcessNext(void);
-uint32_t UsbMsg_GetDroppedCount(void);
+void InitSampleDev();
+void ClearSampleData();
+void SendSampleReport();
+void SampleCurrentData();
+void SampleVoltageData();
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* USB_MESSAGE_HANDLER_H */
+#endif /* SAMPLE_HANDLER_H */

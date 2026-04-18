@@ -17,9 +17,9 @@ class WaveformWidget : public QWidget
 public:
     explicit WaveformWidget(QWidget* parent = nullptr);
 
-    void updateFromPacket(const SampleDataPacket& packet, const PowersConfig* config);
-    void addVoltageSamples(uint32_t timestampMs, const uint16_t* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled);
-    void addCurrentSamples(uint32_t timestampMs, const uint16_t* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled);
+    void updateFromPacket(const SampleDataPacketTF& packet, const PowersConfig* config);
+    void addVoltageSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled);
+    void addCurrentSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled);
     void clearSamples();
 
 protected:
@@ -31,7 +31,7 @@ private:
         std::array<QVector<QPointF>, SAMPLE_DATA_COUNT>& series,
         std::array<bool, SAMPLE_DATA_COUNT>& activeFlags,
         uint32_t timestampMs,
-        const uint16_t* values,
+        const float* values,
         const std::array<bool, SAMPLE_DATA_COUNT>& enabled);
     void syncExpandedView();
     void openExpandedView();

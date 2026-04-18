@@ -10,6 +10,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 cmake_policy(SET CMP0074 NEW)          # 启用新行为：使用<PackageName>_ROOT
 
+set(HAL_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../common/hal")
+
 # 查找hidapi库
 find_package(hidapi REQUIRED)
 
@@ -19,10 +21,10 @@ find_package(hidapi REQUIRED)
 add_executable(${PROJECT_NAME}
     main.cpp
     log.cpp
-    hal/file_parse.cpp
-    hal/power_control.cpp
-    hal/stm32_comm.cpp
-    hal/usb_driver.cpp
+    ${HAL_SRC_DIR}/file_parse.cpp
+    ${HAL_SRC_DIR}/power_control.cpp
+    ${HAL_SRC_DIR}/stm32_comm.cpp
+    ${HAL_SRC_DIR}/usb_driver.cpp
 )
 
 
@@ -31,7 +33,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${HIDAPI_INCLUDE_DIRS}
     ./third_party
-    ./hal
+    ${HAL_SRC_DIR}
 )
 
 

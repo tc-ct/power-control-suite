@@ -51,7 +51,7 @@ private:
     void addConfigPathOption(const QString& filePath);
     void refreshSampleTable();
     void onDataReceived(const SampleDataPacket& packet);
-    void updateSampleValuesFromPacket(const SampleDataPacket& packet);
+    void updateSampleValuesFromPacket(const SampleDataPacketTF& packet);
     void appendLog(const QString& message);
     void refreshDeviceList();
     void updateConnectionState();
@@ -63,8 +63,8 @@ private:
     Ui::MainWindow *ui;
     std::unique_ptr<DeviceSessionService> session_service_;
     std::unique_ptr<ConfigService> config_service_;
-    std::array<uint16_t, SAMPLE_DATA_COUNT> sampled_volt_{};
-    std::array<uint16_t, SAMPLE_DATA_COUNT> sampled_curr_{};
+    std::array<float, SAMPLE_DATA_COUNT> sampled_volt_{};
+    std::array<float, SAMPLE_DATA_COUNT> sampled_curr_{};
     std::array<bool, SAMPLE_DATA_COUNT> has_sampled_volt_{};
     std::array<bool, SAMPLE_DATA_COUNT> has_sampled_curr_{};
     bool refreshing_sample_table_ = false;

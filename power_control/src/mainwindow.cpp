@@ -31,6 +31,7 @@
 #include "config_service.h"
 #include "device_session_service.h"
 #include "debug_window.h"
+#include "stm32_comm.h"
 #include "waveform_recorder.h"
 #include "waveform_widget.h"
 
@@ -353,25 +354,36 @@ void MainWindow::onSampleTableItemChanged(QTableWidgetItem* item) {
 }
 
 void MainWindow::onDataReceived(const SampleDataPacket& packet) {
+    SampleDataPacketTF pk_tf;
+    Protocol_ParseSampleData(reinterpret_cast<const uint8_t*>(&packet), sizeof(packet), &pk_tf);
+
     if (waveform_recorder_) {
         waveform_recorder_->appendPacket(packet);
     }
-    updateSampleValuesFromPacket(packet);
+
+    updateSampleValuesFromPacket(pk_tf);
 }
 
-void MainWindow::updateSampleValuesFromPacket(const SampleDataPacket& packet) {
-    if (packet.type == I2C_DATA_VBUS) {
-        for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-            sampled_volt_[i] = packet.channel_volt_mv[i];
-            has_sampled_volt_[i] = true;
-        }
-    } else if (packet.type == I2C_DATA_CURRENT) {
-        for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-            sampled_curr_[i] = packet.channel_curr_ma[i];
-            has_sampled_curr_[i] = true;
-        }
-    } else {
-        return;
+void MainWindow::updateSampleValuesFromPacket(const SampleDataPacketTF& packet) {
+    // if (packet.type == I2C_DATA_VBUS) {
+    //     for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
+    //         // sampled_volt_[i] = packet.channel_volt_mv[i];
+    //         has_sampled_volt_[i] = true;
+    //     }
+    // } else if (packet.type == I2C_DATA_CURRENT) {
+    //     for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
+    //         // sampled_curr_[i] = packet.channel_curr_ma[i];
+    //         has_sampled_curr_[i] = true;
+    //     }
+    // } else {
+    //     return;
+    // }
+
+    for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
+        // sampled_volt_[i] = packet.channel_volt_mv[i];
+        // sampled_curr_[i] = packet.channel_curr_ma[i];
+        has_sampled_volt_[i] = true;
+        has_sampled_curr_[i] = true;
     }
 
     if (waveform_widget_) {
@@ -382,10 +394,10 @@ void MainWindow::updateSampleValuesFromPacket(const SampleDataPacket& packet) {
     const QSignalBlocker blocker(ui->sampleTableWidget);
     for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
         if (QTableWidgetItem* voltItem = ui->sampleTableWidget->item(i, 3)) {
-            voltItem->setText(has_sampled_volt_[i] ? QString::number(sampled_volt_[i]) : QStringLiteral("--"));
+            voltItem->setText(has_sampled_volt_[i] ? QString::number(packet.channel_volt_mv[i]) : QStringLiteral("--"));
         }
         if (QTableWidgetItem* currItem = ui->sampleTableWidget->item(i, 5)) {
-            currItem->setText(has_sampled_curr_[i] ? QString::number(sampled_curr_[i]) : QStringLiteral("--"));
+            currItem->setText(has_sampled_curr_[i] ? QString::number(packet.channel_curr_ma[i]) : QStringLiteral("--"));
         }
     }
 }

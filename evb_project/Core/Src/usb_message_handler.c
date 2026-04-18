@@ -1,3 +1,25 @@
+
+/*
+ * Copyright (C) 2025- FlyingChip Technology (Shanghai) Co., Ltd.
+ * All rights reserved.
+ *
+ * This file contains information that is proprietary to FlyingChip.
+ * The holder of this file shall treat all information contained herein as
+ * confidential, use the information only for its intended purpose, illustrate
+ * the copyright of FlyingChip and not duplicate, disclose, modificate or
+ * disseminate any of this information in any manner unless FlyingChip
+ * has otherwise provided express written permission.
+ * Use of the file may require a license of intellectual property from FlyingChip.
+ * This file conveys no express or implied licenses to any intellectual property
+ * rights belonging to FlyingChip.
+ *
+ * ALL INFORMATION CONTAINED IN THIS FILE IS FURNISHED "AS IS".
+ * FlyingChip DISCLAIMS ANY AND ALL TYPES OF WARRANTIES, EXPRESS, IMPLIED, OR
+ * STATUTORY, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY OR FITNESS FOR
+ * A PARTICULAR PURPOSE WITH RESPECT TO THE INFORMATION PROVIDE HEREUNDER.
+ *
+ * FlyingChip RESERVES ALL RIGHTS NOT EXPRESSLY GRANTED TO YOU HEREUNDER.
+ */
 #include "usb_message_handler.h"
 
 #include "main.h"
@@ -6,12 +28,14 @@
 #include "dac_driver.h"
 #include "usbd_conf.h"
 #include "usbd_customhid_if.h"
+#include "sample_handler.h"
 
 #include <stdint.h>
 #include <string.h>
 
 extern volatile uint8_t current_sampling_enabled;
 extern volatile uint8_t voltage_sampling_enabled;
+extern volatile uint8_t sampling_enabled_once;
 extern DAC_HandleTypeDef hdac_dac[3];
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
@@ -184,6 +208,13 @@ static void HandleStartSampling(const uint8_t *payload)
   }
 }
 
+static void HandleSamplingOnce(const uint8_t *payload)
+{
+  // const SampleConfigPacket_t *sample = (const SampleConfigPacket_t *)payload;
+  USBD_DbgLog("Start sampling once \r\n");
+  sampling_enabled_once = 1;
+}
+
 static void DispatchMessage(const UsbMessage_t *msg)
 {
   switch (msg->cmd_id) {
@@ -201,6 +232,9 @@ static void DispatchMessage(const UsbMessage_t *msg)
     break;
   case CMD_START_SAMPLING:
     HandleStartSampling(msg->payload);
+    break;
+  case CMD_SAMPLING_ONCE:
+    HandleSamplingOnce(msg->payload);
     break;
   default:
     break;

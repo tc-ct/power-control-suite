@@ -37,13 +37,6 @@
 #define INA260_REG_MANUFACTURER_ID 0xFE
 #define INA260_REG_DIE_ID          0xFF
 
-/* 默认配置值 (连续测量电流+总线电压, 转换时间1.1ms, 平均1次) */
-#define INA260_CONFIG_DEFAULT      0x6887    //6905  6B47
-
-/* 固定LSB值 (直接由硬件决定) */
-#define INA260_CURRENT_LSB         0.00125f   /* 1.25 mA */
-#define INA260_BUSVOLTAGE_LSB      0.00125f   /* 1.25 mV */
-#define INA260_POWER_LSB           0.010f     /* 10 mW */
 
 /* 数据结构体 */
 typedef struct {

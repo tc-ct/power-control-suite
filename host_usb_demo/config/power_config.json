@@ -20,8 +20,8 @@
         { "id": 5, "n": "AVDD_PLL_AO+",       "delay_ms": 0 },
         { "id": 4, "n": "VCC_1V8_MCU",        "delay_ms": 0 },
         { "id": 3, "n": "VCCA_1V8_MAIN",      "delay_ms": 0 },
-        { "id": 2, "n": "VDDQL_DDR+",         "delay_ms": 800 },
-        { "id": 1, "n": "VDDQ_DDR+",          "delay_ms": 600 }
+        { "id": 2, "n": "VDDQL_DDR+",         "delay_ms": 8 },
+        { "id": 1, "n": "VDDQ_DDR+",          "delay_ms": 6 }
     ],
     
     "power_supplies": [

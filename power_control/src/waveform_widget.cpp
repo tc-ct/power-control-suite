@@ -18,37 +18,34 @@ WaveformWidget::WaveformWidget(QWidget* parent)
     setAutoFillBackground(false);
 }
 
-void WaveformWidget::updateFromPacket(const SampleDataPacket& packet, const PowersConfig* config)
+void WaveformWidget::updateFromPacket(const SampleDataPacketTF& packet, const PowersConfig* config)
 {
     std::array<bool, SAMPLE_DATA_COUNT> voltageEnabled{};
     std::array<bool, SAMPLE_DATA_COUNT> currentEnabled{};
 
-    if (config) {
-        for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-            voltageEnabled[i] = config->sample_cfg[i].volt_en;
-            currentEnabled[i] = config->sample_cfg[i].current_en;
-        }
-    } else {
+    if (config == nullptr) {
         return;
     }
-
-    if (packet.type == I2C_DATA_VBUS) {
-        addVoltageSamples(packet.timestamp, packet.channel_volt_mv, voltageEnabled);
+    for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
+        voltageEnabled[i] = config->sample_cfg[i].volt_en;
+        currentEnabled[i] = config->sample_cfg[i].current_en;
     }
-    if (packet.type == I2C_DATA_CURRENT) {
-        addCurrentSamples(packet.timestamp, packet.channel_curr_ma, currentEnabled);
-    }
+    // addVoltageSamples(packet.timestamp, packet.channel_volt_mv, voltageEnabled);
+    // addCurrentSamples(packet.timestamp, packet.channel_curr_ma, currentEnabled);
+
+    appendSamples(voltage_series_, voltage_enabled_, packet.timestamp, packet.channel_volt_mv, voltageEnabled);
+    appendSamples(current_series_, current_enabled_, packet.timestamp, packet.channel_curr_ma, currentEnabled);
 }
 
-void WaveformWidget::addVoltageSamples(uint32_t timestampMs, const uint16_t* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled)
-{
-    appendSamples(voltage_series_, voltage_enabled_, timestampMs, values, enabled);
-}
+// void WaveformWidget::addVoltageSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled)
+// {
+//     appendSamples(voltage_series_, voltage_enabled_, timestampMs, values, enabled);
+// }
 
-void WaveformWidget::addCurrentSamples(uint32_t timestampMs, const uint16_t* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled)
-{
-    appendSamples(current_series_, current_enabled_, timestampMs, values, enabled);
-}
+// void WaveformWidget::addCurrentSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled)
+// {
+//     appendSamples(current_series_, current_enabled_, timestampMs, values, enabled);
+// }
 
 void WaveformWidget::clearSamples()
 {
@@ -68,10 +65,10 @@ void WaveformWidget::appendSamples(
     std::array<QVector<QPointF>, SAMPLE_DATA_COUNT>& series,
     std::array<bool, SAMPLE_DATA_COUNT>& activeFlags,
     uint32_t timestampMs,
-    const uint16_t* values,
+    const float* values,
     const std::array<bool, SAMPLE_DATA_COUNT>& enabled)
 {
-    if (!values) {
+    if (values == nullptr) {
         return;
     }
 

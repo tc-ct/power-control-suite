@@ -30,6 +30,7 @@
 #include "file_parse.h"
 #include "stm32_comm.h"
 #include "power_control.h"
+#include "proto_pkg.h"
 
 // 设备 VID/PID
 constexpr uint16_t STM32_VID = 0x0483;
@@ -37,9 +38,9 @@ constexpr uint16_t STM32_PID = 0x5750;  // 根据实际修改
 
 // 接收数据回调函数
 void onDataReceived(const uint8_t* data, int length) {
-    if (length >= sizeof(SampleDataPacket)) {
-        SampleDataPacket pkt;
-        Protocol_ParseSampleData(data, length, &pkt);
+    if (length >= USB_REPORT_SIZE) {
+        SampleDataPacketTF_t pk_tf;
+        Protocol_ParseSampleData(data, length, &pk_tf);
 
     }else {
         // 原始数据打印

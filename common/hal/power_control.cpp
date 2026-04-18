@@ -6,6 +6,28 @@
 #include "stm32_comm.h"
 #include "power_control.h"
 
+namespace {
+constexpr float kVoltageToleranceRatio = 0.007f;
+constexpr float kVoltageToleranceOffset = 0.003125f;
+
+struct VoltageComparison {
+    float error;
+    float tolerance;
+    bool withinTolerance;
+};
+
+VoltageComparison CompareVoltage(float actualVoltage, float targetVoltage) {
+    const float error = actualVoltage - targetVoltage;
+    const float tolerance = targetVoltage * kVoltageToleranceRatio + kVoltageToleranceOffset;
+    return {error, tolerance, std::abs(error) <= tolerance};
+}
+
+float CalculateCompensatedTargetVoltage(float currentTarget, float actualVoltage, float targetVoltage) {
+    const float compensatedTarget = currentTarget + (targetVoltage - actualVoltage);
+    return compensatedTarget < 0.0f ? 0.0f : compensatedTarget;
+}
+}
+
 // Initialize controller with runtime power configuration.
 PowerController::PowerController(PowersConfig* configs)
     : configs_(configs) {}
@@ -97,7 +119,6 @@ void PowerController::ConfigVoltages(USBDriver& dev) const {
     SendPowerOn(dev, configs_);
 
     if(configs_->calibration_en) {
-        LOG_INFO("Calibration enabled, starting calibration process...");
         LOG_INFO("==========================================");
         LOG_INFO("Starting voltage calibration for all rails");
         LOG_INFO("==========================================");
@@ -105,9 +126,6 @@ void PowerController::ConfigVoltages(USBDriver& dev) const {
             const auto& cfg = configs_->supplies[power_id];
             CalibrateVoltage(dev, power_id);
         }
-        LOG_INFO("==========================================");
-        LOG_INFO("Calibration process completed");
-        LOG_INFO("==========================================");
 
         // Display final calibration results for all power rails
         LOG_INFO("Final Calibration Results:");
@@ -116,19 +134,15 @@ void PowerController::ConfigVoltages(USBDriver& dev) const {
             const auto& cfg = configs_->supplies[power_id];
             float target_voltage = cfg.tgt_volt;
             float actual_voltage = GetAverageVoltage(dev, cfg.means_pt, 5);  // Use fewer samples for summary
-
             if (actual_voltage < 0) {
                 LOG_ERROR("Power ID %d (%s): Failed to read voltage", power_id, cfg.name);
-                continue;
+                break;
             }
 
-            float error = actual_voltage - target_voltage;
-            float tolerance = target_voltage * 0.007f + 0.003125f;
-            bool success = std::abs(error) <= tolerance;
-
+            const VoltageComparison comparison = CompareVoltage(actual_voltage, target_voltage);
             LOG_INFO("Power ID %d (%s): Target=%.3f V, Actual=%.3f V, Error=%.3f V [%s]",
-                     power_id, cfg.name, target_voltage, actual_voltage, error,
-                     success ? "SUCCESS" : "FAILED");
+                     power_id, cfg.name, target_voltage, actual_voltage, comparison.error,
+                     comparison.withinTolerance ? "SUCCESS" : "FAILED");
         }
         LOG_INFO("==========================================");
     }
@@ -144,39 +158,30 @@ void PowerController::CalibrateVoltage(USBDriver& dev, int power_id) const {
 
     const auto& cfg = configs_->supplies[power_id];
     float target_voltage = cfg.tgt_volt;
-    float tolerance = target_voltage * 0.007f + 0.003125f;
-    bool satisfied = false;
     float actual_voltage = 0.0f;
-
     float current_target = target_voltage;
+    VoltageComparison comparison;
     for (int iter = 0; iter < kMaxCalibrationIterations; ++iter) {
-        // std::this_thread::sleep_for(std::chrono::milliseconds(500));
         actual_voltage = GetAverageVoltage(dev, cfg.means_pt, kSampleCount);
         if (actual_voltage < 0) {
             LOG_ERROR("Failed to read voltage, abort calibration");
             break;
         }
 
-        float error = actual_voltage - target_voltage;
-        float abs_error = std::abs(error);
- /*       if (abs_error > 2.5f) {
-            LOG_WARN("Voltage error too large (%.4f V), aborting calibration for power ID %d", abs_error, power_id);
-            break;
-        }
-*/
-        satisfied = (abs_error <= tolerance);
-
-        float compensated_target = current_target + (target_voltage - actual_voltage);
-        if (compensated_target < 0) compensated_target = 0;
-        current_target = compensated_target;
+        comparison = CompareVoltage(actual_voltage, target_voltage);
+        current_target = CalculateCompensatedTargetVoltage(current_target, actual_voltage, target_voltage);
 
         LOG_INFO("Iteration %d: actual=%.4f V, target=%.4f V, error=%.4f V, tolerance=%.4f V, new_target=%.4f V",
-                 iter + 1, actual_voltage, target_voltage, error, tolerance, current_target);
+                 iter + 1, actual_voltage, target_voltage, comparison.error, comparison.tolerance, current_target);
+        if(comparison.withinTolerance) {
+            break;
+        }
 
         ConfigVoltage(dev, power_id, current_target);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
-    if (satisfied) {
+    if (comparison.withinTolerance) {
         LOG_INFO("Calibration successful: Power: %d , actual=%.4f, Vtarget=%.4f V", power_id, actual_voltage, target_voltage);
     } else {
         LOG_WARN("Calibration did not meet tolerance after %d iterations: target=%.4f V, actual=%.4f V",

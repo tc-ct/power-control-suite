@@ -23,10 +23,7 @@
 #include "ina260.h"
 #include <string.h>
 #include "user_callback.h"
-/* 传输超时 (ms) */
-#define INA260_TIMEOUT          100
-#define INA260_CONV_TIMEOUT     50
-
+#include "adc_def.h"
 
 
 /* -------------------------- 私有函数 -------------------------- */

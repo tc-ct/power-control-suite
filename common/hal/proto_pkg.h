@@ -36,13 +36,14 @@ typedef enum {
     CMD_SET_VOLTAGE = 0x01,         // 设置电压
     CMD_SET_PIN = 0x02,             // 配置引脚
     CMD_START_SAMPLING = 0x03,      // 启动/停止采样
-    CMD_GET_STATUS = 0x04,          // 查询状态   
-    CMD_POWER_ON = 0x05,              // 上电命令并携带上电序列ID
-    CMD_POWER_OFF = 0x06,             // 下电命令
-    CMD_I2C_WRITE = 0x07,             // I2C写命令
-    CMD_I2C_READ = 0x08,              // I2C读命令
-    CMD_SPI_WRITE = 0x09,             // SPI写命令
-    CMD_SPI_READ = 0x0A,              // SPI读命令
+    CMD_SAMPLING_ONCE = 0x04,        // 采样一次
+    CMD_GET_STATUS = 0x05,          // 查询状态   
+    CMD_POWER_ON = 0x06,              // 上电命令并携带上电序列ID
+    CMD_POWER_OFF = 0x07,             // 下电命令
+    CMD_I2C_WRITE = 0x08,             // I2C写命令
+    CMD_I2C_READ = 0x09,              // I2C读命令
+    CMD_SPI_WRITE = 0x0a,             // SPI写命令
+    CMD_SPI_READ = 0x0b,              // SPI读命令
 } CmdType_t;
 
 
@@ -129,13 +130,21 @@ typedef struct SampleDataPacket{
 union {
 struct {
     uint8_t report_id;     // 报告ID（通常为0）
-    uint8_t type;          // 数据类型
-    uint32_t timestamp;    // 时间戳(ms)
-    float values[SAMPLE_DATA_COUNT]; // 通道采样值（float）
+    uint8_t type;     // 数据类型
+    uint32_t timestamp;           // 时间戳(ms)
+    uint16_t channel_volt_mv[SAMPLE_DATA_COUNT]; // 通道 电压
+    uint16_t channel_curr_ma[SAMPLE_DATA_COUNT]; // 通道 电流
 };
 uint8_t bytes[USB_REPORT_SIZE];           // 整个数据包的字节视图
 };
 } SampleDataPacket_t;
+
+/* 转换后采样数据结构（STM32 -> PC） */
+typedef struct SampleDataPacketTF{
+    uint32_t timestamp;           // 时间戳(ms)
+    float channel_volt_mv[SAMPLE_DATA_COUNT]; // 通道 电压
+    float channel_curr_ma[SAMPLE_DATA_COUNT]; // 通道 电流
+} SampleDataPacketTF_t;
 
 
 #pragma pack(pop)
