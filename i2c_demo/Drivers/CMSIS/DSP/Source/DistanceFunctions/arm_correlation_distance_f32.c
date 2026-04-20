@@ -51,30 +51,30 @@
  *
  */
 
-float32_t arm_correlation_distance_f32(float32_t *pA,float32_t *pB, uint32_t blockSize)
+float32_t arm_correlation_distance_f32(float32_t *pA, float32_t *pB, uint32_t blockSize)
 {
-    float32_t ma,mb,pwra,pwrb,dot,tmp;
+	float32_t ma, mb, pwra, pwrb, dot, tmp;
 
-    arm_mean_f32(pA, blockSize, &ma);
-    arm_mean_f32(pB, blockSize, &mb);
+	arm_mean_f32(pA, blockSize, &ma);
+	arm_mean_f32(pB, blockSize, &mb);
 
-    arm_offset_f32(pA, -ma, pA, blockSize);
-    arm_offset_f32(pB, -mb, pB, blockSize);
+	arm_offset_f32(pA, -ma, pA, blockSize);
+	arm_offset_f32(pB, -mb, pB, blockSize);
 
-    arm_power_f32(pA, blockSize, &pwra);
-    arm_power_f32(pB, blockSize, &pwrb);
+	arm_power_f32(pA, blockSize, &pwra);
+	arm_power_f32(pB, blockSize, &pwrb);
 
-    arm_dot_prod_f32(pA,pB,blockSize,&dot);
+	arm_dot_prod_f32(pA, pB, blockSize, &dot);
 
-    dot = dot / blockSize;
-    pwra = pwra / blockSize;
-    pwrb = pwrb / blockSize;
+	dot = dot / blockSize;
+	pwra = pwra / blockSize;
+	pwrb = pwrb / blockSize;
 
-    arm_sqrt_f32(pwra * pwrb,&tmp);
- 
-    return(1.0f - dot / tmp);
+	arm_sqrt_f32(pwra * pwrb, &tmp);
 
-   
+	return (1.0f - dot / tmp);
+
+
 }
 
 

@@ -47,27 +47,26 @@
  *
  */
 void arm_concatenation_s8_z(const int8_t *input,
-                            const uint16_t input_x,
-                            const uint16_t input_y,
-                            const uint16_t input_z,
-                            const uint16_t input_w,
-                            int8_t *output,
-                            const uint16_t output_z,
-                            const uint32_t offset_z)
+			    const uint16_t input_x,
+			    const uint16_t input_y,
+			    const uint16_t input_z,
+			    const uint16_t input_w,
+			    int8_t *output,
+			    const uint16_t output_z,
+			    const uint32_t offset_z)
 {
-    const uint32_t input_copy_size = input_x * input_y * input_z;
-    const uint32_t output_stride = input_x * input_y * output_z;
+	const uint32_t input_copy_size = input_x * input_y * input_z;
+	const uint32_t output_stride = input_x * input_y * output_z;
 
-    output += offset_z * (input_x * input_y);
+	output += offset_z * (input_x * input_y);
 
-    uint32_t i;
+	uint32_t i;
 
-    for (i = 0; i < input_w; ++i)
-    {
-        arm_memcpy_q7(output, input, input_copy_size);
-        input += input_copy_size;
-        output += output_stride;
-    }
+	for (i = 0; i < input_w; ++i) {
+		arm_memcpy_q7(output, input, input_copy_size);
+		input += input_copy_size;
+		output += output_stride;
+	}
 }
 
 /**

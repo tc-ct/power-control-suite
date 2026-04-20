@@ -23,9 +23,9 @@
  */
 
 #if   defined ( __ICCARM__ )
-  #pragma system_include         /* treat file as system include file for MISRA check */
+#pragma system_include         /* treat file as system include file for MISRA check */
 #elif defined (__clang__)
-  #pragma clang system_header    /* treat file as system include file */
+#pragma clang system_header    /* treat file as system include file */
 #endif
 
 #ifndef ARM_CACHEL1_ARMV7_H
@@ -56,18 +56,20 @@
   */
 __STATIC_FORCEINLINE void SCB_EnableICache (void)
 {
-  #if defined (__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
-    if (SCB->CCR & SCB_CCR_IC_Msk) return;  /* return if ICache is already enabled */
+#if defined (__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
 
-    __DSB();
-    __ISB();
-    SCB->ICIALLU = 0UL;                     /* invalidate I-Cache */
-    __DSB();
-    __ISB();
-    SCB->CCR |=  (uint32_t)SCB_CCR_IC_Msk;  /* enable I-Cache */
-    __DSB();
-    __ISB();
-  #endif
+	if (SCB->CCR & SCB_CCR_IC_Msk)
+		return;  /* return if ICache is already enabled */
+
+	__DSB();
+	__ISB();
+	SCB->ICIALLU = 0UL;                     /* invalidate I-Cache */
+	__DSB();
+	__ISB();
+	SCB->CCR |=  (uint32_t)SCB_CCR_IC_Msk;  /* enable I-Cache */
+	__DSB();
+	__ISB();
+#endif
 }
 
 
@@ -77,14 +79,14 @@ __STATIC_FORCEINLINE void SCB_EnableICache (void)
   */
 __STATIC_FORCEINLINE void SCB_DisableICache (void)
 {
-  #if defined (__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
-    __DSB();
-    __ISB();
-    SCB->CCR &= ~(uint32_t)SCB_CCR_IC_Msk;  /* disable I-Cache */
-    SCB->ICIALLU = 0UL;                     /* invalidate I-Cache */
-    __DSB();
-    __ISB();
-  #endif
+#if defined (__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
+	__DSB();
+	__ISB();
+	SCB->CCR &= ~(uint32_t)SCB_CCR_IC_Msk;  /* disable I-Cache */
+	SCB->ICIALLU = 0UL;                     /* invalidate I-Cache */
+	__DSB();
+	__ISB();
+#endif
 }
 
 
@@ -94,13 +96,13 @@ __STATIC_FORCEINLINE void SCB_DisableICache (void)
   */
 __STATIC_FORCEINLINE void SCB_InvalidateICache (void)
 {
-  #if defined (__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
-    __DSB();
-    __ISB();
-    SCB->ICIALLU = 0UL;
-    __DSB();
-    __ISB();
-  #endif
+#if defined (__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
+	__DSB();
+	__ISB();
+	SCB->ICIALLU = 0UL;
+	__DSB();
+	__ISB();
+#endif
 }
 
 
@@ -114,23 +116,25 @@ __STATIC_FORCEINLINE void SCB_InvalidateICache (void)
 */
 __STATIC_FORCEINLINE void SCB_InvalidateICache_by_Addr (volatile void *addr, int32_t isize)
 {
-  #if defined (__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
-    if ( isize > 0 ) {
-       int32_t op_size = isize + (((uint32_t)addr) & (__SCB_ICACHE_LINE_SIZE - 1U));
-      uint32_t op_addr = (uint32_t)addr /* & ~(__SCB_ICACHE_LINE_SIZE - 1U) */;
+#if defined (__ICACHE_PRESENT) && (__ICACHE_PRESENT == 1U)
 
-      __DSB();
+	if ( isize > 0 ) {
+		int32_t op_size = isize + (((uint32_t)addr) & (__SCB_ICACHE_LINE_SIZE - 1U));
+		uint32_t op_addr = (uint32_t)addr /* & ~(__SCB_ICACHE_LINE_SIZE - 1U) */;
 
-      do {
-        SCB->ICIMVAU = op_addr;             /* register accepts only 32byte aligned values, only bits 31..5 are valid */
-        op_addr += __SCB_ICACHE_LINE_SIZE;
-        op_size -= __SCB_ICACHE_LINE_SIZE;
-      } while ( op_size > 0 );
+		__DSB();
 
-      __DSB();
-      __ISB();
-    }
-  #endif
+		do {
+			SCB->ICIMVAU = op_addr;             /* register accepts only 32byte aligned values, only bits 31..5 are valid */
+			op_addr += __SCB_ICACHE_LINE_SIZE;
+			op_size -= __SCB_ICACHE_LINE_SIZE;
+		} while ( op_size > 0 );
+
+		__DSB();
+		__ISB();
+	}
+
+#endif
 }
 
 
@@ -140,37 +144,41 @@ __STATIC_FORCEINLINE void SCB_InvalidateICache_by_Addr (volatile void *addr, int
   */
 __STATIC_FORCEINLINE void SCB_EnableDCache (void)
 {
-  #if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-    uint32_t ccsidr;
-    uint32_t sets;
-    uint32_t ways;
+#if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+	uint32_t ccsidr;
+	uint32_t sets;
+	uint32_t ways;
 
-    if (SCB->CCR & SCB_CCR_DC_Msk) return;  /* return if DCache is already enabled */
+	if (SCB->CCR & SCB_CCR_DC_Msk)
+		return;  /* return if DCache is already enabled */
 
-    SCB->CSSELR = 0U;                       /* select Level 1 data cache */
-    __DSB();
+	SCB->CSSELR = 0U;                       /* select Level 1 data cache */
+	__DSB();
 
-    ccsidr = SCB->CCSIDR;
+	ccsidr = SCB->CCSIDR;
 
-                                            /* invalidate D-Cache */
-    sets = (uint32_t)(CCSIDR_SETS(ccsidr));
-    do {
-      ways = (uint32_t)(CCSIDR_WAYS(ccsidr));
-      do {
-        SCB->DCISW = (((sets << SCB_DCISW_SET_Pos) & SCB_DCISW_SET_Msk) |
-                      ((ways << SCB_DCISW_WAY_Pos) & SCB_DCISW_WAY_Msk)  );
-        #if defined ( __CC_ARM )
-          __schedule_barrier();
-        #endif
-      } while (ways-- != 0U);
-    } while(sets-- != 0U);
-    __DSB();
+	/* invalidate D-Cache */
+	sets = (uint32_t)(CCSIDR_SETS(ccsidr));
 
-    SCB->CCR |=  (uint32_t)SCB_CCR_DC_Msk;  /* enable D-Cache */
+	do {
+		ways = (uint32_t)(CCSIDR_WAYS(ccsidr));
 
-    __DSB();
-    __ISB();
-  #endif
+		do {
+			SCB->DCISW = (((sets << SCB_DCISW_SET_Pos) & SCB_DCISW_SET_Msk) |
+				      ((ways << SCB_DCISW_WAY_Pos) & SCB_DCISW_WAY_Msk)  );
+#if defined ( __CC_ARM )
+			__schedule_barrier();
+#endif
+		} while (ways-- != 0U);
+	} while (sets-- != 0U);
+
+	__DSB();
+
+	SCB->CCR |=  (uint32_t)SCB_CCR_DC_Msk;  /* enable D-Cache */
+
+	__DSB();
+	__ISB();
+#endif
 }
 
 
@@ -180,35 +188,37 @@ __STATIC_FORCEINLINE void SCB_EnableDCache (void)
   */
 __STATIC_FORCEINLINE void SCB_DisableDCache (void)
 {
-  #if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-    uint32_t ccsidr;
-    uint32_t sets;
-    uint32_t ways;
+#if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+	uint32_t ccsidr;
+	uint32_t sets;
+	uint32_t ways;
 
-    SCB->CSSELR = 0U;                       /* select Level 1 data cache */
-    __DSB();
+	SCB->CSSELR = 0U;                       /* select Level 1 data cache */
+	__DSB();
 
-    SCB->CCR &= ~(uint32_t)SCB_CCR_DC_Msk;  /* disable D-Cache */
-    __DSB();
+	SCB->CCR &= ~(uint32_t)SCB_CCR_DC_Msk;  /* disable D-Cache */
+	__DSB();
 
-    ccsidr = SCB->CCSIDR;
+	ccsidr = SCB->CCSIDR;
 
-                                            /* clean & invalidate D-Cache */
-    sets = (uint32_t)(CCSIDR_SETS(ccsidr));
-    do {
-      ways = (uint32_t)(CCSIDR_WAYS(ccsidr));
-      do {
-        SCB->DCCISW = (((sets << SCB_DCCISW_SET_Pos) & SCB_DCCISW_SET_Msk) |
-                       ((ways << SCB_DCCISW_WAY_Pos) & SCB_DCCISW_WAY_Msk)  );
-        #if defined ( __CC_ARM )
-          __schedule_barrier();
-        #endif
-      } while (ways-- != 0U);
-    } while(sets-- != 0U);
+	/* clean & invalidate D-Cache */
+	sets = (uint32_t)(CCSIDR_SETS(ccsidr));
 
-    __DSB();
-    __ISB();
-  #endif
+	do {
+		ways = (uint32_t)(CCSIDR_WAYS(ccsidr));
+
+		do {
+			SCB->DCCISW = (((sets << SCB_DCCISW_SET_Pos) & SCB_DCCISW_SET_Msk) |
+				       ((ways << SCB_DCCISW_WAY_Pos) & SCB_DCCISW_WAY_Msk)  );
+#if defined ( __CC_ARM )
+			__schedule_barrier();
+#endif
+		} while (ways-- != 0U);
+	} while (sets-- != 0U);
+
+	__DSB();
+	__ISB();
+#endif
 }
 
 
@@ -218,32 +228,34 @@ __STATIC_FORCEINLINE void SCB_DisableDCache (void)
   */
 __STATIC_FORCEINLINE void SCB_InvalidateDCache (void)
 {
-  #if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-    uint32_t ccsidr;
-    uint32_t sets;
-    uint32_t ways;
+#if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+	uint32_t ccsidr;
+	uint32_t sets;
+	uint32_t ways;
 
-    SCB->CSSELR = 0U;                       /* select Level 1 data cache */
-    __DSB();
+	SCB->CSSELR = 0U;                       /* select Level 1 data cache */
+	__DSB();
 
-    ccsidr = SCB->CCSIDR;
+	ccsidr = SCB->CCSIDR;
 
-                                            /* invalidate D-Cache */
-    sets = (uint32_t)(CCSIDR_SETS(ccsidr));
-    do {
-      ways = (uint32_t)(CCSIDR_WAYS(ccsidr));
-      do {
-        SCB->DCISW = (((sets << SCB_DCISW_SET_Pos) & SCB_DCISW_SET_Msk) |
-                      ((ways << SCB_DCISW_WAY_Pos) & SCB_DCISW_WAY_Msk)  );
-        #if defined ( __CC_ARM )
-          __schedule_barrier();
-        #endif
-      } while (ways-- != 0U);
-    } while(sets-- != 0U);
+	/* invalidate D-Cache */
+	sets = (uint32_t)(CCSIDR_SETS(ccsidr));
 
-    __DSB();
-    __ISB();
-  #endif
+	do {
+		ways = (uint32_t)(CCSIDR_WAYS(ccsidr));
+
+		do {
+			SCB->DCISW = (((sets << SCB_DCISW_SET_Pos) & SCB_DCISW_SET_Msk) |
+				      ((ways << SCB_DCISW_WAY_Pos) & SCB_DCISW_WAY_Msk)  );
+#if defined ( __CC_ARM )
+			__schedule_barrier();
+#endif
+		} while (ways-- != 0U);
+	} while (sets-- != 0U);
+
+	__DSB();
+	__ISB();
+#endif
 }
 
 
@@ -253,32 +265,34 @@ __STATIC_FORCEINLINE void SCB_InvalidateDCache (void)
   */
 __STATIC_FORCEINLINE void SCB_CleanDCache (void)
 {
-  #if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-    uint32_t ccsidr;
-    uint32_t sets;
-    uint32_t ways;
+#if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+	uint32_t ccsidr;
+	uint32_t sets;
+	uint32_t ways;
 
-    SCB->CSSELR = 0U;                       /* select Level 1 data cache */
-    __DSB();
+	SCB->CSSELR = 0U;                       /* select Level 1 data cache */
+	__DSB();
 
-    ccsidr = SCB->CCSIDR;
+	ccsidr = SCB->CCSIDR;
 
-                                            /* clean D-Cache */
-    sets = (uint32_t)(CCSIDR_SETS(ccsidr));
-    do {
-      ways = (uint32_t)(CCSIDR_WAYS(ccsidr));
-      do {
-        SCB->DCCSW = (((sets << SCB_DCCSW_SET_Pos) & SCB_DCCSW_SET_Msk) |
-                      ((ways << SCB_DCCSW_WAY_Pos) & SCB_DCCSW_WAY_Msk)  );
-        #if defined ( __CC_ARM )
-          __schedule_barrier();
-        #endif
-      } while (ways-- != 0U);
-    } while(sets-- != 0U);
+	/* clean D-Cache */
+	sets = (uint32_t)(CCSIDR_SETS(ccsidr));
 
-    __DSB();
-    __ISB();
-  #endif
+	do {
+		ways = (uint32_t)(CCSIDR_WAYS(ccsidr));
+
+		do {
+			SCB->DCCSW = (((sets << SCB_DCCSW_SET_Pos) & SCB_DCCSW_SET_Msk) |
+				      ((ways << SCB_DCCSW_WAY_Pos) & SCB_DCCSW_WAY_Msk)  );
+#if defined ( __CC_ARM )
+			__schedule_barrier();
+#endif
+		} while (ways-- != 0U);
+	} while (sets-- != 0U);
+
+	__DSB();
+	__ISB();
+#endif
 }
 
 
@@ -288,32 +302,34 @@ __STATIC_FORCEINLINE void SCB_CleanDCache (void)
   */
 __STATIC_FORCEINLINE void SCB_CleanInvalidateDCache (void)
 {
-  #if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-    uint32_t ccsidr;
-    uint32_t sets;
-    uint32_t ways;
+#if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
+	uint32_t ccsidr;
+	uint32_t sets;
+	uint32_t ways;
 
-    SCB->CSSELR = 0U;                       /* select Level 1 data cache */
-    __DSB();
+	SCB->CSSELR = 0U;                       /* select Level 1 data cache */
+	__DSB();
 
-    ccsidr = SCB->CCSIDR;
+	ccsidr = SCB->CCSIDR;
 
-                                            /* clean & invalidate D-Cache */
-    sets = (uint32_t)(CCSIDR_SETS(ccsidr));
-    do {
-      ways = (uint32_t)(CCSIDR_WAYS(ccsidr));
-      do {
-        SCB->DCCISW = (((sets << SCB_DCCISW_SET_Pos) & SCB_DCCISW_SET_Msk) |
-                       ((ways << SCB_DCCISW_WAY_Pos) & SCB_DCCISW_WAY_Msk)  );
-        #if defined ( __CC_ARM )
-          __schedule_barrier();
-        #endif
-      } while (ways-- != 0U);
-    } while(sets-- != 0U);
+	/* clean & invalidate D-Cache */
+	sets = (uint32_t)(CCSIDR_SETS(ccsidr));
 
-    __DSB();
-    __ISB();
-  #endif
+	do {
+		ways = (uint32_t)(CCSIDR_WAYS(ccsidr));
+
+		do {
+			SCB->DCCISW = (((sets << SCB_DCCISW_SET_Pos) & SCB_DCCISW_SET_Msk) |
+				       ((ways << SCB_DCCISW_WAY_Pos) & SCB_DCCISW_WAY_Msk)  );
+#if defined ( __CC_ARM )
+			__schedule_barrier();
+#endif
+		} while (ways-- != 0U);
+	} while (sets-- != 0U);
+
+	__DSB();
+	__ISB();
+#endif
 }
 
 
@@ -327,23 +343,25 @@ __STATIC_FORCEINLINE void SCB_CleanInvalidateDCache (void)
 */
 __STATIC_FORCEINLINE void SCB_InvalidateDCache_by_Addr (volatile void *addr, int32_t dsize)
 {
-  #if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-    if ( dsize > 0 ) {
-       int32_t op_size = dsize + (((uint32_t)addr) & (__SCB_DCACHE_LINE_SIZE - 1U));
-      uint32_t op_addr = (uint32_t)addr /* & ~(__SCB_DCACHE_LINE_SIZE - 1U) */;
+#if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
 
-      __DSB();
+	if ( dsize > 0 ) {
+		int32_t op_size = dsize + (((uint32_t)addr) & (__SCB_DCACHE_LINE_SIZE - 1U));
+		uint32_t op_addr = (uint32_t)addr /* & ~(__SCB_DCACHE_LINE_SIZE - 1U) */;
 
-      do {
-        SCB->DCIMVAC = op_addr;             /* register accepts only 32byte aligned values, only bits 31..5 are valid */
-        op_addr += __SCB_DCACHE_LINE_SIZE;
-        op_size -= __SCB_DCACHE_LINE_SIZE;
-      } while ( op_size > 0 );
+		__DSB();
 
-      __DSB();
-      __ISB();
-    }
-  #endif
+		do {
+			SCB->DCIMVAC = op_addr;             /* register accepts only 32byte aligned values, only bits 31..5 are valid */
+			op_addr += __SCB_DCACHE_LINE_SIZE;
+			op_size -= __SCB_DCACHE_LINE_SIZE;
+		} while ( op_size > 0 );
+
+		__DSB();
+		__ISB();
+	}
+
+#endif
 }
 
 
@@ -357,23 +375,25 @@ __STATIC_FORCEINLINE void SCB_InvalidateDCache_by_Addr (volatile void *addr, int
 */
 __STATIC_FORCEINLINE void SCB_CleanDCache_by_Addr (volatile void *addr, int32_t dsize)
 {
-  #if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-    if ( dsize > 0 ) {
-       int32_t op_size = dsize + (((uint32_t)addr) & (__SCB_DCACHE_LINE_SIZE - 1U));
-      uint32_t op_addr = (uint32_t)addr /* & ~(__SCB_DCACHE_LINE_SIZE - 1U) */;
+#if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
 
-      __DSB();
+	if ( dsize > 0 ) {
+		int32_t op_size = dsize + (((uint32_t)addr) & (__SCB_DCACHE_LINE_SIZE - 1U));
+		uint32_t op_addr = (uint32_t)addr /* & ~(__SCB_DCACHE_LINE_SIZE - 1U) */;
 
-      do {
-        SCB->DCCMVAC = op_addr;             /* register accepts only 32byte aligned values, only bits 31..5 are valid */
-        op_addr += __SCB_DCACHE_LINE_SIZE;
-        op_size -= __SCB_DCACHE_LINE_SIZE;
-      } while ( op_size > 0 );
+		__DSB();
 
-      __DSB();
-      __ISB();
-    }
-  #endif
+		do {
+			SCB->DCCMVAC = op_addr;             /* register accepts only 32byte aligned values, only bits 31..5 are valid */
+			op_addr += __SCB_DCACHE_LINE_SIZE;
+			op_size -= __SCB_DCACHE_LINE_SIZE;
+		} while ( op_size > 0 );
+
+		__DSB();
+		__ISB();
+	}
+
+#endif
 }
 
 
@@ -387,23 +407,25 @@ __STATIC_FORCEINLINE void SCB_CleanDCache_by_Addr (volatile void *addr, int32_t 
 */
 __STATIC_FORCEINLINE void SCB_CleanInvalidateDCache_by_Addr (volatile void *addr, int32_t dsize)
 {
-  #if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
-    if ( dsize > 0 ) {
-       int32_t op_size = dsize + (((uint32_t)addr) & (__SCB_DCACHE_LINE_SIZE - 1U));
-      uint32_t op_addr = (uint32_t)addr /* & ~(__SCB_DCACHE_LINE_SIZE - 1U) */;
+#if defined (__DCACHE_PRESENT) && (__DCACHE_PRESENT == 1U)
 
-      __DSB();
+	if ( dsize > 0 ) {
+		int32_t op_size = dsize + (((uint32_t)addr) & (__SCB_DCACHE_LINE_SIZE - 1U));
+		uint32_t op_addr = (uint32_t)addr /* & ~(__SCB_DCACHE_LINE_SIZE - 1U) */;
 
-      do {
-        SCB->DCCIMVAC = op_addr;            /* register accepts only 32byte aligned values, only bits 31..5 are valid */
-        op_addr +=          __SCB_DCACHE_LINE_SIZE;
-        op_size -=          __SCB_DCACHE_LINE_SIZE;
-      } while ( op_size > 0 );
+		__DSB();
 
-      __DSB();
-      __ISB();
-    }
-  #endif
+		do {
+			SCB->DCCIMVAC = op_addr;            /* register accepts only 32byte aligned values, only bits 31..5 are valid */
+			op_addr +=          __SCB_DCACHE_LINE_SIZE;
+			op_size -=          __SCB_DCACHE_LINE_SIZE;
+		} while ( op_size > 0 );
+
+		__DSB();
+		__ISB();
+	}
+
+#endif
 }
 
 /*@} end of CMSIS_Core_CacheFunctions */

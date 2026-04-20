@@ -118,19 +118,16 @@ extern "C" {
   * @{
   */
 
-typedef struct _SENSE_ITEM
-{
-  uint8_t Skey;
-  union
-  {
-    struct _ASCs
-    {
-      uint8_t ASC;
-      uint8_t ASCQ;
-    } b;
-    uint8_t ASC;
-    uint8_t *pData;
-  } w;
+typedef struct _SENSE_ITEM {
+	uint8_t Skey;
+	union {
+		struct _ASCs {
+			uint8_t ASC;
+			uint8_t ASCQ;
+		} b;
+		uint8_t ASC;
+		uint8_t *pData;
+	} w;
 } USBD_SCSI_SenseTypeDef;
 /**
   * @}
@@ -157,7 +154,7 @@ typedef struct _SENSE_ITEM
 int8_t SCSI_ProcessCmd(USBD_HandleTypeDef *pdev, uint8_t lun, uint8_t *cmd);
 
 void SCSI_SenseCode(USBD_HandleTypeDef *pdev, uint8_t lun, uint8_t sKey,
-                    uint8_t ASC);
+		    uint8_t ASC);
 
 /**
   * @}

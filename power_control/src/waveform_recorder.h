@@ -10,22 +10,22 @@
 class WaveformRecorder
 {
 public:
-    void start(const QString& baseDirectory);
-    void stop();
-    bool isRecording() const;
+	void start(const QString& baseDirectory);
+	void stop();
+	bool isRecording() const;
 
-    void appendPacket(const SampleDataPacket& packet);
-    bool hasData() const;
-    void clear();
+	void appendPacket(const SampleDataPacket& packet);
+	bool hasData() const;
+	void clear();
 
-    QString defaultFilePath() const;
-    QString lastRecordDirectory() const;
-    bool exportCsv(const QString& filePath);
+	QString defaultFilePath() const;
+	QString lastRecordDirectory() const;
+	bool exportCsv(const QString& filePath);
 
 private:
-    bool is_recording_ = false;
-    std::vector<SampleDataPacket> packets_;
-    QString last_record_directory_;
+	bool is_recording_ = false;
+	std::vector<SampleDataPacket> packets_;
+	QString last_record_directory_;
 };
 
 #endif // WAVEFORM_RECORDER_H

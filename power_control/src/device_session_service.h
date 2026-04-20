@@ -14,41 +14,41 @@
 
 class DeviceSessionService : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit DeviceSessionService(uint16_t vid, uint16_t pid, QObject* parent = nullptr);
-    ~DeviceSessionService() override;
+	explicit DeviceSessionService(uint16_t vid, uint16_t pid, QObject* parent = nullptr);
+	~DeviceSessionService() override;
 
-    void queryDevices();
-    const std::vector<USBDeviceInfo>& devices() const;
+	void queryDevices();
+	const std::vector<USBDeviceInfo> &devices() const;
 
-    bool openDevice(const QString& path);
-    void closeDevice();
+	bool openDevice(const QString& path);
+	void closeDevice();
 
-    bool isOpen() const;
-    bool isSampling() const;
+	bool isOpen() const;
+	bool isSampling() const;
 
-    void startSampling(const PowersConfig& config);
-    void stopSampling(const PowersConfig& config);
+	void startSampling(const PowersConfig& config);
+	void stopSampling(const PowersConfig& config);
 
-    USBDriver* driver() const;
+	USBDriver *driver() const;
 
 signals:
-    void devicesChanged();
-    void connectionChanged(bool isOpen);
-    void samplingChanged(bool sampling);
-    void samplePacketReceived(const SampleDataPacket& packet);
+	void devicesChanged();
+	void connectionChanged(bool isOpen);
+	void samplingChanged(bool sampling);
+	void samplePacketReceived(const SampleDataPacket& packet);
 
 private:
-    void sendSamplingCommand(bool start, const PowersConfig& config);
-    void onRawDataReceived(const uint8_t* data, int length);
+	void sendSamplingCommand(bool start, const PowersConfig& config);
+	void onRawDataReceived(const uint8_t* data, int length);
 
-    uint16_t vid_;
-    uint16_t pid_;
-    std::vector<USBDeviceInfo> devices_;
-    std::unique_ptr<USBDriver> usb_driver_;
-    SamplingStateMachine state_machine_;
+	uint16_t vid_;
+	uint16_t pid_;
+	std::vector<USBDeviceInfo> devices_;
+	std::unique_ptr<USBDriver> usb_driver_;
+	SamplingStateMachine state_machine_;
 };
 
 #endif // DEVICE_SESSION_SERVICE_H

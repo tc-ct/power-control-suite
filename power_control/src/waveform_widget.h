@@ -15,35 +15,35 @@ class QDialog;
 class WaveformWidget : public QWidget
 {
 public:
-    explicit WaveformWidget(QWidget* parent = nullptr);
+	explicit WaveformWidget(QWidget* parent = nullptr);
 
-    void updateFromPacket(const SampleDataPacketTF& packet, const PowersConfig* config);
-    void addVoltageSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled);
-    void addCurrentSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled);
-    void clearSamples();
+	void updateFromPacket(const SampleDataPacketTF& packet, const PowersConfig* config);
+	void addVoltageSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT> &enabled);
+	void addCurrentSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT> &enabled);
+	void clearSamples();
 
 protected:
-    void paintEvent(QPaintEvent* event) override;
-    void mouseDoubleClickEvent(QMouseEvent* event) override;
+	void paintEvent(QPaintEvent* event) override;
+	void mouseDoubleClickEvent(QMouseEvent* event) override;
 
 private:
-    void appendSamples(
-        std::array<QVector<QPointF>, SAMPLE_DATA_COUNT>& series,
-        std::array<bool, SAMPLE_DATA_COUNT>& activeFlags,
-        uint32_t timestampMs,
-        const float* values,
-        const std::array<bool, SAMPLE_DATA_COUNT>& enabled);
-    void syncExpandedView();
-    void openExpandedView();
+	void appendSamples(
+		std::array<QVector<QPointF>, SAMPLE_DATA_COUNT> &series,
+		std::array<bool, SAMPLE_DATA_COUNT> &activeFlags,
+		uint32_t timestampMs,
+		const float *values,
+		const std::array<bool, SAMPLE_DATA_COUNT> &enabled);
+	void syncExpandedView();
+	void openExpandedView();
 
-    std::array<QVector<QPointF>, SAMPLE_DATA_COUNT> voltage_series_;
-    std::array<QVector<QPointF>, SAMPLE_DATA_COUNT> current_series_;
-    std::array<bool, SAMPLE_DATA_COUNT> voltage_enabled_{};
-    std::array<bool, SAMPLE_DATA_COUNT> current_enabled_{};
-    int max_points_ = 240;
-    bool is_expanded_view_ = false;
-    QPointer<QDialog> expanded_dialog_;
-    WaveformWidget* expanded_widget_ = nullptr;
+	std::array<QVector<QPointF>, SAMPLE_DATA_COUNT> voltage_series_;
+	std::array<QVector<QPointF>, SAMPLE_DATA_COUNT> current_series_;
+	std::array<bool, SAMPLE_DATA_COUNT> voltage_enabled_{};
+	std::array<bool, SAMPLE_DATA_COUNT> current_enabled_{};
+	int max_points_ = 240;
+	bool is_expanded_view_ = false;
+	QPointer<QDialog> expanded_dialog_;
+	WaveformWidget *expanded_widget_ = nullptr;
 };
 
 #endif // WAVEFORM_WIDGET_H

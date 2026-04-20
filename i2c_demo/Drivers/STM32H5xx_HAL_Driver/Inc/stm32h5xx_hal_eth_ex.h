@@ -45,29 +45,28 @@ extern "C" {
 /**
   * @brief  ETH RX VLAN structure definition
   */
-typedef struct
-{
-  FunctionalState InnerVLANTagInStatus;      /*!< Enables or disables Inner VLAN Tag in Rx Status  */
+typedef struct {
+	FunctionalState InnerVLANTagInStatus;      /*!< Enables or disables Inner VLAN Tag in Rx Status  */
 
-  uint32_t StripInnerVLANTag;                /*!< Sets the Inner VLAN Tag Stripping on Receive
+	uint32_t StripInnerVLANTag;                /*!< Sets the Inner VLAN Tag Stripping on Receive
                                                   This parameter can be a value of
                                                   @ref ETHEx_Rx_Inner_VLAN_Tag_Stripping */
 
-  FunctionalState InnerVLANTag;              /*!< Enables or disables Inner VLAN Tag */
+	FunctionalState InnerVLANTag;              /*!< Enables or disables Inner VLAN Tag */
 
-  FunctionalState DoubleVLANProcessing;      /*!< Enable or Disable double VLAN processing */
+	FunctionalState DoubleVLANProcessing;      /*!< Enable or Disable double VLAN processing */
 
-  FunctionalState VLANTagHashTableMatch;     /*!< Enable or Disable VLAN Tag Hash Table Match */
+	FunctionalState VLANTagHashTableMatch;     /*!< Enable or Disable VLAN Tag Hash Table Match */
 
-  FunctionalState VLANTagInStatus;           /*!< Enable or Disable VLAN Tag in Rx status */
+	FunctionalState VLANTagInStatus;           /*!< Enable or Disable VLAN Tag in Rx status */
 
-  uint32_t StripVLANTag;                     /*!< Set the VLAN Tag Stripping on Receive
+	uint32_t StripVLANTag;                     /*!< Set the VLAN Tag Stripping on Receive
                                                   This parameter can be a value of @ref ETHEx_Rx_VLAN_Tag_Stripping */
 
-  uint32_t VLANTypeCheck;                    /*!< Enable or Disable VLAN Type Check
+	uint32_t VLANTypeCheck;                    /*!< Enable or Disable VLAN Type Check
                                                   This parameter can be a value of @ref ETHEx_VLAN_Type_Check */
 
-  FunctionalState VLANTagInverceMatch;       /*!< Enable or disable VLAN Tag Inverse Match */
+	FunctionalState VLANTagInverceMatch;       /*!< Enable or disable VLAN Tag Inverse Match */
 } ETH_RxVLANConfigTypeDef;
 /**
   *
@@ -76,13 +75,12 @@ typedef struct
 /**
   * @brief  ETH TX VLAN structure definition
   */
-typedef struct
-{
-  FunctionalState SourceTxDesc;   /*!< Enable or Disable VLAN tag source from DMA tx descriptors */
+typedef struct {
+	FunctionalState SourceTxDesc;   /*!< Enable or Disable VLAN tag source from DMA tx descriptors */
 
-  FunctionalState SVLANType;      /*!< Enable or Disable insertion of SVLAN type */
+	FunctionalState SVLANType;      /*!< Enable or Disable insertion of SVLAN type */
 
-  uint32_t VLANTagControl;        /*!< Sets the VLAN tag control in tx packets
+	uint32_t VLANTagControl;        /*!< Sets the VLAN tag control in tx packets
                                       This parameter can be a value of @ref ETHEx_VLAN_Tag_Control */
 } ETH_TxVLANConfigTypeDef;
 /**
@@ -92,30 +90,29 @@ typedef struct
 /**
   * @brief  ETH L3 filter structure definition
   */
-typedef struct
-{
-  uint32_t Protocol;                /*!< Sets the L3 filter protocol to IPv4 or IPv6
+typedef struct {
+	uint32_t Protocol;                /*!< Sets the L3 filter protocol to IPv4 or IPv6
                                          This parameter can be a value of @ref ETHEx_L3_Protocol */
 
-  uint32_t SrcAddrFilterMatch;      /*!< Sets the L3 filter source address match
+	uint32_t SrcAddrFilterMatch;      /*!< Sets the L3 filter source address match
                                          This parameter can be a value of @ref ETHEx_L3_Source_Match */
 
-  uint32_t DestAddrFilterMatch;     /*!< Sets the L3 filter destination address match
+	uint32_t DestAddrFilterMatch;     /*!< Sets the L3 filter destination address match
                                          This parameter can be a value of @ref ETHEx_L3_Destination_Match */
 
-  uint32_t SrcAddrHigherBitsMatch;  /*!< Sets the L3 filter source address higher bits match
+	uint32_t SrcAddrHigherBitsMatch;  /*!< Sets the L3 filter source address higher bits match
                                          This parameter can be a value from 0 to 31 */
 
-  uint32_t DestAddrHigherBitsMatch; /*!< Sets the L3 filter destination address higher bits match
+	uint32_t DestAddrHigherBitsMatch; /*!< Sets the L3 filter destination address higher bits match
                                          This parameter can be a value from 0 to 31 */
 
-  uint32_t Ip4SrcAddr;              /*!< Sets the L3 filter IPv4 source address if IPv4 protocol is used
+	uint32_t Ip4SrcAddr;              /*!< Sets the L3 filter IPv4 source address if IPv4 protocol is used
                                          This parameter can be a value from 0x0 to 0xFFFFFFFF */
 
-  uint32_t Ip4DestAddr;             /*!< Sets the L3 filter IPv4 destination  address if IPv4 protocol is used
+	uint32_t Ip4DestAddr;             /*!< Sets the L3 filter IPv4 destination  address if IPv4 protocol is used
                                          This parameter can be a value from 0 to 0xFFFFFFFF  */
 
-  uint32_t Ip6Addr[4];                 /*!< Sets the L3 filter IPv6 address if IPv6 protocol is used
+	uint32_t Ip6Addr[4];                 /*!< Sets the L3 filter IPv6 address if IPv6 protocol is used
                                           This parameter must be a table of 4 words (4* 32 bits) */
 } ETH_L3FilterConfigTypeDef;
 /**
@@ -125,21 +122,20 @@ typedef struct
 /**
   * @brief  ETH L4 filter structure definition
   */
-typedef struct
-{
-  uint32_t Protocol;               /*!< Sets the L4 filter protocol to TCP or UDP
+typedef struct {
+	uint32_t Protocol;               /*!< Sets the L4 filter protocol to TCP or UDP
                                         This parameter can be a value of @ref ETHEx_L4_Protocol */
 
-  uint32_t SrcPortFilterMatch;     /*!< Sets the L4 filter source port match
+	uint32_t SrcPortFilterMatch;     /*!< Sets the L4 filter source port match
                                         This parameter can be a value of @ref ETHEx_L4_Source_Match */
 
-  uint32_t DestPortFilterMatch;    /*!< Sets the L4 filter destination port match
+	uint32_t DestPortFilterMatch;    /*!< Sets the L4 filter destination port match
                                         This parameter can be a value of @ref ETHEx_L4_Destination_Match */
 
-  uint32_t SourcePort;             /*!< Sets the L4 filter source port
+	uint32_t SourcePort;             /*!< Sets the L4 filter source port
                                         This parameter must be a value from 0x0 to 0xFFFF */
 
-  uint32_t DestinationPort;        /*!< Sets the L4 filter destination port
+	uint32_t DestinationPort;        /*!< Sets the L4 filter destination port
                                         This parameter must be a value from 0x0 to 0xFFFF */
 } ETH_L4FilterConfigTypeDef;
 /**
@@ -315,13 +311,13 @@ void              HAL_ETHEx_SetARPAddressMatch(ETH_HandleTypeDef *heth, uint32_t
 void              HAL_ETHEx_EnableL3L4Filtering(ETH_HandleTypeDef *heth);
 void              HAL_ETHEx_DisableL3L4Filtering(ETH_HandleTypeDef *heth);
 HAL_StatusTypeDef HAL_ETHEx_GetL3FilterConfig(const ETH_HandleTypeDef *heth, uint32_t Filter,
-                                              ETH_L3FilterConfigTypeDef *pL3FilterConfig);
+		ETH_L3FilterConfigTypeDef *pL3FilterConfig);
 HAL_StatusTypeDef HAL_ETHEx_GetL4FilterConfig(const ETH_HandleTypeDef *heth, uint32_t Filter,
-                                              ETH_L4FilterConfigTypeDef *pL4FilterConfig);
+		ETH_L4FilterConfigTypeDef *pL4FilterConfig);
 HAL_StatusTypeDef HAL_ETHEx_SetL3FilterConfig(ETH_HandleTypeDef *heth, uint32_t Filter,
-                                              const ETH_L3FilterConfigTypeDef *pL3FilterConfig);
+		const ETH_L3FilterConfigTypeDef *pL3FilterConfig);
 HAL_StatusTypeDef HAL_ETHEx_SetL4FilterConfig(ETH_HandleTypeDef *heth, uint32_t Filter,
-                                              const ETH_L4FilterConfigTypeDef *pL4FilterConfig);
+		const ETH_L4FilterConfigTypeDef *pL4FilterConfig);
 
 /* MAC VLAN Processing APIs    ************************************************/
 void              HAL_ETHEx_EnableVLANProcessing(ETH_HandleTypeDef *heth);
@@ -330,14 +326,14 @@ HAL_StatusTypeDef HAL_ETHEx_GetRxVLANConfig(const ETH_HandleTypeDef *heth, ETH_R
 HAL_StatusTypeDef HAL_ETHEx_SetRxVLANConfig(ETH_HandleTypeDef *heth, ETH_RxVLANConfigTypeDef *pVlanConfig);
 void              HAL_ETHEx_SetVLANHashTable(ETH_HandleTypeDef *heth, uint32_t VLANHashTable);
 HAL_StatusTypeDef HAL_ETHEx_GetTxVLANConfig(const ETH_HandleTypeDef *heth, uint32_t VLANTag,
-                                            ETH_TxVLANConfigTypeDef *pVlanConfig);
+		ETH_TxVLANConfigTypeDef *pVlanConfig);
 HAL_StatusTypeDef HAL_ETHEx_SetTxVLANConfig(ETH_HandleTypeDef *heth, uint32_t VLANTag,
-                                            const ETH_TxVLANConfigTypeDef *pVlanConfig);
+		const ETH_TxVLANConfigTypeDef *pVlanConfig);
 void              HAL_ETHEx_SetTxVLANIdentifier(ETH_HandleTypeDef *heth, uint32_t VLANTag, uint32_t VLANIdentifier);
 
 /* Energy Efficient Ethernet APIs *********************************************/
 void              HAL_ETHEx_EnterLPIMode(ETH_HandleTypeDef *heth, FunctionalState TxAutomate,
-                                         FunctionalState TxClockStop);
+		FunctionalState TxClockStop);
 void              HAL_ETHEx_ExitLPIMode(ETH_HandleTypeDef *heth);
 uint32_t          HAL_ETHEx_GetMACLPIEvent(const ETH_HandleTypeDef *heth);
 

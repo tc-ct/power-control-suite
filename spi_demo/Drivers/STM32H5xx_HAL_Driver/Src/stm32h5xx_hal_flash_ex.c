@@ -167,83 +167,79 @@ static void FLASH_OB_GetWMSEC(uint32_t Bank, uint32_t *WMSecStartSector, uint32_
   */
 HAL_StatusTypeDef HAL_FLASHEx_Erase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t *SectorError)
 {
-  HAL_StatusTypeDef status;
-  uint32_t sector_index;
-  __IO uint32_t *reg_cr;
+	HAL_StatusTypeDef status;
+	uint32_t sector_index;
+	__IO uint32_t *reg_cr;
 
-  /* Check the parameters */
-  assert_param(IS_FLASH_TYPEERASE(pEraseInit->TypeErase));
+	/* Check the parameters */
+	assert_param(IS_FLASH_TYPEERASE(pEraseInit->TypeErase));
 
-  /* Process Locked */
-  __HAL_LOCK(&pFlash);
+	/* Process Locked */
+	__HAL_LOCK(&pFlash);
 
-  /* Reset error code */
-  pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+	/* Reset error code */
+	pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
 
-  /* Wait for last operation to be completed */
-  status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+	/* Wait for last operation to be completed */
+	status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
 
-  if (status == HAL_OK)
-  {
-    /* Current operation type */
-    pFlash.ProcedureOnGoing = pEraseInit->TypeErase;
+	if (status == HAL_OK) {
+		/* Current operation type */
+		pFlash.ProcedureOnGoing = pEraseInit->TypeErase;
 
-    /* Access to SECCR or NSCR depends on operation type */
+		/* Access to SECCR or NSCR depends on operation type */
 #if defined (FLASH_OPTSR2_TZEN)
-    reg_cr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECCR) : &(FLASH_NS->NSCR);
+		reg_cr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECCR) : &(FLASH_NS->NSCR);
 #else
-    reg_cr = &(FLASH_NS->NSCR);
+		reg_cr = &(FLASH_NS->NSCR);
 #endif /* FLASH_OPTSR2_TZEN */
 
-    if ((pEraseInit->TypeErase & (~FLASH_NON_SECURE_MASK)) == FLASH_TYPEERASE_MASSERASE)
-    {
-      /* Mass erase to be done */
-      FLASH_MassErase(pEraseInit->Banks);
+		if ((pEraseInit->TypeErase & (~FLASH_NON_SECURE_MASK)) == FLASH_TYPEERASE_MASSERASE) {
+			/* Mass erase to be done */
+			FLASH_MassErase(pEraseInit->Banks);
 
-      /* Wait for last operation to be completed */
-      status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
-    }
+			/* Wait for last operation to be completed */
+			status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+		}
+
 #if defined (FLASH_SR_OBKERR)
-    else if (pEraseInit->TypeErase == FLASH_TYPEERASE_OBK_ALT)
-    {
-      /* OBK erase to be done */
-      FLASH_OBKErase();
+		else if (pEraseInit->TypeErase == FLASH_TYPEERASE_OBK_ALT) {
+			/* OBK erase to be done */
+			FLASH_OBKErase();
 
-      /* Wait for last operation to be completed */
-      status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
-    }
+			/* Wait for last operation to be completed */
+			status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+		}
+
 #endif /* FLASH_SR_OBKERR */
-    else
-    {
-      /* Initialization of SectorError variable */
-      *SectorError = 0xFFFFFFFFU;
+		else {
+			/* Initialization of SectorError variable */
+			*SectorError = 0xFFFFFFFFU;
 
-      /* Erase by sector by sector to be done*/
-      for (sector_index = pEraseInit->Sector; sector_index < (pEraseInit->NbSectors + pEraseInit->Sector); \
-           sector_index++)
-      {
-        FLASH_Erase_Sector(sector_index, pEraseInit->Banks);
+			/* Erase by sector by sector to be done*/
+			for (sector_index = pEraseInit->Sector; sector_index < (pEraseInit->NbSectors + pEraseInit->Sector); \
+			     sector_index++) {
+				FLASH_Erase_Sector(sector_index, pEraseInit->Banks);
 
-        /* Wait for last operation to be completed */
-        status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+				/* Wait for last operation to be completed */
+				status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
 
-        if (status != HAL_OK)
-        {
-          /* In case of error, stop erase procedure and return the faulty sector */
-          *SectorError = sector_index;
-          break;
-        }
-      }
-    }
+				if (status != HAL_OK) {
+					/* In case of error, stop erase procedure and return the faulty sector */
+					*SectorError = sector_index;
+					break;
+				}
+			}
+		}
 
-    /* If the erase operation is completed, disable the associated bits */
-    CLEAR_BIT((*reg_cr), (pEraseInit->TypeErase) & (~(FLASH_NON_SECURE_MASK)));
-  }
+		/* If the erase operation is completed, disable the associated bits */
+		CLEAR_BIT((*reg_cr), (pEraseInit->TypeErase) & (~(FLASH_NON_SECURE_MASK)));
+	}
 
-  /* Process Unlocked */
-  __HAL_UNLOCK(&pFlash);
+	/* Process Unlocked */
+	__HAL_UNLOCK(&pFlash);
 
-  return status;
+	return status;
 }
 
 /**
@@ -255,69 +251,65 @@ HAL_StatusTypeDef HAL_FLASHEx_Erase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t
   */
 HAL_StatusTypeDef HAL_FLASHEx_Erase_IT(FLASH_EraseInitTypeDef *pEraseInit)
 {
-  HAL_StatusTypeDef status;
-  __IO uint32_t *reg_cr;
+	HAL_StatusTypeDef status;
+	__IO uint32_t *reg_cr;
 
-  /* Check the parameters */
-  assert_param(IS_FLASH_TYPEERASE(pEraseInit->TypeErase));
+	/* Check the parameters */
+	assert_param(IS_FLASH_TYPEERASE(pEraseInit->TypeErase));
 
-  /* Reset error code */
-  pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+	/* Reset error code */
+	pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
 
-  /* Wait for last operation to be completed */
-  status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+	/* Wait for last operation to be completed */
+	status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
 
-  if (status != HAL_OK)
-  {
-    return status;
-  }
-  else
-  {
-    /* Set internal variables used by the IRQ handler */
-    pFlash.ProcedureOnGoing = pEraseInit->TypeErase;
-    pFlash.Bank = pEraseInit->Banks;
+	if (status != HAL_OK)
+		return status;
+	else {
+		/* Set internal variables used by the IRQ handler */
+		pFlash.ProcedureOnGoing = pEraseInit->TypeErase;
+		pFlash.Bank = pEraseInit->Banks;
 
-    /* Access to SECCR or NSCR depends on operation type */
+		/* Access to SECCR or NSCR depends on operation type */
 #if defined (FLASH_OPTSR2_TZEN)
-    reg_cr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECCR) : &(FLASH_NS->NSCR);
+		reg_cr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECCR) : &(FLASH_NS->NSCR);
 #else
-    reg_cr = &(FLASH_NS->NSCR);
+		reg_cr = &(FLASH_NS->NSCR);
 #endif /* FLASH_OPTSR2_TZEN */
 
-    /* Enable End of Operation and Error interrupts */
+		/* Enable End of Operation and Error interrupts */
 #if defined (FLASH_SR_OBKERR)
-    (*reg_cr) |= (FLASH_IT_EOP     | FLASH_IT_WRPERR | FLASH_IT_PGSERR | \
-                  FLASH_IT_STRBERR | FLASH_IT_INCERR | FLASH_IT_OBKERR | \
-                  FLASH_IT_OBKWERR);
+		(*reg_cr) |= (FLASH_IT_EOP     | FLASH_IT_WRPERR | FLASH_IT_PGSERR | \
+			      FLASH_IT_STRBERR | FLASH_IT_INCERR | FLASH_IT_OBKERR | \
+			      FLASH_IT_OBKWERR);
 #else
-    (*reg_cr) |= (FLASH_IT_EOP     | FLASH_IT_WRPERR | FLASH_IT_PGSERR | \
-                  FLASH_IT_STRBERR | FLASH_IT_INCERR);
+		(*reg_cr) |= (FLASH_IT_EOP     | FLASH_IT_WRPERR | FLASH_IT_PGSERR | \
+			      FLASH_IT_STRBERR | FLASH_IT_INCERR);
 #endif /* FLASH_SR_OBKERR */
 
-    if ((pEraseInit->TypeErase & (~FLASH_NON_SECURE_MASK)) == FLASH_TYPEERASE_MASSERASE)
-    {
-      /* Mass erase to be done */
-      FLASH_MassErase(pEraseInit->Banks);
-    }
+		if ((pEraseInit->TypeErase & (~FLASH_NON_SECURE_MASK)) == FLASH_TYPEERASE_MASSERASE) {
+			/* Mass erase to be done */
+			FLASH_MassErase(pEraseInit->Banks);
+		}
+
 #if defined (FLASH_SR_OBKERR)
-    else if (pEraseInit->TypeErase == FLASH_TYPEERASE_OBK_ALT)
-    {
-      /* OBK erase to be done */
-      FLASH_OBKErase();
-    }
+		else if (pEraseInit->TypeErase == FLASH_TYPEERASE_OBK_ALT) {
+			/* OBK erase to be done */
+			FLASH_OBKErase();
+		}
+
 #endif /* FLASH_SR_OBKERR */
-    else
-    {
-      /* Erase by sector to be done */
-      pFlash.NbSectorsToErase = pEraseInit->NbSectors;
-      pFlash.Sector = pEraseInit->Sector;
+		else {
+			/* Erase by sector to be done */
+			pFlash.NbSectorsToErase = pEraseInit->NbSectors;
+			pFlash.Sector = pEraseInit->Sector;
 
-      /* Erase first sector and wait for IT */
-      FLASH_Erase_Sector(pEraseInit->Sector, pEraseInit->Banks);
-    }
-  }
+			/* Erase first sector and wait for IT */
+			FLASH_Erase_Sector(pEraseInit->Sector, pEraseInit->Banks);
+		}
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -334,103 +326,90 @@ HAL_StatusTypeDef HAL_FLASHEx_Erase_IT(FLASH_EraseInitTypeDef *pEraseInit)
   */
 HAL_StatusTypeDef HAL_FLASHEx_OBProgram(FLASH_OBProgramInitTypeDef *pOBInit)
 {
-  HAL_StatusTypeDef status;
+	HAL_StatusTypeDef status;
 
-  /* Check the parameters */
-  assert_param(IS_OPTIONBYTE(pOBInit->OptionType));
+	/* Check the parameters */
+	assert_param(IS_OPTIONBYTE(pOBInit->OptionType));
 
-  /* Process Locked */
-  __HAL_LOCK(&pFlash);
+	/* Process Locked */
+	__HAL_LOCK(&pFlash);
 
-  /* Reset Error Code */
-  pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+	/* Reset Error Code */
+	pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
 
-  /* Current operation type */
-  pFlash.ProcedureOnGoing = FLASH_TYPEPROGRAM_OB;
+	/* Current operation type */
+	pFlash.ProcedureOnGoing = FLASH_TYPEPROGRAM_OB;
 
-  /* Wait for last operation to be completed */
-  status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+	/* Wait for last operation to be completed */
+	status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
 
-  if (status == HAL_OK)
-  {
-    /*Write protection configuration*/
-    if ((pOBInit->OptionType & OPTIONBYTE_WRP) != 0U)
-    {
-      assert_param(IS_WRPSTATE(pOBInit->WRPState));
+	if (status == HAL_OK) {
+		/*Write protection configuration*/
+		if ((pOBInit->OptionType & OPTIONBYTE_WRP) != 0U) {
+			assert_param(IS_WRPSTATE(pOBInit->WRPState));
 
-      if (pOBInit->WRPState == OB_WRPSTATE_ENABLE)
-      {
-        /* Enable write protection on the selected sectors */
-        FLASH_OB_EnableWRP(pOBInit->WRPSector, pOBInit->Banks);
-      }
-      else
-      {
-        /* Disable write protection on the selected sectors */
-        FLASH_OB_DisableWRP(pOBInit->WRPSector, pOBInit->Banks);
-      }
-    }
+			if (pOBInit->WRPState == OB_WRPSTATE_ENABLE) {
+				/* Enable write protection on the selected sectors */
+				FLASH_OB_EnableWRP(pOBInit->WRPSector, pOBInit->Banks);
+			} else {
+				/* Disable write protection on the selected sectors */
+				FLASH_OB_DisableWRP(pOBInit->WRPSector, pOBInit->Banks);
+			}
+		}
 
-    /* Product State configuration */
-    if ((pOBInit->OptionType & OPTIONBYTE_PROD_STATE) != 0U)
-    {
-      /* Configure the product state */
-      FLASH_OB_ProdStateConfig(pOBInit->ProductState);
-    }
+		/* Product State configuration */
+		if ((pOBInit->OptionType & OPTIONBYTE_PROD_STATE) != 0U) {
+			/* Configure the product state */
+			FLASH_OB_ProdStateConfig(pOBInit->ProductState);
+		}
 
-    /* User Configuration */
-    if ((pOBInit->OptionType & OPTIONBYTE_USER) != 0U)
-    {
-      /* Configure the user option bytes */
-      FLASH_OB_UserConfig(pOBInit->USERType, pOBInit->USERConfig, pOBInit->USERConfig2);
-    }
+		/* User Configuration */
+		if ((pOBInit->OptionType & OPTIONBYTE_USER) != 0U) {
+			/* Configure the user option bytes */
+			FLASH_OB_UserConfig(pOBInit->USERType, pOBInit->USERConfig, pOBInit->USERConfig2);
+		}
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-    /* Watermark secure configuration */
-    if ((pOBInit->OptionType & OPTIONBYTE_WMSEC) != 0U)
-    {
-      /* Configure the watermark-based secure area */
-      FLASH_OB_WMSECConfig(pOBInit->Banks, pOBInit->WMSecStartSector, pOBInit->WMSecEndSector);
-    }
+
+		/* Watermark secure configuration */
+		if ((pOBInit->OptionType & OPTIONBYTE_WMSEC) != 0U) {
+			/* Configure the watermark-based secure area */
+			FLASH_OB_WMSECConfig(pOBInit->Banks, pOBInit->WMSecStartSector, pOBInit->WMSecEndSector);
+		}
+
 #endif /* __ARM_FEATURE_CMSE */
 
-    /* Boot Address configuration */
-    if ((pOBInit->OptionType & OPTIONBYTE_BOOTADDR) != 0U)
-    {
-      FLASH_OB_BootAddrConfig(pOBInit->BootConfig, pOBInit->BootAddr);
-    }
+		/* Boot Address configuration */
+		if ((pOBInit->OptionType & OPTIONBYTE_BOOTADDR) != 0U)
+			FLASH_OB_BootAddrConfig(pOBInit->BootConfig, pOBInit->BootAddr);
 
-    /* Unique boot entry point configuration */
-    if ((pOBInit->OptionType & OPTIONBYTE_BOOT_LOCK) != 0U)
-    {
-      /* Configure the unique boot entry point */
-      FLASH_OB_BootLockConfig(pOBInit->BootConfig, pOBInit->BootLock);
-    }
+		/* Unique boot entry point configuration */
+		if ((pOBInit->OptionType & OPTIONBYTE_BOOT_LOCK) != 0U) {
+			/* Configure the unique boot entry point */
+			FLASH_OB_BootLockConfig(pOBInit->BootConfig, pOBInit->BootLock);
+		}
 
-    /* OTP Block Lock configuration */
-    if ((pOBInit->OptionType & OPTIONBYTE_OTP_LOCK) != 0U)
-    {
-      FLASH_OB_OTP_LockConfig(pOBInit->OTPBlockLock);
-    }
+		/* OTP Block Lock configuration */
+		if ((pOBInit->OptionType & OPTIONBYTE_OTP_LOCK) != 0U)
+			FLASH_OB_OTP_LockConfig(pOBInit->OTPBlockLock);
 
-    /* Hide Protection area configuration */
-    if ((pOBInit->OptionType & OPTIONBYTE_HDP) != 0U)
-    {
-      FLASH_OB_HDPConfig(pOBInit->Banks, pOBInit->HDPStartSector, pOBInit->HDPEndSector);
-    }
+		/* Hide Protection area configuration */
+		if ((pOBInit->OptionType & OPTIONBYTE_HDP) != 0U)
+			FLASH_OB_HDPConfig(pOBInit->Banks, pOBInit->HDPStartSector, pOBInit->HDPEndSector);
 
 #if defined(FLASH_EDATAR_EDATA_EN)
-    /* Flash high-cycle data area configuration */
-    if ((pOBInit->OptionType & OPTIONBYTE_EDATA) != 0U)
-    {
-      FLASH_OB_EDATAConfig(pOBInit->Banks, pOBInit->EDATASize);
-    }
+
+		/* Flash high-cycle data area configuration */
+		if ((pOBInit->OptionType & OPTIONBYTE_EDATA) != 0U)
+			FLASH_OB_EDATAConfig(pOBInit->Banks, pOBInit->EDATASize);
+
 #endif /* FLASH_EDATAR_EDATA_EN */
-  }
+	}
 
-  /* Process Unlocked */
-  __HAL_UNLOCK(&pFlash);
+	/* Process Unlocked */
+	__HAL_UNLOCK(&pFlash);
 
-  return status;
+	return status;
 }
 
 /**
@@ -444,50 +423,50 @@ HAL_StatusTypeDef HAL_FLASHEx_OBProgram(FLASH_OBProgramInitTypeDef *pOBInit)
   */
 void HAL_FLASHEx_OBGetConfig(FLASH_OBProgramInitTypeDef *pOBInit)
 {
-  pOBInit->OptionType = (OPTIONBYTE_USER | OPTIONBYTE_PROD_STATE);
+	pOBInit->OptionType = (OPTIONBYTE_USER | OPTIONBYTE_PROD_STATE);
 
-  /* Get Product State */
-  pOBInit->ProductState = FLASH_OB_GetProdState();
+	/* Get Product State */
+	pOBInit->ProductState = FLASH_OB_GetProdState();
 
-  /* Get the user option bytes */
-  FLASH_OB_GetUser(&(pOBInit->USERConfig), &(pOBInit->USERConfig2));
+	/* Get the user option bytes */
+	FLASH_OB_GetUser(&(pOBInit->USERConfig), &(pOBInit->USERConfig2));
 
-  if ((pOBInit->Banks == FLASH_BANK_1) || (pOBInit->Banks == FLASH_BANK_2))
-  {
-    /* Get write protection on the selected area */
-    pOBInit->OptionType |= OPTIONBYTE_WRP;
-    FLASH_OB_GetWRP(pOBInit->Banks, &(pOBInit->WRPState), &(pOBInit->WRPSector));
+	if ((pOBInit->Banks == FLASH_BANK_1) || (pOBInit->Banks == FLASH_BANK_2)) {
+		/* Get write protection on the selected area */
+		pOBInit->OptionType |= OPTIONBYTE_WRP;
+		FLASH_OB_GetWRP(pOBInit->Banks, &(pOBInit->WRPState), &(pOBInit->WRPSector));
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-    /* Get the configuration of the watermark secure area for the selected area */
-    pOBInit->OptionType |= OPTIONBYTE_WMSEC;
-    FLASH_OB_GetWMSEC(pOBInit->Banks, &(pOBInit->WMSecStartSector), &(pOBInit->WMSecEndSector));
+		/* Get the configuration of the watermark secure area for the selected area */
+		pOBInit->OptionType |= OPTIONBYTE_WMSEC;
+		FLASH_OB_GetWMSEC(pOBInit->Banks, &(pOBInit->WMSecStartSector), &(pOBInit->WMSecEndSector));
 #endif /* __ARM_FEATURE_CMSE */
 
-    /* Get the configuration of the hide protection for the selected area */
-    pOBInit->OptionType |= OPTIONBYTE_HDP;
-    FLASH_OB_GetHDP(pOBInit->Banks, &(pOBInit->HDPStartSector), &(pOBInit->HDPEndSector));
+		/* Get the configuration of the hide protection for the selected area */
+		pOBInit->OptionType |= OPTIONBYTE_HDP;
+		FLASH_OB_GetHDP(pOBInit->Banks, &(pOBInit->HDPStartSector), &(pOBInit->HDPEndSector));
 #if defined (FLASH_EDATAR_EDATA_EN)
-    /* Get the Flash high-cycle data configuration for the selected area */
-    pOBInit->OptionType |= OPTIONBYTE_EDATA;
-    FLASH_OB_GetEDATA(pOBInit->Banks, &(pOBInit->EDATASize));
+		/* Get the Flash high-cycle data configuration for the selected area */
+		pOBInit->OptionType |= OPTIONBYTE_EDATA;
+		FLASH_OB_GetEDATA(pOBInit->Banks, &(pOBInit->EDATASize));
 #endif /* FLASH_EDATAR_EDATA_EN */
-  }
+	}
 
-  /* Get boot configuration */
+	/* Get boot configuration */
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  if ((pOBInit->BootConfig == OB_BOOT_NS) || (pOBInit->BootConfig == OB_BOOT_SEC))
-#else
-  if (pOBInit->BootConfig == OB_BOOT_NS)
-#endif /* __ARM_FEATURE_CMSE */
-  {
-    pOBInit->OptionType |= OPTIONBYTE_BOOTADDR | OPTIONBYTE_BOOT_LOCK;
-    FLASH_OB_GetBootConfig(pOBInit->BootConfig, &(pOBInit->BootAddr), &(pOBInit->BootLock));
-  }
 
-  /* Get OTP Block Lock */
-  pOBInit->OptionType |= OPTIONBYTE_OTP_LOCK;
-  pOBInit->OTPBlockLock = FLASH_OB_OTP_GetLock();
+	if ((pOBInit->BootConfig == OB_BOOT_NS) || (pOBInit->BootConfig == OB_BOOT_SEC))
+#else
+	if (pOBInit->BootConfig == OB_BOOT_NS)
+#endif /* __ARM_FEATURE_CMSE */
+	{
+		pOBInit->OptionType |= OPTIONBYTE_BOOTADDR | OPTIONBYTE_BOOT_LOCK;
+		FLASH_OB_GetBootConfig(pOBInit->BootConfig, &(pOBInit->BootAddr), &(pOBInit->BootLock));
+	}
+
+	/* Get OTP Block Lock */
+	pOBInit->OptionType |= OPTIONBYTE_OTP_LOCK;
+	pOBInit->OTPBlockLock = FLASH_OB_OTP_GetLock();
 }
 
 #if defined (FLASH_SR_OBKERR)
@@ -497,37 +476,35 @@ void HAL_FLASHEx_OBGetConfig(FLASH_OBProgramInitTypeDef *pOBInit)
   */
 HAL_StatusTypeDef HAL_FLASHEx_OBK_Unlock(void)
 {
-  HAL_StatusTypeDef status = HAL_OK;
+	HAL_StatusTypeDef status = HAL_OK;
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  if (READ_BIT(FLASH->SECOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U)
-  {
-    /* Authorize the FLASH OBK Register access */
-    WRITE_REG(FLASH->SECOBKKEYR, FLASH_OBK_KEY1);
-    WRITE_REG(FLASH->SECOBKKEYR, FLASH_OBK_KEY2);
 
-    /* Verify Flash OBK Register is unlocked */
-    if (READ_BIT(FLASH->SECOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U)
-    {
-      status = HAL_ERROR;
-    }
-  }
+	if (READ_BIT(FLASH->SECOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U) {
+		/* Authorize the FLASH OBK Register access */
+		WRITE_REG(FLASH->SECOBKKEYR, FLASH_OBK_KEY1);
+		WRITE_REG(FLASH->SECOBKKEYR, FLASH_OBK_KEY2);
+
+		/* Verify Flash OBK Register is unlocked */
+		if (READ_BIT(FLASH->SECOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U)
+			status = HAL_ERROR;
+	}
+
 #else
-  if (READ_BIT(FLASH->NSOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U)
-  {
-    /* Authorize the FLASH OBK Register access */
-    WRITE_REG(FLASH->NSOBKKEYR, FLASH_OBK_KEY1);
-    WRITE_REG(FLASH->NSOBKKEYR, FLASH_OBK_KEY2);
 
-    /* Verify Flash OBK Register is unlocked */
-    if (READ_BIT(FLASH->NSOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U)
-    {
-      status = HAL_ERROR;
-    }
-  }
+	if (READ_BIT(FLASH->NSOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U) {
+		/* Authorize the FLASH OBK Register access */
+		WRITE_REG(FLASH->NSOBKKEYR, FLASH_OBK_KEY1);
+		WRITE_REG(FLASH->NSOBKKEYR, FLASH_OBK_KEY2);
+
+		/* Verify Flash OBK Register is unlocked */
+		if (READ_BIT(FLASH->NSOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U)
+			status = HAL_ERROR;
+	}
+
 #endif /* __ARM_FEATURE_CMSE */
 
-  return status;
+	return status;
 }
 
 /**
@@ -536,29 +513,27 @@ HAL_StatusTypeDef HAL_FLASHEx_OBK_Unlock(void)
   */
 HAL_StatusTypeDef HAL_FLASHEx_OBK_Lock(void)
 {
-  HAL_StatusTypeDef status = HAL_ERROR;
+	HAL_StatusTypeDef status = HAL_ERROR;
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  /* Set the LOCK Bit to lock the FLASH OBK Register access */
-  SET_BIT(FLASH->SECOBKCFGR, FLASH_OBKCFGR_LOCK);
+	/* Set the LOCK Bit to lock the FLASH OBK Register access */
+	SET_BIT(FLASH->SECOBKCFGR, FLASH_OBKCFGR_LOCK);
 
-  /* verify Flash is locked */
-  if (READ_BIT(FLASH->SECOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U)
-  {
-    status = HAL_OK;
-  }
+	/* verify Flash is locked */
+	if (READ_BIT(FLASH->SECOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U)
+		status = HAL_OK;
+
 #else
-  /* Set the LOCK Bit to lock the FLASH OBK Register access */
-  SET_BIT(FLASH->NSOBKCFGR, FLASH_OBKCFGR_LOCK);
+	/* Set the LOCK Bit to lock the FLASH OBK Register access */
+	SET_BIT(FLASH->NSOBKCFGR, FLASH_OBKCFGR_LOCK);
 
-  /* Verify Flash OBK is locked */
-  if (READ_BIT(FLASH->NSOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U)
-  {
-    status = HAL_OK;
-  }
+	/* Verify Flash OBK is locked */
+	if (READ_BIT(FLASH->NSOBKCFGR, FLASH_OBKCFGR_LOCK) != 0U)
+		status = HAL_OK;
+
 #endif /* __ARM_FEATURE_CMSE */
 
-  return status;
+	return status;
 }
 
 /**
@@ -570,28 +545,27 @@ HAL_StatusTypeDef HAL_FLASHEx_OBK_Lock(void)
   */
 HAL_StatusTypeDef HAL_FLASHEx_OBK_Swap(uint32_t SwapOffset)
 {
-  HAL_StatusTypeDef status;
-  __IO uint32_t *reg_obkcfgr;
+	HAL_StatusTypeDef status;
+	__IO uint32_t *reg_obkcfgr;
 
-  /* Wait for last operation to be completed */
-  status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+	/* Wait for last operation to be completed */
+	status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
 
-  if (status == HAL_OK)
-  {
-    /* Access to SECOBKCFGR or NSOBKCFGR registers depends on operation type */
-    reg_obkcfgr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECOBKCFGR) : &(FLASH_NS->NSOBKCFGR);
+	if (status == HAL_OK) {
+		/* Access to SECOBKCFGR or NSOBKCFGR registers depends on operation type */
+		reg_obkcfgr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECOBKCFGR) : &(FLASH_NS->NSOBKCFGR);
 
-    /* Set OBK swap offset */
-    MODIFY_REG((*reg_obkcfgr), FLASH_OBKCFGR_SWAP_OFFSET, (SwapOffset << FLASH_OBKCFGR_SWAP_OFFSET_Pos));
+		/* Set OBK swap offset */
+		MODIFY_REG((*reg_obkcfgr), FLASH_OBKCFGR_SWAP_OFFSET, (SwapOffset << FLASH_OBKCFGR_SWAP_OFFSET_Pos));
 
-    /* Set OBK swap request */
-    SET_BIT((*reg_obkcfgr), FLASH_OBKCFGR_SWAP_SECT_REQ);
+		/* Set OBK swap request */
+		SET_BIT((*reg_obkcfgr), FLASH_OBKCFGR_SWAP_SECT_REQ);
 
-    /* Wait for last operation to be completed */
-    status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
-  }
+		/* Wait for last operation to be completed */
+		status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+	}
 
-  return status;
+	return status;
 }
 /**
   * @brief  Swap the FLASH Option Bytes Keys (OBK) with interrupt enabled
@@ -602,28 +576,27 @@ HAL_StatusTypeDef HAL_FLASHEx_OBK_Swap(uint32_t SwapOffset)
   */
 HAL_StatusTypeDef HAL_FLASHEx_OBK_Swap_IT(uint32_t SwapOffset)
 {
-  HAL_StatusTypeDef status;
-  __IO uint32_t *reg_obkcfgr;
+	HAL_StatusTypeDef status;
+	__IO uint32_t *reg_obkcfgr;
 
-  /* Wait for last operation to be completed */
-  status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+	/* Wait for last operation to be completed */
+	status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
 
-  if (status == HAL_OK)
-  {
-    /* Access to SECOBKCFGR or NSOBKCFGR registers depends on operation type */
-    reg_obkcfgr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECOBKCFGR) : &(FLASH_NS->NSOBKCFGR);
+	if (status == HAL_OK) {
+		/* Access to SECOBKCFGR or NSOBKCFGR registers depends on operation type */
+		reg_obkcfgr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECOBKCFGR) : &(FLASH_NS->NSOBKCFGR);
 
-  /* Enable End of Operation and Error interrupts */
-  (*reg_obkcfgr) |= (FLASH_IT_EOP | FLASH_IT_WRPERR | FLASH_IT_PGSERR | FLASH_IT_STRBERR | FLASH_IT_INCERR);
+		/* Enable End of Operation and Error interrupts */
+		(*reg_obkcfgr) |= (FLASH_IT_EOP | FLASH_IT_WRPERR | FLASH_IT_PGSERR | FLASH_IT_STRBERR | FLASH_IT_INCERR);
 
-    /* Set OBK swap offset */
-    MODIFY_REG((*reg_obkcfgr), FLASH_OBKCFGR_SWAP_OFFSET, (SwapOffset << FLASH_OBKCFGR_SWAP_OFFSET_Pos));
+		/* Set OBK swap offset */
+		MODIFY_REG((*reg_obkcfgr), FLASH_OBKCFGR_SWAP_OFFSET, (SwapOffset << FLASH_OBKCFGR_SWAP_OFFSET_Pos));
 
-    /* Set OBK swap request */
-    SET_BIT((*reg_obkcfgr), FLASH_OBKCFGR_SWAP_SECT_REQ);
-  }
+		/* Set OBK swap request */
+		SET_BIT((*reg_obkcfgr), FLASH_OBKCFGR_SWAP_SECT_REQ);
+	}
 
-  return status;
+	return status;
 }
 #endif /* FLASH_SR_OBKERR */
 
@@ -636,21 +609,21 @@ HAL_StatusTypeDef HAL_FLASHEx_OBK_Swap_IT(uint32_t SwapOffset)
   */
 void HAL_FLASHEx_GetOperation(FLASH_OperationTypeDef *pFlashOperation)
 {
-  uint32_t opsr_reg = FLASH->OPSR;
+	uint32_t opsr_reg = FLASH->OPSR;
 
-  /* Get Flash operation Type */
-  pFlashOperation->OperationType = opsr_reg & FLASH_OPSR_CODE_OP;
+	/* Get Flash operation Type */
+	pFlashOperation->OperationType = opsr_reg & FLASH_OPSR_CODE_OP;
 
-  /* Get Flash operation memory */
+	/* Get Flash operation memory */
 #if defined (FLASH_EDATAR_EDATA_EN)
-  pFlashOperation->FlashArea = opsr_reg & (FLASH_OPSR_DATA_OP | FLASH_OPSR_BK_OP | \
-                                           FLASH_OPSR_SYSF_OP | FLASH_OPSR_OTP_OP);
+	pFlashOperation->FlashArea = opsr_reg & (FLASH_OPSR_DATA_OP | FLASH_OPSR_BK_OP | \
+				     FLASH_OPSR_SYSF_OP | FLASH_OPSR_OTP_OP);
 #else
-  pFlashOperation->FlashArea = opsr_reg & (FLASH_OPSR_BK_OP | FLASH_OPSR_SYSF_OP | \
-                                           FLASH_OPSR_OTP_OP);
+	pFlashOperation->FlashArea = opsr_reg & (FLASH_OPSR_BK_OP | FLASH_OPSR_SYSF_OP | \
+				     FLASH_OPSR_OTP_OP);
 #endif /* FLASH_EDATAR_EDATA_EN */
-  /* Get Flash operation address */
-  pFlashOperation->Address = opsr_reg & FLASH_OPSR_ADDR_OP;
+	/* Get Flash operation address */
+	pFlashOperation->Address = opsr_reg & FLASH_OPSR_ADDR_OP;
 }
 
 /**
@@ -677,64 +650,52 @@ void HAL_FLASHEx_GetOperation(FLASH_OperationTypeDef *pFlashOperation)
   */
 HAL_StatusTypeDef HAL_FLASHEx_ConfigBBAttributes(const FLASH_BBAttributesTypeDef *pBBAttributes)
 {
-  HAL_StatusTypeDef status;
-  uint8_t index;
-  __IO uint32_t *reg;
+	HAL_StatusTypeDef status;
+	uint8_t index;
+	__IO uint32_t *reg;
 
-  /* Check the parameters */
-  assert_param(IS_FLASH_BANK_EXCLUSIVE(pBBAttributes->Bank));
-  assert_param(IS_FLASH_BB_EXCLUSIVE(pBBAttributes->BBAttributesType));
+	/* Check the parameters */
+	assert_param(IS_FLASH_BANK_EXCLUSIVE(pBBAttributes->Bank));
+	assert_param(IS_FLASH_BB_EXCLUSIVE(pBBAttributes->BBAttributesType));
 
-  /* Wait for last operation to be completed */
-  status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+	/* Wait for last operation to be completed */
+	status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
 
-  if (status == HAL_OK)
-  {
-    /* Set the first Block-Based register to write */
+	if (status == HAL_OK) {
+		/* Set the first Block-Based register to write */
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-    if (pBBAttributes->BBAttributesType == FLASH_BB_SEC)
-    {
-      if (pBBAttributes->Bank == FLASH_BANK_1)
-      {
-        reg = &(FLASH->SECBB1R1);
-      }
-      else
-      {
-        reg = &(FLASH->SECBB2R1);
-      }
-    }
-    else
+		if (pBBAttributes->BBAttributesType == FLASH_BB_SEC) {
+			if (pBBAttributes->Bank == FLASH_BANK_1)
+				reg = &(FLASH->SECBB1R1);
+			else
+				reg = &(FLASH->SECBB2R1);
+		} else
 #endif /* __ARM_FEATURE_CMSE */
-    {
-      if (pBBAttributes->Bank == FLASH_BANK_1)
-      {
-        reg = &(FLASH->PRIVBB1R1);
-      }
-      else
-      {
-        reg = &(FLASH->PRIVBB2R1);
-      }
-    }
+		{
+			if (pBBAttributes->Bank == FLASH_BANK_1)
+				reg = &(FLASH->PRIVBB1R1);
+			else
+				reg = &(FLASH->PRIVBB2R1);
+		}
 
-    /* Modify the register values and check that new attributes are taken in account */
-    for (index = 0; index < FLASH_BLOCKBASED_NB_REG; index++)
-    {
-      *reg = pBBAttributes->BBAttributes_array[index] & FLASH_PRIVBBR_PRIVBB;
-      if ((*reg) != (pBBAttributes->BBAttributes_array[index] & FLASH_PRIVBBR_PRIVBB))
-      {
-        status = HAL_ERROR;
-      }
-      reg++;
-    }
+		/* Modify the register values and check that new attributes are taken in account */
+		for (index = 0; index < FLASH_BLOCKBASED_NB_REG; index++) {
+			*reg = pBBAttributes->BBAttributes_array[index] & FLASH_PRIVBBR_PRIVBB;
 
-    /* ISB instruction is called to be sure next instructions are performed with correct attributes */
-    __ISB();
-  }
+			if ((*reg) != (pBBAttributes->BBAttributes_array[index] & FLASH_PRIVBBR_PRIVBB))
+				status = HAL_ERROR;
 
-  /* Process Unlocked */
-  __HAL_UNLOCK(&pFlash);
+			reg++;
+		}
 
-  return status;
+		/* ISB instruction is called to be sure next instructions are performed with correct attributes */
+		__ISB();
+	}
+
+	/* Process Unlocked */
+	__HAL_UNLOCK(&pFlash);
+
+	return status;
 }
 
 /**
@@ -751,45 +712,35 @@ HAL_StatusTypeDef HAL_FLASHEx_ConfigBBAttributes(const FLASH_BBAttributesTypeDef
   */
 void HAL_FLASHEx_GetConfigBBAttributes(FLASH_BBAttributesTypeDef *pBBAttributes)
 {
-  uint8_t index;
-  __IO uint32_t *reg;
+	uint8_t index;
+	__IO uint32_t *reg;
 
-  /* Check the parameters */
-  assert_param(IS_FLASH_BANK_EXCLUSIVE(pBBAttributes->Bank));
-  assert_param(IS_FLASH_BB_EXCLUSIVE(pBBAttributes->BBAttributesType));
+	/* Check the parameters */
+	assert_param(IS_FLASH_BANK_EXCLUSIVE(pBBAttributes->Bank));
+	assert_param(IS_FLASH_BB_EXCLUSIVE(pBBAttributes->BBAttributesType));
 
-  /* Set the first Block-Based register to read */
+	/* Set the first Block-Based register to read */
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  if (pBBAttributes->BBAttributesType == FLASH_BB_SEC)
-  {
-    if (pBBAttributes->Bank == FLASH_BANK_1)
-    {
-      reg = &(FLASH->SECBB1R1);
-    }
-    else
-    {
-      reg = &(FLASH->SECBB2R1);
-    }
-  }
-  else
-#endif /* __ARM_FEATURE_CMSE */
-  {
-    if (pBBAttributes->Bank == FLASH_BANK_1)
-    {
-      reg = &(FLASH->PRIVBB1R1);
-    }
-    else
-    {
-      reg = &(FLASH->PRIVBB2R1);
-    }
-  }
 
-  /* Read the register values */
-  for (index = 0; index < FLASH_BLOCKBASED_NB_REG; index++)
-  {
-    pBBAttributes->BBAttributes_array[index] = (*reg) & FLASH_PRIVBBR_PRIVBB;
-    reg++;
-  }
+	if (pBBAttributes->BBAttributesType == FLASH_BB_SEC) {
+		if (pBBAttributes->Bank == FLASH_BANK_1)
+			reg = &(FLASH->SECBB1R1);
+		else
+			reg = &(FLASH->SECBB2R1);
+	} else
+#endif /* __ARM_FEATURE_CMSE */
+	{
+		if (pBBAttributes->Bank == FLASH_BANK_1)
+			reg = &(FLASH->PRIVBB1R1);
+		else
+			reg = &(FLASH->PRIVBB2R1);
+	}
+
+	/* Read the register values */
+	for (index = 0; index < FLASH_BLOCKBASED_NB_REG; index++) {
+		pBBAttributes->BBAttributes_array[index] = (*reg) & FLASH_PRIVBBR_PRIVBB;
+		reg++;
+	}
 }
 
 /**
@@ -806,12 +757,12 @@ void HAL_FLASHEx_GetConfigBBAttributes(FLASH_BBAttributesTypeDef *pBBAttributes)
   */
 void HAL_FLASHEx_ConfigPrivMode(uint32_t PrivMode)
 {
-  /* Check the parameters */
-  assert_param(IS_FLASH_CFGPRIVMODE(PrivMode));
+	/* Check the parameters */
+	assert_param(IS_FLASH_CFGPRIVMODE(PrivMode));
 #if defined (FLASH_PRIVCFGR_SPRIV)
-  MODIFY_REG(FLASH->PRIVCFGR, (FLASH_PRIVCFGR_SPRIV | FLASH_PRIVCFGR_NSPRIV), PrivMode);
+	MODIFY_REG(FLASH->PRIVCFGR, (FLASH_PRIVCFGR_SPRIV | FLASH_PRIVCFGR_NSPRIV), PrivMode);
 #else
-  MODIFY_REG(FLASH->PRIVCFGR, FLASH_PRIVCFGR_NSPRIV, PrivMode);
+	MODIFY_REG(FLASH->PRIVCFGR, FLASH_PRIVCFGR_NSPRIV, PrivMode);
 #endif /* FLASH_PRIVCFGR_SPRIV */
 }
 
@@ -828,9 +779,9 @@ void HAL_FLASHEx_ConfigPrivMode(uint32_t PrivMode)
 uint32_t HAL_FLASHEx_GetPrivMode(void)
 {
 #if defined (FLASH_PRIVCFGR_SPRIV)
-  return (FLASH->PRIVCFGR & (FLASH_PRIVCFGR_SPRIV | FLASH_PRIVCFGR_NSPRIV));
+	return (FLASH->PRIVCFGR & (FLASH_PRIVCFGR_SPRIV | FLASH_PRIVCFGR_NSPRIV));
 #else
-  return (FLASH->PRIVCFGR & FLASH_PRIVCFGR_NSPRIV);
+	return (FLASH->PRIVCFGR & FLASH_PRIVCFGR_NSPRIV);
 #endif /* FLASH_PRIVCFGR_SPRIV */
 }
 
@@ -847,26 +798,24 @@ uint32_t HAL_FLASHEx_GetPrivMode(void)
   */
 HAL_StatusTypeDef HAL_FLASHEx_ConfigSecInversion(uint32_t SecInvState)
 {
-  HAL_StatusTypeDef status;
+	HAL_StatusTypeDef status;
 
-  /* Check the parameters */
-  assert_param(IS_FLASH_CFGSECINV(SecInvState));
+	/* Check the parameters */
+	assert_param(IS_FLASH_CFGSECINV(SecInvState));
 
-  /* Process Locked */
-  __HAL_LOCK(&pFlash);
+	/* Process Locked */
+	__HAL_LOCK(&pFlash);
 
-  /* Wait for last operation to be completed */
-  status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
+	/* Wait for last operation to be completed */
+	status = FLASH_WaitForLastOperation(FLASH_TIMEOUT_VALUE);
 
-  if (status == HAL_OK)
-  {
-    MODIFY_REG(FLASH->SECCR, FLASH_CR_INV, SecInvState);
-  }
+	if (status == HAL_OK)
+		MODIFY_REG(FLASH->SECCR, FLASH_CR_INV, SecInvState);
 
-  /* Process Unlocked */
-  __HAL_UNLOCK(&pFlash);
+	/* Process Unlocked */
+	__HAL_UNLOCK(&pFlash);
 
-  return status;
+	return status;
 }
 
 /**
@@ -879,7 +828,7 @@ HAL_StatusTypeDef HAL_FLASHEx_ConfigSecInversion(uint32_t SecInvState)
   */
 uint32_t HAL_FLASHEx_GetSecInversion(void)
 {
-  return (FLASH->SECCR & FLASH_CR_INV);
+	return (FLASH->SECCR & FLASH_CR_INV);
 }
 #endif /* __ARM_FEATURE_CMSE */
 
@@ -898,25 +847,19 @@ uint32_t HAL_FLASHEx_GetSecInversion(void)
   */
 HAL_StatusTypeDef HAL_FLASHEx_ConfigHDPExtension(const FLASH_HDPExtensionTypeDef *pHDPExtension)
 {
-  /* Check the parameters */
-  assert_param(IS_FLASH_BANK(pHDPExtension->Banks));
-  assert_param(IS_FLASH_SECTOR(pHDPExtension->NbSectors));
+	/* Check the parameters */
+	assert_param(IS_FLASH_BANK(pHDPExtension->Banks));
+	assert_param(IS_FLASH_SECTOR(pHDPExtension->NbSectors));
 
-  /* Set the HDP extension register */
-  if (pHDPExtension->Banks == FLASH_BANK_1)
-  {
-    MODIFY_REG(FLASH->HDPEXTR, FLASH_HDPEXTR_HDP1_EXT, pHDPExtension->NbSectors);
-  }
-  else if (pHDPExtension->Banks == FLASH_BANK_2)
-  {
-    MODIFY_REG(FLASH->HDPEXTR, FLASH_HDPEXTR_HDP2_EXT, (pHDPExtension->NbSectors << FLASH_HDPEXTR_HDP2_EXT_Pos));
-  }
-  else
-  {
-    FLASH->HDPEXTR = (pHDPExtension->NbSectors << FLASH_HDPEXTR_HDP2_EXT_Pos) | pHDPExtension->NbSectors;
-  }
+	/* Set the HDP extension register */
+	if (pHDPExtension->Banks == FLASH_BANK_1)
+		MODIFY_REG(FLASH->HDPEXTR, FLASH_HDPEXTR_HDP1_EXT, pHDPExtension->NbSectors);
+	else if (pHDPExtension->Banks == FLASH_BANK_2)
+		MODIFY_REG(FLASH->HDPEXTR, FLASH_HDPEXTR_HDP2_EXT, (pHDPExtension->NbSectors << FLASH_HDPEXTR_HDP2_EXT_Pos));
+	else
+		FLASH->HDPEXTR = (pHDPExtension->NbSectors << FLASH_HDPEXTR_HDP2_EXT_Pos) | pHDPExtension->NbSectors;
 
-  return HAL_OK;
+	return HAL_OK;
 }
 
 /**
@@ -944,39 +887,34 @@ HAL_StatusTypeDef HAL_FLASHEx_ConfigHDPExtension(const FLASH_HDPExtensionTypeDef
   */
 static void FLASH_MassErase(uint32_t Banks)
 {
-  __IO uint32_t *reg_cr;
+	__IO uint32_t *reg_cr;
 
-  /* Check the parameters */
-  assert_param(IS_FLASH_BANK(Banks));
+	/* Check the parameters */
+	assert_param(IS_FLASH_BANK(Banks));
 
-  /* Access to SECCR or NSCR registers depends on operation type */
+	/* Access to SECCR or NSCR registers depends on operation type */
 #if defined (FLASH_OPTSR2_TZEN)
-  reg_cr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECCR) : &(FLASH_NS->NSCR);
+	reg_cr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECCR) : &(FLASH_NS->NSCR);
 #else
-  reg_cr = &(FLASH_NS->NSCR);
+	reg_cr = &(FLASH_NS->NSCR);
 #endif /* FLASH_OPTSR2_TZEN */
 
-  /* Flash Mass Erase */
-  if ((Banks & FLASH_BANK_BOTH) == FLASH_BANK_BOTH)
-  {
-    /* Set Mass Erase Bit */
-    SET_BIT((*reg_cr), FLASH_CR_MER | FLASH_CR_START);
-  }
-  else
-  {
-    /* Proceed to erase Flash Bank  */
-    if ((Banks & FLASH_BANK_1) == FLASH_BANK_1)
-    {
-      /* Erase Bank1 */
-      MODIFY_REG((*reg_cr), (FLASH_CR_BKSEL | FLASH_CR_BER | FLASH_CR_START), (FLASH_CR_BER | FLASH_CR_START));
-    }
+	/* Flash Mass Erase */
+	if ((Banks & FLASH_BANK_BOTH) == FLASH_BANK_BOTH) {
+		/* Set Mass Erase Bit */
+		SET_BIT((*reg_cr), FLASH_CR_MER | FLASH_CR_START);
+	} else {
+		/* Proceed to erase Flash Bank  */
+		if ((Banks & FLASH_BANK_1) == FLASH_BANK_1) {
+			/* Erase Bank1 */
+			MODIFY_REG((*reg_cr), (FLASH_CR_BKSEL | FLASH_CR_BER | FLASH_CR_START), (FLASH_CR_BER | FLASH_CR_START));
+		}
 
-    if ((Banks & FLASH_BANK_2) == FLASH_BANK_2)
-    {
-      /* Erase Bank2 */
-      SET_BIT((*reg_cr), (FLASH_CR_BER | FLASH_CR_BKSEL | FLASH_CR_START));
-    }
-  }
+		if ((Banks & FLASH_BANK_2) == FLASH_BANK_2) {
+			/* Erase Bank2 */
+			SET_BIT((*reg_cr), (FLASH_CR_BER | FLASH_CR_BKSEL | FLASH_CR_START));
+		}
+	}
 }
 
 /**
@@ -991,33 +929,30 @@ static void FLASH_MassErase(uint32_t Banks)
   */
 void FLASH_Erase_Sector(uint32_t Sector, uint32_t Banks)
 {
-  __IO uint32_t *reg_cr;
+	__IO uint32_t *reg_cr;
 
-  /* Check the parameters */
-  assert_param(IS_FLASH_SECTOR(Sector));
-  assert_param(IS_FLASH_BANK_EXCLUSIVE(Banks));
+	/* Check the parameters */
+	assert_param(IS_FLASH_SECTOR(Sector));
+	assert_param(IS_FLASH_BANK_EXCLUSIVE(Banks));
 
-  /* Access to SECCR or NSCR registers depends on operation type */
+	/* Access to SECCR or NSCR registers depends on operation type */
 #if defined (FLASH_OPTSR2_TZEN)
-  reg_cr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECCR) : &(FLASH_NS->NSCR);
+	reg_cr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECCR) : &(FLASH_NS->NSCR);
 #else
-  reg_cr = &(FLASH_NS->NSCR);
+	reg_cr = &(FLASH_NS->NSCR);
 #endif /* FLASH_OPTSR2_TZEN */
 
-  if ((Banks & FLASH_BANK_1) == FLASH_BANK_1)
-  {
-    /* Reset Sector Number for Bank1 */
-    (*reg_cr) &= ~(FLASH_CR_SNB | FLASH_CR_BKSEL);
+	if ((Banks & FLASH_BANK_1) == FLASH_BANK_1) {
+		/* Reset Sector Number for Bank1 */
+		(*reg_cr) &= ~(FLASH_CR_SNB | FLASH_CR_BKSEL);
 
-    (*reg_cr) |= (FLASH_CR_SER | (Sector << FLASH_CR_SNB_Pos) | FLASH_CR_START);
-  }
-  else
-  {
-    /* Reset Sector Number for Bank2 */
-    (*reg_cr) &= ~(FLASH_CR_SNB);
+		(*reg_cr) |= (FLASH_CR_SER | (Sector << FLASH_CR_SNB_Pos) | FLASH_CR_START);
+	} else {
+		/* Reset Sector Number for Bank2 */
+		(*reg_cr) &= ~(FLASH_CR_SNB);
 
-    (*reg_cr) |= (FLASH_CR_SER | FLASH_CR_BKSEL | (Sector << FLASH_CR_SNB_Pos) | FLASH_CR_START);
-  }
+		(*reg_cr) |= (FLASH_CR_SER | FLASH_CR_BKSEL | (Sector << FLASH_CR_SNB_Pos) | FLASH_CR_START);
+	}
 }
 
 #if defined (FLASH_SR_OBKERR)
@@ -1027,13 +962,13 @@ void FLASH_Erase_Sector(uint32_t Sector, uint32_t Banks)
   */
 static void FLASH_OBKErase()
 {
-  __IO uint32_t *reg_obkcfgr;
+	__IO uint32_t *reg_obkcfgr;
 
-  /* Access to SECOBKCFGR or NSOBKCFGR registers depends on operation type */
-  reg_obkcfgr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECOBKCFGR) : &(FLASH_NS->NSOBKCFGR);
+	/* Access to SECOBKCFGR or NSOBKCFGR registers depends on operation type */
+	reg_obkcfgr = IS_FLASH_SECURE_OPERATION() ? &(FLASH->SECOBKCFGR) : &(FLASH_NS->NSOBKCFGR);
 
-  /* Set OBK Erase Bit */
-  SET_BIT((*reg_obkcfgr), FLASH_OBKCFGR_ALT_SECT_ERASE);
+	/* Set OBK Erase Bit */
+	SET_BIT((*reg_obkcfgr), FLASH_OBKCFGR_ALT_SECT_ERASE);
 }
 #endif /* FLASH_SR_OBKERR */
 
@@ -1052,49 +987,48 @@ static void FLASH_OBKErase()
   */
 static void FLASH_OB_EnableWRP(uint64_t WRPSector, uint32_t Banks)
 {
-  /* Check the parameters */
-  assert_param(IS_FLASH_BANK(Banks));
+	/* Check the parameters */
+	assert_param(IS_FLASH_BANK(Banks));
 #if defined(OB_WRP_SECTOR_128TO131)
-  uint32_t WRPSector_Group1 = (uint32_t)(WRPSector & 0xFFFFFFFF);
-  uint32_t WRPSector_Group2 = (uint32_t)((WRPSector >> 32) & 0xFFFFFFFF);
-  if ((Banks & FLASH_BANK_1) == FLASH_BANK_1)
-  {
-    if (WRPSector_Group1 != 0)
-    {
-        /* Enable Write Protection for bank 1 Group1 */
-        FLASH->WRP11R_PRG &= (~(WRPSector_Group1 & FLASH_WRPR_WRPSG));
-    }
-    if (WRPSector_Group2 != 0)
-    {
-        /* Enable Write Protection for bank 1 Group2 */
-        FLASH->WRP12R_PRG &= (~(WRPSector_Group2 & FLASH_WRPR_WRPSG));
-    }
-  }
-  if ((Banks & FLASH_BANK_2) == FLASH_BANK_2)
-  {
-    if (WRPSector_Group1 != 0)
-    {
-        /* Enable Write Protection for bank 2 Group1 */
-        FLASH->WRP21R_PRG &= (~(WRPSector_Group1 & FLASH_WRPR_WRPSG));
-    }
-    if (WRPSector_Group2 != 0)
-    {
-        /* Enable Write Protection for bank 2 Group2 */
-        FLASH->WRP22R_PRG &= (~(WRPSector_Group2 & FLASH_WRPR_WRPSG));
-    }
-  }
-#else
-  if ((Banks & FLASH_BANK_1) == FLASH_BANK_1)
-  {
-    /* Enable Write Protection for bank 1 */
-    FLASH->WRP1R_PRG &= (~((uint32_t)(WRPSector & FLASH_WRPR_WRPSG)));
-  }
+	uint32_t WRPSector_Group1 = (uint32_t)(WRPSector & 0xFFFFFFFF);
+	uint32_t WRPSector_Group2 = (uint32_t)((WRPSector >> 32) & 0xFFFFFFFF);
 
-  if ((Banks & FLASH_BANK_2) == FLASH_BANK_2)
-  {
-    /* Enable Write Protection for bank 2 */
-    FLASH->WRP2R_PRG &= (~((uint32_t)(WRPSector & FLASH_WRPR_WRPSG)));
-  }
+	if ((Banks & FLASH_BANK_1) == FLASH_BANK_1) {
+		if (WRPSector_Group1 != 0) {
+			/* Enable Write Protection for bank 1 Group1 */
+			FLASH->WRP11R_PRG &= (~(WRPSector_Group1 & FLASH_WRPR_WRPSG));
+		}
+
+		if (WRPSector_Group2 != 0) {
+			/* Enable Write Protection for bank 1 Group2 */
+			FLASH->WRP12R_PRG &= (~(WRPSector_Group2 & FLASH_WRPR_WRPSG));
+		}
+	}
+
+	if ((Banks & FLASH_BANK_2) == FLASH_BANK_2) {
+		if (WRPSector_Group1 != 0) {
+			/* Enable Write Protection for bank 2 Group1 */
+			FLASH->WRP21R_PRG &= (~(WRPSector_Group1 & FLASH_WRPR_WRPSG));
+		}
+
+		if (WRPSector_Group2 != 0) {
+			/* Enable Write Protection for bank 2 Group2 */
+			FLASH->WRP22R_PRG &= (~(WRPSector_Group2 & FLASH_WRPR_WRPSG));
+		}
+	}
+
+#else
+
+	if ((Banks & FLASH_BANK_1) == FLASH_BANK_1) {
+		/* Enable Write Protection for bank 1 */
+		FLASH->WRP1R_PRG &= (~((uint32_t)(WRPSector & FLASH_WRPR_WRPSG)));
+	}
+
+	if ((Banks & FLASH_BANK_2) == FLASH_BANK_2) {
+		/* Enable Write Protection for bank 2 */
+		FLASH->WRP2R_PRG &= (~((uint32_t)(WRPSector & FLASH_WRPR_WRPSG)));
+	}
+
 #endif /* OB_WRP_SECTOR_128TO131 */
 }
 
@@ -1113,50 +1047,48 @@ static void FLASH_OB_EnableWRP(uint64_t WRPSector, uint32_t Banks)
   */
 static void FLASH_OB_DisableWRP(uint64_t WRPSector, uint32_t Banks)
 {
-  /* Check the parameters */
-  assert_param(IS_FLASH_BANK(Banks));
+	/* Check the parameters */
+	assert_param(IS_FLASH_BANK(Banks));
 #if defined(OB_WRP_SECTOR_128TO131)
-  uint32_t WRPSector_Group1 = (uint32_t)(WRPSector & 0xFFFFFFFF);
-  uint32_t WRPSector_Group2 = (uint32_t)((WRPSector >> 32) & 0xFFFFFFFF);
-  if ((Banks & FLASH_BANK_1) == FLASH_BANK_1)
-  {
-    if (WRPSector_Group1 != 0)
-    {
-      /* Disable Write Protection for bank 1 group1 */
-      FLASH->WRP11R_PRG |= (WRPSector_Group1 & FLASH_WRPR_WRPSG);
-    }
-    if (WRPSector_Group2 != 0)
-    {
-      /* Disable Write Protection for bank 1 group2 */
-      FLASH->WRP12R_PRG |= (WRPSector_Group2 & FLASH_WRPR_WRPSG);
-    }
-  }
+	uint32_t WRPSector_Group1 = (uint32_t)(WRPSector & 0xFFFFFFFF);
+	uint32_t WRPSector_Group2 = (uint32_t)((WRPSector >> 32) & 0xFFFFFFFF);
 
-  if ((Banks & FLASH_BANK_2) == FLASH_BANK_2)
-  {
-    if (WRPSector_Group1 != 0)
-    {
-      /* Disable Write Protection for bank 2 group1 */
-      FLASH->WRP21R_PRG |= (WRPSector_Group1 & FLASH_WRPR_WRPSG);
-    }
-    if (WRPSector_Group2 != 0)
-    {
-      /* Disable Write Protection for bank 2 group2 */
-      FLASH->WRP22R_PRG |= (WRPSector_Group2 & FLASH_WRPR_WRPSG);
-    }
-  }
+	if ((Banks & FLASH_BANK_1) == FLASH_BANK_1) {
+		if (WRPSector_Group1 != 0) {
+			/* Disable Write Protection for bank 1 group1 */
+			FLASH->WRP11R_PRG |= (WRPSector_Group1 & FLASH_WRPR_WRPSG);
+		}
+
+		if (WRPSector_Group2 != 0) {
+			/* Disable Write Protection for bank 1 group2 */
+			FLASH->WRP12R_PRG |= (WRPSector_Group2 & FLASH_WRPR_WRPSG);
+		}
+	}
+
+	if ((Banks & FLASH_BANK_2) == FLASH_BANK_2) {
+		if (WRPSector_Group1 != 0) {
+			/* Disable Write Protection for bank 2 group1 */
+			FLASH->WRP21R_PRG |= (WRPSector_Group1 & FLASH_WRPR_WRPSG);
+		}
+
+		if (WRPSector_Group2 != 0) {
+			/* Disable Write Protection for bank 2 group2 */
+			FLASH->WRP22R_PRG |= (WRPSector_Group2 & FLASH_WRPR_WRPSG);
+		}
+	}
+
 #else
-  if ((Banks & FLASH_BANK_1) == FLASH_BANK_1)
-  {
-    /* Disable Write Protection for bank 1 */
-    FLASH->WRP1R_PRG |= (uint32_t)(WRPSector & FLASH_WRPR_WRPSG);
-  }
 
-  if ((Banks & FLASH_BANK_2) == FLASH_BANK_2)
-  {
-    /* Disable Write Protection for bank 2 */
-    FLASH->WRP2R_PRG |= (uint32_t)(WRPSector & FLASH_WRPR_WRPSG);
-  }
+	if ((Banks & FLASH_BANK_1) == FLASH_BANK_1) {
+		/* Disable Write Protection for bank 1 */
+		FLASH->WRP1R_PRG |= (uint32_t)(WRPSector & FLASH_WRPR_WRPSG);
+	}
+
+	if ((Banks & FLASH_BANK_2) == FLASH_BANK_2) {
+		/* Disable Write Protection for bank 2 */
+		FLASH->WRP2R_PRG |= (uint32_t)(WRPSector & FLASH_WRPR_WRPSG);
+	}
+
 #endif /* OB_WRP_SECTOR_128TO131 */
 }
 
@@ -1178,57 +1110,46 @@ static void FLASH_OB_DisableWRP(uint64_t WRPSector, uint32_t Banks)
   */
 static void FLASH_OB_GetWRP(uint32_t Bank, uint32_t *WRPState, uint64_t *WRPSector)
 {
-  uint32_t regvalue1 = 0U;
+	uint32_t regvalue1 = 0U;
 
 #if defined(OB_WRP_SECTOR_128TO131)
-  uint32_t regvalue2 = 0U;
+	uint32_t regvalue2 = 0U;
 
-  if (Bank == FLASH_BANK_1)
-  {
-    regvalue1 = FLASH->WRP11R_CUR;
-    regvalue2 = FLASH->WRP12R_CUR;
-  }
+	if (Bank == FLASH_BANK_1) {
+		regvalue1 = FLASH->WRP11R_CUR;
+		regvalue2 = FLASH->WRP12R_CUR;
+	}
 
-  if (Bank == FLASH_BANK_2)
-  {
-    regvalue1 = FLASH->WRP21R_CUR;
-    regvalue2 = FLASH->WRP22R_CUR;
-  }
+	if (Bank == FLASH_BANK_2) {
+		regvalue1 = FLASH->WRP21R_CUR;
+		regvalue2 = FLASH->WRP22R_CUR;
+	}
 
-  uint64_t wrp_sector_group1 = (~regvalue1) & FLASH_WRPR_WRPSG;
-  uint64_t wrp_sector_group2 = (~regvalue2) & FLASH_WRPR_WRPSG;
+	uint64_t wrp_sector_group1 = (~regvalue1) & FLASH_WRPR_WRPSG;
+	uint64_t wrp_sector_group2 = (~regvalue2) & FLASH_WRPR_WRPSG;
 
-  *WRPSector = (wrp_sector_group2 << 32) | wrp_sector_group1;
+	*WRPSector = (wrp_sector_group2 << 32) | wrp_sector_group1;
 
-  if (*WRPSector == 0U)
-  {
-    *WRPState = OB_WRPSTATE_DISABLE;
-  }
-  else
-  {
-    *WRPState = OB_WRPSTATE_ENABLE;
-  }
+	if (*WRPSector == 0U)
+		*WRPState = OB_WRPSTATE_DISABLE;
+	else
+		*WRPState = OB_WRPSTATE_ENABLE;
+
 #else
-  if (Bank == FLASH_BANK_1)
-  {
-    regvalue1 = FLASH->WRP1R_CUR;
-  }
 
-  if (Bank == FLASH_BANK_2)
-  {
-    regvalue1 = FLASH->WRP2R_CUR;
-  }
-  
-  *WRPSector = ((uint64_t)(~regvalue1) & (uint64_t)FLASH_WRPR_WRPSG);
+	if (Bank == FLASH_BANK_1)
+		regvalue1 = FLASH->WRP1R_CUR;
 
-  if (*WRPSector == 0U)
-  {
-    *WRPState = OB_WRPSTATE_DISABLE;
-  }
-  else
-  {
-    *WRPState = OB_WRPSTATE_ENABLE;
-  }
+	if (Bank == FLASH_BANK_2)
+		regvalue1 = FLASH->WRP2R_CUR;
+
+	*WRPSector = ((uint64_t)(~regvalue1) & (uint64_t)FLASH_WRPR_WRPSG);
+
+	if (*WRPSector == 0U)
+		*WRPState = OB_WRPSTATE_DISABLE;
+	else
+		*WRPState = OB_WRPSTATE_ENABLE;
+
 #endif /* OB_WRP_SECTOR_128TO131 */
 }
 
@@ -1247,11 +1168,11 @@ static void FLASH_OB_GetWRP(uint32_t Bank, uint32_t *WRPState, uint64_t *WRPSect
   */
 static void FLASH_OB_ProdStateConfig(uint32_t ProductState)
 {
-  /* Check the parameters */
-  assert_param(IS_OB_PRODUCT_STATE(ProductState));
+	/* Check the parameters */
+	assert_param(IS_OB_PRODUCT_STATE(ProductState));
 
-  /* Configure the Product State in the option bytes register */
-  MODIFY_REG(FLASH->OPTSR_PRG, FLASH_OPTSR_PRODUCT_STATE, ProductState);
+	/* Configure the Product State in the option bytes register */
+	MODIFY_REG(FLASH->OPTSR_PRG, FLASH_OPTSR_PRODUCT_STATE, ProductState);
 }
 
 /**
@@ -1261,7 +1182,7 @@ static void FLASH_OB_ProdStateConfig(uint32_t ProductState)
   */
 static uint32_t FLASH_OB_GetProdState(void)
 {
-  return (FLASH->OPTSR_CUR & FLASH_OPTSR_PRODUCT_STATE);
+	return (FLASH->OPTSR_CUR & FLASH_OPTSR_PRODUCT_STATE);
 }
 
 /**
@@ -1291,270 +1212,264 @@ static uint32_t FLASH_OB_GetProdState(void)
   */
 static void FLASH_OB_UserConfig(uint32_t UserType, uint32_t UserConfig1, uint32_t UserConfig2)
 {
-  uint32_t optr_reg1_val = 0U;
-  uint32_t optr_reg1_mask = 0U;
-  uint32_t optr_reg2_val = 0U;
-  uint32_t optr_reg2_mask = 0U;
+	uint32_t optr_reg1_val = 0U;
+	uint32_t optr_reg1_mask = 0U;
+	uint32_t optr_reg2_val = 0U;
+	uint32_t optr_reg2_mask = 0U;
 
-  /* Check the parameters */
-  assert_param(IS_OB_USER_TYPE(UserType));
+	/* Check the parameters */
+	assert_param(IS_OB_USER_TYPE(UserType));
 
-  if ((UserType & OB_USER_BOR_LEV) != 0U)
-  {
-    /* BOR level option byte should be modified */
-    assert_param(IS_OB_USER_BOR_LEVEL(UserConfig1 & FLASH_OPTSR_BOR_LEV));
+	if ((UserType & OB_USER_BOR_LEV) != 0U) {
+		/* BOR level option byte should be modified */
+		assert_param(IS_OB_USER_BOR_LEVEL(UserConfig1 & FLASH_OPTSR_BOR_LEV));
 
-    /* Set value and mask for BOR level option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_BOR_LEV);
-    optr_reg1_mask |= FLASH_OPTSR_BOR_LEV;
-  }
+		/* Set value and mask for BOR level option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_BOR_LEV);
+		optr_reg1_mask |= FLASH_OPTSR_BOR_LEV;
+	}
 
-  if ((UserType & OB_USER_BORH_EN) != 0U)
-  {
-    /* BOR high enable status bit should be modified */
-    assert_param(IS_OB_USER_BORH_EN(UserConfig1 & FLASH_OPTSR_BORH_EN));
+	if ((UserType & OB_USER_BORH_EN) != 0U) {
+		/* BOR high enable status bit should be modified */
+		assert_param(IS_OB_USER_BORH_EN(UserConfig1 & FLASH_OPTSR_BORH_EN));
 
-    /* Set value and mask for BOR high enable status bit */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_BORH_EN);
-    optr_reg1_mask |= FLASH_OPTSR_BORH_EN;
-  }
+		/* Set value and mask for BOR high enable status bit */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_BORH_EN);
+		optr_reg1_mask |= FLASH_OPTSR_BORH_EN;
+	}
 
-  if ((UserType & OB_USER_IWDG_SW) != 0U)
-  {
-    /* IWDG_SW option byte should be modified */
-    assert_param(IS_OB_USER_IWDG(UserConfig1 & FLASH_OPTSR_IWDG_SW));
+	if ((UserType & OB_USER_IWDG_SW) != 0U) {
+		/* IWDG_SW option byte should be modified */
+		assert_param(IS_OB_USER_IWDG(UserConfig1 & FLASH_OPTSR_IWDG_SW));
 
-    /* Set value and mask for IWDG_SW option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_IWDG_SW);
-    optr_reg1_mask |= FLASH_OPTSR_IWDG_SW;
-  }
+		/* Set value and mask for IWDG_SW option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_IWDG_SW);
+		optr_reg1_mask |= FLASH_OPTSR_IWDG_SW;
+	}
 
-  if ((UserType & OB_USER_WWDG_SW) != 0U)
-  {
-    /* WWDG_SW option byte should be modified */
-    assert_param(IS_OB_USER_WWDG(UserConfig1 & FLASH_OPTSR_WWDG_SW));
+	if ((UserType & OB_USER_WWDG_SW) != 0U) {
+		/* WWDG_SW option byte should be modified */
+		assert_param(IS_OB_USER_WWDG(UserConfig1 & FLASH_OPTSR_WWDG_SW));
 
-    /* Set value and mask for WWDG_SW option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_WWDG_SW);
-    optr_reg1_mask |= FLASH_OPTSR_WWDG_SW;
-  }
+		/* Set value and mask for WWDG_SW option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_WWDG_SW);
+		optr_reg1_mask |= FLASH_OPTSR_WWDG_SW;
+	}
 
-  if ((UserType & OB_USER_NRST_STOP) != 0U)
-  {
-    /* nRST_STOP option byte should be modified */
-    assert_param(IS_OB_USER_STOP(UserConfig1 & FLASH_OPTSR_NRST_STOP));
+	if ((UserType & OB_USER_NRST_STOP) != 0U) {
+		/* nRST_STOP option byte should be modified */
+		assert_param(IS_OB_USER_STOP(UserConfig1 & FLASH_OPTSR_NRST_STOP));
 
-    /* Set value and mask for nRST_STOP option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_NRST_STOP);
-    optr_reg1_mask |= FLASH_OPTSR_NRST_STOP;
-  }
+		/* Set value and mask for nRST_STOP option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_NRST_STOP);
+		optr_reg1_mask |= FLASH_OPTSR_NRST_STOP;
+	}
 
-  if ((UserType & OB_USER_NRST_STDBY) != 0U)
-  {
-    /* nRST_STDBY option byte should be modified */
-    assert_param(IS_OB_USER_STANDBY(UserConfig1 & FLASH_OPTSR_NRST_STDBY));
+	if ((UserType & OB_USER_NRST_STDBY) != 0U) {
+		/* nRST_STDBY option byte should be modified */
+		assert_param(IS_OB_USER_STANDBY(UserConfig1 & FLASH_OPTSR_NRST_STDBY));
 
-    /* Set value and mask for nRST_STDBY option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_NRST_STDBY);
-    optr_reg1_mask |= FLASH_OPTSR_NRST_STDBY;
-  }
+		/* Set value and mask for nRST_STDBY option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_NRST_STDBY);
+		optr_reg1_mask |= FLASH_OPTSR_NRST_STDBY;
+	}
 
-  if ((UserType & OB_USER_IO_VDD_HSLV) != 0U)
-  {
-    /* IO_VDD_HSLV option byte should be modified */
-    assert_param(IS_OB_USER_IO_VDD_HSLV(UserConfig1 & FLASH_OPTSR_IO_VDD_HSLV));
+	if ((UserType & OB_USER_IO_VDD_HSLV) != 0U) {
+		/* IO_VDD_HSLV option byte should be modified */
+		assert_param(IS_OB_USER_IO_VDD_HSLV(UserConfig1 & FLASH_OPTSR_IO_VDD_HSLV));
 
-    /* Set value and mask for IO_VDD_HSLV option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_IO_VDD_HSLV);
-    optr_reg1_mask |= FLASH_OPTSR_IO_VDD_HSLV;
-  }
+		/* Set value and mask for IO_VDD_HSLV option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_IO_VDD_HSLV);
+		optr_reg1_mask |= FLASH_OPTSR_IO_VDD_HSLV;
+	}
 
-  if ((UserType & OB_USER_IO_VDDIO2_HSLV) != 0U)
-  {
-    /* IO_VDD_HSLV option byte should be modified */
-    assert_param(IS_OB_USER_IO_VDDIO2_HSLV(UserConfig1 & FLASH_OPTSR_IO_VDDIO2_HSLV));
+	if ((UserType & OB_USER_IO_VDDIO2_HSLV) != 0U) {
+		/* IO_VDD_HSLV option byte should be modified */
+		assert_param(IS_OB_USER_IO_VDDIO2_HSLV(UserConfig1 & FLASH_OPTSR_IO_VDDIO2_HSLV));
 
-    /* Set value and mask for IO_VDD_HSLV option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_IO_VDDIO2_HSLV);
-    optr_reg1_mask |= FLASH_OPTSR_IO_VDDIO2_HSLV;
-  }
+		/* Set value and mask for IO_VDD_HSLV option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_IO_VDDIO2_HSLV);
+		optr_reg1_mask |= FLASH_OPTSR_IO_VDDIO2_HSLV;
+	}
 
-  if ((UserType & OB_USER_IWDG_STOP) != 0U)
-  {
-    /* IWDG_STOP option byte should be modified */
-    assert_param(IS_OB_USER_IWDG_STOP(UserConfig1 & FLASH_OPTSR_IWDG_STOP));
+	if ((UserType & OB_USER_IWDG_STOP) != 0U) {
+		/* IWDG_STOP option byte should be modified */
+		assert_param(IS_OB_USER_IWDG_STOP(UserConfig1 & FLASH_OPTSR_IWDG_STOP));
 
-    /* Set value and mask for IWDG_STOP option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_IWDG_STOP);
-    optr_reg1_mask |= FLASH_OPTSR_IWDG_STOP;
-  }
+		/* Set value and mask for IWDG_STOP option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_IWDG_STOP);
+		optr_reg1_mask |= FLASH_OPTSR_IWDG_STOP;
+	}
 
-  if ((UserType & OB_USER_IWDG_STDBY) != 0U)
-  {
-    /* IWDG_STDBY option byte should be modified */
-    assert_param(IS_OB_USER_IWDG_STDBY(UserConfig1 & FLASH_OPTSR_IWDG_STDBY));
+	if ((UserType & OB_USER_IWDG_STDBY) != 0U) {
+		/* IWDG_STDBY option byte should be modified */
+		assert_param(IS_OB_USER_IWDG_STDBY(UserConfig1 & FLASH_OPTSR_IWDG_STDBY));
 
-    /* Set value and mask for IWDG_STDBY option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_IWDG_STDBY);
-    optr_reg1_mask |= FLASH_OPTSR_IWDG_STDBY;
-  }
+		/* Set value and mask for IWDG_STDBY option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_IWDG_STDBY);
+		optr_reg1_mask |= FLASH_OPTSR_IWDG_STDBY;
+	}
 
 #if defined (FLASH_OPTSR_BOOT_UBE)
-  if ((UserType & OB_USER_BOOT_UBE) != 0U)
-  {
-    /* SWAP_BANK option byte should be modified */
-    assert_param(IS_OB_USER_BOOT_UBE(UserConfig1 & FLASH_OPTSR_BOOT_UBE));
 
-    /* Set value and mask for BOOT_UBE option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_BOOT_UBE);
-    optr_reg1_mask |= FLASH_OPTSR_BOOT_UBE;
-  }
+	if ((UserType & OB_USER_BOOT_UBE) != 0U) {
+		/* SWAP_BANK option byte should be modified */
+		assert_param(IS_OB_USER_BOOT_UBE(UserConfig1 & FLASH_OPTSR_BOOT_UBE));
+
+		/* Set value and mask for BOOT_UBE option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_BOOT_UBE);
+		optr_reg1_mask |= FLASH_OPTSR_BOOT_UBE;
+	}
+
 #endif /* FLASH_OPTSR_BOOT_UBE */
 
-  if ((UserType & OB_USER_SWAP_BANK) != 0U)
-  {
-    /* SWAP_BANK option byte should be modified */
-    assert_param(IS_OB_USER_SWAP_BANK(UserConfig1 & FLASH_OPTSR_SWAP_BANK));
+	if ((UserType & OB_USER_SWAP_BANK) != 0U) {
+		/* SWAP_BANK option byte should be modified */
+		assert_param(IS_OB_USER_SWAP_BANK(UserConfig1 & FLASH_OPTSR_SWAP_BANK));
 
-    /* Set value and mask for SWAP_BANK option byte */
-    optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_SWAP_BANK);
-    optr_reg1_mask |= FLASH_OPTSR_SWAP_BANK;
-  }
+		/* Set value and mask for SWAP_BANK option byte */
+		optr_reg1_val |= (UserConfig1 & FLASH_OPTSR_SWAP_BANK);
+		optr_reg1_mask |= FLASH_OPTSR_SWAP_BANK;
+	}
 
 #if defined (FLASH_OPTSR2_SRAM1_3_RST)
-  if ((UserType & OB_USER_SRAM1_3_RST) != 0U)
-  {
-    /* SRAM13_RST option byte should be modified */
-    assert_param(IS_OB_USER_SRAM1_3_RST(UserConfig2 & FLASH_OPTSR2_SRAM1_3_RST));
 
-    /* Set value and mask for SRAM13_RST option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM1_3_RST);
-    optr_reg2_mask |= FLASH_OPTSR2_SRAM1_3_RST;
-  }
+	if ((UserType & OB_USER_SRAM1_3_RST) != 0U) {
+		/* SRAM13_RST option byte should be modified */
+		assert_param(IS_OB_USER_SRAM1_3_RST(UserConfig2 & FLASH_OPTSR2_SRAM1_3_RST));
+
+		/* Set value and mask for SRAM13_RST option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM1_3_RST);
+		optr_reg2_mask |= FLASH_OPTSR2_SRAM1_3_RST;
+	}
+
 #elif defined (FLASH_OPTSR2_SRAM1_3_4_5_RST)
-  if ((UserType & OB_USER_SRAM1_3_4_5_RST) != 0U)
-  {
-    /* SRAM13_RST option byte should be modified */
-    assert_param(IS_OB_USER_SRAM1_3_4_5_RST(UserConfig2 & FLASH_OPTSR2_SRAM1_3_4_5_RST));
 
-    /* Set value and mask for SRAM13_RST option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM1_3_4_5_RST);
-    optr_reg2_mask |= FLASH_OPTSR2_SRAM1_3_4_5_RST;
-  }
+	if ((UserType & OB_USER_SRAM1_3_4_5_RST) != 0U) {
+		/* SRAM13_RST option byte should be modified */
+		assert_param(IS_OB_USER_SRAM1_3_4_5_RST(UserConfig2 & FLASH_OPTSR2_SRAM1_3_4_5_RST));
+
+		/* Set value and mask for SRAM13_RST option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM1_3_4_5_RST);
+		optr_reg2_mask |= FLASH_OPTSR2_SRAM1_3_4_5_RST;
+	}
+
 #endif /* FLASH_OPTSR2_SRAM1_3_RST */
 
 #if defined (FLASH_OPTSR2_SRAM1_RST)
-  if ((UserType & OB_USER_SRAM1_RST) != 0U)
-  {
-    /* SRAM1_RST option byte should be modified */
-    assert_param(IS_OB_USER_SRAM1_RST(UserConfig2 & FLASH_OPTSR2_SRAM1_RST));
 
-    /* Set value and mask for SRAM1_RST option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM1_RST);
-    optr_reg2_mask |= FLASH_OPTSR2_SRAM1_RST;
-  }
+	if ((UserType & OB_USER_SRAM1_RST) != 0U) {
+		/* SRAM1_RST option byte should be modified */
+		assert_param(IS_OB_USER_SRAM1_RST(UserConfig2 & FLASH_OPTSR2_SRAM1_RST));
+
+		/* Set value and mask for SRAM1_RST option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM1_RST);
+		optr_reg2_mask |= FLASH_OPTSR2_SRAM1_RST;
+	}
+
 #endif /* FLASH_OPTSR2_SRAM1_RST */
 
-  if ((UserType & OB_USER_SRAM2_RST) != 0U)
-  {
-    /* SRAM2_RST option byte should be modified */
-    assert_param(IS_OB_USER_SRAM2_RST(UserConfig2 & FLASH_OPTSR2_SRAM2_RST));
+	if ((UserType & OB_USER_SRAM2_RST) != 0U) {
+		/* SRAM2_RST option byte should be modified */
+		assert_param(IS_OB_USER_SRAM2_RST(UserConfig2 & FLASH_OPTSR2_SRAM2_RST));
 
-    /* Set value and mask for SRAM2_RST option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM2_RST);
-    optr_reg2_mask |= FLASH_OPTSR2_SRAM2_RST;
-  }
+		/* Set value and mask for SRAM2_RST option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM2_RST);
+		optr_reg2_mask |= FLASH_OPTSR2_SRAM2_RST;
+	}
 
-  if ((UserType & OB_USER_BKPRAM_ECC) != 0U)
-  {
-    /* BKPRAM_ECC option byte should be modified */
-    assert_param(IS_OB_USER_BKPRAM_ECC(UserConfig2 & FLASH_OPTSR2_BKPRAM_ECC));
+	if ((UserType & OB_USER_BKPRAM_ECC) != 0U) {
+		/* BKPRAM_ECC option byte should be modified */
+		assert_param(IS_OB_USER_BKPRAM_ECC(UserConfig2 & FLASH_OPTSR2_BKPRAM_ECC));
 
-    /* Set value and mask for BKPRAM_ECC option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_BKPRAM_ECC);
-    optr_reg2_mask |= FLASH_OPTSR2_BKPRAM_ECC;
-  }
+		/* Set value and mask for BKPRAM_ECC option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_BKPRAM_ECC);
+		optr_reg2_mask |= FLASH_OPTSR2_BKPRAM_ECC;
+	}
 
 #if defined (FLASH_OPTSR2_SRAM3_ECC)
-  if ((UserType & OB_USER_SRAM3_ECC) != 0U)
-  {
-    /* SRAM3_ECC option byte should be modified */
-    assert_param(IS_OB_USER_SRAM3_ECC(UserConfig2 & FLASH_OPTSR2_SRAM3_ECC));
 
-    /* Set value and mask for SRAM3_ECC option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM3_ECC);
-    optr_reg2_mask |= FLASH_OPTSR2_SRAM3_ECC;
-  }
+	if ((UserType & OB_USER_SRAM3_ECC) != 0U) {
+		/* SRAM3_ECC option byte should be modified */
+		assert_param(IS_OB_USER_SRAM3_ECC(UserConfig2 & FLASH_OPTSR2_SRAM3_ECC));
+
+		/* Set value and mask for SRAM3_ECC option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM3_ECC);
+		optr_reg2_mask |= FLASH_OPTSR2_SRAM3_ECC;
+	}
+
 #endif /* FLASH_OPTSR2_SRAM3_ECC */
 
-  if ((UserType & OB_USER_SRAM2_ECC) != 0U)
-  {
-    /* SRAM2_ECC option byte should be modified */
-    assert_param(IS_OB_USER_SRAM2_ECC(UserConfig2 & FLASH_OPTSR2_SRAM2_ECC));
+	if ((UserType & OB_USER_SRAM2_ECC) != 0U) {
+		/* SRAM2_ECC option byte should be modified */
+		assert_param(IS_OB_USER_SRAM2_ECC(UserConfig2 & FLASH_OPTSR2_SRAM2_ECC));
 
-    /* Set value and mask for SRAM2_ECC option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM2_ECC);
-    optr_reg2_mask |= FLASH_OPTSR2_SRAM2_ECC;
-  }
+		/* Set value and mask for SRAM2_ECC option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM2_ECC);
+		optr_reg2_mask |= FLASH_OPTSR2_SRAM2_ECC;
+	}
 
 #if defined (FLASH_OPTSR2_SRAM1_ECC)
-  if ((UserType & OB_USER_SRAM1_ECC) != 0U)
-  {
-    /* SRAM2_ECC option byte should be modified */
-    assert_param(IS_OB_USER_SRAM1_ECC(UserConfig2 & FLASH_OPTSR2_SRAM1_ECC));
 
-    /* Set value and mask for SRAM2_ECC option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM1_ECC);
-    optr_reg2_mask |= FLASH_OPTSR2_SRAM1_ECC;
-  }
+	if ((UserType & OB_USER_SRAM1_ECC) != 0U) {
+		/* SRAM2_ECC option byte should be modified */
+		assert_param(IS_OB_USER_SRAM1_ECC(UserConfig2 & FLASH_OPTSR2_SRAM1_ECC));
+
+		/* Set value and mask for SRAM2_ECC option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_SRAM1_ECC);
+		optr_reg2_mask |= FLASH_OPTSR2_SRAM1_ECC;
+	}
+
 #endif /* FLASH_OPTSR2_SRAM1_ECC */
 
 #if defined (FLASH_OPTSR2_USBPD_DIS)
-  if ((UserType & OB_USER_USBPD_DIS) != 0U)
-  {
-    /* USBPD_DIS option byte should be modified */
-    assert_param(IS_OB_USER_USBPD_DIS(UserConfig2 & FLASH_OPTSR2_USBPD_DIS));
 
-    /* Set value and mask for USBPD_DIS option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_USBPD_DIS);
-    optr_reg2_mask |= FLASH_OPTSR2_USBPD_DIS;
-  }
+	if ((UserType & OB_USER_USBPD_DIS) != 0U) {
+		/* USBPD_DIS option byte should be modified */
+		assert_param(IS_OB_USER_USBPD_DIS(UserConfig2 & FLASH_OPTSR2_USBPD_DIS));
+
+		/* Set value and mask for USBPD_DIS option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_USBPD_DIS);
+		optr_reg2_mask |= FLASH_OPTSR2_USBPD_DIS;
+	}
+
 #endif /* FLASH_OPTSR2_USBPD_DIS */
 
 #if defined (FLASH_OPTSR2_TZEN)
-  if ((UserType & OB_USER_TZEN) != 0U)
-  {
-    /* TZEN option byte should be modified */
-    assert_param(IS_OB_USER_TZEN(UserConfig2 & FLASH_OPTSR2_TZEN));
 
-    /* Set value and mask for TZEN option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_TZEN);
-    optr_reg2_mask |= FLASH_OPTSR2_TZEN;
-  }
+	if ((UserType & OB_USER_TZEN) != 0U) {
+		/* TZEN option byte should be modified */
+		assert_param(IS_OB_USER_TZEN(UserConfig2 & FLASH_OPTSR2_TZEN));
+
+		/* Set value and mask for TZEN option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_TZEN);
+		optr_reg2_mask |= FLASH_OPTSR2_TZEN;
+	}
+
 #endif /* FLASH_OPTSR2_TZEN */
 #if defined(FLASH_OPTSR2_HUK_PUF)
-  if ((UserType & OB_USER_HUK_PUF) != 0U)
-  {
-    /* TZEN option byte should be modified */
-    assert_param(IS_OB_USER_HUK_PUF(UserConfig2 & FLASH_OPTSR2_HUK_PUF));
 
-    /* Set value and mask for TZEN option byte */
-    optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_HUK_PUF);
-    optr_reg2_mask |= FLASH_OPTSR2_HUK_PUF;
-  }
+	if ((UserType & OB_USER_HUK_PUF) != 0U) {
+		/* TZEN option byte should be modified */
+		assert_param(IS_OB_USER_HUK_PUF(UserConfig2 & FLASH_OPTSR2_HUK_PUF));
+
+		/* Set value and mask for TZEN option byte */
+		optr_reg2_val |= (UserConfig2 & FLASH_OPTSR2_HUK_PUF);
+		optr_reg2_mask |= FLASH_OPTSR2_HUK_PUF;
+	}
+
 #endif /* FLASH_OPTSR2_HUK_PUF */
 
-  /* Check to write first User OB register or/and second one */
-  if ((UserType & 0xFFFU) != 0U)
-  {
-    /* Configure the option bytes register */
-    MODIFY_REG(FLASH->OPTSR_PRG, optr_reg1_mask, optr_reg1_val);
-  }
-  if ((UserType & 0x1FF000U) != 0U)
-  {
-    /* Configure the option bytes register */
-    MODIFY_REG(FLASH->OPTSR2_PRG, optr_reg2_mask, optr_reg2_val);
-  }
+	/* Check to write first User OB register or/and second one */
+	if ((UserType & 0xFFFU) != 0U) {
+		/* Configure the option bytes register */
+		MODIFY_REG(FLASH->OPTSR_PRG, optr_reg1_mask, optr_reg1_val);
+	}
+
+	if ((UserType & 0x1FF000U) != 0U) {
+		/* Configure the option bytes register */
+		MODIFY_REG(FLASH->OPTSR2_PRG, optr_reg2_mask, optr_reg2_val);
+	}
 }
 
 /**
@@ -1575,9 +1490,9 @@ static void FLASH_OB_UserConfig(uint32_t UserType, uint32_t UserConfig1, uint32_
   */
 static void FLASH_OB_GetUser(uint32_t *UserConfig1, uint32_t *UserConfig2)
 {
-  (*UserConfig1) = FLASH->OPTSR_CUR & (~FLASH_OPTSR_PRODUCT_STATE);
+	(*UserConfig1) = FLASH->OPTSR_CUR & (~FLASH_OPTSR_PRODUCT_STATE);
 
-  (*UserConfig2) = FLASH->OPTSR2_CUR;
+	(*UserConfig2) = FLASH->OPTSR2_CUR;
 }
 
 /**
@@ -1592,23 +1507,20 @@ static void FLASH_OB_GetUser(uint32_t *UserConfig1, uint32_t *UserConfig2)
   */
 static void FLASH_OB_BootAddrConfig(uint32_t BootOption, uint32_t BootAddress)
 {
-  /* Check the parameters */
-  assert_param(IS_OB_BOOT_CONFIG(BootOption));
+	/* Check the parameters */
+	assert_param(IS_OB_BOOT_CONFIG(BootOption));
 
-  if (BootOption == OB_BOOT_NS)
-  {
-    MODIFY_REG(FLASH->NSBOOTR_PRG, FLASH_BOOTR_BOOTADD, BootAddress);
-  }
+	if (BootOption == OB_BOOT_NS)
+		MODIFY_REG(FLASH->NSBOOTR_PRG, FLASH_BOOTR_BOOTADD, BootAddress);
+
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  else if (BootOption == OB_BOOT_SEC)
-  {
-    MODIFY_REG(FLASH->SECBOOTR_PRG, FLASH_BOOTR_BOOTADD, BootAddress);
-  }
+	else if (BootOption == OB_BOOT_SEC)
+		MODIFY_REG(FLASH->SECBOOTR_PRG, FLASH_BOOTR_BOOTADD, BootAddress);
+
 #endif /* __ARM_FEATURE_CMSE */
-  else
-  {
-    /* Empty statement (to be compliant MISRA 15.7) */
-  }
+	else {
+		/* Empty statement (to be compliant MISRA 15.7) */
+	}
 }
 
 /**
@@ -1628,25 +1540,22 @@ static void FLASH_OB_BootAddrConfig(uint32_t BootOption, uint32_t BootAddress)
   */
 static void FLASH_OB_BootLockConfig(uint32_t BootOption, uint32_t BootLockConfig)
 {
-  /* Check the parameters */
-  assert_param(IS_OB_BOOT_CONFIG(BootOption));
-  assert_param(IS_OB_BOOT_LOCK(BootLockConfig));
+	/* Check the parameters */
+	assert_param(IS_OB_BOOT_CONFIG(BootOption));
+	assert_param(IS_OB_BOOT_LOCK(BootLockConfig));
 
-  /* Configure the option bytes register */
-  if (BootOption == OB_BOOT_NS)
-  {
-    MODIFY_REG(FLASH->NSBOOTR_PRG, FLASH_BOOTR_BOOT_LOCK, BootLockConfig);
-  }
+	/* Configure the option bytes register */
+	if (BootOption == OB_BOOT_NS)
+		MODIFY_REG(FLASH->NSBOOTR_PRG, FLASH_BOOTR_BOOT_LOCK, BootLockConfig);
+
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  else if (BootOption == OB_BOOT_SEC)
-  {
-    MODIFY_REG(FLASH->SECBOOTR_PRG, FLASH_BOOTR_BOOT_LOCK, BootLockConfig);
-  }
+	else if (BootOption == OB_BOOT_SEC)
+		MODIFY_REG(FLASH->SECBOOTR_PRG, FLASH_BOOTR_BOOT_LOCK, BootLockConfig);
+
 #endif /* __ARM_FEATURE_CMSE */
-  else
-  {
-    /* Empty statement (to be compliant MISRA 15.7) */
-  }
+	else {
+		/* Empty statement (to be compliant MISRA 15.7) */
+	}
 }
 
 /**
@@ -1666,22 +1575,21 @@ static void FLASH_OB_BootLockConfig(uint32_t BootOption, uint32_t BootLockConfig
   */
 static void FLASH_OB_GetBootConfig(uint32_t BootOption, uint32_t *BootAddress, uint32_t *BootLockConfig)
 {
-  if (BootOption == OB_BOOT_NS)
-  {
-    *BootAddress    = FLASH->NSBOOTR_CUR & FLASH_BOOTR_BOOTADD;
-    *BootLockConfig = FLASH->NSBOOTR_CUR & FLASH_BOOTR_BOOT_LOCK;
-  }
+	if (BootOption == OB_BOOT_NS) {
+		*BootAddress    = FLASH->NSBOOTR_CUR & FLASH_BOOTR_BOOTADD;
+		*BootLockConfig = FLASH->NSBOOTR_CUR & FLASH_BOOTR_BOOT_LOCK;
+	}
+
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  else if (BootOption == OB_BOOT_SEC)
-  {
-    *BootAddress    = (FLASH->SECBOOTR_CUR & FLASH_BOOTR_BOOTADD);
-    *BootLockConfig = (FLASH->SECBOOTR_CUR & FLASH_BOOTR_BOOT_LOCK);
-  }
+	else if (BootOption == OB_BOOT_SEC) {
+		*BootAddress    = (FLASH->SECBOOTR_CUR & FLASH_BOOTR_BOOTADD);
+		*BootLockConfig = (FLASH->SECBOOTR_CUR & FLASH_BOOTR_BOOT_LOCK);
+	}
+
 #endif /* __ARM_FEATURE_CMSE */
-  else
-  {
-    /* Empty statement (to be compliant MISRA 15.7) */
-  }
+	else {
+		/* Empty statement (to be compliant MISRA 15.7) */
+	}
 }
 
 /**
@@ -1692,8 +1600,8 @@ static void FLASH_OB_GetBootConfig(uint32_t BootOption, uint32_t *BootAddress, u
   */
 static void FLASH_OB_OTP_LockConfig(uint32_t OTP_Block)
 {
-  /* Configure the OTP Block lock in the option bytes register */
-  FLASH->OTPBLR_PRG |= OTP_Block;
+	/* Configure the OTP Block lock in the option bytes register */
+	FLASH->OTPBLR_PRG |= OTP_Block;
 }
 
 /**
@@ -1703,7 +1611,7 @@ static void FLASH_OB_OTP_LockConfig(uint32_t OTP_Block)
   */
 static uint32_t FLASH_OB_OTP_GetLock(void)
 {
-  return (FLASH->OTPBLR_CUR);
+	return (FLASH->OTPBLR_CUR);
 }
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
@@ -1727,23 +1635,21 @@ static uint32_t FLASH_OB_OTP_GetLock(void)
   */
 static void FLASH_OB_WMSECConfig(uint32_t Banks, uint32_t WMSecStartSector, uint32_t WMSecEndSector)
 {
-  /* Check the parameters */
-  assert_param(IS_FLASH_BANK(Banks));
-  assert_param(IS_FLASH_SECTOR(WMSecStartSector));
-  assert_param(IS_FLASH_SECTOR(WMSecEndSector));
+	/* Check the parameters */
+	assert_param(IS_FLASH_BANK(Banks));
+	assert_param(IS_FLASH_SECTOR(WMSecStartSector));
+	assert_param(IS_FLASH_SECTOR(WMSecEndSector));
 
-  /* Write SECWM registers */
-  if ((Banks & FLASH_BANK_1) == FLASH_BANK_1)
-  {
-    /* Configure Watermark Protection for bank 1 */
-    FLASH->SECWM1R_PRG = ((WMSecEndSector << FLASH_SECWMR_SECWM_END_Pos) | WMSecStartSector);
-  }
+	/* Write SECWM registers */
+	if ((Banks & FLASH_BANK_1) == FLASH_BANK_1) {
+		/* Configure Watermark Protection for bank 1 */
+		FLASH->SECWM1R_PRG = ((WMSecEndSector << FLASH_SECWMR_SECWM_END_Pos) | WMSecStartSector);
+	}
 
-  if ((Banks & FLASH_BANK_2) == FLASH_BANK_2)
-  {
-    /* Configure Watermark Protection for bank 2 */
-    FLASH->SECWM2R_PRG = ((WMSecEndSector << FLASH_SECWMR_SECWM_END_Pos) | WMSecStartSector);
-  }
+	if ((Banks & FLASH_BANK_2) == FLASH_BANK_2) {
+		/* Configure Watermark Protection for bank 2 */
+		FLASH->SECWM2R_PRG = ((WMSecEndSector << FLASH_SECWMR_SECWM_END_Pos) | WMSecStartSector);
+	}
 }
 
 /**
@@ -1762,22 +1668,18 @@ static void FLASH_OB_WMSECConfig(uint32_t Banks, uint32_t WMSecStartSector, uint
   */
 static void FLASH_OB_GetWMSEC(uint32_t Bank, uint32_t *WMSecStartSector, uint32_t *WMSecEndSector)
 {
-  uint32_t regvalue = 0U;
+	uint32_t regvalue = 0U;
 
-  /* Read SECWM register */
-  if (Bank == FLASH_BANK_1)
-  {
-    regvalue = FLASH->SECWM1R_CUR;
-  }
+	/* Read SECWM register */
+	if (Bank == FLASH_BANK_1)
+		regvalue = FLASH->SECWM1R_CUR;
 
-  if (Bank == FLASH_BANK_2)
-  {
-    regvalue = FLASH->SECWM2R_CUR;
-  }
+	if (Bank == FLASH_BANK_2)
+		regvalue = FLASH->SECWM2R_CUR;
 
-  /* Get configuration of secure area */
-  *WMSecStartSector = (regvalue & FLASH_SECWMR_SECWM_STRT);
-  *WMSecEndSector = ((regvalue & FLASH_SECWMR_SECWM_END) >> FLASH_SECWMR_SECWM_END_Pos);
+	/* Get configuration of secure area */
+	*WMSecStartSector = (regvalue & FLASH_SECWMR_SECWM_STRT);
+	*WMSecEndSector = ((regvalue & FLASH_SECWMR_SECWM_END) >> FLASH_SECWMR_SECWM_END_Pos);
 }
 #endif /* __ARM_FEATURE_CMSE */
 
@@ -1801,23 +1703,21 @@ static void FLASH_OB_GetWMSEC(uint32_t Bank, uint32_t *WMSecStartSector, uint32_
   */
 static void FLASH_OB_HDPConfig(uint32_t Banks, uint32_t HDPStartSector, uint32_t HDPEndSector)
 {
-  /* Check the parameters */
-  assert_param(IS_FLASH_BANK(Banks));
-  assert_param(IS_FLASH_SECTOR(HDPStartSector));
-  assert_param(IS_FLASH_SECTOR(HDPEndSector));
+	/* Check the parameters */
+	assert_param(IS_FLASH_BANK(Banks));
+	assert_param(IS_FLASH_SECTOR(HDPStartSector));
+	assert_param(IS_FLASH_SECTOR(HDPEndSector));
 
-  /* Write HDP registers */
-  if ((Banks & FLASH_BANK_1) == FLASH_BANK_1)
-  {
-    /* Configure hide Protection for bank 1 */
-    FLASH->HDP1R_PRG = ((HDPEndSector << FLASH_HDPR_HDP_END_Pos) | HDPStartSector);
-  }
+	/* Write HDP registers */
+	if ((Banks & FLASH_BANK_1) == FLASH_BANK_1) {
+		/* Configure hide Protection for bank 1 */
+		FLASH->HDP1R_PRG = ((HDPEndSector << FLASH_HDPR_HDP_END_Pos) | HDPStartSector);
+	}
 
-  if ((Banks & FLASH_BANK_2) == FLASH_BANK_2)
-  {
-    /* Configure hide Protection for bank 2 */
-    FLASH->HDP2R_PRG = ((HDPEndSector << FLASH_HDPR_HDP_END_Pos) | HDPStartSector);
-  }
+	if ((Banks & FLASH_BANK_2) == FLASH_BANK_2) {
+		/* Configure hide Protection for bank 2 */
+		FLASH->HDP2R_PRG = ((HDPEndSector << FLASH_HDPR_HDP_END_Pos) | HDPStartSector);
+	}
 }
 
 /**
@@ -1836,22 +1736,18 @@ static void FLASH_OB_HDPConfig(uint32_t Banks, uint32_t HDPStartSector, uint32_t
   */
 static void FLASH_OB_GetHDP(uint32_t Bank, uint32_t *HDPStartSector, uint32_t *HDPEndSector)
 {
-  uint32_t regvalue = 0U;
+	uint32_t regvalue = 0U;
 
-  /* Read SECWM register */
-  if (Bank == FLASH_BANK_1)
-  {
-    regvalue = FLASH->HDP1R_CUR;
-  }
+	/* Read SECWM register */
+	if (Bank == FLASH_BANK_1)
+		regvalue = FLASH->HDP1R_CUR;
 
-  if (Bank == FLASH_BANK_2)
-  {
-    regvalue = FLASH->HDP2R_CUR;
-  }
+	if (Bank == FLASH_BANK_2)
+		regvalue = FLASH->HDP2R_CUR;
 
-  /* Get configuration of HDP area */
-  *HDPStartSector = (regvalue & FLASH_HDPR_HDP_STRT);
-  *HDPEndSector = ((regvalue & FLASH_HDPR_HDP_END) >> FLASH_HDPR_HDP_END_Pos);
+	/* Get configuration of HDP area */
+	*HDPStartSector = (regvalue & FLASH_HDPR_HDP_STRT);
+	*HDPEndSector = ((regvalue & FLASH_HDPR_HDP_END) >> FLASH_HDPR_HDP_END_Pos);
 }
 
 #if defined(FLASH_EDATAR_EDATA_EN)
@@ -1880,40 +1776,33 @@ static void FLASH_OB_GetHDP(uint32_t Bank, uint32_t *HDPStartSector, uint32_t *H
   */
 static void FLASH_OB_EDATAConfig(uint32_t Banks, uint32_t EDATASize)
 {
-  /* Check the parameters */
-  assert_param(IS_FLASH_BANK(Banks));
-  assert_param(IS_FLASH_EDATA_SIZE(EDATASize));
+	/* Check the parameters */
+	assert_param(IS_FLASH_BANK(Banks));
+	assert_param(IS_FLASH_EDATA_SIZE(EDATASize));
 
-  if (EDATASize != 0U)
-  {
-    /* Write EDATA registers */
-    if ((Banks & FLASH_BANK_1) == FLASH_BANK_1)
-    {
-      /* Configure Flash high-cycle data for bank 1 */
-      FLASH->EDATA1R_PRG = (FLASH_EDATAR_EDATA_EN | (EDATASize - 1U));
-    }
+	if (EDATASize != 0U) {
+		/* Write EDATA registers */
+		if ((Banks & FLASH_BANK_1) == FLASH_BANK_1) {
+			/* Configure Flash high-cycle data for bank 1 */
+			FLASH->EDATA1R_PRG = (FLASH_EDATAR_EDATA_EN | (EDATASize - 1U));
+		}
 
-    if ((Banks & FLASH_BANK_2) == FLASH_BANK_2)
-    {
-      /* Configure Flash high-cycle data for bank 2 */
-      FLASH->EDATA2R_PRG = (FLASH_EDATAR_EDATA_EN | (EDATASize - 1U));
-    }
-  }
-  else
-  {
-    /* Write EDATA registers */
-    if ((Banks & FLASH_BANK_1) == FLASH_BANK_1)
-    {
-      /* Disable Flash high-cycle data for bank 1 */
-      FLASH->EDATA1R_PRG = 0U;
-    }
+		if ((Banks & FLASH_BANK_2) == FLASH_BANK_2) {
+			/* Configure Flash high-cycle data for bank 2 */
+			FLASH->EDATA2R_PRG = (FLASH_EDATAR_EDATA_EN | (EDATASize - 1U));
+		}
+	} else {
+		/* Write EDATA registers */
+		if ((Banks & FLASH_BANK_1) == FLASH_BANK_1) {
+			/* Disable Flash high-cycle data for bank 1 */
+			FLASH->EDATA1R_PRG = 0U;
+		}
 
-    if ((Banks & FLASH_BANK_2) == FLASH_BANK_2)
-    {
-      /* Disable Flash high-cycle data for bank 2 */
-      FLASH->EDATA2R_PRG = 0U;
-    }
-  }
+		if ((Banks & FLASH_BANK_2) == FLASH_BANK_2) {
+			/* Disable Flash high-cycle data for bank 2 */
+			FLASH->EDATA2R_PRG = 0U;
+		}
+	}
 }
 
 /**
@@ -1930,30 +1819,23 @@ static void FLASH_OB_EDATAConfig(uint32_t Banks, uint32_t EDATASize)
   */
 static void FLASH_OB_GetEDATA(uint32_t Bank, uint32_t *EDATASize)
 {
-  uint32_t regvalue = 0U;
+	uint32_t regvalue = 0U;
 
-  /* Read SECWM register */
-  if (Bank == FLASH_BANK_1)
-  {
-    regvalue = FLASH->EDATA1R_CUR;
-  }
+	/* Read SECWM register */
+	if (Bank == FLASH_BANK_1)
+		regvalue = FLASH->EDATA1R_CUR;
 
-  if (Bank == FLASH_BANK_2)
-  {
-    regvalue = FLASH->EDATA2R_CUR;
-  }
+	if (Bank == FLASH_BANK_2)
+		regvalue = FLASH->EDATA2R_CUR;
 
-  /* Get configuration of secure area */
-  if ((regvalue & FLASH_EDATAR_EDATA_EN) != 0U)
-  {
-    /* Encoding of Edata Area size is register value + 1 */
-    *EDATASize = (regvalue & FLASH_EDATAR_EDATA_STRT) + 1U;
-  }
-  else
-  {
-    /* No defined Edata area */
-    *EDATASize = 0U;
-  }
+	/* Get configuration of secure area */
+	if ((regvalue & FLASH_EDATAR_EDATA_EN) != 0U) {
+		/* Encoding of Edata Area size is register value + 1 */
+		*EDATASize = (regvalue & FLASH_EDATAR_EDATA_STRT) + 1U;
+	} else {
+		/* No defined Edata area */
+		*EDATASize = 0U;
+	}
 
 }
 #endif /* FLASH_EDATAR_EDATA_EN */
@@ -1982,7 +1864,7 @@ static void FLASH_OB_GetEDATA(uint32_t Bank, uint32_t *EDATASize)
   */
 void HAL_FLASHEx_EnableEccCorrectionInterrupt(void)
 {
-  __HAL_FLASH_ENABLE_IT(FLASH_IT_ECCC);
+	__HAL_FLASH_ENABLE_IT(FLASH_IT_ECCC);
 }
 
 /**
@@ -1991,7 +1873,7 @@ void HAL_FLASHEx_EnableEccCorrectionInterrupt(void)
   */
 void HAL_FLASHEx_DisableEccCorrectionInterrupt(void)
 {
-  __HAL_FLASH_DISABLE_IT(FLASH_IT_ECCC);
+	__HAL_FLASH_DISABLE_IT(FLASH_IT_ECCC);
 }
 
 /**
@@ -2004,102 +1886,99 @@ void HAL_FLASHEx_DisableEccCorrectionInterrupt(void)
   */
 void HAL_FLASHEx_GetEccInfo(FLASH_EccInfoTypeDef *pData)
 {
-  uint32_t correction_reg = FLASH->ECCCORR;
-  uint32_t detection_reg = FLASH->ECCDETR;
-  uint32_t data_reg = FLASH->ECCDR;
-  uint32_t addr_reg = 0xFFFFFFFFU;
+	uint32_t correction_reg = FLASH->ECCCORR;
+	uint32_t detection_reg = FLASH->ECCDETR;
+	uint32_t data_reg = FLASH->ECCDR;
+	uint32_t addr_reg = 0xFFFFFFFFU;
 
-  /* Check if the operation is a correction or a detection*/
-  if ((correction_reg & FLASH_ECCR_ECCC) != 0U)
-  {
-    /*  Get area and offset address values from ECCCORR register*/
-    pData->Area = correction_reg & (~(FLASH_ECCR_ECCIE | FLASH_ECCR_ADDR_ECC | FLASH_ECCR_ECCC));
-    addr_reg = (correction_reg & FLASH_ECCR_ADDR_ECC);
-  }
-  else if ((detection_reg & FLASH_ECCR_ECCD) != 0U)
-  {
-    /* Get area and offset address values from ECCDETR register */
-    pData->Area = detection_reg & (~(FLASH_ECCR_ADDR_ECC | FLASH_ECCR_ECCD));
-    addr_reg = (detection_reg & FLASH_ECCR_ADDR_ECC);
-  }
-  else
-  {
-    /* Do nothing */
-  }
+	/* Check if the operation is a correction or a detection*/
+	if ((correction_reg & FLASH_ECCR_ECCC) != 0U) {
+		/*  Get area and offset address values from ECCCORR register*/
+		pData->Area = correction_reg & (~(FLASH_ECCR_ECCIE | FLASH_ECCR_ADDR_ECC | FLASH_ECCR_ECCC));
+		addr_reg = (correction_reg & FLASH_ECCR_ADDR_ECC);
+	} else if ((detection_reg & FLASH_ECCR_ECCD) != 0U) {
+		/* Get area and offset address values from ECCDETR register */
+		pData->Area = detection_reg & (~(FLASH_ECCR_ADDR_ECC | FLASH_ECCR_ECCD));
+		addr_reg = (detection_reg & FLASH_ECCR_ADDR_ECC);
+	} else {
+		/* Do nothing */
+	}
 
-  /* Check that an ECC single or double error has occurred to continue the calculation of area address */
-  if (addr_reg != 0xFFFFFFFFU)
-  {
-    /* Get address value according to area value*/
-    switch (pData->Area)
-    {
-      case FLASH_ECC_AREA_USER_BANK1:
-        /*
-         * One error detection/correction or two error detections per 128-bit flash word
-         * Therefore, the address returned by ECC registers in bank1 represents 128-bit flash word,
-         * to get the correct address value, we must do a shift by 4 bits
-        */
-        addr_reg = ((uint32_t)addr_reg << 4U) & 0xFFFFFFFFU;
-        pData->Address = (FLASH_BASE + addr_reg) & 0xFFFFFFFFU;
-        break;
-      case FLASH_ECC_AREA_USER_BANK2:
-        /*
-         * One error detection/correction or two error detections per 128-bit flash word
-         * Therefore, the address returned by ECC registers in bank2 represents 128-bit flash word,
-         * to get the correct address value, we must do a shift by 4 bits
-        */
-        addr_reg = ((uint32_t)addr_reg << 4U) & 0xFFFFFFFFU;
-        pData->Address = (FLASH_BASE + FLASH_BANK_SIZE + addr_reg) & 0xFFFFFFFFU;
-        break;
-      case FLASH_ECC_AREA_SYSTEM:
-        /* check system flash bank */
-        if ((correction_reg & FLASH_ECCR_BK_ECC) == FLASH_ECCR_BK_ECC)
-        {
-          pData->Address = (FLASH_SYSTEM_BASE + FLASH_SYSTEM_SIZE + addr_reg) & 0xFFFFFFFFU;
-        }
-        else
-        {
-          pData->Address = (FLASH_SYSTEM_BASE + addr_reg) & 0xFFFFFFFFU;
-        }
-        break;
+	/* Check that an ECC single or double error has occurred to continue the calculation of area address */
+	if (addr_reg != 0xFFFFFFFFU) {
+		/* Get address value according to area value*/
+		switch (pData->Area) {
+			case FLASH_ECC_AREA_USER_BANK1:
+				/*
+				 * One error detection/correction or two error detections per 128-bit flash word
+				 * Therefore, the address returned by ECC registers in bank1 represents 128-bit flash word,
+				 * to get the correct address value, we must do a shift by 4 bits
+				*/
+				addr_reg = ((uint32_t)addr_reg << 4U) & 0xFFFFFFFFU;
+				pData->Address = (FLASH_BASE + addr_reg) & 0xFFFFFFFFU;
+				break;
+
+			case FLASH_ECC_AREA_USER_BANK2:
+				/*
+				 * One error detection/correction or two error detections per 128-bit flash word
+				 * Therefore, the address returned by ECC registers in bank2 represents 128-bit flash word,
+				 * to get the correct address value, we must do a shift by 4 bits
+				*/
+				addr_reg = ((uint32_t)addr_reg << 4U) & 0xFFFFFFFFU;
+				pData->Address = (FLASH_BASE + FLASH_BANK_SIZE + addr_reg) & 0xFFFFFFFFU;
+				break;
+
+			case FLASH_ECC_AREA_SYSTEM:
+
+				/* check system flash bank */
+				if ((correction_reg & FLASH_ECCR_BK_ECC) == FLASH_ECCR_BK_ECC)
+					pData->Address = (FLASH_SYSTEM_BASE + FLASH_SYSTEM_SIZE + addr_reg) & 0xFFFFFFFFU;
+				else
+					pData->Address = (FLASH_SYSTEM_BASE + addr_reg) & 0xFFFFFFFFU;
+
+				break;
 #if defined (FLASH_SR_OBKERR)
-      case FLASH_ECC_AREA_OBK:
-        pData->Address = (FLASH_OBK_BASE + addr_reg) & 0xFFFFFFFFU;
-        break;
+
+			case FLASH_ECC_AREA_OBK:
+				pData->Address = (FLASH_OBK_BASE + addr_reg) & 0xFFFFFFFFU;
+				break;
 #endif /* FLASH_SR_OBKERR */
 #if defined (FLASH_EDATAR_EDATA_EN)
-      case FLASH_ECC_AREA_EDATA_BANK1:
-        /* check flash high-cycle data bank */
-          /*
-           * addr_reg is the address returned by the ECC register along with an offset value depends on area
-           * To calculate the exact address set by user while an ECC occurred, we must subtract the offset value,
-           * In addition, the address returned by ECC registers represents 128-bit flash word (multiply by 4),
-          */
-          pData->Address = (FLASH_EDATA_BASE + ((addr_reg - FLASH_ADDRESS_OFFSET_EDATA) * 4U)) & 0xFFFFFFFFU;
-        break;
-      case FLASH_ECC_AREA_EDATA_BANK2:
-        /* check flash high-cycle data bank */
-          /*
-           * addr_reg is the address returned by the ECC register along with an offset value depends on area
-           * To calculate the exact address set by user while an ECC occurred, we must subtract the offset value,
-           * In addition, the address returned by ECC registers represents 128-bit flash word (multiply by 4),
-          */
-          pData->Address = (FLASH_EDATA_BASE + FLASH_EDATA_BANK_SIZE + \
-                           ((addr_reg - FLASH_ADDRESS_OFFSET_EDATA) * 4U)) & 0xFFFFFFFFU;
-        break;
+
+			case FLASH_ECC_AREA_EDATA_BANK1:
+				/* check flash high-cycle data bank */
+				/*
+				 * addr_reg is the address returned by the ECC register along with an offset value depends on area
+				 * To calculate the exact address set by user while an ECC occurred, we must subtract the offset value,
+				 * In addition, the address returned by ECC registers represents 128-bit flash word (multiply by 4),
+				*/
+				pData->Address = (FLASH_EDATA_BASE + ((addr_reg - FLASH_ADDRESS_OFFSET_EDATA) * 4U)) & 0xFFFFFFFFU;
+				break;
+
+			case FLASH_ECC_AREA_EDATA_BANK2:
+				/* check flash high-cycle data bank */
+				/*
+				 * addr_reg is the address returned by the ECC register along with an offset value depends on area
+				 * To calculate the exact address set by user while an ECC occurred, we must subtract the offset value,
+				 * In addition, the address returned by ECC registers represents 128-bit flash word (multiply by 4),
+				*/
+				pData->Address = (FLASH_EDATA_BASE + FLASH_EDATA_BANK_SIZE + \
+						  ((addr_reg - FLASH_ADDRESS_OFFSET_EDATA) * 4U)) & 0xFFFFFFFFU;
+				break;
 #endif /* FLASH_EDATAR_EDATA_EN */
-      case FLASH_ECC_AREA_OTP:
-        /* Address returned by the ECC is an halfword, multiply by 4 to get the exact address*/
-        pData->Address = (FLASH_OTP_BASE + ((addr_reg - FLASH_ADDRESS_OFFSET_OTP) * 4U)) & 0xFFFFFFFFU;
-        break;
 
-      default:
-        /* Do nothing */
-        break;
-    }
-  }
+			case FLASH_ECC_AREA_OTP:
+				/* Address returned by the ECC is an halfword, multiply by 4 to get the exact address*/
+				pData->Address = (FLASH_OTP_BASE + ((addr_reg - FLASH_ADDRESS_OFFSET_OTP) * 4U)) & 0xFFFFFFFFU;
+				break;
 
-  pData->Data = data_reg & FLASH_ECCR_ADDR_ECC;
+			default:
+				/* Do nothing */
+				break;
+		}
+	}
+
+	pData->Data = data_reg & FLASH_ECCR_ADDR_ECC;
 }
 
 /**
@@ -2108,17 +1987,16 @@ void HAL_FLASHEx_GetEccInfo(FLASH_EccInfoTypeDef *pData)
   */
 void HAL_FLASHEx_ECCD_IRQHandler(void)
 {
-  /* Check if the ECC double error occurred*/
-  if (READ_BIT(FLASH->ECCDETR, FLASH_ECCR_ECCD) != 0U)
-  {
-    /* FLASH ECC detection user callback */
-    HAL_FLASHEx_EccDetectionCallback();
+	/* Check if the ECC double error occurred*/
+	if (READ_BIT(FLASH->ECCDETR, FLASH_ECCR_ECCD) != 0U) {
+		/* FLASH ECC detection user callback */
+		HAL_FLASHEx_EccDetectionCallback();
 
-    /* Clear ECCD flag
-    note : this step will clear all the information related to the flash ecc detection
-    */
-    SET_BIT(FLASH->ECCDETR, FLASH_ECCR_ECCD);
-  }
+		/* Clear ECCD flag
+		note : this step will clear all the information related to the flash ecc detection
+		*/
+		SET_BIT(FLASH->ECCDETR, FLASH_ECCR_ECCD);
+	}
 }
 
 /**
@@ -2127,9 +2005,9 @@ void HAL_FLASHEx_ECCD_IRQHandler(void)
   */
 __weak void HAL_FLASHEx_EccCorrectionCallback(void)
 {
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_FLASHEx_EccCorrectionCallback could be implemented in the user file
-   */
+	/* NOTE : This function should not be modified, when the callback is needed,
+	          the HAL_FLASHEx_EccCorrectionCallback could be implemented in the user file
+	 */
 }
 
 /**
@@ -2138,9 +2016,9 @@ __weak void HAL_FLASHEx_EccCorrectionCallback(void)
   */
 __weak void HAL_FLASHEx_EccDetectionCallback(void)
 {
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_FLASHEx_EccDetectionCallback could be implemented in the user file
-   */
+	/* NOTE : This function should not be modified, when the callback is needed,
+	          the HAL_FLASHEx_EccDetectionCallback could be implemented in the user file
+	 */
 }
 
 /**

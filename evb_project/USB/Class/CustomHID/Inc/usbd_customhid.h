@@ -94,34 +94,31 @@ extern "C" {
 /** @defgroup USBD_CORE_Exported_TypesDefinitions
   * @{
   */
-typedef enum
-{
-  CUSTOM_HID_IDLE = 0U,
-  CUSTOM_HID_BUSY,
+typedef enum {
+	CUSTOM_HID_IDLE = 0U,
+	CUSTOM_HID_BUSY,
 } CUSTOM_HID_StateTypeDef;
 
-typedef struct _USBD_CUSTOM_HID_Itf
-{
-  uint8_t *pReport;
-  int8_t (* Init)(void);
-  int8_t (* DeInit)(void);
-  int8_t (* OutEvent)(uint8_t event_idx, uint8_t cmd_id, uint8_t *data);
+typedef struct _USBD_CUSTOM_HID_Itf {
+	uint8_t *pReport;
+	int8_t (* Init)(void);
+	int8_t (* DeInit)(void);
+	int8_t (* OutEvent)(uint8_t event_idx, uint8_t cmd_id, uint8_t *data);
 #ifdef USBD_CUSTOMHID_CTRL_REQ_COMPLETE_CALLBACK_ENABLED
-  int8_t (* CtrlReqComplete)(uint8_t request, uint16_t wLength);
+	int8_t (* CtrlReqComplete)(uint8_t request, uint16_t wLength);
 #endif /* USBD_CUSTOMHID_CTRL_REQ_COMPLETE_CALLBACK_ENABLED */
 #ifdef USBD_CUSTOMHID_CTRL_REQ_GET_REPORT_ENABLED
-  uint8_t *(* GetReport)(uint16_t *ReportLength);
+	uint8_t *(* GetReport)(uint16_t *ReportLength);
 #endif /* USBD_CUSTOMHID_CTRL_REQ_GET_REPORT_ENABLED */
 } USBD_CUSTOM_HID_ItfTypeDef;
 
-typedef struct
-{
-  uint8_t  Report_buf[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE];
-  uint32_t Protocol;
-  uint32_t IdleState;
-  uint32_t AltSetting;
-  uint32_t IsReportAvailable;
-  CUSTOM_HID_StateTypeDef state;
+typedef struct {
+	uint8_t  Report_buf[USBD_CUSTOMHID_OUTREPORT_BUF_SIZE];
+	uint32_t Protocol;
+	uint32_t IdleState;
+	uint32_t AltSetting;
+	uint32_t IsReportAvailable;
+	CUSTOM_HID_StateTypeDef state;
 } USBD_CUSTOM_HID_HandleTypeDef;
 
 /*
@@ -129,15 +126,14 @@ typedef struct
  * 6.2.1 HID Descriptor
  */
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorTypeCHID;
-  uint16_t          bcdCUSTOM_HID;
-  uint8_t           bCountryCode;
-  uint8_t           bNumDescriptors;
-  uint8_t           bDescriptorType;
-  uint16_t          wItemLength;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorTypeCHID;
+	uint16_t          bcdCUSTOM_HID;
+	uint8_t           bCountryCode;
+	uint8_t           bNumDescriptors;
+	uint8_t           bDescriptorType;
+	uint16_t          wItemLength;
 } __PACKED USBD_DescTypeDef;
 
 /**
@@ -169,15 +165,15 @@ extern USBD_ClassTypeDef USBD_CUSTOM_HID;
   */
 #ifdef USE_USBD_COMPOSITE
 uint8_t USBD_CUSTOM_HID_SendReport(USBD_HandleTypeDef *pdev,
-                                   uint8_t *report, uint16_t len, uint8_t ClassId);
+				   uint8_t *report, uint16_t len, uint8_t ClassId);
 #else
 uint8_t USBD_CUSTOM_HID_SendReport(USBD_HandleTypeDef *pdev,
-                                   uint8_t *report, uint16_t len);
+				   uint8_t *report, uint16_t len);
 #endif /* USE_USBD_COMPOSITE */
 uint8_t USBD_CUSTOM_HID_ReceivePacket(USBD_HandleTypeDef *pdev);
 
 uint8_t USBD_CUSTOM_HID_RegisterInterface(USBD_HandleTypeDef *pdev,
-                                          USBD_CUSTOM_HID_ItfTypeDef *fops);
+		USBD_CUSTOM_HID_ItfTypeDef *fops);
 
 /**
   * @}

@@ -51,47 +51,48 @@ void arm_q7_to_q15_reordered_with_offset(const q7_t *src, q15_t *dst, uint32_t b
 {
 
 #if defined(ARM_MATH_DSP)
-    uint32_t block_cnt;
-    /* Run the below code for cores that support SIMD instructions  */
-    q31_t in_q7x4;
-    q31_t out_q15x2_1;
-    q31_t out_q15x2_2;
+	uint32_t block_cnt;
+	/* Run the below code for cores that support SIMD instructions  */
+	q31_t in_q7x4;
+	q31_t out_q15x2_1;
+	q31_t out_q15x2_2;
 
-    /*loop unrolling */
-    block_cnt = block_size >> 2u;
+	/*loop unrolling */
+	block_cnt = block_size >> 2u;
 
-    /* First part of the processing with loop unrolling. Compute 4 outputs at a time. */
-    const q31_t offset_q15x2 = (q31_t)__PKHBT(offset, offset, 16);
-    while (block_cnt > 0u)
-    {
-        /* convert from q7 to q15 and then store the results in the destination buffer */
-        in_q7x4 = arm_nn_read_q7x4_ia(&src);
+	/* First part of the processing with loop unrolling. Compute 4 outputs at a time. */
+	const q31_t offset_q15x2 = (q31_t)__PKHBT(offset, offset, 16);
 
-        /* Extract and sign extend each of the four q7 values to q15 */
-        out_q15x2_1 = __SXTAB16(offset_q15x2, __ROR((uint32_t)in_q7x4, 8));
-        out_q15x2_2 = __SXTAB16(offset_q15x2, in_q7x4);
+	while (block_cnt > 0u) {
+		/* convert from q7 to q15 and then store the results in the destination buffer */
+		in_q7x4 = arm_nn_read_q7x4_ia(&src);
 
-        arm_nn_write_q15x2_ia(&dst, out_q15x2_2);
-        arm_nn_write_q15x2_ia(&dst, out_q15x2_1);
+		/* Extract and sign extend each of the four q7 values to q15 */
+		out_q15x2_1 = __SXTAB16(offset_q15x2, __ROR((uint32_t)in_q7x4, 8));
+		out_q15x2_2 = __SXTAB16(offset_q15x2, in_q7x4);
 
-        block_cnt--;
-    }
-    /* Handle left over samples */
-    block_cnt = block_size % 0x4u;
+		arm_nn_write_q15x2_ia(&dst, out_q15x2_2);
+		arm_nn_write_q15x2_ia(&dst, out_q15x2_1);
 
-    while (block_cnt > 0u)
-    {
-        *dst++ = (q15_t)*src++ + offset;
+		block_cnt--;
+	}
 
-        /* Decrement the loop counter */
-        block_cnt--;
-    }
+	/* Handle left over samples */
+	block_cnt = block_size % 0x4u;
+
+	while (block_cnt > 0u) {
+		*dst++ = (q15_t) * src++ + offset;
+
+		/* Decrement the loop counter */
+		block_cnt--;
+	}
+
 #else
-    (void)src;
-    (void)dst;
-    (void)block_size;
-    (void)offset;
-    /* Not available */
+	(void)src;
+	(void)dst;
+	(void)block_size;
+	(void)offset;
+	/* Not available */
 #endif
 }
 

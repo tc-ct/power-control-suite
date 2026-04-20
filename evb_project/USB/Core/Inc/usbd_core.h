@@ -89,7 +89,7 @@ USBD_StatusTypeDef USBD_RegisterClass(USBD_HandleTypeDef *pdev, USBD_ClassTypeDe
 
 #ifdef USE_USBD_COMPOSITE
 USBD_StatusTypeDef  USBD_RegisterClassComposite(USBD_HandleTypeDef *pdev, USBD_ClassTypeDef *pclass,
-                                                USBD_CompositeClassTypeDef classtype, uint8_t *EpAddr);
+		USBD_CompositeClassTypeDef classtype, uint8_t *EpAddr);
 
 USBD_StatusTypeDef  USBD_UnRegisterClassComposite(USBD_HandleTypeDef *pdev);
 uint8_t USBD_CoreGetEPAdd(USBD_HandleTypeDef *pdev, uint8_t ep_dir, uint8_t ep_type, uint8_t ClassId);
@@ -125,7 +125,7 @@ USBD_StatusTypeDef USBD_LL_Start(USBD_HandleTypeDef *pdev);
 USBD_StatusTypeDef USBD_LL_Stop(USBD_HandleTypeDef *pdev);
 
 USBD_StatusTypeDef USBD_LL_OpenEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr,
-                                  uint8_t ep_type, uint16_t ep_mps);
+				  uint8_t ep_type, uint16_t ep_mps);
 
 USBD_StatusTypeDef USBD_LL_CloseEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr);
 USBD_StatusTypeDef USBD_LL_FlushEP(USBD_HandleTypeDef *pdev, uint8_t ep_addr);
@@ -134,10 +134,10 @@ USBD_StatusTypeDef USBD_LL_ClearStallEP(USBD_HandleTypeDef *pdev, uint8_t ep_add
 USBD_StatusTypeDef USBD_LL_SetUSBAddress(USBD_HandleTypeDef *pdev, uint8_t dev_addr);
 
 USBD_StatusTypeDef USBD_LL_Transmit(USBD_HandleTypeDef *pdev, uint8_t ep_addr,
-                                    uint8_t *pbuf, uint32_t size);
+				    uint8_t *pbuf, uint32_t size);
 
 USBD_StatusTypeDef USBD_LL_PrepareReceive(USBD_HandleTypeDef *pdev, uint8_t ep_addr,
-                                          uint8_t *pbuf, uint32_t size);
+		uint8_t *pbuf, uint32_t size);
 
 #ifdef USBD_HS_TESTMODE_ENABLE
 USBD_StatusTypeDef USBD_LL_SetTestMode(USBD_HandleTypeDef *pdev, uint8_t testmode);

@@ -139,131 +139,125 @@
   */
 ErrorStatus LL_USART_DeInit(const USART_TypeDef *USARTx)
 {
-  ErrorStatus status = SUCCESS;
+	ErrorStatus status = SUCCESS;
 
-  /* Check the parameters */
-  assert_param(IS_UART_INSTANCE(USARTx));
+	/* Check the parameters */
+	assert_param(IS_UART_INSTANCE(USARTx));
 
-  if (USARTx == USART1)
-  {
-    /* Force reset of USART clock */
-    LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_USART1);
+	if (USARTx == USART1) {
+		/* Force reset of USART clock */
+		LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_USART1);
 
-    /* Release reset of USART clock */
-    LL_APB2_GRP1_ReleaseReset(LL_APB2_GRP1_PERIPH_USART1);
-  }
-  else if (USARTx == USART2)
-  {
-    /* Force reset of USART clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_USART2);
+		/* Release reset of USART clock */
+		LL_APB2_GRP1_ReleaseReset(LL_APB2_GRP1_PERIPH_USART1);
+	} else if (USARTx == USART2) {
+		/* Force reset of USART clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_USART2);
 
-    /* Release reset of USART clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART2);
-  }
-  else if (USARTx == USART3)
-  {
-    /* Force reset of USART clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_USART3);
+		/* Release reset of USART clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART2);
+	} else if (USARTx == USART3) {
+		/* Force reset of USART clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_USART3);
 
-    /* Release reset of USART clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART3);
-  }
+		/* Release reset of USART clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART3);
+	}
+
 #if defined(UART4)
-  else if (USARTx == UART4)
-  {
-    /* Force reset of UART clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_UART4);
+	else if (USARTx == UART4) {
+		/* Force reset of UART clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_UART4);
 
-    /* Release reset of UART clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_UART4);
-  }
+		/* Release reset of UART clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_UART4);
+	}
+
 #endif /* UART4 */
 #if defined(UART5)
-  else if (USARTx == UART5)
-  {
-    /* Force reset of UART clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_UART5);
+	else if (USARTx == UART5) {
+		/* Force reset of UART clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_UART5);
 
-    /* Release reset of UART clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_UART5);
-  }
+		/* Release reset of UART clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_UART5);
+	}
+
 #endif /* UART5 */
 #if defined(USART6)
-  else if (USARTx == USART6)
-  {
-    /* Force reset of USART clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_USART6);
+	else if (USARTx == USART6) {
+		/* Force reset of USART clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_USART6);
 
-    /* Release reset of USART clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART6);
-  }
+		/* Release reset of USART clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART6);
+	}
+
 #endif /* USART6 */
 #if defined(UART7)
-  else if (USARTx == UART7)
-  {
-    /* Force reset of UART clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_UART7);
+	else if (USARTx == UART7) {
+		/* Force reset of UART clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_UART7);
 
-    /* Release reset of UART clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_UART7);
-  }
+		/* Release reset of UART clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_UART7);
+	}
+
 #endif /* UART7 */
 #if defined(UART8)
-  else if (USARTx == UART8)
-  {
-    /* Force reset of UART clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_UART8);
+	else if (USARTx == UART8) {
+		/* Force reset of UART clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_UART8);
 
-    /* Release reset of UART clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_UART8);
-  }
+		/* Release reset of UART clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_UART8);
+	}
+
 #endif /* UART8 */
 #if defined(UART9)
-  else if (USARTx == UART9)
-  {
-    /* Force reset of UART clock */
-    LL_APB1_GRP2_ForceReset(LL_APB1_GRP2_PERIPH_UART9);
+	else if (USARTx == UART9) {
+		/* Force reset of UART clock */
+		LL_APB1_GRP2_ForceReset(LL_APB1_GRP2_PERIPH_UART9);
 
-    /* Release reset of UART clock */
-    LL_APB1_GRP2_ReleaseReset(LL_APB1_GRP2_PERIPH_UART9);
-  }
+		/* Release reset of UART clock */
+		LL_APB1_GRP2_ReleaseReset(LL_APB1_GRP2_PERIPH_UART9);
+	}
+
 #endif /* UART9 */
 #if defined(USART10)
-  else if (USARTx == USART10)
-  {
-    /* Force reset of UART clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_USART10);
+	else if (USARTx == USART10) {
+		/* Force reset of UART clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_USART10);
 
-    /* Release reset of UART clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART10);
-  }
+		/* Release reset of UART clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART10);
+	}
+
 #endif /* USART10 */
 #if defined(USART11)
-  else if (USARTx == USART11)
-  {
-    /* Force reset of UART clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_USART11);
+	else if (USARTx == USART11) {
+		/* Force reset of UART clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_USART11);
 
-    /* Release reset of UART clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART11);
-  }
+		/* Release reset of UART clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_USART11);
+	}
+
 #endif /* USART11 */
 #if defined(UART12)
-  else if (USARTx == UART12)
-  {
-    /* Force reset of UART clock */
-    LL_APB1_GRP2_ForceReset(LL_APB1_GRP2_PERIPH_UART12);
+	else if (USARTx == UART12) {
+		/* Force reset of UART clock */
+		LL_APB1_GRP2_ForceReset(LL_APB1_GRP2_PERIPH_UART12);
 
-    /* Release reset of UART clock */
-    LL_APB1_GRP2_ReleaseReset(LL_APB1_GRP2_PERIPH_UART12);
-  }
+		/* Release reset of UART clock */
+		LL_APB1_GRP2_ReleaseReset(LL_APB1_GRP2_PERIPH_UART12);
+	}
+
 #endif /* UART12 */
-  else
-  {
-    status = ERROR;
-  }
+	else
+		status = ERROR;
 
-  return (status);
+	return (status);
 }
 
 /**
@@ -282,153 +276,137 @@ ErrorStatus LL_USART_DeInit(const USART_TypeDef *USARTx)
   */
 ErrorStatus LL_USART_Init(USART_TypeDef *USARTx, const LL_USART_InitTypeDef *USART_InitStruct)
 {
-  ErrorStatus status = ERROR;
-  uint32_t periphclk = LL_RCC_PERIPH_FREQUENCY_NO;
+	ErrorStatus status = ERROR;
+	uint32_t periphclk = LL_RCC_PERIPH_FREQUENCY_NO;
 
-  /* Check the parameters */
-  assert_param(IS_UART_INSTANCE(USARTx));
-  assert_param(IS_LL_USART_PRESCALER(USART_InitStruct->PrescalerValue));
-  assert_param(IS_LL_USART_BAUDRATE(USART_InitStruct->BaudRate));
-  assert_param(IS_LL_USART_DATAWIDTH(USART_InitStruct->DataWidth));
-  assert_param(IS_LL_USART_STOPBITS(USART_InitStruct->StopBits));
-  assert_param(IS_LL_USART_PARITY(USART_InitStruct->Parity));
-  assert_param(IS_LL_USART_DIRECTION(USART_InitStruct->TransferDirection));
-  assert_param(IS_LL_USART_HWCONTROL(USART_InitStruct->HardwareFlowControl));
-  assert_param(IS_LL_USART_OVERSAMPLING(USART_InitStruct->OverSampling));
+	/* Check the parameters */
+	assert_param(IS_UART_INSTANCE(USARTx));
+	assert_param(IS_LL_USART_PRESCALER(USART_InitStruct->PrescalerValue));
+	assert_param(IS_LL_USART_BAUDRATE(USART_InitStruct->BaudRate));
+	assert_param(IS_LL_USART_DATAWIDTH(USART_InitStruct->DataWidth));
+	assert_param(IS_LL_USART_STOPBITS(USART_InitStruct->StopBits));
+	assert_param(IS_LL_USART_PARITY(USART_InitStruct->Parity));
+	assert_param(IS_LL_USART_DIRECTION(USART_InitStruct->TransferDirection));
+	assert_param(IS_LL_USART_HWCONTROL(USART_InitStruct->HardwareFlowControl));
+	assert_param(IS_LL_USART_OVERSAMPLING(USART_InitStruct->OverSampling));
 
-  /* USART needs to be in disabled state, in order to be able to configure some bits in
-     CRx registers */
-  if (LL_USART_IsEnabled(USARTx) == 0U)
-  {
-    /*---------------------------- USART CR1 Configuration ---------------------
-     * Configure USARTx CR1 (USART Word Length, Parity, Mode and Oversampling bits) with parameters:
-     * - DataWidth:          USART_CR1_M bits according to USART_InitStruct->DataWidth value
-     * - Parity:             USART_CR1_PCE, USART_CR1_PS bits according to USART_InitStruct->Parity value
-     * - TransferDirection:  USART_CR1_TE, USART_CR1_RE bits according to USART_InitStruct->TransferDirection value
-     * - Oversampling:       USART_CR1_OVER8 bit according to USART_InitStruct->OverSampling value.
-     */
-    MODIFY_REG(USARTx->CR1,
-               (USART_CR1_M | USART_CR1_PCE | USART_CR1_PS |
-                USART_CR1_TE | USART_CR1_RE | USART_CR1_OVER8),
-               (USART_InitStruct->DataWidth | USART_InitStruct->Parity |
-                USART_InitStruct->TransferDirection | USART_InitStruct->OverSampling));
+	/* USART needs to be in disabled state, in order to be able to configure some bits in
+	   CRx registers */
+	if (LL_USART_IsEnabled(USARTx) == 0U) {
+		/*---------------------------- USART CR1 Configuration ---------------------
+		 * Configure USARTx CR1 (USART Word Length, Parity, Mode and Oversampling bits) with parameters:
+		 * - DataWidth:          USART_CR1_M bits according to USART_InitStruct->DataWidth value
+		 * - Parity:             USART_CR1_PCE, USART_CR1_PS bits according to USART_InitStruct->Parity value
+		 * - TransferDirection:  USART_CR1_TE, USART_CR1_RE bits according to USART_InitStruct->TransferDirection value
+		 * - Oversampling:       USART_CR1_OVER8 bit according to USART_InitStruct->OverSampling value.
+		 */
+		MODIFY_REG(USARTx->CR1,
+			   (USART_CR1_M | USART_CR1_PCE | USART_CR1_PS |
+			    USART_CR1_TE | USART_CR1_RE | USART_CR1_OVER8),
+			   (USART_InitStruct->DataWidth | USART_InitStruct->Parity |
+			    USART_InitStruct->TransferDirection | USART_InitStruct->OverSampling));
 
-    /*---------------------------- USART CR2 Configuration ---------------------
-     * Configure USARTx CR2 (Stop bits) with parameters:
-     * - Stop Bits:          USART_CR2_STOP bits according to USART_InitStruct->StopBits value.
-     * - CLKEN, CPOL, CPHA and LBCL bits are to be configured using LL_USART_ClockInit().
-     */
-    LL_USART_SetStopBitsLength(USARTx, USART_InitStruct->StopBits);
+		/*---------------------------- USART CR2 Configuration ---------------------
+		 * Configure USARTx CR2 (Stop bits) with parameters:
+		 * - Stop Bits:          USART_CR2_STOP bits according to USART_InitStruct->StopBits value.
+		 * - CLKEN, CPOL, CPHA and LBCL bits are to be configured using LL_USART_ClockInit().
+		 */
+		LL_USART_SetStopBitsLength(USARTx, USART_InitStruct->StopBits);
 
-    /*---------------------------- USART CR3 Configuration ---------------------
-     * Configure USARTx CR3 (Hardware Flow Control) with parameters:
-     * - HardwareFlowControl: USART_CR3_RTSE, USART_CR3_CTSE bits according to
-     *   USART_InitStruct->HardwareFlowControl value.
-     */
-    LL_USART_SetHWFlowCtrl(USARTx, USART_InitStruct->HardwareFlowControl);
+		/*---------------------------- USART CR3 Configuration ---------------------
+		 * Configure USARTx CR3 (Hardware Flow Control) with parameters:
+		 * - HardwareFlowControl: USART_CR3_RTSE, USART_CR3_CTSE bits according to
+		 *   USART_InitStruct->HardwareFlowControl value.
+		 */
+		LL_USART_SetHWFlowCtrl(USARTx, USART_InitStruct->HardwareFlowControl);
 
-    /*---------------------------- USART BRR Configuration ---------------------
-     * Retrieve Clock frequency used for USART Peripheral
-     */
-    if (USARTx == USART1)
-    {
-      periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART1_CLKSOURCE);
-    }
-    else if (USARTx == USART2)
-    {
-      periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART2_CLKSOURCE);
-    }
-    else if (USARTx == USART3)
-    {
-      periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART3_CLKSOURCE);
-    }
+		/*---------------------------- USART BRR Configuration ---------------------
+		 * Retrieve Clock frequency used for USART Peripheral
+		 */
+		if (USARTx == USART1)
+			periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART1_CLKSOURCE);
+		else if (USARTx == USART2)
+			periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART2_CLKSOURCE);
+		else if (USARTx == USART3)
+			periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART3_CLKSOURCE);
+
 #if defined(UART4)
-    else if (USARTx == UART4)
-    {
-      periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART4_CLKSOURCE);
-    }
+		else if (USARTx == UART4)
+			periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART4_CLKSOURCE);
+
 #endif /* UART4 */
 #if defined(UART5)
-    else if (USARTx == UART5)
-    {
-      periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART5_CLKSOURCE);
-    }
+		else if (USARTx == UART5)
+			periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART5_CLKSOURCE);
+
 #endif /* UART5 */
 #if defined(USART6)
-    else if (USARTx == USART6)
-    {
-      periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART6_CLKSOURCE);
-    }
+		else if (USARTx == USART6)
+			periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART6_CLKSOURCE);
+
 #endif /* USART6 */
 #if defined(UART7)
-    else if (USARTx == UART7)
-    {
-      periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART7_CLKSOURCE);
-    }
+		else if (USARTx == UART7)
+			periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART7_CLKSOURCE);
+
 #endif /* UART7 */
 #if defined(UART8)
-    else if (USARTx == UART8)
-    {
-      periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART8_CLKSOURCE);
-    }
+		else if (USARTx == UART8)
+			periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART8_CLKSOURCE);
+
 #endif /* UART8 */
 #if defined(UART9)
-    else if (USARTx == UART9)
-    {
-      periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART9_CLKSOURCE);
-    }
+		else if (USARTx == UART9)
+			periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART9_CLKSOURCE);
+
 #endif /* UART9 */
 #if defined(USART10)
-    else if (USARTx == USART10)
-    {
-      periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART10_CLKSOURCE);
-    }
+		else if (USARTx == USART10)
+			periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART10_CLKSOURCE);
+
 #endif /* USART10 */
 #if defined(USART11)
-    else if (USARTx == USART11)
-    {
-      periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART11_CLKSOURCE);
-    }
+		else if (USARTx == USART11)
+			periphclk = LL_RCC_GetUSARTClockFreq(LL_RCC_USART11_CLKSOURCE);
+
 #endif /* USART11 */
 #if defined(UART12)
-    else if (USARTx == UART12)
-    {
-      periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART12_CLKSOURCE);
-    }
+		else if (USARTx == UART12)
+			periphclk = LL_RCC_GetUARTClockFreq(LL_RCC_UART12_CLKSOURCE);
+
 #endif /* UART12 */
-    else
-    {
-      /* Nothing to do, as error code is already assigned to ERROR value */
-    }
+		else {
+			/* Nothing to do, as error code is already assigned to ERROR value */
+		}
 
-    /* Configure the USART Baud Rate :
-       - prescaler value is required
-       - valid baud rate value (different from 0) is required
-       - Peripheral clock as returned by RCC service, should be valid (different from 0).
-    */
-    if ((periphclk != LL_RCC_PERIPH_FREQUENCY_NO)
-        && (USART_InitStruct->BaudRate != 0U))
-    {
-      status = SUCCESS;
-      LL_USART_SetBaudRate(USARTx,
-                           periphclk,
-                           USART_InitStruct->PrescalerValue,
-                           USART_InitStruct->OverSampling,
-                           USART_InitStruct->BaudRate);
+		/* Configure the USART Baud Rate :
+		   - prescaler value is required
+		   - valid baud rate value (different from 0) is required
+		   - Peripheral clock as returned by RCC service, should be valid (different from 0).
+		*/
+		if ((periphclk != LL_RCC_PERIPH_FREQUENCY_NO)
+		    && (USART_InitStruct->BaudRate != 0U)) {
+			status = SUCCESS;
+			LL_USART_SetBaudRate(USARTx,
+					     periphclk,
+					     USART_InitStruct->PrescalerValue,
+					     USART_InitStruct->OverSampling,
+					     USART_InitStruct->BaudRate);
 
-      /* Check BRR is greater than or equal to 16d */
-      assert_param(IS_LL_USART_BRR_MIN(USARTx->BRR));
-    }
+			/* Check BRR is greater than or equal to 16d */
+			assert_param(IS_LL_USART_BRR_MIN(USARTx->BRR));
+		}
 
-    /*---------------------------- USART PRESC Configuration -----------------------
-     * Configure USARTx PRESC (Prescaler) with parameters:
-     * - PrescalerValue: USART_PRESC_PRESCALER bits according to USART_InitStruct->PrescalerValue value.
-     */
-    LL_USART_SetPrescaler(USARTx, USART_InitStruct->PrescalerValue);
-  }
-  /* Endif (=> USART not in Disabled state => return ERROR) */
+		/*---------------------------- USART PRESC Configuration -----------------------
+		 * Configure USARTx PRESC (Prescaler) with parameters:
+		 * - PrescalerValue: USART_PRESC_PRESCALER bits according to USART_InitStruct->PrescalerValue value.
+		 */
+		LL_USART_SetPrescaler(USARTx, USART_InitStruct->PrescalerValue);
+	}
 
-  return (status);
+	/* Endif (=> USART not in Disabled state => return ERROR) */
+
+	return (status);
 }
 
 /**
@@ -440,15 +418,15 @@ ErrorStatus LL_USART_Init(USART_TypeDef *USARTx, const LL_USART_InitTypeDef *USA
 
 void LL_USART_StructInit(LL_USART_InitTypeDef *USART_InitStruct)
 {
-  /* Set USART_InitStruct fields to default values */
-  USART_InitStruct->PrescalerValue      = LL_USART_PRESCALER_DIV1;
-  USART_InitStruct->BaudRate            = USART_DEFAULT_BAUDRATE;
-  USART_InitStruct->DataWidth           = LL_USART_DATAWIDTH_8B;
-  USART_InitStruct->StopBits            = LL_USART_STOPBITS_1;
-  USART_InitStruct->Parity              = LL_USART_PARITY_NONE ;
-  USART_InitStruct->TransferDirection   = LL_USART_DIRECTION_TX_RX;
-  USART_InitStruct->HardwareFlowControl = LL_USART_HWCONTROL_NONE;
-  USART_InitStruct->OverSampling        = LL_USART_OVERSAMPLING_16;
+	/* Set USART_InitStruct fields to default values */
+	USART_InitStruct->PrescalerValue      = LL_USART_PRESCALER_DIV1;
+	USART_InitStruct->BaudRate            = USART_DEFAULT_BAUDRATE;
+	USART_InitStruct->DataWidth           = LL_USART_DATAWIDTH_8B;
+	USART_InitStruct->StopBits            = LL_USART_STOPBITS_1;
+	USART_InitStruct->Parity              = LL_USART_PARITY_NONE ;
+	USART_InitStruct->TransferDirection   = LL_USART_DIRECTION_TX_RX;
+	USART_InitStruct->HardwareFlowControl = LL_USART_HWCONTROL_NONE;
+	USART_InitStruct->OverSampling        = LL_USART_OVERSAMPLING_16;
 }
 
 /**
@@ -467,43 +445,40 @@ void LL_USART_StructInit(LL_USART_InitTypeDef *USART_InitStruct)
   */
 ErrorStatus LL_USART_ClockInit(USART_TypeDef *USARTx, const LL_USART_ClockInitTypeDef *USART_ClockInitStruct)
 {
-  ErrorStatus status = SUCCESS;
+	ErrorStatus status = SUCCESS;
 
-  /* Check USART Instance and Clock signal output parameters */
-  assert_param(IS_UART_INSTANCE(USARTx));
-  assert_param(IS_LL_USART_CLOCKOUTPUT(USART_ClockInitStruct->ClockOutput));
+	/* Check USART Instance and Clock signal output parameters */
+	assert_param(IS_UART_INSTANCE(USARTx));
+	assert_param(IS_LL_USART_CLOCKOUTPUT(USART_ClockInitStruct->ClockOutput));
 
-  /* USART needs to be in disabled state, in order to be able to configure some bits in
-     CRx registers */
-  if (LL_USART_IsEnabled(USARTx) == 0U)
-  {
-    /* Ensure USART instance is USART capable */
-    assert_param(IS_USART_INSTANCE(USARTx));
+	/* USART needs to be in disabled state, in order to be able to configure some bits in
+	   CRx registers */
+	if (LL_USART_IsEnabled(USARTx) == 0U) {
+		/* Ensure USART instance is USART capable */
+		assert_param(IS_USART_INSTANCE(USARTx));
 
-    /* Check clock related parameters */
-    assert_param(IS_LL_USART_CLOCKPOLARITY(USART_ClockInitStruct->ClockPolarity));
-    assert_param(IS_LL_USART_CLOCKPHASE(USART_ClockInitStruct->ClockPhase));
-    assert_param(IS_LL_USART_LASTBITCLKOUTPUT(USART_ClockInitStruct->LastBitClockPulse));
+		/* Check clock related parameters */
+		assert_param(IS_LL_USART_CLOCKPOLARITY(USART_ClockInitStruct->ClockPolarity));
+		assert_param(IS_LL_USART_CLOCKPHASE(USART_ClockInitStruct->ClockPhase));
+		assert_param(IS_LL_USART_LASTBITCLKOUTPUT(USART_ClockInitStruct->LastBitClockPulse));
 
-    /*---------------------------- USART CR2 Configuration -----------------------
-     * Configure USARTx CR2 (Clock signal related bits) with parameters:
-     * - Clock Output:                USART_CR2_CLKEN bit according to USART_ClockInitStruct->ClockOutput value
-     * - Clock Polarity:              USART_CR2_CPOL bit according to USART_ClockInitStruct->ClockPolarity value
-     * - Clock Phase:                 USART_CR2_CPHA bit according to USART_ClockInitStruct->ClockPhase value
-     * - Last Bit Clock Pulse Output: USART_CR2_LBCL bit according to USART_ClockInitStruct->LastBitClockPulse value.
-     */
-    MODIFY_REG(USARTx->CR2,
-               USART_CR2_CLKEN | USART_CR2_CPHA | USART_CR2_CPOL | USART_CR2_LBCL,
-               USART_ClockInitStruct->ClockOutput | USART_ClockInitStruct->ClockPolarity |
-               USART_ClockInitStruct->ClockPhase | USART_ClockInitStruct->LastBitClockPulse);
-  }
-  /* Else (USART not in Disabled state => return ERROR */
-  else
-  {
-    status = ERROR;
-  }
+		/*---------------------------- USART CR2 Configuration -----------------------
+		 * Configure USARTx CR2 (Clock signal related bits) with parameters:
+		 * - Clock Output:                USART_CR2_CLKEN bit according to USART_ClockInitStruct->ClockOutput value
+		 * - Clock Polarity:              USART_CR2_CPOL bit according to USART_ClockInitStruct->ClockPolarity value
+		 * - Clock Phase:                 USART_CR2_CPHA bit according to USART_ClockInitStruct->ClockPhase value
+		 * - Last Bit Clock Pulse Output: USART_CR2_LBCL bit according to USART_ClockInitStruct->LastBitClockPulse value.
+		 */
+		MODIFY_REG(USARTx->CR2,
+			   USART_CR2_CLKEN | USART_CR2_CPHA | USART_CR2_CPOL | USART_CR2_LBCL,
+			   USART_ClockInitStruct->ClockOutput | USART_ClockInitStruct->ClockPolarity |
+			   USART_ClockInitStruct->ClockPhase | USART_ClockInitStruct->LastBitClockPulse);
+	}
+	/* Else (USART not in Disabled state => return ERROR */
+	else
+		status = ERROR;
 
-  return (status);
+	return (status);
 }
 
 /**
@@ -514,13 +489,13 @@ ErrorStatus LL_USART_ClockInit(USART_TypeDef *USARTx, const LL_USART_ClockInitTy
   */
 void LL_USART_ClockStructInit(LL_USART_ClockInitTypeDef *USART_ClockInitStruct)
 {
-  /* Set LL_USART_ClockInitStruct fields with default values */
-  USART_ClockInitStruct->ClockOutput       = LL_USART_CLOCK_DISABLE;
-  USART_ClockInitStruct->ClockPolarity     = LL_USART_POLARITY_LOW;            /* Not relevant when ClockOutput =
+	/* Set LL_USART_ClockInitStruct fields with default values */
+	USART_ClockInitStruct->ClockOutput       = LL_USART_CLOCK_DISABLE;
+	USART_ClockInitStruct->ClockPolarity     = LL_USART_POLARITY_LOW;            /* Not relevant when ClockOutput =
                                                                                   LL_USART_CLOCK_DISABLE */
-  USART_ClockInitStruct->ClockPhase        = LL_USART_PHASE_1EDGE;             /* Not relevant when ClockOutput =
+	USART_ClockInitStruct->ClockPhase        = LL_USART_PHASE_1EDGE;             /* Not relevant when ClockOutput =
                                                                                   LL_USART_CLOCK_DISABLE */
-  USART_ClockInitStruct->LastBitClockPulse = LL_USART_LASTCLKPULSE_NO_OUTPUT;  /* Not relevant when ClockOutput =
+	USART_ClockInitStruct->LastBitClockPulse = LL_USART_LASTCLKPULSE_NO_OUTPUT;  /* Not relevant when ClockOutput =
                                                                                   LL_USART_CLOCK_DISABLE */
 }
 

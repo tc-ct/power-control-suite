@@ -52,7 +52,7 @@ HAL_StatusTypeDef HAL_PCDEx_SetRxFiFo(PCD_HandleTypeDef *hpcd, uint16_t size);
 
 #if defined (USB_DRD_FS)
 HAL_StatusTypeDef  HAL_PCDEx_PMAConfig(PCD_HandleTypeDef *hpcd, uint16_t ep_addr,
-                                       uint16_t ep_kind, uint32_t pmaadress);
+				       uint16_t ep_kind, uint32_t pmaadress);
 #endif /* defined (USB_DRD_FS) */
 
 HAL_StatusTypeDef HAL_PCDEx_ActivateLPM(PCD_HandleTypeDef *hpcd);

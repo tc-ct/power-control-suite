@@ -31,14 +31,15 @@ volatile uint8_t smbus_rx_complete = 0;
 volatile uint8_t smbus_error = 0;
 
 /* 静态全局变量，保存当前注册的回调 */
-static DAC_SPI_Callbacks_t* g_dac_spi_cb = NULL;
+static DAC_SPI_Callbacks_t *g_dac_spi_cb = NULL;
 
 /* 注册回调函数 */
-void DAC_SPI_Callback_Register(DAC_SPI_Callbacks_t* cb) {
-    if (cb == NULL) {
-        return;
-    }
-    g_dac_spi_cb = cb;
+void DAC_SPI_Callback_Register(DAC_SPI_Callbacks_t* cb)
+{
+	if (cb == NULL)
+		return;
+
+	g_dac_spi_cb = cb;
 }
 
 /**
@@ -47,10 +48,9 @@ void DAC_SPI_Callback_Register(DAC_SPI_Callbacks_t* cb) {
  */
 void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 {
-    // 仅处理SPI1，且已注册回调
-    if (hspi == &hspi1 && g_dac_spi_cb != NULL && g_dac_spi_cb->TxCpltCallback != NULL) {
-        g_dac_spi_cb->TxCpltCallback(g_dac_spi_cb->TxCpltArg);
-    }
+	// 仅处理SPI1，且已注册回调
+	if (hspi == &hspi1 && g_dac_spi_cb != NULL && g_dac_spi_cb->TxCpltCallback != NULL)
+		g_dac_spi_cb->TxCpltCallback(g_dac_spi_cb->TxCpltArg);
 }
 
 /**
@@ -59,21 +59,23 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
  */
 void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi)
 {
-    if (hspi == &hspi1 && g_dac_spi_cb != NULL && g_dac_spi_cb->ErrorCallback != NULL) {
-        g_dac_spi_cb->ErrorCallback(g_dac_spi_cb->ErrorArg);
-    }
+	if (hspi == &hspi1 && g_dac_spi_cb != NULL && g_dac_spi_cb->ErrorCallback != NULL)
+		g_dac_spi_cb->ErrorCallback(g_dac_spi_cb->ErrorArg);
 }
 
-void HAL_SMBUS_MasterTxCpltCallback(SMBUS_HandleTypeDef *hsmbus) {
-    smbus_tx_complete = 1;
+void HAL_SMBUS_MasterTxCpltCallback(SMBUS_HandleTypeDef *hsmbus)
+{
+	smbus_tx_complete = 1;
 }
 
-void HAL_SMBUS_MasterRxCpltCallback(SMBUS_HandleTypeDef *hsmbus) {
-    smbus_rx_complete = 1;
+void HAL_SMBUS_MasterRxCpltCallback(SMBUS_HandleTypeDef *hsmbus)
+{
+	smbus_rx_complete = 1;
 }
 
-void HAL_SMBUS_ErrorCallback(SMBUS_HandleTypeDef *hsmbus) {
-    smbus_error = 1;
-    smbus_tx_complete = 1;   /* 避免死等 */
-    smbus_rx_complete = 1;
+void HAL_SMBUS_ErrorCallback(SMBUS_HandleTypeDef *hsmbus)
+{
+	smbus_error = 1;
+	smbus_tx_complete = 1;   /* 避免死等 */
+	smbus_rx_complete = 1;
 }

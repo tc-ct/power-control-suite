@@ -71,15 +71,15 @@
   */
 
 #if !defined  (HSE_VALUE)
-  #define HSE_VALUE    (25000000UL) /*!< Value of the External oscillator in Hz */
+#define HSE_VALUE    (25000000UL) /*!< Value of the External oscillator in Hz */
 #endif /* HSE_VALUE */
 
 #if !defined  (CSI_VALUE)
-  #define CSI_VALUE    (4000000UL)  /*!< Value of the Internal oscillator in Hz*/
+#define CSI_VALUE    (4000000UL)  /*!< Value of the Internal oscillator in Hz*/
 #endif /* CSI_VALUE */
 
 #if !defined  (HSI_VALUE)
-  #define HSI_VALUE    (64000000UL) /*!< Value of the Internal oscillator in Hz */
+#define HSI_VALUE    (64000000UL) /*!< Value of the Internal oscillator in Hz */
 #endif /* HSI_VALUE */
 
 /**
@@ -97,18 +97,18 @@
 /** @addtogroup STM32H5xx_System_Private_Variables
   * @{
   */
-  /* The SystemCoreClock variable is updated in three ways:
-      1) by calling CMSIS function SystemCoreClockUpdate()
-      2) by calling HAL API function HAL_RCC_GetHCLKFreq()
-      3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency
-         Note: If you use this function to configure the system clock; then there
-               is no need to call the 2 first functions listed above, since SystemCoreClock
-               variable is updated automatically.
-  */
-  uint32_t SystemCoreClock = 64000000U;
+/* The SystemCoreClock variable is updated in three ways:
+    1) by calling CMSIS function SystemCoreClockUpdate()
+    2) by calling HAL API function HAL_RCC_GetHCLKFreq()
+    3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency
+       Note: If you use this function to configure the system clock; then there
+             is no need to call the 2 first functions listed above, since SystemCoreClock
+             variable is updated automatically.
+*/
+uint32_t SystemCoreClock = 64000000U;
 
-  const uint8_t  AHBPrescTable[16] = {0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U, 6U, 7U, 8U, 9U};
-  const uint8_t  APBPrescTable[8] =  {0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U};
+const uint8_t  AHBPrescTable[16] = {0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U, 6U, 7U, 8U, 9U};
+const uint8_t  APBPrescTable[8] =  {0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U};
 /**
   * @}
   */
@@ -133,11 +133,11 @@
 
 void SystemInit(void)
 {
-  /* Nothing done in non-secure */
+	/* Nothing done in non-secure */
 
-  /* Non-secure main application shall call SystemCoreClockUpdate() to update */
-  /* the SystemCoreClock variable to insure non-secure application relies on  */
-  /* the initial clock reference set by secure application.                   */
+	/* Non-secure main application shall call SystemCoreClockUpdate() to update */
+	/* the SystemCoreClock variable to insure non-secure application relies on  */
+	/* the initial clock reference set by secure application.                   */
 }
 
 /**
@@ -189,8 +189,8 @@ void SystemInit(void)
   */
 void SystemCoreClockUpdate(void)
 {
-  /* Get the SystemCoreClock value from the secure domain */
-  SystemCoreClock = SECURE_SystemCoreClockUpdate();
+	/* Get the SystemCoreClock value from the secure domain */
+	SystemCoreClock = SECURE_SystemCoreClockUpdate();
 }
 
 

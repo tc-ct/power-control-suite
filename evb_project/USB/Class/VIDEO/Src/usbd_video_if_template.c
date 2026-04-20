@@ -138,12 +138,11 @@ static int8_t VIDEO_Itf_Data(uint8_t **pbuf, uint16_t *psize, uint16_t *pcktidx)
   * @}
   */
 
-USBD_VIDEO_ItfTypeDef USBD_VIDEO_fops_FS =
-{
-  VIDEO_Itf_Init,
-  VIDEO_Itf_DeInit,
-  VIDEO_Itf_Control,
-  VIDEO_Itf_Data,
+USBD_VIDEO_ItfTypeDef USBD_VIDEO_fops_FS = {
+	VIDEO_Itf_Init,
+	VIDEO_Itf_DeInit,
+	VIDEO_Itf_Control,
+	VIDEO_Itf_Data,
 };
 
 /* Private functions ---------------------------------------------------------*/
@@ -156,11 +155,11 @@ USBD_VIDEO_ItfTypeDef USBD_VIDEO_fops_FS =
   */
 static int8_t VIDEO_Itf_Init(void)
 {
-  /*
-     Add your initialization code here
-  */
+	/*
+	   Add your initialization code here
+	*/
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -171,10 +170,10 @@ static int8_t VIDEO_Itf_Init(void)
   */
 static int8_t VIDEO_Itf_DeInit(void)
 {
-  /*
-     Add your deinitialization code here
-  */
-  return (0);
+	/*
+	   Add your deinitialization code here
+	*/
+	return (0);
 }
 
 
@@ -188,11 +187,11 @@ static int8_t VIDEO_Itf_DeInit(void)
   */
 static int8_t VIDEO_Itf_Control(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 {
-  UNUSED(cmd);
-  UNUSED(pbuf);
-  UNUSED(length);
+	UNUSED(cmd);
+	UNUSED(pbuf);
+	UNUSED(length);
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -205,84 +204,74 @@ static int8_t VIDEO_Itf_Control(uint8_t cmd, uint8_t *pbuf, uint16_t length)
   */
 static int8_t VIDEO_Itf_Data(uint8_t **pbuf, uint16_t *psize, uint16_t *pcktidx)
 {
-  /*
-    Implementation of this function is mandatory to provide the video data to the USB video class
-    This function shall parse the MJPEG images and provide each time the buffer packet relative to
-    current packet index and its size.
-    If the packet is the first packet in the current MJPEG image, then packet size shall be zero and
-    the pbuf is ignored and pcktidx shall be zero.
-    Below is typical implementation of this function based on a binary image template.
+	/*
+	  Implementation of this function is mandatory to provide the video data to the USB video class
+	  This function shall parse the MJPEG images and provide each time the buffer packet relative to
+	  current packet index and its size.
+	  If the packet is the first packet in the current MJPEG image, then packet size shall be zero and
+	  the pbuf is ignored and pcktidx shall be zero.
+	  Below is typical implementation of this function based on a binary image template.
 
-    Binary image template shall provide:
-     - tImagesList: table containing pointers to all images
-     - tImagesSizes: table containing sizes of each image respectively
-     - img_count: global image counter variable
-     - IMG_NBR: Total image number
+	  Binary image template shall provide:
+	   - tImagesList: table containing pointers to all images
+	   - tImagesSizes: table containing sizes of each image respectively
+	   - img_count: global image counter variable
+	   - IMG_NBR: Total image number
 
-     To generate such file, it is possible to use tools converting video to MJPEG then to JPEG images.
+	   To generate such file, it is possible to use tools converting video to MJPEG then to JPEG images.
 
-  */
-  const uint8_t *(*ImagePtr) = tImagesList;
-  uint32_t packet_count = (tImagesSizes[img_count]) / ((UVC_PACKET_SIZE - (UVC_HEADER_PACKET_CNT * 2U)));
-  uint32_t packet_remainder = (tImagesSizes[img_count]) % ((UVC_PACKET_SIZE - (UVC_HEADER_PACKET_CNT * 2U)));
-  static uint8_t packet_index = 0U;
+	*/
+	const uint8_t *(*ImagePtr) = tImagesList;
+	uint32_t packet_count = (tImagesSizes[img_count]) / ((UVC_PACKET_SIZE - (UVC_HEADER_PACKET_CNT * 2U)));
+	uint32_t packet_remainder = (tImagesSizes[img_count]) % ((UVC_PACKET_SIZE - (UVC_HEADER_PACKET_CNT * 2U)));
+	static uint8_t packet_index = 0U;
 
-  /* Check if end of current image has been reached */
-  if (packet_index < packet_count)
-  {
-    /* Set the current packet size */
-    *psize = (uint16_t)UVC_PACKET_SIZE;
+	/* Check if end of current image has been reached */
+	if (packet_index < packet_count) {
+		/* Set the current packet size */
+		*psize = (uint16_t)UVC_PACKET_SIZE;
 
-    /* Get the pointer to the next packet to be transmitted */
-    *pbuf = (uint8_t *)(*(ImagePtr + img_count) + \
-                        (packet_index * ((uint16_t)(UVC_PACKET_SIZE - (UVC_HEADER_PACKET_CNT * 2U)))));
-  }
-  else if ((packet_index == packet_count))
-  {
-    if (packet_remainder != 0U)
-    {
-      /* Get the pointer to the next packet to be transmitted */
-      *pbuf = (uint8_t *)(*(ImagePtr + img_count) + \
-                          (packet_index * ((uint16_t)(UVC_PACKET_SIZE - (UVC_HEADER_PACKET_CNT * 2U)))));
+		/* Get the pointer to the next packet to be transmitted */
+		*pbuf = (uint8_t *)(*(ImagePtr + img_count) + \
+				    (packet_index * ((uint16_t)(UVC_PACKET_SIZE - (UVC_HEADER_PACKET_CNT * 2U)))));
+	} else if ((packet_index == packet_count)) {
+		if (packet_remainder != 0U) {
+			/* Get the pointer to the next packet to be transmitted */
+			*pbuf = (uint8_t *)(*(ImagePtr + img_count) + \
+					    (packet_index * ((uint16_t)(UVC_PACKET_SIZE - (UVC_HEADER_PACKET_CNT * 2U)))));
 
-      /* Set the current packet size */
-      *psize = (uint16_t)(packet_remainder + (UVC_HEADER_PACKET_CNT * 2U));
-    }
-    else
-    {
-      packet_index++;
+			/* Set the current packet size */
+			*psize = (uint16_t)(packet_remainder + (UVC_HEADER_PACKET_CNT * 2U));
+		} else {
+			packet_index++;
 
-      /* New image to be started, send only the packet header */
-      *psize = 2;
-    }
-  }
-  else
-  {
-    /* New image to be started, send only the packet header */
-    *psize = 2;
-  }
+			/* New image to be started, send only the packet header */
+			*psize = 2;
+		}
+	} else {
+		/* New image to be started, send only the packet header */
+		*psize = 2;
+	}
 
-  /* Update the packet index */
-  *pcktidx = packet_index;
+	/* Update the packet index */
+	*pcktidx = packet_index;
 
-  /* Increment the packet count and check if it reached the end of current image buffer */
-  if (packet_index++ >= (packet_count + 1U))
-  {
-    /* Reset the packet count to zero */
-    packet_index = 0U;
+	/* Increment the packet count and check if it reached the end of current image buffer */
+	if (packet_index++ >= (packet_count + 1U)) {
+		/* Reset the packet count to zero */
+		packet_index = 0U;
 
-    /* Move to the next image in the images table */
+		/* Move to the next image in the images table */
 
-    img_count++;
-    USBD_Delay(USBD_VIDEO_IMAGE_LAPS);
-    /* Check if images count has been reached, then reset to zero (go back to first image in circular loop) */
-    if (img_count == IMG_NBR)
-    {
-      img_count = 0U;
-    }
-  }
+		img_count++;
+		USBD_Delay(USBD_VIDEO_IMAGE_LAPS);
 
-  return (0);
+		/* Check if images count has been reached, then reset to zero (go back to first image in circular loop) */
+		if (img_count == IMG_NBR)
+			img_count = 0U;
+	}
+
+	return (0);
 }
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_IMPLEMENTATION */

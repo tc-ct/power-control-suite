@@ -80,12 +80,11 @@ extern "C" {
 
 
 /* Array used to get the DMA Channel register offset versus Channel index LL_DMA_CHANNEL_x */
-static const uint32_t LL_DMA_CH_OFFSET_TAB[] =
-{
-  DMA_CHANNEL0_OFFSET,  DMA_CHANNEL1_OFFSET,  DMA_CHANNEL2_OFFSET,  DMA_CHANNEL3_OFFSET,
-  DMA_CHANNEL4_OFFSET,  DMA_CHANNEL5_OFFSET,  DMA_CHANNEL6_OFFSET,  DMA_CHANNEL7_OFFSET,
+static const uint32_t LL_DMA_CH_OFFSET_TAB[] = {
+	DMA_CHANNEL0_OFFSET,  DMA_CHANNEL1_OFFSET,  DMA_CHANNEL2_OFFSET,  DMA_CHANNEL3_OFFSET,
+	DMA_CHANNEL4_OFFSET,  DMA_CHANNEL5_OFFSET,  DMA_CHANNEL6_OFFSET,  DMA_CHANNEL7_OFFSET,
 #if defined(GPDMA1_Channel11)
-  DMA_CHANNEL8_OFFSET,  DMA_CHANNEL9_OFFSET,  DMA_CHANNEL10_OFFSET,  DMA_CHANNEL11_OFFSET,
+	DMA_CHANNEL8_OFFSET,  DMA_CHANNEL9_OFFSET,  DMA_CHANNEL10_OFFSET,  DMA_CHANNEL11_OFFSET,
 #endif /* GPDMA1_Channel11 */
 };
 
@@ -105,227 +104,226 @@ static const uint32_t LL_DMA_CH_OFFSET_TAB[] =
 /**
   * @brief  LL DMA init structure definition.
   */
-typedef struct
-{
-  uint32_t SrcAddress;               /*!< This field specify the data transfer source address.
+typedef struct {
+	uint32_t SrcAddress;               /*!< This field specify the data transfer source address.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter must be a value between Min_Data = 0 and Max_Data = 0xFFFFFFFF.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetSrcAddress().                                                */
 
-  uint32_t DestAddress;              /*!< This field specify the data transfer destination address.
+	uint32_t DestAddress;              /*!< This field specify the data transfer destination address.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter must be a value between Min_Data = 0 and Max_Data = 0xFFFFFFFF.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDestAddress().                                               */
 
-  uint32_t Direction;                /*!< This field specify the data transfer direction.
+	uint32_t Direction;                /*!< This field specify the data transfer direction.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_TRANSFER_DIRECTION.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDataTransferDirection().                                     */
 
-  uint32_t BlkHWRequest;             /*!< This field specify the hardware request unity.
+	uint32_t BlkHWRequest;             /*!< This field specify the hardware request unity.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_BLKHW_REQUEST.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetBlkHWRequest().                                              */
 
-  uint32_t DataAlignment;            /*!< This field specify the transfer data alignment.
+	uint32_t DataAlignment;            /*!< This field specify the transfer data alignment.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_DATA_ALIGNMENT.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDataAlignment().                                             */
 
-  uint32_t SrcBurstLength;           /*!< This field specify the source burst length of transfer in bytes.
+	uint32_t SrcBurstLength;           /*!< This field specify the source burst length of transfer in bytes.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter must be a value between Min_Data = 1 and Max_Data = 64.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetSrcBurstLength().                                            */
 
-  uint32_t DestBurstLength;          /*!< This field specify the destination burst length of transfer in bytes.
+	uint32_t DestBurstLength;          /*!< This field specify the destination burst length of transfer in bytes.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter must be a value between Min_Data = 1 and Max_Data = 64.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDestBurstLength().                                           */
 
-  uint32_t SrcDataWidth;             /*!< This field specify the source data width.
+	uint32_t SrcDataWidth;             /*!< This field specify the source data width.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_SOURCE_DATA_WIDTH.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetSrcDataWidth().                                              */
 
-  uint32_t DestDataWidth;            /*!< This field specify the destination data width.
+	uint32_t DestDataWidth;            /*!< This field specify the destination data width.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_DESTINATION_DATA_WIDTH.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDestDataWidth().                                             */
 
-  uint32_t SrcIncMode;               /*!< This field specify the source burst increment mode.
+	uint32_t SrcIncMode;               /*!< This field specify the source burst increment mode.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_SOURCE_INCREMENT_MODE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetSrcIncMode().                                                */
 
-  uint32_t DestIncMode;              /*!< This field specify the destination burst increment mode.
+	uint32_t DestIncMode;              /*!< This field specify the destination burst increment mode.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_DESTINATION_INCREMENT_MODE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDestIncMode().                                               */
 
-  uint32_t Priority;                 /*!< This field specify the channel priority level.
+	uint32_t Priority;                 /*!< This field specify the channel priority level.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_PRIORITY_LEVEL.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetChannelPriorityLevel().                                      */
 
-  uint32_t BlkDataLength;            /*!< This field specify the length of a block transfer in bytes.
+	uint32_t BlkDataLength;            /*!< This field specify the length of a block transfer in bytes.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter must be a value between Min_Data = 0 and Max_Data = 0x0000FFFF.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetBlkDataLength().                                             */
 
-  uint32_t BlkRptCount;              /*!< This field specify the number of repetitions of the current block.
+	uint32_t BlkRptCount;              /*!< This field specify the number of repetitions of the current block.
                                           Programming this field is mandatory only for 2D addressing channels.
                                           This parameter can be a value between 1 and 2048 Min_Data = 0
                                           and Max_Data = 0x000007FF.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetBlkRptCount().                                               */
 
-  uint32_t TriggerMode;              /*!< This field specify the trigger mode.
+	uint32_t TriggerMode;              /*!< This field specify the trigger mode.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_TRIGGER_MODE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetTriggerMode().                                               */
 
-  uint32_t TriggerPolarity;          /*!< This field specify the trigger event polarity.
+	uint32_t TriggerPolarity;          /*!< This field specify the trigger event polarity.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_TRIGGER_POLARITY.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetTriggerPolarity().                                           */
 
-  uint32_t TriggerSelection;         /*!< This field specify the trigger event selection.
+	uint32_t TriggerSelection;         /*!< This field specify the trigger event selection.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_TRIGGER_SELECTION.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetHWTrigger().                                                 */
 
-  uint32_t Request;                  /*!< This field specify the peripheral request selection.
+	uint32_t Request;                  /*!< This field specify the peripheral request selection.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_REQUEST_SELECTION.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetPeriphRequest().                                             */
 
-  uint32_t TransferEventMode;        /*!< This field specify the transfer event mode.
+	uint32_t TransferEventMode;        /*!< This field specify the transfer event mode.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_TRANSFER_EVENT_MODE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetTransferEventMode().                                         */
 
-  uint32_t DestHWordExchange;        /*!< This field specify the destination half word exchange.
+	uint32_t DestHWordExchange;        /*!< This field specify the destination half word exchange.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_DEST_HALFWORD_EXCHANGE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDestHWordExchange().                                         */
 
-  uint32_t DestByteExchange;         /*!< This field specify the destination byte exchange.
+	uint32_t DestByteExchange;         /*!< This field specify the destination byte exchange.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_DEST_BYTE_EXCHANGE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDestByteExchange().                                          */
 
-  uint32_t SrcByteExchange;          /*!< This field specify the source byte exchange.
+	uint32_t SrcByteExchange;          /*!< This field specify the source byte exchange.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_SRC_BYTE_EXCHANGE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetSrcByteExchange().                                           */
 
-  uint32_t SrcAllocatedPort;         /*!< This field specify the source allocated port.
+	uint32_t SrcAllocatedPort;         /*!< This field specify the source allocated port.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_SOURCE_ALLOCATED_PORT.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetSrcAllocatedPort().                                          */
 
-  uint32_t DestAllocatedPort;        /*!< This field specify the destination allocated port.
+	uint32_t DestAllocatedPort;        /*!< This field specify the destination allocated port.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_DESTINATION_ALLOCATED_PORT.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDestAllocatedPort().                                         */
 
-  uint32_t LinkAllocatedPort;        /*!< This field specify the linked-list allocated port.
+	uint32_t LinkAllocatedPort;        /*!< This field specify the linked-list allocated port.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_LINKED_LIST_ALLOCATED_PORT.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetLinkAllocatedPort().                                         */
 
-  uint32_t LinkStepMode;             /*!< This field specify the link step mode.
+	uint32_t LinkStepMode;             /*!< This field specify the link step mode.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value of @ref DMA_LL_EC_LINK_STEP_MODE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetLinkStepMode().                                              */
 
-  uint32_t SrcAddrUpdateMode;        /*!< This field specify the source address update mode.
+	uint32_t SrcAddrUpdateMode;        /*!< This field specify the source address update mode.
                                           Programming this field is mandatory only for 2D addressing channels.
                                           This parameter can be a value of @ref DMA_LL_EC_SRC_ADDR_UPDATE_MODE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetSrcAddrUpdate().                                             */
 
-  uint32_t DestAddrUpdateMode;       /*!< This field specify the destination address update mode.
+	uint32_t DestAddrUpdateMode;       /*!< This field specify the destination address update mode.
                                           Programming this field is mandatory only for 2D addressing channels.
                                           This parameter can be a value of @ref DMA_LL_EC_DEST_ADDR_UPDATE_MODE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDestAddrUpdate().                                            */
 
-  uint32_t SrcAddrOffset;            /*!< This field specifies the source address offset.
+	uint32_t SrcAddrOffset;            /*!< This field specifies the source address offset.
                                           Programming this field is mandatory only for 2D addressing channels.
                                           This parameter can be a value Between 0 to 0x00001FFF.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetSrcAddrUpdateValue().                                        */
 
-  uint32_t DestAddrOffset;           /*!< This field specifies the destination address offset.
+	uint32_t DestAddrOffset;           /*!< This field specifies the destination address offset.
                                           Programming this field is mandatory only for 2D addressing channels.
                                           This parameter can be a value Between 0 to 0x00001FFF.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetDestAddrUpdateValue().                                       */
 
-  uint32_t BlkRptSrcAddrUpdateMode;  /*!< This field specifies the block repeat source address update mode.
+	uint32_t BlkRptSrcAddrUpdateMode;  /*!< This field specifies the block repeat source address update mode.
                                           Programming this field is mandatory only for 2D addressing channels.
                                           This parameter can be a value of @ref DMA_LL_EC_BLK_RPT_SRC_ADDR_UPDATE_MODE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetBlkRptSrcAddrUpdate().                                       */
 
-  uint32_t BlkRptDestAddrUpdateMode; /*!< This field specifies the block repeat destination address update mode.
+	uint32_t BlkRptDestAddrUpdateMode; /*!< This field specifies the block repeat destination address update mode.
                                           Programming this field is mandatory only for 2D addressing channels.
                                           This parameter can be a value of @ref DMA_LL_EC_BLK_RPT_DEST_ADDR_UPDATE_MODE.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetBlkRptDestAddrUpdate().                                      */
 
-  uint32_t BlkRptSrcAddrOffset;      /*!< This field specifies the block repeat source address offset.
+	uint32_t BlkRptSrcAddrOffset;      /*!< This field specifies the block repeat source address offset.
                                           Programming this field is mandatory only for 2D addressing channels.
                                           This parameter can be a value Between 0 to 0x0000FFFF.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetBlkRptSrcAddrUpdateValue().                                  */
 
-  uint32_t BlkRptDestAddrOffset;     /*!< This field specifies the block repeat destination address offset.
+	uint32_t BlkRptDestAddrOffset;     /*!< This field specifies the block repeat destination address offset.
                                           Programming this field is mandatory only for 2D addressing channels.
                                           This parameter can be a value Between 0 to 0x0000FFFF.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetBlkRptDestAddrUpdateValue().                                 */
 
-  uint32_t LinkedListBaseAddr;       /*!< This field specify the linked list base address.
+	uint32_t LinkedListBaseAddr;       /*!< This field specify the linked list base address.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value Between 0 to 0xFFFF0000 (where the 4 first
                                           bytes are always forced to 0).
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetLinkedListBaseAddr().                                        */
 
-  uint32_t LinkedListAddrOffset;     /*!< Specifies the linked list address offset.
+	uint32_t LinkedListAddrOffset;     /*!< Specifies the linked list address offset.
                                           Programming this field is mandatory for all available DMA channels.
                                           This parameter can be a value Between 0 to 0x0000FFFC.
                                           This feature can be modified afterwards using unitary function
                                           @ref LL_DMA_SetLinkedListAddrOffset().                                      */
 
-  uint32_t Mode;                     /*!< Specifies the transfer mode for the DMA channel.
+	uint32_t Mode;                     /*!< Specifies the transfer mode for the DMA channel.
                                           This parameter can be a value of @ref DMA_LL_TRANSFER_MODE                  */
 } LL_DMA_InitTypeDef;
 
@@ -333,27 +331,26 @@ typedef struct
 /**
   * @brief  LL DMA init linked list structure definition.
   */
-typedef struct
-{
-  uint32_t Priority;             /*!< This field specify the channel priority level.
+typedef struct {
+	uint32_t Priority;             /*!< This field specify the channel priority level.
                                       Programming this field is mandatory for all available DMA channels.
                                       This parameter can be a value of @ref DMA_LL_EC_PRIORITY_LEVEL.
                                       This feature can be modified afterwards using unitary function
                                       @ref LL_DMA_SetChannelPriorityLevel().                                          */
 
-  uint32_t LinkStepMode;         /*!< This field specify the link step mode.
+	uint32_t LinkStepMode;         /*!< This field specify the link step mode.
                                       Programming this field is mandatory for all available DMA channels.
                                       This parameter can be a value of @ref DMA_LL_EC_LINK_STEP_MODE.
                                       This feature can be modified afterwards using unitary function
                                       @ref LL_DMA_SetLinkStepMode().                                                  */
 
-  uint32_t LinkAllocatedPort;    /*!< This field specify the linked-list allocated port.
+	uint32_t LinkAllocatedPort;    /*!< This field specify the linked-list allocated port.
                                       Programming this field is mandatory for all available DMA channels.
                                       This parameter can be a value of @ref DMA_LL_EC_LINKED_LIST_ALLOCATED_PORT.
                                       This feature can be modified afterwards using unitary function
                                       @ref LL_DMA_SetLinkAllocatedPort().                                             */
 
-  uint32_t TransferEventMode;    /*!< This field specify the transfer event mode.
+	uint32_t TransferEventMode;    /*!< This field specify the transfer event mode.
                                       Programming this field is mandatory for all available DMA channels.
                                       This parameter can be a value of @ref DMA_LL_EC_TRANSFER_EVENT_MODE.
                                       This feature can be modified afterwards using unitary function
@@ -364,212 +361,211 @@ typedef struct
 /**
   * @brief  LL DMA node init structure definition.
   */
-typedef struct
-{
-  /* CTR1 register fields ******************************************************
-     If any CTR1 fields need to be updated comparing to previous node, it is
-     mandatory to update the new value in CTR1 register fields and enable update
-     CTR1 register in UpdateRegisters fields if it is not enabled in the
-     previous node.
+typedef struct {
+	/* CTR1 register fields ******************************************************
+	   If any CTR1 fields need to be updated comparing to previous node, it is
+	   mandatory to update the new value in CTR1 register fields and enable update
+	   CTR1 register in UpdateRegisters fields if it is not enabled in the
+	   previous node.
 
-  */
+	*/
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  uint32_t DestSecure;           /*!< This field specify the destination secure.
+	uint32_t DestSecure;           /*!< This field specify the destination secure.
                                       This parameter can be a value of @ref DMA_LL_EC_DESTINATION_SECURITY_ATTRIBUTE. */
 #endif /* (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U) */
 
-  uint32_t DestAllocatedPort;    /*!< This field specify the destination allocated port.
+	uint32_t DestAllocatedPort;    /*!< This field specify the destination allocated port.
                                       This parameter can be a value of @ref DMA_LL_EC_DESTINATION_ALLOCATED_PORT.     */
 
-  uint32_t DestHWordExchange;    /*!< This field specify the destination half word exchange.
+	uint32_t DestHWordExchange;    /*!< This field specify the destination half word exchange.
                                       This parameter can be a value of @ref DMA_LL_EC_DEST_HALFWORD_EXCHANGE.         */
 
-  uint32_t DestByteExchange;     /*!< This field specify the destination byte exchange.
+	uint32_t DestByteExchange;     /*!< This field specify the destination byte exchange.
                                       This parameter can be a value of @ref DMA_LL_EC_DEST_BYTE_EXCHANGE.             */
 
-  uint32_t DestBurstLength;      /*!< This field specify the destination burst length of transfer in bytes.
+	uint32_t DestBurstLength;      /*!< This field specify the destination burst length of transfer in bytes.
                                       This parameter must be a value between Min_Data = 1 and Max_Data = 64.          */
 
-  uint32_t DestIncMode;          /*!< This field specify the destination increment mode.
+	uint32_t DestIncMode;          /*!< This field specify the destination increment mode.
                                       This parameter can be a value of @ref DMA_LL_EC_DESTINATION_INCREMENT_MODE.     */
 
-  uint32_t DestDataWidth;        /*!< This field specify the destination data width.
+	uint32_t DestDataWidth;        /*!< This field specify the destination data width.
                                       This parameter can be a value of @ref DMA_LL_EC_DESTINATION_DATA_WIDTH.         */
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  uint32_t SrcSecure;            /*!< This field specify the source secure.
+	uint32_t SrcSecure;            /*!< This field specify the source secure.
                                       This parameter can be a value of @ref DMA_LL_EC_SOURCE_SECURITY_ATTRIBUTE.      */
 #endif /* (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U) */
 
-  uint32_t SrcAllocatedPort;     /*!< This field specify the source allocated port.
+	uint32_t SrcAllocatedPort;     /*!< This field specify the source allocated port.
                                       This parameter can be a value of @ref DMA_LL_EC_SOURCE_ALLOCATED_PORT.          */
 
-  uint32_t SrcByteExchange;      /*!< This field specify the source byte exchange.
+	uint32_t SrcByteExchange;      /*!< This field specify the source byte exchange.
                                       This parameter can be a value of @ref DMA_LL_EC_SRC_BYTE_EXCHANGE.              */
 
-  uint32_t DataAlignment;        /*!< This field specify the transfer data alignment.
+	uint32_t DataAlignment;        /*!< This field specify the transfer data alignment.
                                       This parameter can be a value of @ref DMA_LL_EC_DATA_ALIGNMENT.                 */
 
-  uint32_t SrcBurstLength;       /*!< This field specify the source burst length of transfer in bytes.
+	uint32_t SrcBurstLength;       /*!< This field specify the source burst length of transfer in bytes.
                                       This parameter must be a value between Min_Data = 1 and Max_Data = 64.          */
 
-  uint32_t SrcIncMode;           /*!< This field specify the source increment mode.
+	uint32_t SrcIncMode;           /*!< This field specify the source increment mode.
                                       This parameter can be a value of @ref DMA_LL_EC_SOURCE_INCREMENT_MODE.          */
 
-  uint32_t SrcDataWidth;         /*!< This field specify the source data width.
+	uint32_t SrcDataWidth;         /*!< This field specify the source data width.
                                       This parameter can be a value of @ref DMA_LL_EC_SOURCE_DATA_WIDTH.              */
 
 
-  /* CTR2 register fields ******************************************************
-     If any CTR2 fields need to be updated comparing to previous node, it is
-     mandatory to update the new value in CTR2 register fields and enable update
-     CTR2 register in UpdateRegisters fields if it is not enabled in the
-     previous node.
+	/* CTR2 register fields ******************************************************
+	   If any CTR2 fields need to be updated comparing to previous node, it is
+	   mandatory to update the new value in CTR2 register fields and enable update
+	   CTR2 register in UpdateRegisters fields if it is not enabled in the
+	   previous node.
 
-     For all node created, filling all fields is mandatory.
-  */
-  uint32_t TransferEventMode;    /*!< This field specify the transfer event mode.
+	   For all node created, filling all fields is mandatory.
+	*/
+	uint32_t TransferEventMode;    /*!< This field specify the transfer event mode.
                                       This parameter can be a value of @ref DMA_LL_EC_TRANSFER_EVENT_MODE.            */
 
-  uint32_t TriggerPolarity;      /*!< This field specify the trigger event polarity.
+	uint32_t TriggerPolarity;      /*!< This field specify the trigger event polarity.
                                       This parameter can be a value of @ref DMA_LL_EC_TRIGGER_POLARITY.               */
 
-  uint32_t TriggerSelection;     /*!< This field specify the trigger event selection.
+	uint32_t TriggerSelection;     /*!< This field specify the trigger event selection.
                                       This parameter can be a value of @ref DMA_LL_EC_TRIGGER_SELECTION.              */
 
-  uint32_t TriggerMode;          /*!< This field specify the trigger mode.
+	uint32_t TriggerMode;          /*!< This field specify the trigger mode.
                                       This parameter can be a value of @ref DMA_LL_EC_TRIGGER_MODE.                   */
 
-  uint32_t BlkHWRequest;         /*!< This field specify the hardware request unity.
+	uint32_t BlkHWRequest;         /*!< This field specify the hardware request unity.
                                       This parameter can be a value of @ref DMA_LL_EC_BLKHW_REQUEST.                  */
 
-  uint32_t Direction;            /*!< This field specify the transfer direction.
+	uint32_t Direction;            /*!< This field specify the transfer direction.
                                       This parameter can be a value of @ref DMA_LL_EC_TRANSFER_DIRECTION.             */
 
-  uint32_t Request;              /*!< This field specify the peripheral request selection.
+	uint32_t Request;              /*!< This field specify the peripheral request selection.
                                       This parameter can be a value of @ref DMA_LL_EC_REQUEST_SELECTION.              */
 
-  uint32_t Mode;                  /*!< This field DMA Transfer Mode.
+	uint32_t Mode;                  /*!< This field DMA Transfer Mode.
                                       This parameter can be a value of @ref DMA_LL_TRANSFER_MODE.                     */
 
-  /* CBR1 register fields ******************************************************
-     If any CBR1 fields need to be updated comparing to previous node, it is
-     mandatory to update the new value in CBR1 register fields and enable update
-     CBR1 register in UpdateRegisters fields if it is not enabled in the
-     previous node.
+	/* CBR1 register fields ******************************************************
+	   If any CBR1 fields need to be updated comparing to previous node, it is
+	   mandatory to update the new value in CBR1 register fields and enable update
+	   CBR1 register in UpdateRegisters fields if it is not enabled in the
+	   previous node.
 
-     If the node to be created is not for 2D addressing channels, there is no
-     need to fill the following fields for CBR1 register :
-     - BlkReptDestAddrUpdate.
-     - BlkRptSrcAddrUpdate.
-     - DestAddrUpdate.
-     - SrcAddrUpdate.
-     - BlkRptCount.
-  */
-  uint32_t BlkRptDestAddrUpdateMode; /*!< This field specifies the block repeat destination address update mode.
+	   If the node to be created is not for 2D addressing channels, there is no
+	   need to fill the following fields for CBR1 register :
+	   - BlkReptDestAddrUpdate.
+	   - BlkRptSrcAddrUpdate.
+	   - DestAddrUpdate.
+	   - SrcAddrUpdate.
+	   - BlkRptCount.
+	*/
+	uint32_t BlkRptDestAddrUpdateMode; /*!< This field specifies the block repeat destination address update mode.
                                           This parameter can be a value of
                                           @ref DMA_LL_EC_BLK_RPT_DEST_ADDR_UPDATE_MODE.                               */
 
-  uint32_t BlkRptSrcAddrUpdateMode;  /*!< This field specifies the block repeat source address update mode.
+	uint32_t BlkRptSrcAddrUpdateMode;  /*!< This field specifies the block repeat source address update mode.
                                           This parameter can be a value of
                                           @ref DMA_LL_EC_BLK_RPT_SRC_ADDR_UPDATE_MODE.                                */
 
-  uint32_t DestAddrUpdateMode;       /*!< This field specify the Destination address update mode.
+	uint32_t DestAddrUpdateMode;       /*!< This field specify the Destination address update mode.
                                           This parameter can be a value of @ref DMA_LL_EC_DEST_ADDR_UPDATE_MODE.      */
 
-  uint32_t SrcAddrUpdateMode;        /*!< This field specify the Source address update mode.
+	uint32_t SrcAddrUpdateMode;        /*!< This field specify the Source address update mode.
                                           This parameter can be a value of @ref DMA_LL_EC_SRC_ADDR_UPDATE_MODE.       */
 
-  uint32_t BlkRptCount;              /*!< This field specify the number of repetitions of the current block.
+	uint32_t BlkRptCount;              /*!< This field specify the number of repetitions of the current block.
                                           This parameter can be a value between 1 and 2048 Min_Data = 0
                                           and Max_Data = 0x000007FF.                                                  */
 
-  uint32_t BlkDataLength;            /*!< This field specify the length of a block transfer in bytes.
+	uint32_t BlkDataLength;            /*!< This field specify the length of a block transfer in bytes.
                                           This parameter must be a value between Min_Data = 0
                                           and Max_Data = 0x0000FFFF.                                                  */
 
-  /* CSAR register fields ******************************************************
-     If any CSAR fields need to be updated comparing to previous node, it is
-     mandatory to update the new value in CSAR register fields and enable update
-     CSAR register in UpdateRegisters fields if it is not enabled in the
-     previous node.
+	/* CSAR register fields ******************************************************
+	   If any CSAR fields need to be updated comparing to previous node, it is
+	   mandatory to update the new value in CSAR register fields and enable update
+	   CSAR register in UpdateRegisters fields if it is not enabled in the
+	   previous node.
 
-     For all node created, filling all fields is mandatory.
-  */
-  uint32_t SrcAddress;              /*!< This field specify the transfer source address.
+	   For all node created, filling all fields is mandatory.
+	*/
+	uint32_t SrcAddress;              /*!< This field specify the transfer source address.
                                          This parameter must be a value between Min_Data = 0
                                          and Max_Data = 0xFFFFFFFF.                                                   */
 
 
-  /* CDAR register fields ******************************************************
-     If any CDAR fields need to be updated comparing to previous node, it is
-     mandatory to update the new value in CDAR register fields and enable update
-     CDAR register in UpdateRegisters fields if it is not enabled in the
-     previous node.
+	/* CDAR register fields ******************************************************
+	   If any CDAR fields need to be updated comparing to previous node, it is
+	   mandatory to update the new value in CDAR register fields and enable update
+	   CDAR register in UpdateRegisters fields if it is not enabled in the
+	   previous node.
 
-     For all node created, filling all fields is mandatory.
-  */
-  uint32_t DestAddress;             /*!< This field specify the transfer destination address.
+	   For all node created, filling all fields is mandatory.
+	*/
+	uint32_t DestAddress;             /*!< This field specify the transfer destination address.
                                          This parameter must be a value between Min_Data = 0
                                          and Max_Data = 0xFFFFFFFF.                                                   */
 
-  /* CTR3 register fields ******************************************************
-     If any CTR3 fields need to be updated comparing to previous node, it is
-     mandatory to update the new value in CTR3 register fields and enable update
-     CTR3 register in UpdateRegisters fields if it is not enabled in the
-     previous node.
+	/* CTR3 register fields ******************************************************
+	   If any CTR3 fields need to be updated comparing to previous node, it is
+	   mandatory to update the new value in CTR3 register fields and enable update
+	   CTR3 register in UpdateRegisters fields if it is not enabled in the
+	   previous node.
 
-     This register is used only for 2D addressing channels.
-     If used channel is linear addressing, this register will be overwritten by
-     CLLR register in memory.
-     When this register is enabled on UpdateRegisters and the selected channel
-     is linear addressing, LL APIs will discard this register update in memory.
-  */
-  uint32_t DestAddrOffset;       /*!< This field specifies the destination address offset.
+	   This register is used only for 2D addressing channels.
+	   If used channel is linear addressing, this register will be overwritten by
+	   CLLR register in memory.
+	   When this register is enabled on UpdateRegisters and the selected channel
+	   is linear addressing, LL APIs will discard this register update in memory.
+	*/
+	uint32_t DestAddrOffset;       /*!< This field specifies the destination address offset.
                                       This parameter can be a value Between 0 to 0x00001FFF.                          */
 
-  uint32_t SrcAddrOffset;        /*!< This field specifies the source address offset.
+	uint32_t SrcAddrOffset;        /*!< This field specifies the source address offset.
                                       This parameter can be a value Between 0 to 0x00001FFF.                          */
 
 
-  /* CBR2 register fields ******************************************************
-     If any CBR2 fields need to be updated comparing to previous node, it is
-     mandatory to update the new value in CBR2 register fields and enable update
-     CBR2 register in UpdateRegisters fields if it is not enabled in the
-     previous node.
+	/* CBR2 register fields ******************************************************
+	   If any CBR2 fields need to be updated comparing to previous node, it is
+	   mandatory to update the new value in CBR2 register fields and enable update
+	   CBR2 register in UpdateRegisters fields if it is not enabled in the
+	   previous node.
 
-     This register is used only for 2D addressing channels.
-     If used channel is linear addressing, this register will be discarded in
-     memory. When this register is enabled on UpdateRegisters and the selected
-     channel is linear addressing, LL APIs will discard this register update in
-     memory.
-  */
-  uint32_t BlkRptDestAddrOffset; /*!< This field specifies the block repeat destination address offset.
+	   This register is used only for 2D addressing channels.
+	   If used channel is linear addressing, this register will be discarded in
+	   memory. When this register is enabled on UpdateRegisters and the selected
+	   channel is linear addressing, LL APIs will discard this register update in
+	   memory.
+	*/
+	uint32_t BlkRptDestAddrOffset; /*!< This field specifies the block repeat destination address offset.
                                       This parameter can be a value Between 0 to 0x0000FFFF.                          */
 
-  uint32_t BlkRptSrcAddrOffset;  /*!< This field specifies the block repeat source address offset.
+	uint32_t BlkRptSrcAddrOffset;  /*!< This field specifies the block repeat source address offset.
                                       This parameter can be a value Between 0 to 0x0000FFFF.                          */
 
-  /* CLLR register fields ******************************************************
-     If any CLLR fields need to be updated comparing to previous node, it is
-     mandatory to update the new value in CLLR register fields and enable update
-     CLLR register in UpdateRegisters fields if it is not enabled in the
-     previous node.
+	/* CLLR register fields ******************************************************
+	   If any CLLR fields need to be updated comparing to previous node, it is
+	   mandatory to update the new value in CLLR register fields and enable update
+	   CLLR register in UpdateRegisters fields if it is not enabled in the
+	   previous node.
 
-     If used channel is linear addressing, there is no need to enable/disable
-     CTR3 and CBR2 register in UpdateRegisters fields as they will be discarded
-     by LL APIs.
-  */
-  uint32_t UpdateRegisters;      /*!< Specifies the linked list register update.
+	   If used channel is linear addressing, there is no need to enable/disable
+	   CTR3 and CBR2 register in UpdateRegisters fields as they will be discarded
+	   by LL APIs.
+	*/
+	uint32_t UpdateRegisters;      /*!< Specifies the linked list register update.
                                       This parameter can be a value of @ref DMA_LL_EC_LINKEDLIST_REGISTER_UPDATE.     */
 
-  /* DMA Node type field *******************************************************
-     This parameter defines node types as node size and node content varies
-     between channels.
-     Thanks to this fields, linked list queue could be created independently
-     from channel selection. So, one queue could be executed by all DMA channels.
-  */
-  uint32_t NodeType;             /*!< Specifies the node type to be created.
+	/* DMA Node type field *******************************************************
+	   This parameter defines node types as node size and node content varies
+	   between channels.
+	   Thanks to this fields, linked list queue could be created independently
+	   from channel selection. So, one queue could be executed by all DMA channels.
+	*/
+	uint32_t NodeType;             /*!< Specifies the node type to be created.
                                       This parameter can be a value of @ref DMA_LL_EC_LINKEDLIST_NODE_TYPE.           */
 } LL_DMA_InitNodeTypeDef;
 
@@ -580,9 +576,8 @@ typedef struct
   *         For GPDMA linear addressing channels, the maximum node size is :
   *         (4 Bytes * 6 registers = 24 Bytes).
   */
-typedef struct
-{
-  __IO uint32_t LinkRegisters[8U];
+typedef struct {
+	__IO uint32_t LinkRegisters[8U];
 
 } LL_DMA_LinkNodeTypeDef;
 /**
@@ -1846,8 +1841,8 @@ typedef struct
   */
 __STATIC_INLINE void LL_DMA_EnableChannel(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_EN);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_EN);
 }
 
 /**
@@ -1873,9 +1868,9 @@ __STATIC_INLINE void LL_DMA_EnableChannel(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_DisableChannel(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR,
-          (DMA_CCR_SUSP | DMA_CCR_RESET));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR,
+		(DMA_CCR_SUSP | DMA_CCR_RESET));
 }
 
 /**
@@ -1901,9 +1896,9 @@ __STATIC_INLINE void LL_DMA_DisableChannel(const DMA_TypeDef *DMAx, uint32_t Cha
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannel(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_EN)
-           == (DMA_CCR_EN)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_EN)
+		 == (DMA_CCR_EN)) ? 1UL : 0UL);
 }
 
 /**
@@ -1929,8 +1924,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannel(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE void LL_DMA_ResetChannel(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_RESET);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_RESET);
 }
 
 /**
@@ -1956,8 +1951,8 @@ __STATIC_INLINE void LL_DMA_ResetChannel(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE void LL_DMA_SuspendChannel(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSP);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSP);
 }
 
 /**
@@ -1983,8 +1978,8 @@ __STATIC_INLINE void LL_DMA_SuspendChannel(const DMA_TypeDef *DMAx, uint32_t Cha
   */
 __STATIC_INLINE void LL_DMA_ResumeChannel(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSP);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSP);
 }
 
 /**
@@ -2010,9 +2005,9 @@ __STATIC_INLINE void LL_DMA_ResumeChannel(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE uint32_t LL_DMA_IsSuspendedChannel(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSP)
-           == (DMA_CCR_SUSP)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSP)
+		 == (DMA_CCR_SUSP)) ? 1UL : 0UL);
 }
 
 /**
@@ -2039,11 +2034,11 @@ __STATIC_INLINE uint32_t LL_DMA_IsSuspendedChannel(const DMA_TypeDef *DMAx, uint
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_SetLinkedListBaseAddr(const DMA_TypeDef *DMAx, uint32_t Channel,
-                                                  uint32_t LinkedListBaseAddr)
+		uint32_t LinkedListBaseAddr)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLBAR, DMA_CLBAR_LBA,
-             (LinkedListBaseAddr & DMA_CLBAR_LBA));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLBAR, DMA_CLBAR_LBA,
+		   (LinkedListBaseAddr & DMA_CLBAR_LBA));
 }
 
 /**
@@ -2069,8 +2064,8 @@ __STATIC_INLINE void LL_DMA_SetLinkedListBaseAddr(const DMA_TypeDef *DMAx, uint3
   */
 __STATIC_INLINE uint32_t LL_DMA_GetLinkedListBaseAddr(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLBAR, DMA_CLBAR_LBA));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLBAR, DMA_CLBAR_LBA));
 }
 
 /**
@@ -2103,9 +2098,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetLinkedListBaseAddr(const DMA_TypeDef *DMAx, u
   */
 __STATIC_INLINE void LL_DMA_ConfigControl(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t Configuration)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR,
-             (DMA_CCR_PRIO | DMA_CCR_LAP | DMA_CCR_LSM), Configuration);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR,
+		   (DMA_CCR_PRIO | DMA_CCR_LAP | DMA_CCR_LSM), Configuration);
 }
 
 /**
@@ -2136,8 +2131,8 @@ __STATIC_INLINE void LL_DMA_ConfigControl(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_SetChannelPriorityLevel(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t  Priority)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_PRIO, Priority);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_PRIO, Priority);
 }
 
 /**
@@ -2167,8 +2162,8 @@ __STATIC_INLINE void LL_DMA_SetChannelPriorityLevel(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE uint32_t LL_DMA_GetChannelPriorityLevel(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_PRIO));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_PRIO));
 }
 
 /**
@@ -2196,9 +2191,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetChannelPriorityLevel(const DMA_TypeDef *DMAx,
   */
 __STATIC_INLINE void LL_DMA_SetLinkAllocatedPort(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t  LinkAllocatedPort)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR,
-             DMA_CCR_LAP, LinkAllocatedPort);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR,
+		   DMA_CCR_LAP, LinkAllocatedPort);
 }
 
 /**
@@ -2225,8 +2220,8 @@ __STATIC_INLINE void LL_DMA_SetLinkAllocatedPort(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE uint32_t LL_DMA_GetLinkAllocatedPort(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_LAP));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_LAP));
 }
 
 /**
@@ -2255,8 +2250,8 @@ __STATIC_INLINE uint32_t LL_DMA_GetLinkAllocatedPort(const DMA_TypeDef *DMAx, ui
   */
 __STATIC_INLINE void LL_DMA_SetLinkStepMode(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t LinkStepMode)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_LSM, LinkStepMode);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_LSM, LinkStepMode);
 }
 
 /**
@@ -2284,8 +2279,8 @@ __STATIC_INLINE void LL_DMA_SetLinkStepMode(const DMA_TypeDef *DMAx, uint32_t Ch
   */
 __STATIC_INLINE uint32_t LL_DMA_GetLinkStepMode(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_LSM));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_LSM));
 }
 
 /**
@@ -2332,10 +2327,10 @@ __STATIC_INLINE uint32_t LL_DMA_GetLinkStepMode(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE void LL_DMA_ConfigTransfer(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t Configuration)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1,
-             DMA_CTR1_DAP | DMA_CTR1_DHX | DMA_CTR1_DBX | DMA_CTR1_SBX | DMA_CTR1_DINC | DMA_CTR1_SINC | \
-             DMA_CTR1_SAP | DMA_CTR1_PAM | DMA_CTR1_DDW_LOG2 | DMA_CTR1_SDW_LOG2, Configuration);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1,
+		   DMA_CTR1_DAP | DMA_CTR1_DHX | DMA_CTR1_DBX | DMA_CTR1_SBX | DMA_CTR1_DINC | DMA_CTR1_SINC | \
+		   DMA_CTR1_SAP | DMA_CTR1_PAM | DMA_CTR1_DDW_LOG2 | DMA_CTR1_SDW_LOG2, Configuration);
 }
 
 /**
@@ -2362,12 +2357,12 @@ __STATIC_INLINE void LL_DMA_ConfigTransfer(const DMA_TypeDef *DMAx, uint32_t Cha
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_ConfigBurstLength(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t SrcBurstLength,
-                                              uint32_t DestBurstLength)
+		uint32_t DestBurstLength)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1,
-             (DMA_CTR1_SBL_1 | DMA_CTR1_DBL_1), (((SrcBurstLength - 1U) << DMA_CTR1_SBL_1_Pos) & DMA_CTR1_SBL_1) | \
-             (((DestBurstLength - 1U) << DMA_CTR1_DBL_1_Pos) & DMA_CTR1_DBL_1));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1,
+		   (DMA_CTR1_SBL_1 | DMA_CTR1_DBL_1), (((SrcBurstLength - 1U) << DMA_CTR1_SBL_1_Pos) & DMA_CTR1_SBL_1) | \
+		   (((DestBurstLength - 1U) << DMA_CTR1_DBL_1_Pos) & DMA_CTR1_DBL_1));
 }
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
@@ -2400,10 +2395,10 @@ __STATIC_INLINE void LL_DMA_ConfigBurstLength(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE void LL_DMA_ConfigChannelSecure(DMA_TypeDef *DMAx, uint32_t Channel, uint32_t Configuration)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(DMAx->SECCFGR, (DMA_SECCFGR_SEC0 << Channel), ((Configuration & LL_DMA_CHANNEL_SEC) << Channel));
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1,
-             (DMA_CTR1_SSEC | DMA_CTR1_DSEC), (Configuration & (~LL_DMA_CHANNEL_SEC)));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(DMAx->SECCFGR, (DMA_SECCFGR_SEC0 << Channel), ((Configuration & LL_DMA_CHANNEL_SEC) << Channel));
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1,
+		   (DMA_CTR1_SSEC | DMA_CTR1_DSEC), (Configuration & (~LL_DMA_CHANNEL_SEC)));
 }
 
 /**
@@ -2429,8 +2424,8 @@ __STATIC_INLINE void LL_DMA_ConfigChannelSecure(DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_EnableChannelDestSecure(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DSEC);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DSEC);
 }
 
 /**
@@ -2456,8 +2451,8 @@ __STATIC_INLINE void LL_DMA_EnableChannelDestSecure(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE void LL_DMA_DisableChannelDestSecure(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DSEC);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DSEC);
 }
 #endif /* (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U) */
 
@@ -2485,9 +2480,9 @@ __STATIC_INLINE void LL_DMA_DisableChannelDestSecure(const DMA_TypeDef *DMAx, ui
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannelDestSecure(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DSEC)
-           == (DMA_CTR1_DSEC)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DSEC)
+		 == (DMA_CTR1_DSEC)) ? 1UL : 0UL);
 }
 #endif /* DMA_SECCFGR_SEC0 */
 
@@ -2515,8 +2510,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannelDestSecure(const DMA_TypeDef *DM
   */
 __STATIC_INLINE void LL_DMA_EnableChannelSrcSecure(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SSEC);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SSEC);
 }
 
 /**
@@ -2542,8 +2537,8 @@ __STATIC_INLINE void LL_DMA_EnableChannelSrcSecure(const DMA_TypeDef *DMAx, uint
   */
 __STATIC_INLINE void LL_DMA_DisableChannelSrcSecure(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SSEC);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SSEC);
 }
 #endif /* (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U) */
 
@@ -2571,9 +2566,9 @@ __STATIC_INLINE void LL_DMA_DisableChannelSrcSecure(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannelSrcSecure(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SSEC)
-           == (DMA_CTR1_SSEC)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SSEC)
+		 == (DMA_CTR1_SSEC)) ? 1UL : 0UL);
 }
 #endif /* DMA_SECCFGR_SEC0 */
 
@@ -2602,9 +2597,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannelSrcSecure(const DMA_TypeDef *DMA
   */
 __STATIC_INLINE void LL_DMA_SetDestAllocatedPort(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t DestAllocatedPort)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DAP,
-             DestAllocatedPort);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DAP,
+		   DestAllocatedPort);
 }
 
 /**
@@ -2631,8 +2626,8 @@ __STATIC_INLINE void LL_DMA_SetDestAllocatedPort(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDestAllocatedPort(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DAP));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DAP));
 }
 
 /**
@@ -2660,9 +2655,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetDestAllocatedPort(const DMA_TypeDef *DMAx, ui
   */
 __STATIC_INLINE void LL_DMA_SetDestHWordExchange(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t DestHWordExchange)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DHX,
-             DestHWordExchange);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DHX,
+		   DestHWordExchange);
 }
 
 /**
@@ -2689,8 +2684,8 @@ __STATIC_INLINE void LL_DMA_SetDestHWordExchange(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDestHWordExchange(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DHX));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DHX));
 }
 
 /**
@@ -2718,9 +2713,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetDestHWordExchange(const DMA_TypeDef *DMAx, ui
   */
 __STATIC_INLINE void LL_DMA_SetDestByteExchange(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t DestByteExchange)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DBX,
-             DestByteExchange);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DBX,
+		   DestByteExchange);
 }
 
 /**
@@ -2747,8 +2742,8 @@ __STATIC_INLINE void LL_DMA_SetDestByteExchange(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDestByteExchange(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DBX));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DBX));
 }
 
 /**
@@ -2776,9 +2771,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetDestByteExchange(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE void LL_DMA_SetSrcByteExchange(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t SrcByteExchange)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SBX,
-             SrcByteExchange);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SBX,
+		   SrcByteExchange);
 }
 
 /**
@@ -2805,8 +2800,8 @@ __STATIC_INLINE void LL_DMA_SetSrcByteExchange(const DMA_TypeDef *DMAx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_DMA_GetSrcByteExchange(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SBX));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SBX));
 }
 
 /**
@@ -2832,9 +2827,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetSrcByteExchange(const DMA_TypeDef *DMAx, uint
   */
 __STATIC_INLINE void LL_DMA_SetDestBurstLength(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t DestBurstLength)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DBL_1,
-             ((DestBurstLength - 1U) << DMA_CTR1_DBL_1_Pos) & DMA_CTR1_DBL_1);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DBL_1,
+		   ((DestBurstLength - 1U) << DMA_CTR1_DBL_1_Pos) & DMA_CTR1_DBL_1);
 }
 
 /**
@@ -2859,9 +2854,9 @@ __STATIC_INLINE void LL_DMA_SetDestBurstLength(const DMA_TypeDef *DMAx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDestBurstLength(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1,
-                    DMA_CTR1_DBL_1) >> DMA_CTR1_DBL_1_Pos) + 1U);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1,
+			  DMA_CTR1_DBL_1) >> DMA_CTR1_DBL_1_Pos) + 1U);
 }
 
 /**
@@ -2889,8 +2884,8 @@ __STATIC_INLINE uint32_t LL_DMA_GetDestBurstLength(const DMA_TypeDef *DMAx, uint
   */
 __STATIC_INLINE void LL_DMA_SetDestIncMode(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t DestInc)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DINC, DestInc);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DINC, DestInc);
 }
 
 /**
@@ -2918,8 +2913,8 @@ __STATIC_INLINE void LL_DMA_SetDestIncMode(const DMA_TypeDef *DMAx, uint32_t Cha
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDestIncMode(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DINC));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DINC));
 }
 
 /**
@@ -2949,9 +2944,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetDestIncMode(const DMA_TypeDef *DMAx, uint32_t
   */
 __STATIC_INLINE void LL_DMA_SetDestDataWidth(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t  DestDataWidth)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DDW_LOG2,
-             DestDataWidth);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DDW_LOG2,
+		   DestDataWidth);
 }
 
 /**
@@ -2980,8 +2975,8 @@ __STATIC_INLINE void LL_DMA_SetDestDataWidth(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDestDataWidth(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DDW_LOG2));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_DDW_LOG2));
 }
 
 /**
@@ -3009,9 +3004,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetDestDataWidth(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE void LL_DMA_SetSrcAllocatedPort(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t SrcAllocatedPort)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SAP,
-             SrcAllocatedPort);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SAP,
+		   SrcAllocatedPort);
 }
 
 /**
@@ -3038,8 +3033,8 @@ __STATIC_INLINE void LL_DMA_SetSrcAllocatedPort(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE uint32_t LL_DMA_GetSrcAllocatedPort(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SAP));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SAP));
 }
 
 /**
@@ -3069,9 +3064,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetSrcAllocatedPort(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE void LL_DMA_SetDataAlignment(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t DataAlignment)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_PAM,
-             DataAlignment);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_PAM,
+		   DataAlignment);
 }
 
 /**
@@ -3100,8 +3095,8 @@ __STATIC_INLINE void LL_DMA_SetDataAlignment(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDataAlignment(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_PAM));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_PAM));
 }
 
 /**
@@ -3127,9 +3122,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetDataAlignment(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE void LL_DMA_SetSrcBurstLength(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t SrcBurstLength)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SBL_1,
-             ((SrcBurstLength - 1U) << DMA_CTR1_SBL_1_Pos) & DMA_CTR1_SBL_1);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SBL_1,
+		   ((SrcBurstLength - 1U) << DMA_CTR1_SBL_1_Pos) & DMA_CTR1_SBL_1);
 }
 
 /**
@@ -3155,9 +3150,9 @@ __STATIC_INLINE void LL_DMA_SetSrcBurstLength(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_GetSrcBurstLength(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1,
-                    DMA_CTR1_SBL_1) >> DMA_CTR1_SBL_1_Pos) + 1U);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1,
+			  DMA_CTR1_SBL_1) >> DMA_CTR1_SBL_1_Pos) + 1U);
 }
 
 /**
@@ -3186,8 +3181,8 @@ __STATIC_INLINE uint32_t LL_DMA_GetSrcBurstLength(const DMA_TypeDef *DMAx, uint3
   */
 __STATIC_INLINE void LL_DMA_SetSrcIncMode(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t SrcInc)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SINC, SrcInc);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SINC, SrcInc);
 }
 
 /**
@@ -3215,8 +3210,8 @@ __STATIC_INLINE void LL_DMA_SetSrcIncMode(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE uint32_t LL_DMA_GetSrcIncMode(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SINC));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SINC));
 }
 
 /**
@@ -3246,9 +3241,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetSrcIncMode(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE void LL_DMA_SetSrcDataWidth(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t  SrcDataWidth)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SDW_LOG2,
-             SrcDataWidth);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SDW_LOG2,
+		   SrcDataWidth);
 }
 
 /**
@@ -3277,8 +3272,8 @@ __STATIC_INLINE void LL_DMA_SetSrcDataWidth(const DMA_TypeDef *DMAx, uint32_t Ch
   */
 __STATIC_INLINE uint32_t LL_DMA_GetSrcDataWidth(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SDW_LOG2));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR1, DMA_CTR1_SDW_LOG2));
 }
 
 /**
@@ -3321,10 +3316,10 @@ __STATIC_INLINE uint32_t LL_DMA_GetSrcDataWidth(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE void LL_DMA_ConfigChannelTransfer(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t Configuration)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2,
-             (DMA_CTR2_TCEM | DMA_CTR2_TRIGPOL | DMA_CTR2_TRIGM | DMA_CTR2_DREQ | DMA_CTR2_SWREQ | DMA_CTR2_BREQ |
-              DMA_CTR2_PFREQ), Configuration);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2,
+		   (DMA_CTR2_TCEM | DMA_CTR2_TRIGPOL | DMA_CTR2_TRIGM | DMA_CTR2_DREQ | DMA_CTR2_SWREQ | DMA_CTR2_BREQ |
+		    DMA_CTR2_PFREQ), Configuration);
 }
 
 /**
@@ -3355,9 +3350,9 @@ __STATIC_INLINE void LL_DMA_ConfigChannelTransfer(const DMA_TypeDef *DMAx, uint3
   */
 __STATIC_INLINE void LL_DMA_SetTransferEventMode(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t  TransferEventMode)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TCEM,
-             TransferEventMode);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TCEM,
+		   TransferEventMode);
 }
 
 /**
@@ -3387,8 +3382,8 @@ __STATIC_INLINE void LL_DMA_SetTransferEventMode(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE uint32_t LL_DMA_GetTransferEventMode(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TCEM));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TCEM));
 }
 
 /**
@@ -3418,9 +3413,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetTransferEventMode(const DMA_TypeDef *DMAx, ui
   */
 __STATIC_INLINE void LL_DMA_SetTriggerPolarity(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t TriggerPolarity)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TRIGPOL,
-             TriggerPolarity);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TRIGPOL,
+		   TriggerPolarity);
 }
 
 /**
@@ -3449,8 +3444,8 @@ __STATIC_INLINE void LL_DMA_SetTriggerPolarity(const DMA_TypeDef *DMAx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_DMA_GetTriggerPolarity(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TRIGPOL));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TRIGPOL));
 }
 
 /**
@@ -3481,9 +3476,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetTriggerPolarity(const DMA_TypeDef *DMAx, uint
   */
 __STATIC_INLINE void LL_DMA_SetTriggerMode(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t TriggerMode)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TRIGM,
-             TriggerMode);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TRIGM,
+		   TriggerMode);
 }
 
 /**
@@ -3513,8 +3508,8 @@ __STATIC_INLINE void LL_DMA_SetTriggerMode(const DMA_TypeDef *DMAx, uint32_t Cha
   */
 __STATIC_INLINE uint32_t LL_DMA_GetTriggerMode(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TRIGM));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TRIGM));
 }
 
 /**
@@ -3545,9 +3540,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetTriggerMode(const DMA_TypeDef *DMAx, uint32_t
   */
 __STATIC_INLINE void LL_DMA_SetDataTransferDirection(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t Direction)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2,
-             DMA_CTR2_DREQ | DMA_CTR2_SWREQ, Direction);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2,
+		   DMA_CTR2_DREQ | DMA_CTR2_SWREQ, Direction);
 }
 
 /**
@@ -3577,9 +3572,9 @@ __STATIC_INLINE void LL_DMA_SetDataTransferDirection(const DMA_TypeDef *DMAx, ui
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDataTransferDirection(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2,
-                   DMA_CTR2_DREQ | DMA_CTR2_SWREQ));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2,
+			 DMA_CTR2_DREQ | DMA_CTR2_SWREQ));
 }
 
 /**
@@ -3608,9 +3603,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetDataTransferDirection(const DMA_TypeDef *DMAx
   */
 __STATIC_INLINE void LL_DMA_SetBlkHWRequest(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t BlkHWRequest)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_BREQ,
-             BlkHWRequest);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_BREQ,
+		   BlkHWRequest);
 }
 
 /**
@@ -3638,8 +3633,8 @@ __STATIC_INLINE void LL_DMA_SetBlkHWRequest(const DMA_TypeDef *DMAx, uint32_t Ch
   */
 __STATIC_INLINE uint32_t LL_DMA_GetBlkHWRequest(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_BREQ));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_BREQ));
 }
 
 /**
@@ -3963,8 +3958,8 @@ __STATIC_INLINE uint32_t LL_DMA_GetBlkHWRequest(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE void LL_DMA_SetPeriphRequest(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t Request)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_REQSEL, Request);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_REQSEL, Request);
 }
 
 /**
@@ -4287,8 +4282,8 @@ __STATIC_INLINE void LL_DMA_SetPeriphRequest(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE  uint32_t LL_DMA_GetPeriphRequest(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_REQSEL));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_REQSEL));
 }
 
 /**
@@ -4482,9 +4477,9 @@ __STATIC_INLINE  uint32_t LL_DMA_GetPeriphRequest(const DMA_TypeDef *DMAx, uint3
   */
 __STATIC_INLINE void LL_DMA_SetHWTrigger(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t Trigger)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TRIGSEL,
-             (Trigger << DMA_CTR2_TRIGSEL_Pos) & DMA_CTR2_TRIGSEL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_TRIGSEL,
+		   (Trigger << DMA_CTR2_TRIGSEL_Pos) & DMA_CTR2_TRIGSEL);
 }
 
 /**
@@ -4677,9 +4672,9 @@ __STATIC_INLINE void LL_DMA_SetHWTrigger(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE  uint32_t LL_DMA_GetHWTrigger(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2,
-                   DMA_CTR2_TRIGSEL) >> DMA_CTR2_TRIGSEL_Pos);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2,
+			 DMA_CTR2_TRIGSEL) >> DMA_CTR2_TRIGSEL_Pos);
 }
 
 /**
@@ -4700,9 +4695,9 @@ __STATIC_INLINE  uint32_t LL_DMA_GetHWTrigger(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE void LL_DMA_SetTransferMode(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t Mode)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_PFREQ,
-             Mode & DMA_CTR2_PFREQ);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2, DMA_CTR2_PFREQ,
+		   Mode & DMA_CTR2_PFREQ);
 }
 
 /**
@@ -4722,9 +4717,9 @@ __STATIC_INLINE void LL_DMA_SetTransferMode(const DMA_TypeDef *DMAx, uint32_t Ch
   */
 __STATIC_INLINE  uint32_t LL_DMA_GetTransferMode(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2,
-                   DMA_CTR2_PFREQ));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR2,
+			 DMA_CTR2_PFREQ));
 }
 
 /**
@@ -4750,9 +4745,9 @@ __STATIC_INLINE  uint32_t LL_DMA_GetTransferMode(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE void LL_DMA_ConfigBlkRptAddrUpdate(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t Configuration)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1,
-             DMA_CBR1_BRDDEC | DMA_CBR1_BRSDEC | DMA_CBR1_DDEC | DMA_CBR1_SDEC, Configuration);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1,
+		   DMA_CBR1_BRDDEC | DMA_CBR1_BRSDEC | DMA_CBR1_DDEC | DMA_CBR1_SDEC, Configuration);
 }
 
 /**
@@ -4774,11 +4769,11 @@ __STATIC_INLINE void LL_DMA_ConfigBlkRptAddrUpdate(const DMA_TypeDef *DMAx, uint
   *@retval None.
   */
 __STATIC_INLINE void LL_DMA_ConfigBlkCounters(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t BlkDataLength,
-                                              uint32_t BlkRptCount)
+		uint32_t BlkRptCount)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1,
-             (DMA_CBR1_BNDT | DMA_CBR1_BRC), (BlkDataLength | (BlkRptCount << DMA_CBR1_BRC_Pos)));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1,
+		   (DMA_CBR1_BNDT | DMA_CBR1_BRC), (BlkDataLength | (BlkRptCount << DMA_CBR1_BRC_Pos)));
 }
 
 /**
@@ -4798,11 +4793,11 @@ __STATIC_INLINE void LL_DMA_ConfigBlkCounters(const DMA_TypeDef *DMAx, uint32_t 
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_SetBlkRptDestAddrUpdate(const DMA_TypeDef *DMAx, uint32_t Channel,
-                                                    uint32_t BlkRptDestAddrUpdate)
+		uint32_t BlkRptDestAddrUpdate)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BRDDEC,
-             BlkRptDestAddrUpdate);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BRDDEC,
+		   BlkRptDestAddrUpdate);
 }
 
 /**
@@ -4822,8 +4817,8 @@ __STATIC_INLINE void LL_DMA_SetBlkRptDestAddrUpdate(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE uint32_t LL_DMA_GetBlkRptDestAddrUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BRDDEC));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BRDDEC));
 }
 
 /**
@@ -4843,11 +4838,11 @@ __STATIC_INLINE uint32_t LL_DMA_GetBlkRptDestAddrUpdate(const DMA_TypeDef *DMAx,
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_SetBlkRptSrcAddrUpdate(const DMA_TypeDef *DMAx, uint32_t Channel,
-                                                   uint32_t BlkRptSrcAddrUpdate)
+		uint32_t BlkRptSrcAddrUpdate)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BRSDEC,
-             BlkRptSrcAddrUpdate);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BRSDEC,
+		   BlkRptSrcAddrUpdate);
 }
 
 /**
@@ -4867,8 +4862,8 @@ __STATIC_INLINE void LL_DMA_SetBlkRptSrcAddrUpdate(const DMA_TypeDef *DMAx, uint
   */
 __STATIC_INLINE uint32_t LL_DMA_GetBlkRptSrcAddrUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BRSDEC));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BRSDEC));
 }
 
 /**
@@ -4889,9 +4884,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetBlkRptSrcAddrUpdate(const DMA_TypeDef *DMAx, 
   */
 __STATIC_INLINE void LL_DMA_SetDestAddrUpdate(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t DestAddrUpdate)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_DDEC,
-             DestAddrUpdate);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_DDEC,
+		   DestAddrUpdate);
 }
 
 /**
@@ -4911,8 +4906,8 @@ __STATIC_INLINE void LL_DMA_SetDestAddrUpdate(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDestAddrUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_DDEC));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_DDEC));
 }
 
 /**
@@ -4933,9 +4928,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetDestAddrUpdate(const DMA_TypeDef *DMAx, uint3
   */
 __STATIC_INLINE void LL_DMA_SetSrcAddrUpdate(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t SrcAddrUpdate)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_SDEC,
-             SrcAddrUpdate);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_SDEC,
+		   SrcAddrUpdate);
 }
 
 /**
@@ -4955,8 +4950,8 @@ __STATIC_INLINE void LL_DMA_SetSrcAddrUpdate(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE uint32_t LL_DMA_GetSrcAddrUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_SDEC));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_SDEC));
 }
 
 /**
@@ -4976,9 +4971,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetSrcAddrUpdate(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE void LL_DMA_SetBlkRptCount(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t BlkRptCount)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BRC,
-             (BlkRptCount << DMA_CBR1_BRC_Pos) & DMA_CBR1_BRC);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BRC,
+		   (BlkRptCount << DMA_CBR1_BRC_Pos) & DMA_CBR1_BRC);
 }
 
 /**
@@ -4996,9 +4991,9 @@ __STATIC_INLINE void LL_DMA_SetBlkRptCount(const DMA_TypeDef *DMAx, uint32_t Cha
   */
 __STATIC_INLINE uint32_t LL_DMA_GetBlkRptCount(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1,
-                   DMA_CBR1_BRC) >> DMA_CBR1_BRC_Pos);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1,
+			 DMA_CBR1_BRC) >> DMA_CBR1_BRC_Pos);
 }
 
 /**
@@ -5025,9 +5020,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetBlkRptCount(const DMA_TypeDef *DMAx, uint32_t
   */
 __STATIC_INLINE void LL_DMA_SetBlkDataLength(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t BlkDataLength)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BNDT,
-             BlkDataLength);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BNDT,
+		   BlkDataLength);
 }
 
 /**
@@ -5053,8 +5048,8 @@ __STATIC_INLINE void LL_DMA_SetBlkDataLength(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE uint32_t LL_DMA_GetBlkDataLength(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BNDT));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR1, DMA_CBR1_BNDT));
 }
 
 /**
@@ -5083,11 +5078,11 @@ __STATIC_INLINE uint32_t LL_DMA_GetBlkDataLength(const DMA_TypeDef *DMAx, uint32
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_ConfigAddresses(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t SrcAddress, uint32_t
-                                            DestAddress)
+		DestAddress)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSAR, SrcAddress);
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CDAR, DestAddress);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSAR, SrcAddress);
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CDAR, DestAddress);
 }
 
 /**
@@ -5114,8 +5109,8 @@ __STATIC_INLINE void LL_DMA_ConfigAddresses(const DMA_TypeDef *DMAx, uint32_t Ch
   */
 __STATIC_INLINE void LL_DMA_SetSrcAddress(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t SrcAddress)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSAR, SrcAddress);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSAR, SrcAddress);
 }
 
 /**
@@ -5141,8 +5136,8 @@ __STATIC_INLINE void LL_DMA_SetSrcAddress(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE uint32_t LL_DMA_GetSrcAddress(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSAR));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSAR));
 }
 
 /**
@@ -5169,8 +5164,8 @@ __STATIC_INLINE uint32_t LL_DMA_GetSrcAddress(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE void LL_DMA_SetDestAddress(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t DestAddress)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CDAR, DestAddress);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CDAR, DestAddress);
 }
 
 /**
@@ -5196,8 +5191,8 @@ __STATIC_INLINE void LL_DMA_SetDestAddress(const DMA_TypeDef *DMAx, uint32_t Cha
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDestAddress(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CDAR));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CDAR));
 }
 
 /**
@@ -5218,11 +5213,11 @@ __STATIC_INLINE uint32_t LL_DMA_GetDestAddress(const DMA_TypeDef *DMAx, uint32_t
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_ConfigAddrUpdateValue(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t SrcAddrOffset,
-                                                  uint32_t DestAddrOffset)
+		uint32_t DestAddrOffset)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR3,
-            (SrcAddrOffset  & DMA_CTR3_SAO) | ((DestAddrOffset << DMA_CTR3_DAO_Pos) & DMA_CTR3_DAO));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR3,
+		  (SrcAddrOffset  & DMA_CTR3_SAO) | ((DestAddrOffset << DMA_CTR3_DAO_Pos) & DMA_CTR3_DAO));
 }
 
 /**
@@ -5241,9 +5236,9 @@ __STATIC_INLINE void LL_DMA_ConfigAddrUpdateValue(const DMA_TypeDef *DMAx, uint3
   */
 __STATIC_INLINE void LL_DMA_SetDestAddrUpdateValue(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t DestAddrOffset)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR3, DMA_CTR3_DAO,
-             ((DestAddrOffset << DMA_CTR3_DAO_Pos) & DMA_CTR3_DAO));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR3, DMA_CTR3_DAO,
+		   ((DestAddrOffset << DMA_CTR3_DAO_Pos) & DMA_CTR3_DAO));
 }
 
 /**
@@ -5261,9 +5256,9 @@ __STATIC_INLINE void LL_DMA_SetDestAddrUpdateValue(const DMA_TypeDef *DMAx, uint
   */
 __STATIC_INLINE uint32_t LL_DMA_GetDestAddrUpdateValue(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR3,
-                   DMA_CTR3_DAO) >> DMA_CTR3_DAO_Pos);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR3,
+			 DMA_CTR3_DAO) >> DMA_CTR3_DAO_Pos);
 }
 
 /**
@@ -5282,9 +5277,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetDestAddrUpdateValue(const DMA_TypeDef *DMAx, 
   */
 __STATIC_INLINE void LL_DMA_SetSrcAddrUpdateValue(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t SrcAddrOffset)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR3, DMA_CTR3_SAO,
-             SrcAddrOffset & DMA_CTR3_SAO);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR3, DMA_CTR3_SAO,
+		   SrcAddrOffset & DMA_CTR3_SAO);
 }
 
 /**
@@ -5302,8 +5297,8 @@ __STATIC_INLINE void LL_DMA_SetSrcAddrUpdateValue(const DMA_TypeDef *DMAx, uint3
   */
 __STATIC_INLINE uint32_t LL_DMA_GetSrcAddrUpdateValue(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR3, DMA_CTR3_SAO));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CTR3, DMA_CTR3_SAO));
 }
 
 /**
@@ -5324,11 +5319,11 @@ __STATIC_INLINE uint32_t LL_DMA_GetSrcAddrUpdateValue(const DMA_TypeDef *DMAx, u
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_ConfigBlkRptAddrUpdateValue(const DMA_TypeDef *DMAx, uint32_t Channel,
-                                                        uint32_t BlkRptSrcAddrOffset, uint32_t BlkRptDestAddrOffset)
+		uint32_t BlkRptSrcAddrOffset, uint32_t BlkRptDestAddrOffset)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR2,
-            ((BlkRptDestAddrOffset << DMA_CBR2_BRDAO_Pos) & DMA_CBR2_BRDAO) | (BlkRptSrcAddrOffset  & DMA_CBR2_BRSAO));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR2,
+		  ((BlkRptDestAddrOffset << DMA_CBR2_BRDAO_Pos) & DMA_CBR2_BRDAO) | (BlkRptSrcAddrOffset  & DMA_CBR2_BRSAO));
 }
 
 /**
@@ -5346,11 +5341,11 @@ __STATIC_INLINE void LL_DMA_ConfigBlkRptAddrUpdateValue(const DMA_TypeDef *DMAx,
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_SetBlkRptDestAddrUpdateValue(const DMA_TypeDef *DMAx, uint32_t Channel,
-                                                         uint32_t BlkRptDestAddrOffset)
+		uint32_t BlkRptDestAddrOffset)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR2, DMA_CBR2_BRDAO,
-             ((BlkRptDestAddrOffset << DMA_CBR2_BRDAO_Pos) & DMA_CBR2_BRDAO));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR2, DMA_CBR2_BRDAO,
+		   ((BlkRptDestAddrOffset << DMA_CBR2_BRDAO_Pos) & DMA_CBR2_BRDAO));
 }
 
 /**
@@ -5368,9 +5363,9 @@ __STATIC_INLINE void LL_DMA_SetBlkRptDestAddrUpdateValue(const DMA_TypeDef *DMAx
   */
 __STATIC_INLINE uint32_t LL_DMA_GetBlkRptDestAddrUpdateValue(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR2,
-                   DMA_CBR2_BRDAO) >> DMA_CBR2_BRDAO_Pos);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR2,
+			 DMA_CBR2_BRDAO) >> DMA_CBR2_BRDAO_Pos);
 }
 
 /**
@@ -5388,11 +5383,11 @@ __STATIC_INLINE uint32_t LL_DMA_GetBlkRptDestAddrUpdateValue(const DMA_TypeDef *
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_SetBlkRptSrcAddrUpdateValue(const DMA_TypeDef *DMAx, uint32_t Channel,
-                                                        uint32_t BlkRptSrcAddrOffset)
+		uint32_t BlkRptSrcAddrOffset)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR2, DMA_CBR2_BRSAO,
-             BlkRptSrcAddrOffset);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR2, DMA_CBR2_BRSAO,
+		   BlkRptSrcAddrOffset);
 }
 
 /**
@@ -5410,8 +5405,8 @@ __STATIC_INLINE void LL_DMA_SetBlkRptSrcAddrUpdateValue(const DMA_TypeDef *DMAx,
   */
 __STATIC_INLINE uint32_t LL_DMA_GetBlkRptSrcAddrUpdateValue(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR2, DMA_CBR2_BRSAO));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CBR2, DMA_CBR2_BRSAO));
 }
 
 /**
@@ -5454,12 +5449,12 @@ __STATIC_INLINE uint32_t LL_DMA_GetBlkRptSrcAddrUpdateValue(const DMA_TypeDef *D
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_ConfigLinkUpdate(const DMA_TypeDef *DMAx, uint32_t Channel, uint32_t RegistersUpdate,
-                                             uint32_t LinkedListAddrOffset)
+		uint32_t LinkedListAddrOffset)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR,
-             (DMA_CLLR_UT1 | DMA_CLLR_UT2 | DMA_CLLR_UB1 | DMA_CLLR_USA | DMA_CLLR_UDA | DMA_CLLR_UT3 | \
-              DMA_CLLR_UB2 | DMA_CLLR_ULL | DMA_CLLR_LA), (RegistersUpdate | (LinkedListAddrOffset & DMA_CLLR_LA)));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR,
+		   (DMA_CLLR_UT1 | DMA_CLLR_UT2 | DMA_CLLR_UB1 | DMA_CLLR_USA | DMA_CLLR_UDA | DMA_CLLR_UT3 | \
+		    DMA_CLLR_UB2 | DMA_CLLR_ULL | DMA_CLLR_LA), (RegistersUpdate | (LinkedListAddrOffset & DMA_CLLR_LA)));
 }
 
 /**
@@ -5485,8 +5480,8 @@ __STATIC_INLINE void LL_DMA_ConfigLinkUpdate(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_EnableCTR1Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT1);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT1);
 }
 
 /**
@@ -5512,8 +5507,8 @@ __STATIC_INLINE void LL_DMA_EnableCTR1Update(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_DisableCTR1Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT1);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT1);
 }
 
 /**
@@ -5539,9 +5534,9 @@ __STATIC_INLINE void LL_DMA_DisableCTR1Update(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledCTR1Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT1)
-           == (DMA_CLLR_UT1)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT1)
+		 == (DMA_CLLR_UT1)) ? 1UL : 0UL);
 }
 
 /**
@@ -5567,8 +5562,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledCTR1Update(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE void LL_DMA_EnableCTR2Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT2);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT2);
 }
 
 /**
@@ -5594,8 +5589,8 @@ __STATIC_INLINE void LL_DMA_EnableCTR2Update(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_DisableCTR2Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT2);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT2);
 }
 
 /**
@@ -5621,9 +5616,9 @@ __STATIC_INLINE void LL_DMA_DisableCTR2Update(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledCTR2Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT2)
-           == (DMA_CLLR_UT2)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT2)
+		 == (DMA_CLLR_UT2)) ? 1UL : 0UL);
 }
 
 /**
@@ -5649,8 +5644,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledCTR2Update(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE void LL_DMA_EnableCBR1Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB1);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB1);
 }
 
 /**
@@ -5676,8 +5671,8 @@ __STATIC_INLINE void LL_DMA_EnableCBR1Update(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_DisableCBR1Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB1);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB1);
 }
 
 /**
@@ -5703,9 +5698,9 @@ __STATIC_INLINE void LL_DMA_DisableCBR1Update(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledCBR1Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB1)
-           == (DMA_CLLR_UB1)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB1)
+		 == (DMA_CLLR_UB1)) ? 1UL : 0UL);
 }
 
 /**
@@ -5731,8 +5726,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledCBR1Update(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE void LL_DMA_EnableCSARUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_USA);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_USA);
 }
 
 /**
@@ -5758,8 +5753,8 @@ __STATIC_INLINE void LL_DMA_EnableCSARUpdate(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_DisableCSARUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_USA);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_USA);
 }
 
 /**
@@ -5785,9 +5780,9 @@ __STATIC_INLINE void LL_DMA_DisableCSARUpdate(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledCSARUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_USA)
-           == (DMA_CLLR_USA)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_USA)
+		 == (DMA_CLLR_USA)) ? 1UL : 0UL);
 }
 
 /**
@@ -5813,8 +5808,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledCSARUpdate(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE void LL_DMA_EnableCDARUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UDA);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UDA);
 }
 
 /**
@@ -5840,8 +5835,8 @@ __STATIC_INLINE void LL_DMA_EnableCDARUpdate(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_DisableCDARUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UDA);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UDA);
 }
 
 /**
@@ -5867,9 +5862,9 @@ __STATIC_INLINE void LL_DMA_DisableCDARUpdate(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledCDARUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UDA)
-           == (DMA_CLLR_UDA)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UDA)
+		 == (DMA_CLLR_UDA)) ? 1UL : 0UL);
 }
 
 /**
@@ -5887,8 +5882,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledCDARUpdate(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE void LL_DMA_EnableCTR3Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT3);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT3);
 }
 
 /**
@@ -5906,8 +5901,8 @@ __STATIC_INLINE void LL_DMA_EnableCTR3Update(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_DisableCTR3Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT3);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT3);
 }
 
 /**
@@ -5925,9 +5920,9 @@ __STATIC_INLINE void LL_DMA_DisableCTR3Update(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledCTR3Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT3)
-           == (DMA_CLLR_UT3)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UT3)
+		 == (DMA_CLLR_UT3)) ? 1UL : 0UL);
 }
 
 /**
@@ -5945,8 +5940,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledCTR3Update(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE void LL_DMA_EnableCBR2Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB2);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB2);
 }
 
 /**
@@ -5964,8 +5959,8 @@ __STATIC_INLINE void LL_DMA_EnableCBR2Update(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_DisableCBR2Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB2);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB2);
 }
 
 /**
@@ -5983,9 +5978,9 @@ __STATIC_INLINE void LL_DMA_DisableCBR2Update(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledCBR2Update(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB2)
-           == (DMA_CLLR_UB2)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_UB2)
+		 == (DMA_CLLR_UB2)) ? 1UL : 0UL);
 }
 
 /**
@@ -6011,8 +6006,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledCBR2Update(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE void LL_DMA_EnableCLLRUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_ULL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_ULL);
 }
 
 /**
@@ -6038,8 +6033,8 @@ __STATIC_INLINE void LL_DMA_EnableCLLRUpdate(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_DisableCLLRUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_ULL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_ULL);
 }
 
 /**
@@ -6065,9 +6060,9 @@ __STATIC_INLINE void LL_DMA_DisableCLLRUpdate(const DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledCLLRUpdate(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_ULL)
-           == (DMA_CLLR_ULL)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_ULL)
+		 == (DMA_CLLR_ULL)) ? 1UL : 0UL);
 }
 
 /**
@@ -6093,11 +6088,11 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledCLLRUpdate(const DMA_TypeDef *DMAx, uin
   * @retval None.
   */
 __STATIC_INLINE void LL_DMA_SetLinkedListAddrOffset(const DMA_TypeDef *DMAx, uint32_t Channel,
-                                                    uint32_t  LinkedListAddrOffset)
+		uint32_t  LinkedListAddrOffset)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_LA,
-             (LinkedListAddrOffset & DMA_CLLR_LA));
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	MODIFY_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR, DMA_CLLR_LA,
+		   (LinkedListAddrOffset & DMA_CLLR_LA));
 }
 
 /**
@@ -6123,9 +6118,9 @@ __STATIC_INLINE void LL_DMA_SetLinkedListAddrOffset(const DMA_TypeDef *DMAx, uin
   */
 __STATIC_INLINE uint32_t LL_DMA_GetLinkedListAddrOffset(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR,
-                   DMA_CLLR_LA) >> DMA_CLLR_LA_Pos);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CLLR,
+			 DMA_CLLR_LA) >> DMA_CLLR_LA_Pos);
 }
 
 /**
@@ -6150,9 +6145,9 @@ __STATIC_INLINE uint32_t LL_DMA_GetLinkedListAddrOffset(const DMA_TypeDef *DMAx,
   */
 __STATIC_INLINE uint32_t LL_DMA_GetFIFOLevel(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR,
-                   DMA_CSR_FIFOL) >> DMA_CSR_FIFOL_Pos);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return (READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR,
+			 DMA_CSR_FIFOL) >> DMA_CSR_FIFOL_Pos);
 }
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
@@ -6179,7 +6174,7 @@ __STATIC_INLINE uint32_t LL_DMA_GetFIFOLevel(const DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_EnableChannelSecure(DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  SET_BIT(DMAx->SECCFGR, (DMA_SECCFGR_SEC0 << (Channel & 0x0000000FU)));
+	SET_BIT(DMAx->SECCFGR, (DMA_SECCFGR_SEC0 << (Channel & 0x0000000FU)));
 }
 
 /**
@@ -6205,7 +6200,7 @@ __STATIC_INLINE void LL_DMA_EnableChannelSecure(DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_DisableChannelSecure(DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  CLEAR_BIT(DMAx->SECCFGR, (DMA_SECCFGR_SEC0 << (Channel & 0x0000000FU)));
+	CLEAR_BIT(DMAx->SECCFGR, (DMA_SECCFGR_SEC0 << (Channel & 0x0000000FU)));
 }
 #endif /* (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U) */
 
@@ -6233,8 +6228,8 @@ __STATIC_INLINE void LL_DMA_DisableChannelSecure(DMA_TypeDef *DMAx, uint32_t Cha
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannelSecure(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  return ((READ_BIT(DMAx->SECCFGR, (DMA_SECCFGR_SEC0 << (Channel & 0x0000000FU)))
-           == (DMA_SECCFGR_SEC0 << (Channel & 0x0000000FU))) ? 1UL : 0UL);
+	return ((READ_BIT(DMAx->SECCFGR, (DMA_SECCFGR_SEC0 << (Channel & 0x0000000FU)))
+		 == (DMA_SECCFGR_SEC0 << (Channel & 0x0000000FU))) ? 1UL : 0UL);
 }
 #endif /* DMA_SECCFGR_SEC0 */
 
@@ -6261,7 +6256,7 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannelSecure(const DMA_TypeDef *DMAx, 
   */
 __STATIC_INLINE void LL_DMA_EnableChannelPrivilege(DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  SET_BIT(DMAx->PRIVCFGR, (DMA_PRIVCFGR_PRIV0 << (Channel & 0x0000000FU)));
+	SET_BIT(DMAx->PRIVCFGR, (DMA_PRIVCFGR_PRIV0 << (Channel & 0x0000000FU)));
 }
 
 /**
@@ -6287,7 +6282,7 @@ __STATIC_INLINE void LL_DMA_EnableChannelPrivilege(DMA_TypeDef *DMAx, uint32_t C
   */
 __STATIC_INLINE void LL_DMA_DisableChannelPrivilege(DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  CLEAR_BIT(DMAx->PRIVCFGR, (DMA_PRIVCFGR_PRIV0 << (Channel & 0x0000000FU)));
+	CLEAR_BIT(DMAx->PRIVCFGR, (DMA_PRIVCFGR_PRIV0 << (Channel & 0x0000000FU)));
 }
 
 /**
@@ -6313,8 +6308,8 @@ __STATIC_INLINE void LL_DMA_DisableChannelPrivilege(DMA_TypeDef *DMAx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannelPrivilege(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  return ((READ_BIT(DMAx->PRIVCFGR, (DMA_PRIVCFGR_PRIV0 << (Channel & 0x0000000FU)))
-           == (DMA_PRIVCFGR_PRIV0 << (Channel & 0x0000000FU))) ? 1UL : 0UL);
+	return ((READ_BIT(DMAx->PRIVCFGR, (DMA_PRIVCFGR_PRIV0 << (Channel & 0x0000000FU)))
+		 == (DMA_PRIVCFGR_PRIV0 << (Channel & 0x0000000FU))) ? 1UL : 0UL);
 }
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
@@ -6341,7 +6336,7 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannelPrivilege(const DMA_TypeDef *DMA
   */
 __STATIC_INLINE void LL_DMA_EnableChannelLockAttribute(DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  SET_BIT(DMAx->RCFGLOCKR, (DMA_RCFGLOCKR_LOCK0 << (Channel & 0x0000000FU)));
+	SET_BIT(DMAx->RCFGLOCKR, (DMA_RCFGLOCKR_LOCK0 << (Channel & 0x0000000FU)));
 }
 #endif /* (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U) */
 
@@ -6369,8 +6364,8 @@ __STATIC_INLINE void LL_DMA_EnableChannelLockAttribute(DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannelLockAttribute(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  return ((READ_BIT(DMAx->RCFGLOCKR, (DMA_RCFGLOCKR_LOCK0 << (Channel & 0x0000000FU)))
-           == (DMA_RCFGLOCKR_LOCK0 << (Channel & 0x0000000FU))) ? 1UL : 0UL);
+	return ((READ_BIT(DMAx->RCFGLOCKR, (DMA_RCFGLOCKR_LOCK0 << (Channel & 0x0000000FU)))
+		 == (DMA_RCFGLOCKR_LOCK0 << (Channel & 0x0000000FU))) ? 1UL : 0UL);
 }
 
 #endif /* DMA_RCFGLOCKR_LOCK0 */
@@ -6405,8 +6400,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledChannelLockAttribute(const DMA_TypeDef 
   */
 __STATIC_INLINE void LL_DMA_ClearFlag_TO(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_TOF);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_TOF);
 }
 
 /**
@@ -6432,8 +6427,8 @@ __STATIC_INLINE void LL_DMA_ClearFlag_TO(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE void LL_DMA_ClearFlag_SUSP(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_SUSPF);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_SUSPF);
 }
 
 /**
@@ -6459,8 +6454,8 @@ __STATIC_INLINE void LL_DMA_ClearFlag_SUSP(const DMA_TypeDef *DMAx, uint32_t Cha
   */
 __STATIC_INLINE void LL_DMA_ClearFlag_USE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_USEF);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_USEF);
 }
 
 /**
@@ -6486,8 +6481,8 @@ __STATIC_INLINE void LL_DMA_ClearFlag_USE(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_ClearFlag_ULE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_ULEF);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_ULEF);
 }
 
 /**
@@ -6513,8 +6508,8 @@ __STATIC_INLINE void LL_DMA_ClearFlag_ULE(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_ClearFlag_DTE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_DTEF);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_DTEF);
 }
 
 /**
@@ -6540,8 +6535,8 @@ __STATIC_INLINE void LL_DMA_ClearFlag_DTE(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_ClearFlag_HT(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_HTF);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_HTF);
 }
 
 /**
@@ -6567,8 +6562,8 @@ __STATIC_INLINE void LL_DMA_ClearFlag_HT(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE void LL_DMA_ClearFlag_TC(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_TCF);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	WRITE_REG(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CFCR, DMA_CFCR_TCF);
 }
 
 /**
@@ -6594,9 +6589,9 @@ __STATIC_INLINE void LL_DMA_ClearFlag_TC(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_TO(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_TOF)
-           == (DMA_CSR_TOF)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_TOF)
+		 == (DMA_CSR_TOF)) ? 1UL : 0UL);
 }
 
 /**
@@ -6622,9 +6617,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_TO(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_SUSP(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_SUSPF)
-           == (DMA_CSR_SUSPF)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_SUSPF)
+		 == (DMA_CSR_SUSPF)) ? 1UL : 0UL);
 }
 
 /**
@@ -6650,9 +6645,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_SUSP(const DMA_TypeDef *DMAx, uint3
   */
 __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_USE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_USEF)
-           == (DMA_CSR_USEF)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_USEF)
+		 == (DMA_CSR_USEF)) ? 1UL : 0UL);
 }
 
 /**
@@ -6678,9 +6673,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_USE(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_ULE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_ULEF)
-           == (DMA_CSR_ULEF)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_ULEF)
+		 == (DMA_CSR_ULEF)) ? 1UL : 0UL);
 }
 
 /**
@@ -6706,9 +6701,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_ULE(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_DTE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_DTEF)
-           == (DMA_CSR_DTEF)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_DTEF)
+		 == (DMA_CSR_DTEF)) ? 1UL : 0UL);
 }
 
 /**
@@ -6734,9 +6729,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_DTE(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_HT(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_HTF)
-           == (DMA_CSR_HTF)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_HTF)
+		 == (DMA_CSR_HTF)) ? 1UL : 0UL);
 }
 
 /**
@@ -6762,9 +6757,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_HT(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_TC(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_TCF)
-           == (DMA_CSR_TCF)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_TCF)
+		 == (DMA_CSR_TCF)) ? 1UL : 0UL);
 }
 
 /**
@@ -6790,9 +6785,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_TC(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_IDLE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_IDLEF)
-           == (DMA_CSR_IDLEF)) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CSR, DMA_CSR_IDLEF)
+		 == (DMA_CSR_IDLEF)) ? 1UL : 0UL);
 }
 
 /**
@@ -6818,8 +6813,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_IDLE(const DMA_TypeDef *DMAx, uint3
   */
 __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_MIS(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  return ((READ_BIT(DMAx->MISR, (DMA_MISR_MIS0 << (Channel & 0x0FU)))
-           == (DMA_MISR_MIS0 << (Channel & 0x0FU))) ? 1UL : 0UL);
+	return ((READ_BIT(DMAx->MISR, (DMA_MISR_MIS0 << (Channel & 0x0FU)))
+		 == (DMA_MISR_MIS0 << (Channel & 0x0FU))) ? 1UL : 0UL);
 }
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
@@ -6846,8 +6841,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_MIS(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_SMIS(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  return ((READ_BIT(DMAx->SMISR, (DMA_SMISR_MIS0 << (Channel & 0x0000000FU)))
-           == (DMA_SMISR_MIS0 << (Channel & 0x0000000FU))) ? 1UL : 0UL);
+	return ((READ_BIT(DMAx->SMISR, (DMA_SMISR_MIS0 << (Channel & 0x0000000FU)))
+		 == (DMA_SMISR_MIS0 << (Channel & 0x0000000FU))) ? 1UL : 0UL);
 }
 #endif /* (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U) */
 /**
@@ -6881,8 +6876,8 @@ __STATIC_INLINE uint32_t LL_DMA_IsActiveFlag_SMIS(const DMA_TypeDef *DMAx, uint3
   */
 __STATIC_INLINE void LL_DMA_EnableIT_TO(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TOIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TOIE);
 }
 
 /**
@@ -6908,8 +6903,8 @@ __STATIC_INLINE void LL_DMA_EnableIT_TO(const DMA_TypeDef *DMAx, uint32_t Channe
   */
 __STATIC_INLINE void LL_DMA_EnableIT_SUSP(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSPIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSPIE);
 }
 
 /**
@@ -6935,8 +6930,8 @@ __STATIC_INLINE void LL_DMA_EnableIT_SUSP(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_EnableIT_USE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_USEIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_USEIE);
 }
 
 /**
@@ -6962,8 +6957,8 @@ __STATIC_INLINE void LL_DMA_EnableIT_USE(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE void LL_DMA_EnableIT_ULE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_ULEIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_ULEIE);
 }
 
 /**
@@ -6989,8 +6984,8 @@ __STATIC_INLINE void LL_DMA_EnableIT_ULE(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE void LL_DMA_EnableIT_DTE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_DTEIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_DTEIE);
 }
 
 /**
@@ -7016,8 +7011,8 @@ __STATIC_INLINE void LL_DMA_EnableIT_DTE(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE void LL_DMA_EnableIT_HT(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_HTIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_HTIE);
 }
 
 /**
@@ -7043,8 +7038,8 @@ __STATIC_INLINE void LL_DMA_EnableIT_HT(const DMA_TypeDef *DMAx, uint32_t Channe
   */
 __STATIC_INLINE void LL_DMA_EnableIT_TC(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TCIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	SET_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TCIE);
 }
 
 /**
@@ -7070,8 +7065,8 @@ __STATIC_INLINE void LL_DMA_EnableIT_TC(const DMA_TypeDef *DMAx, uint32_t Channe
   */
 __STATIC_INLINE void LL_DMA_DisableIT_TO(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TOIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TOIE);
 }
 
 /**
@@ -7097,8 +7092,8 @@ __STATIC_INLINE void LL_DMA_DisableIT_TO(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE void LL_DMA_DisableIT_SUSP(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSPIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSPIE);
 }
 
 /**
@@ -7124,8 +7119,8 @@ __STATIC_INLINE void LL_DMA_DisableIT_SUSP(const DMA_TypeDef *DMAx, uint32_t Cha
   */
 __STATIC_INLINE void LL_DMA_DisableIT_USE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_USEIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_USEIE);
 }
 
 /**
@@ -7151,8 +7146,8 @@ __STATIC_INLINE void LL_DMA_DisableIT_USE(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_DisableIT_ULE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_ULEIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_ULEIE);
 }
 
 /**
@@ -7178,8 +7173,8 @@ __STATIC_INLINE void LL_DMA_DisableIT_ULE(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_DisableIT_DTE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_DTEIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_DTEIE);
 }
 
 /**
@@ -7205,8 +7200,8 @@ __STATIC_INLINE void LL_DMA_DisableIT_DTE(const DMA_TypeDef *DMAx, uint32_t Chan
   */
 __STATIC_INLINE void LL_DMA_DisableIT_HT(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_HTIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_HTIE);
 }
 
 /**
@@ -7232,8 +7227,8 @@ __STATIC_INLINE void LL_DMA_DisableIT_HT(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE void LL_DMA_DisableIT_TC(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TCIE);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	CLEAR_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TCIE);
 }
 
 /**
@@ -7259,9 +7254,9 @@ __STATIC_INLINE void LL_DMA_DisableIT_TC(const DMA_TypeDef *DMAx, uint32_t Chann
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_TO(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TOIE)
-           == DMA_CCR_TOIE) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TOIE)
+		 == DMA_CCR_TOIE) ? 1UL : 0UL);
 }
 
 /**
@@ -7287,9 +7282,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_TO(const DMA_TypeDef *DMAx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_SUSP(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSPIE)
-           == DMA_CCR_SUSPIE) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_SUSPIE)
+		 == DMA_CCR_SUSPIE) ? 1UL : 0UL);
 }
 
 /**
@@ -7315,9 +7310,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_SUSP(const DMA_TypeDef *DMAx, uint32
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_USE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_USEIE)
-           == DMA_CCR_USEIE) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_USEIE)
+		 == DMA_CCR_USEIE) ? 1UL : 0UL);
 }
 
 /**
@@ -7343,9 +7338,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_USE(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_ULE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_ULEIE)
-           == DMA_CCR_ULEIE) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_ULEIE)
+		 == DMA_CCR_ULEIE) ? 1UL : 0UL);
 }
 
 /**
@@ -7371,9 +7366,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_ULE(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_DTE(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_DTEIE)
-           == DMA_CCR_DTEIE) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_DTEIE)
+		 == DMA_CCR_DTEIE) ? 1UL : 0UL);
 }
 
 /**
@@ -7399,9 +7394,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_DTE(const DMA_TypeDef *DMAx, uint32_
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_HT(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_HTIE)
-           == DMA_CCR_HTIE) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_HTIE)
+		 == DMA_CCR_HTIE) ? 1UL : 0UL);
 }
 
 /**
@@ -7427,9 +7422,9 @@ __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_HT(const DMA_TypeDef *DMAx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_DMA_IsEnabledIT_TC(const DMA_TypeDef *DMAx, uint32_t Channel)
 {
-  uint32_t dma_base_addr = (uint32_t)DMAx;
-  return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TCIE)
-           == DMA_CCR_TCIE) ? 1UL : 0UL);
+	uint32_t dma_base_addr = (uint32_t)DMAx;
+	return ((READ_BIT(((DMA_Channel_TypeDef *)(dma_base_addr + LL_DMA_CH_OFFSET_TAB[Channel]))->CCR, DMA_CCR_TCIE)
+		 == DMA_CCR_TCIE) ? 1UL : 0UL);
 }
 /**
   * @}
@@ -7447,12 +7442,12 @@ void     LL_DMA_ListStructInit(LL_DMA_InitLinkedListTypeDef *DMA_InitLinkedListS
 void     LL_DMA_NodeStructInit(LL_DMA_InitNodeTypeDef *DMA_InitNodeStruct);
 
 uint32_t LL_DMA_List_Init(DMA_TypeDef *DMAx, uint32_t Channel,
-                          LL_DMA_InitLinkedListTypeDef *DMA_InitLinkedListStruct);
+			  LL_DMA_InitLinkedListTypeDef *DMA_InitLinkedListStruct);
 uint32_t LL_DMA_List_DeInit(DMA_TypeDef *DMAx, uint32_t Channel);
 
 uint32_t LL_DMA_CreateLinkNode(const LL_DMA_InitNodeTypeDef *DMA_InitNodeStruct, LL_DMA_LinkNodeTypeDef *pNode);
 void     LL_DMA_ConnectLinkNode(LL_DMA_LinkNodeTypeDef *pPrevLinkNode, uint32_t PrevNodeCLLRIdx,
-                                LL_DMA_LinkNodeTypeDef *pNewLinkNode, uint32_t NewNodeCLLRIdx);
+				LL_DMA_LinkNodeTypeDef *pNewLinkNode, uint32_t NewNodeCLLRIdx);
 void     LL_DMA_DisconnectNextLinkNode(LL_DMA_LinkNodeTypeDef *pLinkNode, uint32_t LinkNodeCLLRIdx);
 /**
   * @}

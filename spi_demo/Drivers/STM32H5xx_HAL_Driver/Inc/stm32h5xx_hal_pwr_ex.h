@@ -44,14 +44,13 @@ extern "C" {
 /**
   * @brief  PWREx AVD configuration structure definition
   */
-typedef struct
-{
-  uint32_t AVDLevel; /*!< AVDLevel: Specifies the AVD detection level. This
+typedef struct {
+	uint32_t AVDLevel; /*!< AVDLevel: Specifies the AVD detection level. This
                                      parameter can be a value of @ref
                                      PWREx_AVD_detection_level
                      */
 
-  uint32_t Mode;     /*!< Mode: Specifies the EXTI operating mode for the AVD
+	uint32_t Mode;     /*!< Mode: Specifies the EXTI operating mode for the AVD
                                  event. This parameter can be a value of @ref
                                  PWREx_AVD_Mode.
                      */
@@ -60,19 +59,18 @@ typedef struct
 /**
   * @brief  PWREx Wakeup pin configuration structure definition
   */
-typedef struct
-{
-  uint32_t WakeUpPin;   /*!< WakeUpPin: Specifies the Wake-Up pin to be enabled.
+typedef struct {
+	uint32_t WakeUpPin;   /*!< WakeUpPin: Specifies the Wake-Up pin to be enabled.
                                         This parameter can be a value of @ref
                                         PWREx_WakeUp_Pins
                         */
 
-  uint32_t PinPolarity; /*!< PinPolarity: Specifies the Wake-Up pin polarity.
+	uint32_t PinPolarity; /*!< PinPolarity: Specifies the Wake-Up pin polarity.
                                           This parameter can be a value of @ref
                                           PWREx_PIN_Polarity
                         */
 
-  uint32_t PinPull;     /*!< PinPull: Specifies the Wake-Up pin pull. This
+	uint32_t PinPull;     /*!< PinPull: Specifies the Wake-Up pin pull. This
                                       parameter can be a value of @ref
                                       PWREx_PIN_Pull
                         */

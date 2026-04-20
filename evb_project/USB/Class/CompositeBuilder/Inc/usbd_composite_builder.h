@@ -143,77 +143,71 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USB Iad descriptors structure */
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bFirstInterface;
-  uint8_t           bInterfaceCount;
-  uint8_t           bFunctionClass;
-  uint8_t           bFunctionSubClass;
-  uint8_t           bFunctionProtocol;
-  uint8_t           iFunction;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bFirstInterface;
+	uint8_t           bInterfaceCount;
+	uint8_t           bFunctionClass;
+	uint8_t           bFunctionSubClass;
+	uint8_t           bFunctionProtocol;
+	uint8_t           iFunction;
 } USBD_IadDescTypeDef;
 
 /* USB interface descriptors structure */
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bInterfaceNumber;
-  uint8_t           bAlternateSetting;
-  uint8_t           bNumEndpoints;
-  uint8_t           bInterfaceClass;
-  uint8_t           bInterfaceSubClass;
-  uint8_t           bInterfaceProtocol;
-  uint8_t           iInterface;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bInterfaceNumber;
+	uint8_t           bAlternateSetting;
+	uint8_t           bNumEndpoints;
+	uint8_t           bInterfaceClass;
+	uint8_t           bInterfaceSubClass;
+	uint8_t           bInterfaceProtocol;
+	uint8_t           iInterface;
 } USBD_IfDescTypeDef;
 
 #if (USBD_CMPSIT_ACTIVATE_CDC == 1) || (USBD_CMPSIT_ACTIVATE_RNDIS == 1) || (USBD_CMPSIT_ACTIVATE_CDC_ECM == 1)
-typedef struct
-{
-  /*
-   * CDC Class specification revision 1.2
-   * Table 15: Class-Specific Descriptor Header Format
-   */
-  /* Header Functional Descriptor */
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubtype;
-  uint16_t          bcdCDC;
+typedef struct {
+	/*
+	 * CDC Class specification revision 1.2
+	 * Table 15: Class-Specific Descriptor Header Format
+	 */
+	/* Header Functional Descriptor */
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubtype;
+	uint16_t          bcdCDC;
 } __PACKED USBD_CDCHeaderFuncDescTypeDef;
 
-typedef struct
-{
-  /* Call Management Functional Descriptor */
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubtype;
-  uint8_t           bmCapabilities;
-  uint8_t           bDataInterface;
+typedef struct {
+	/* Call Management Functional Descriptor */
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubtype;
+	uint8_t           bmCapabilities;
+	uint8_t           bDataInterface;
 } USBD_CDCCallMgmFuncDescTypeDef;
 
-typedef struct
-{
-  /* ACM Functional Descriptor */
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubtype;
-  uint8_t           bmCapabilities;
+typedef struct {
+	/* ACM Functional Descriptor */
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubtype;
+	uint8_t           bmCapabilities;
 } USBD_CDCACMFuncDescTypeDef;
 
-typedef struct
-{
-  /*
-   * CDC Class specification revision 1.2
-   * Table 16: Union Interface Functional Descriptor
-   */
-  /* Union Functional Descriptor */
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubtype;
-  uint8_t           bMasterInterface;
-  uint8_t           bSlaveInterface;
+typedef struct {
+	/*
+	 * CDC Class specification revision 1.2
+	 * Table 16: Union Interface Functional Descriptor
+	 */
+	/* Union Functional Descriptor */
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubtype;
+	uint8_t           bMasterInterface;
+	uint8_t           bSlaveInterface;
 } USBD_CDCUnionFuncDescTypeDef;
 
 #endif /* (USBD_CMPSIT_ACTIVATE_CDC == 1) || (USBD_CMPSIT_ACTIVATE_RNDIS == 1)  || (USBD_CMPSIT_ACTIVATE_CDC_ECM == 1)*/
@@ -225,17 +219,17 @@ uint8_t  USBD_CMPSIT_AddToConfDesc(USBD_HandleTypeDef *pdev);
 
 #ifdef USE_USBD_COMPOSITE
 uint8_t  USBD_CMPSIT_AddClass(USBD_HandleTypeDef *pdev,
-                              USBD_ClassTypeDef *pclass,
-                              USBD_CompositeClassTypeDef class,
-                              uint8_t cfgidx);
+			      USBD_ClassTypeDef *pclass,
+			      USBD_CompositeClassTypeDef class,
+			      uint8_t cfgidx);
 
 uint32_t  USBD_CMPSIT_SetClassID(USBD_HandleTypeDef *pdev,
-                                 USBD_CompositeClassTypeDef Class,
-                                 uint32_t Instance);
+				 USBD_CompositeClassTypeDef Class,
+				 uint32_t Instance);
 
 uint32_t  USBD_CMPSIT_GetClassID(USBD_HandleTypeDef *pdev,
-                                 USBD_CompositeClassTypeDef Class,
-                                 uint32_t Instance);
+				 USBD_CompositeClassTypeDef Class,
+				 uint32_t Instance);
 #endif /* USE_USBD_COMPOSITE */
 
 uint8_t USBD_CMPST_ClearConfDesc(USBD_HandleTypeDef *pdev);

@@ -43,10 +43,10 @@
  */
 
 void arm_pid_reset_q31(
-  arm_pid_instance_q31 * S)
+	arm_pid_instance_q31 * S)
 {
-  /* Reset state to zero, The size will be always 3 samples */
-  memset(S->state, 0, 3U * sizeof(q31_t));
+	/* Reset state to zero, The size will be always 3 samples */
+	memset(S->state, 0, 3U * sizeof(q31_t));
 }
 
 /**

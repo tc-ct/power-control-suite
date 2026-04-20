@@ -60,82 +60,82 @@
 
 #include "arm_helium_utils.h"
 
-void arm_clip_f32(const float32_t * pSrc, 
-  float32_t * pDst, 
-  float32_t low, 
-  float32_t high, 
-  uint32_t numSamples)
+void arm_clip_f32(const float32_t * pSrc,
+		  float32_t *pDst,
+		  float32_t low,
+		  float32_t high,
+		  uint32_t numSamples)
 {
-    uint32_t  blkCnt;
-    f32x4_t curVec0, curVec1;
-    f32x4_t vecLow, vecHigh;
+	uint32_t  blkCnt;
+	f32x4_t curVec0, curVec1;
+	f32x4_t vecLow, vecHigh;
 
-    vecLow = vdupq_n_f32(low);
-    vecHigh = vdupq_n_f32(high);
+	vecLow = vdupq_n_f32(low);
+	vecHigh = vdupq_n_f32(high);
 
-    curVec0 = vld1q(pSrc);
-    pSrc += 4;
-    /*
-     * unrolled x 2 to allow
-     * vldr/vstr/vmin/vmax
-     * stall free interleaving
-     */
-    blkCnt = numSamples >> 3;
-    while (blkCnt--)
-    {
-        curVec0 = vmaxnmq(curVec0, vecLow);
-        curVec1 = vld1q(pSrc);
-        pSrc += 4;
-        curVec0 = vminnmq(curVec0, vecHigh);
-        vst1q(pDst, curVec0);
-        pDst += 4;
-        curVec1 = vmaxnmq(curVec1, vecLow);
-        curVec0 = vld1q(pSrc);
-        pSrc += 4;
-        curVec1 = vminnmq(curVec1, vecHigh);
-        vst1q(pDst, curVec1);
-        pDst += 4;
-    }
-    /*
-     * Tail handling
-     */
-    blkCnt = numSamples - ((numSamples >> 3) << 3);
-    if (blkCnt >= 4)
-    {
-        curVec0 = vmaxnmq(curVec0, vecLow);
-        curVec0 = vminnmq(curVec0, vecHigh);
-        vst1q(pDst, curVec0);
-        pDst += 4;
-        curVec0 = vld1q(pSrc);
-        pSrc += 4;
-    }
+	curVec0 = vld1q(pSrc);
+	pSrc += 4;
+	/*
+	 * unrolled x 2 to allow
+	 * vldr/vstr/vmin/vmax
+	 * stall free interleaving
+	 */
+	blkCnt = numSamples >> 3;
 
-    if (blkCnt > 0)
-    {
-        mve_pred16_t p0 = vctp32q(blkCnt & 3);
-        curVec0 = vmaxnmq(curVec0, vecLow);
-        curVec0 = vminnmq(curVec0, vecHigh);
-        vstrwq_p(pDst, curVec0, p0);
-    }
+	while (blkCnt--) {
+		curVec0 = vmaxnmq(curVec0, vecLow);
+		curVec1 = vld1q(pSrc);
+		pSrc += 4;
+		curVec0 = vminnmq(curVec0, vecHigh);
+		vst1q(pDst, curVec0);
+		pDst += 4;
+		curVec1 = vmaxnmq(curVec1, vecLow);
+		curVec0 = vld1q(pSrc);
+		pSrc += 4;
+		curVec1 = vminnmq(curVec1, vecHigh);
+		vst1q(pDst, curVec1);
+		pDst += 4;
+	}
+
+	/*
+	 * Tail handling
+	 */
+	blkCnt = numSamples - ((numSamples >> 3) << 3);
+
+	if (blkCnt >= 4) {
+		curVec0 = vmaxnmq(curVec0, vecLow);
+		curVec0 = vminnmq(curVec0, vecHigh);
+		vst1q(pDst, curVec0);
+		pDst += 4;
+		curVec0 = vld1q(pSrc);
+		pSrc += 4;
+	}
+
+	if (blkCnt > 0) {
+		mve_pred16_t p0 = vctp32q(blkCnt & 3);
+		curVec0 = vmaxnmq(curVec0, vecLow);
+		curVec0 = vminnmq(curVec0, vecHigh);
+		vstrwq_p(pDst, curVec0, p0);
+	}
 }
 
 #else
-void arm_clip_f32(const float32_t * pSrc, 
-  float32_t * pDst, 
-  float32_t low, 
-  float32_t high, 
-  uint32_t numSamples)
+void arm_clip_f32(const float32_t * pSrc,
+		  float32_t *pDst,
+		  float32_t low,
+		  float32_t high,
+		  uint32_t numSamples)
 {
-    uint32_t i;
-    for (i = 0; i < numSamples; i++)
-    {                                        
-        if (pSrc[i] > high)                  
-            pDst[i] = high;                  
-        else if (pSrc[i] < low)              
-            pDst[i] = low;                   
-        else                                 
-            pDst[i] = pSrc[i];               
-    }
+	uint32_t i;
+
+	for (i = 0; i < numSamples; i++) {
+		if (pSrc[i] > high)
+			pDst[i] = high;
+		else if (pSrc[i] < low)
+			pDst[i] = low;
+		else
+			pDst[i] = pSrc[i];
+	}
 }
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 

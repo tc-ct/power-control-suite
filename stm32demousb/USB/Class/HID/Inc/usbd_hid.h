@@ -76,19 +76,17 @@ extern "C" {
 /** @defgroup USBD_CORE_Exported_TypesDefinitions
   * @{
   */
-typedef enum
-{
-  USBD_HID_IDLE = 0,
-  USBD_HID_BUSY,
+typedef enum {
+	USBD_HID_IDLE = 0,
+	USBD_HID_BUSY,
 } USBD_HID_StateTypeDef;
 
 
-typedef struct
-{
-  uint32_t Protocol;
-  uint32_t IdleState;
-  uint32_t AltSetting;
-  USBD_HID_StateTypeDef state;
+typedef struct {
+	uint32_t Protocol;
+	uint32_t IdleState;
+	uint32_t AltSetting;
+	USBD_HID_StateTypeDef state;
 } USBD_HID_HandleTypeDef;
 
 /*
@@ -96,15 +94,14 @@ typedef struct
  * 6.2.1 HID Descriptor
  */
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint16_t          bcdHID;
-  uint8_t           bCountryCode;
-  uint8_t           bNumDescriptors;
-  uint8_t           bHIDDescriptorType;
-  uint16_t          wItemLength;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint16_t          bcdHID;
+	uint8_t           bCountryCode;
+	uint8_t           bNumDescriptors;
+	uint8_t           bHIDDescriptorType;
+	uint16_t          wItemLength;
 } __PACKED USBD_HIDDescTypeDef;
 
 /**

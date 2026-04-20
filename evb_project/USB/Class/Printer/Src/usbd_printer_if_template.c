@@ -66,27 +66,25 @@ static int8_t TEMPLATE_Receive(uint8_t *pbuf, uint32_t *Len);
 /*printer Private function prototypes*/
 void TEMPLATE_PRNT_PageEndManager(uint8_t *Buf, uint32_t Len);
 
-USBD_PRNT_ItfTypeDef USBD_PRNT_Template_fops =
-{
-  TEMPLATE_Init,
-  TEMPLATE_DeInit,
-  TEMPLATE_Control_req,
-  TEMPLATE_Receive
+USBD_PRNT_ItfTypeDef USBD_PRNT_Template_fops = {
+	TEMPLATE_Init,
+	TEMPLATE_DeInit,
+	TEMPLATE_Control_req,
+	TEMPLATE_Receive
 };
 
-static uint8_t PRNT_DEVICE_ID[] =
-{
-  0x00, 0x6D,
-  'M', 'A', 'N', 'U', 'F', 'A', 'C', 'T', 'U', 'R', 'E', 'R', ':',
-  'S', 'T', 'M', 'i', 'c', 'r', 'o', 'e', 'l', 'e', 'c', 't', 'r', 'o', 'n', 'i', 'c', 's', ';',
-  'C', 'O', 'M', 'M', 'A', 'N', 'D', ' ', 'S', 'E', 'T', ':',
-  'P', 'D', 'L', ',',  'P', 'C', 'P', ';',
-  'M', 'O', 'D', 'E', 'L', ':',
-  'U', 'S', 'B', 'P', 'r', 'i', 'n', 't', 'e', 'r', ';',
-  'C', 'O', 'M', 'M', 'E', 'N', 'T', ':',
-  'G', 'o', 'o', 'd', ' ', '!', ';',
-  'A', 'C', 'T', 'I', 'V', 'E', ' ', 'C', 'O', 'M', 'M', 'A', 'N', 'D', ' ', 'S', 'E', 'T', ':',
-  'P', 'C', 'P', ';'
+static uint8_t PRNT_DEVICE_ID[] = {
+	0x00, 0x6D,
+	'M', 'A', 'N', 'U', 'F', 'A', 'C', 'T', 'U', 'R', 'E', 'R', ':',
+	'S', 'T', 'M', 'i', 'c', 'r', 'o', 'e', 'l', 'e', 'c', 't', 'r', 'o', 'n', 'i', 'c', 's', ';',
+	'C', 'O', 'M', 'M', 'A', 'N', 'D', ' ', 'S', 'E', 'T', ':',
+	'P', 'D', 'L', ',',  'P', 'C', 'P', ';',
+	'M', 'O', 'D', 'E', 'L', ':',
+	'U', 'S', 'B', 'P', 'r', 'i', 'n', 't', 'e', 'r', ';',
+	'C', 'O', 'M', 'M', 'E', 'N', 'T', ':',
+	'G', 'o', 'o', 'd', ' ', '!', ';',
+	'A', 'C', 'T', 'I', 'V', 'E', ' ', 'C', 'O', 'M', 'M', 'A', 'N', 'D', ' ', 'S', 'E', 'T', ':',
+	'P', 'C', 'P', ';'
 };
 
 /* Private functions ---------------------------------------------------------*/
@@ -99,10 +97,10 @@ static uint8_t PRNT_DEVICE_ID[] =
   */
 static int8_t TEMPLATE_Init(void)
 {
-  /*
-     Add your initialization code here
-  */
-  return (0);
+	/*
+	   Add your initialization code here
+	*/
+	return (0);
 }
 
 /**
@@ -113,10 +111,10 @@ static int8_t TEMPLATE_Init(void)
   */
 static int8_t TEMPLATE_DeInit(void)
 {
-  /*
-     Add your deinitialization code here
-  */
-  return (0);
+	/*
+	   Add your deinitialization code here
+	*/
+	return (0);
 }
 
 
@@ -138,10 +136,10 @@ static int8_t TEMPLATE_DeInit(void)
   */
 static int8_t TEMPLATE_Receive(uint8_t *Buf, uint32_t *Len)
 {
-  UNUSED(Buf);
-  UNUSED(Len);
+	UNUSED(Buf);
+	UNUSED(Len);
 
-  return (0);
+	return (0);
 }
 
 
@@ -155,41 +153,41 @@ static int8_t TEMPLATE_Receive(uint8_t *Buf, uint32_t *Len)
   */
 static int8_t TEMPLATE_Control_req(uint8_t req, uint8_t *pbuf, uint16_t *length)
 {
-  uint32_t i = 0U;
+	uint32_t i = 0U;
 
-  /* Check on the setup request value */
-  switch (req)
-  {
-    /* Get Printer Device ID request */
-    case PRNT_GET_DEVICE_ID:
-      /* Not using for loop here due to MISRA-C2012-Rule-16.1 */
-      while (i < sizeof(PRNT_DEVICE_ID))
-      {
-        pbuf[i] = PRNT_DEVICE_ID[i];
-        i++;
-      }
-      *length = (uint16_t)i;
-      break;
+	/* Check on the setup request value */
+	switch (req) {
+		/* Get Printer Device ID request */
+		case PRNT_GET_DEVICE_ID:
 
-    /* Get Printer current status */
-    case PRNT_GET_PORT_STATUS:
-      pbuf[0] =  PRNT_STATUS_PAPER_EMPTY |
-                 PRNT_STATUS_SELECTED |
-                 PRNT_STATUS_NO_ERROR;
+			/* Not using for loop here due to MISRA-C2012-Rule-16.1 */
+			while (i < sizeof(PRNT_DEVICE_ID)) {
+				pbuf[i] = PRNT_DEVICE_ID[i];
+				i++;
+			}
 
-      *length = 1U;
-      break;
+			*length = (uint16_t)i;
+			break;
 
-    /* Printer SOFT RESET request: cleanup pending tasks */
-    case PRNT_SOFT_RESET:
-      break;
+		/* Get Printer current status */
+		case PRNT_GET_PORT_STATUS:
+			pbuf[0] =  PRNT_STATUS_PAPER_EMPTY |
+				   PRNT_STATUS_SELECTED |
+				   PRNT_STATUS_NO_ERROR;
 
-    default:
-      /* Unknown commands are not managed */
-      break;
-  }
+			*length = 1U;
+			break;
 
-  return (0);
+		/* Printer SOFT RESET request: cleanup pending tasks */
+		case PRNT_SOFT_RESET:
+			break;
+
+		default:
+			/* Unknown commands are not managed */
+			break;
+	}
+
+	return (0);
 }
 
 /**

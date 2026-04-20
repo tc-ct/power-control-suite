@@ -29,7 +29,7 @@
 #include "power_config.h"
 
 // 打包电压配置命令（直接返回指针和长度，由调用者保证缓冲区足够）
-void Protocol_PackVoltageConfig(VoltageConfigPacket* pkt,uint8_t device_id ,uint8_t channel, uint16_t voltage_mv);
+void Protocol_PackVoltageConfig(VoltageConfigPacket* pkt, uint8_t device_id, uint8_t channel, uint16_t voltage_mv);
 // 解析采样数据包
 void Protocol_ParseSampleData(const uint8_t* data, int length, SampleDataPacketTF_t* out);
 // 打包引脚配置命令

@@ -161,9 +161,8 @@ extern "C" {
 /**
   * @brief  Structure definition of some features of DAC instance.
   */
-typedef struct
-{
-  uint32_t TriggerSource;               /*!< Set the conversion trigger source for the selected DAC channel:
+typedef struct {
+	uint32_t TriggerSource;               /*!< Set the conversion trigger source for the selected DAC channel:
                                              internal (SW start) or from external peripheral
                                              (timer event, external interrupt line).
                                              This parameter can be a value of @ref DAC_LL_EC_TRIGGER_SOURCE
@@ -171,13 +170,13 @@ typedef struct
                                              This feature can be modified afterwards using unitary
                                              function @ref LL_DAC_SetTriggerSource(). */
 
-  uint32_t WaveAutoGeneration;          /*!< Set the waveform automatic generation mode for the selected DAC channel.
+	uint32_t WaveAutoGeneration;          /*!< Set the waveform automatic generation mode for the selected DAC channel.
                                              This parameter can be a value of @ref DAC_LL_EC_WAVE_AUTO_GENERATION_MODE
 
                                              This feature can be modified afterwards using unitary
                                              function @ref LL_DAC_SetWaveAutoGeneration(). */
 
-  uint32_t WaveAutoGenerationConfig;    /*!< Set the waveform automatic generation mode for the selected DAC channel.
+	uint32_t WaveAutoGenerationConfig;    /*!< Set the waveform automatic generation mode for the selected DAC channel.
                                              If waveform automatic generation mode is set to noise, this parameter
                                              can be a value of @ref DAC_LL_EC_WAVE_NOISE_LFSR_UNMASK_BITS
                                              If waveform automatic generation mode is set to triangle,
@@ -190,19 +189,19 @@ typedef struct
                                              @ref LL_DAC_SetWaveTriangleAmplitude()
                                              depending on the wave automatic generation selected. */
 
-  uint32_t OutputBuffer;                /*!< Set the output buffer for the selected DAC channel.
+	uint32_t OutputBuffer;                /*!< Set the output buffer for the selected DAC channel.
                                              This parameter can be a value of @ref DAC_LL_EC_OUTPUT_BUFFER
 
                                              This feature can be modified afterwards using unitary
                                              function @ref LL_DAC_SetOutputBuffer(). */
 
-  uint32_t OutputConnection;            /*!< Set the output connection for the selected DAC channel.
+	uint32_t OutputConnection;            /*!< Set the output connection for the selected DAC channel.
                                              This parameter can be a value of @ref DAC_LL_EC_OUTPUT_CONNECTION
 
                                              This feature can be modified afterwards using unitary
                                              function @ref LL_DAC_SetOutputConnection(). */
 
-  uint32_t OutputMode;                  /*!< Set the output mode normal or sample-and-hold for the selected DAC
+	uint32_t OutputMode;                  /*!< Set the output mode normal or sample-and-hold for the selected DAC
                                              channel. This parameter can be a value of @ref DAC_LL_EC_OUTPUT_MODE
 
                                              This feature can be modified afterwards using unitary
@@ -594,7 +593,7 @@ typedef struct
   */
 __STATIC_INLINE void LL_DAC_SetHighFrequencyMode(DAC_TypeDef *DACx, uint32_t HighFreqMode)
 {
-  MODIFY_REG(DACx->MCR, DAC_MCR_HFSEL, HighFreqMode);
+	MODIFY_REG(DACx->MCR, DAC_MCR_HFSEL, HighFreqMode);
 }
 
 /**
@@ -608,7 +607,7 @@ __STATIC_INLINE void LL_DAC_SetHighFrequencyMode(DAC_TypeDef *DACx, uint32_t Hig
   */
 __STATIC_INLINE uint32_t LL_DAC_GetHighFrequencyMode(const DAC_TypeDef *DACx)
 {
-  return (uint32_t)(READ_BIT(DACx->MCR, DAC_MCR_HFSEL));
+	return (uint32_t)(READ_BIT(DACx->MCR, DAC_MCR_HFSEL));
 }
 /**
   * @}
@@ -635,9 +634,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetHighFrequencyMode(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE void LL_DAC_SetMode(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t ChannelMode)
 {
-  MODIFY_REG(DACx->CR,
-             DAC_CR_CEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             ChannelMode << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->CR,
+		   DAC_CR_CEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   ChannelMode << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -655,9 +654,9 @@ __STATIC_INLINE void LL_DAC_SetMode(DAC_TypeDef *DACx, uint32_t DAC_Channel, uin
   */
 __STATIC_INLINE uint32_t LL_DAC_GetMode(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_CEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_CEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -675,9 +674,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetMode(const DAC_TypeDef *DACx, uint32_t DAC_Ch
   */
 __STATIC_INLINE void LL_DAC_SetTrimmingValue(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t TrimmingValue)
 {
-  MODIFY_REG(DACx->CCR,
-             DAC_CCR_OTRIM1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             TrimmingValue << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->CCR,
+		   DAC_CCR_OTRIM1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   TrimmingValue << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -694,9 +693,9 @@ __STATIC_INLINE void LL_DAC_SetTrimmingValue(DAC_TypeDef *DACx, uint32_t DAC_Cha
   */
 __STATIC_INLINE uint32_t LL_DAC_GetTrimmingValue(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->CCR, DAC_CCR_OTRIM1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->CCR, DAC_CCR_OTRIM1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -736,9 +735,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetTrimmingValue(const DAC_TypeDef *DACx, uint32
   */
 __STATIC_INLINE void LL_DAC_SetTriggerSource(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t TriggerSource)
 {
-  MODIFY_REG(DACx->CR,
-             DAC_CR_TSEL1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             TriggerSource << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->CR,
+		   DAC_CR_TSEL1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   TriggerSource << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -775,9 +774,9 @@ __STATIC_INLINE void LL_DAC_SetTriggerSource(DAC_TypeDef *DACx, uint32_t DAC_Cha
   */
 __STATIC_INLINE uint32_t LL_DAC_GetTriggerSource(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_TSEL1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_TSEL1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -797,9 +796,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetTriggerSource(const DAC_TypeDef *DACx, uint32
   */
 __STATIC_INLINE void LL_DAC_SetWaveAutoGeneration(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t WaveAutoGeneration)
 {
-  MODIFY_REG(DACx->CR,
-             DAC_CR_WAVE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             WaveAutoGeneration << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->CR,
+		   DAC_CR_WAVE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   WaveAutoGeneration << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -818,9 +817,9 @@ __STATIC_INLINE void LL_DAC_SetWaveAutoGeneration(DAC_TypeDef *DACx, uint32_t DA
   */
 __STATIC_INLINE uint32_t LL_DAC_GetWaveAutoGeneration(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_WAVE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_WAVE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -854,9 +853,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetWaveAutoGeneration(const DAC_TypeDef *DACx, u
   */
 __STATIC_INLINE void LL_DAC_SetWaveNoiseLFSR(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t NoiseLFSRMask)
 {
-  MODIFY_REG(DACx->CR,
-             DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             NoiseLFSRMask << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->CR,
+		   DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   NoiseLFSRMask << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -884,9 +883,9 @@ __STATIC_INLINE void LL_DAC_SetWaveNoiseLFSR(DAC_TypeDef *DACx, uint32_t DAC_Cha
   */
 __STATIC_INLINE uint32_t LL_DAC_GetWaveNoiseLFSR(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -919,11 +918,11 @@ __STATIC_INLINE uint32_t LL_DAC_GetWaveNoiseLFSR(const DAC_TypeDef *DACx, uint32
   * @retval None
   */
 __STATIC_INLINE void LL_DAC_SetWaveTriangleAmplitude(DAC_TypeDef *DACx, uint32_t DAC_Channel,
-                                                     uint32_t TriangleAmplitude)
+		uint32_t TriangleAmplitude)
 {
-  MODIFY_REG(DACx->CR,
-             DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             TriangleAmplitude << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->CR,
+		   DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   TriangleAmplitude << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -951,9 +950,9 @@ __STATIC_INLINE void LL_DAC_SetWaveTriangleAmplitude(DAC_TypeDef *DACx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_DAC_GetWaveTriangleAmplitude(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->CR, DAC_CR_MAMP1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -1001,11 +1000,11 @@ __STATIC_INLINE uint32_t LL_DAC_GetWaveTriangleAmplitude(const DAC_TypeDef *DACx
   * @retval None
   */
 __STATIC_INLINE void LL_DAC_ConfigOutput(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t OutputMode,
-                                         uint32_t OutputBuffer, uint32_t OutputConnection)
+		uint32_t OutputBuffer, uint32_t OutputConnection)
 {
-  MODIFY_REG(DACx->MCR,
-             (DAC_MCR_MODE1_2 | DAC_MCR_MODE1_1 | DAC_MCR_MODE1_0) << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             (OutputMode | OutputBuffer | OutputConnection) << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->MCR,
+		   (DAC_MCR_MODE1_2 | DAC_MCR_MODE1_1 | DAC_MCR_MODE1_0) << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   (OutputMode | OutputBuffer | OutputConnection) << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1030,9 +1029,9 @@ __STATIC_INLINE void LL_DAC_ConfigOutput(DAC_TypeDef *DACx, uint32_t DAC_Channel
   */
 __STATIC_INLINE void LL_DAC_SetOutputMode(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t OutputMode)
 {
-  MODIFY_REG(DACx->MCR,
-             (uint32_t)DAC_MCR_MODE1_2 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             OutputMode << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->MCR,
+		   (uint32_t)DAC_MCR_MODE1_2 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   OutputMode << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1049,9 +1048,9 @@ __STATIC_INLINE void LL_DAC_SetOutputMode(DAC_TypeDef *DACx, uint32_t DAC_Channe
   */
 __STATIC_INLINE uint32_t LL_DAC_GetOutputMode(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->MCR, (uint32_t)DAC_MCR_MODE1_2 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->MCR, (uint32_t)DAC_MCR_MODE1_2 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -1073,9 +1072,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetOutputMode(const DAC_TypeDef *DACx, uint32_t 
   */
 __STATIC_INLINE void LL_DAC_SetOutputBuffer(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t OutputBuffer)
 {
-  MODIFY_REG(DACx->MCR,
-             (uint32_t)DAC_MCR_MODE1_1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             OutputBuffer << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->MCR,
+		   (uint32_t)DAC_MCR_MODE1_1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   OutputBuffer << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1092,9 +1091,9 @@ __STATIC_INLINE void LL_DAC_SetOutputBuffer(DAC_TypeDef *DACx, uint32_t DAC_Chan
   */
 __STATIC_INLINE uint32_t LL_DAC_GetOutputBuffer(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->MCR, (uint32_t)DAC_MCR_MODE1_1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->MCR, (uint32_t)DAC_MCR_MODE1_1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -1122,9 +1121,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetOutputBuffer(const DAC_TypeDef *DACx, uint32_
   */
 __STATIC_INLINE void LL_DAC_SetOutputConnection(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t OutputConnection)
 {
-  MODIFY_REG(DACx->MCR,
-             (uint32_t)DAC_MCR_MODE1_0 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             OutputConnection << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->MCR,
+		   (uint32_t)DAC_MCR_MODE1_0 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   OutputConnection << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1151,9 +1150,9 @@ __STATIC_INLINE void LL_DAC_SetOutputConnection(DAC_TypeDef *DACx, uint32_t DAC_
   */
 __STATIC_INLINE uint32_t LL_DAC_GetOutputConnection(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->MCR, (uint32_t)DAC_MCR_MODE1_0 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->MCR, (uint32_t)DAC_MCR_MODE1_0 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -1174,10 +1173,10 @@ __STATIC_INLINE uint32_t LL_DAC_GetOutputConnection(const DAC_TypeDef *DACx, uin
   */
 __STATIC_INLINE void LL_DAC_SetSampleAndHoldSampleTime(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t SampleTime)
 {
-  __IO uint32_t *preg = __DAC_PTR_REG_OFFSET(DACx->SHSR1, (DAC_Channel >> DAC_REG_SHSRX_REGOFFSET_BITOFFSET_POS)
-                                             & DAC_REG_SHSRX_REGOFFSET_MASK_POSBIT0);
+	__IO uint32_t *preg = __DAC_PTR_REG_OFFSET(DACx->SHSR1, (DAC_Channel >> DAC_REG_SHSRX_REGOFFSET_BITOFFSET_POS)
+			      & DAC_REG_SHSRX_REGOFFSET_MASK_POSBIT0);
 
-  MODIFY_REG(*preg, DAC_SHSR1_TSAMPLE1, SampleTime);
+	MODIFY_REG(*preg, DAC_SHSR1_TSAMPLE1, SampleTime);
 }
 
 /**
@@ -1193,10 +1192,10 @@ __STATIC_INLINE void LL_DAC_SetSampleAndHoldSampleTime(DAC_TypeDef *DACx, uint32
   */
 __STATIC_INLINE uint32_t LL_DAC_GetSampleAndHoldSampleTime(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  __IO uint32_t const *preg = __DAC_PTR_REG_OFFSET(DACx->SHSR1, (DAC_Channel >> DAC_REG_SHSRX_REGOFFSET_BITOFFSET_POS)
-                                                   & DAC_REG_SHSRX_REGOFFSET_MASK_POSBIT0);
+	__IO uint32_t const *preg = __DAC_PTR_REG_OFFSET(DACx->SHSR1, (DAC_Channel >> DAC_REG_SHSRX_REGOFFSET_BITOFFSET_POS)
+				    & DAC_REG_SHSRX_REGOFFSET_MASK_POSBIT0);
 
-  return (uint32_t) READ_BIT(*preg, DAC_SHSR1_TSAMPLE1);
+	return (uint32_t) READ_BIT(*preg, DAC_SHSR1_TSAMPLE1);
 }
 
 /**
@@ -1213,9 +1212,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetSampleAndHoldSampleTime(const DAC_TypeDef *DA
   */
 __STATIC_INLINE void LL_DAC_SetSampleAndHoldHoldTime(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t HoldTime)
 {
-  MODIFY_REG(DACx->SHHR,
-             DAC_SHHR_THOLD1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             HoldTime << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->SHHR,
+		   DAC_SHHR_THOLD1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   HoldTime << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1231,9 +1230,9 @@ __STATIC_INLINE void LL_DAC_SetSampleAndHoldHoldTime(DAC_TypeDef *DACx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_DAC_GetSampleAndHoldHoldTime(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->SHHR, DAC_SHHR_THOLD1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->SHHR, DAC_SHHR_THOLD1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -1250,9 +1249,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetSampleAndHoldHoldTime(const DAC_TypeDef *DACx
   */
 __STATIC_INLINE void LL_DAC_SetSampleAndHoldRefreshTime(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t RefreshTime)
 {
-  MODIFY_REG(DACx->SHRR,
-             DAC_SHRR_TREFRESH1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             RefreshTime << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->SHRR,
+		   DAC_SHRR_TREFRESH1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   RefreshTime << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1268,9 +1267,9 @@ __STATIC_INLINE void LL_DAC_SetSampleAndHoldRefreshTime(DAC_TypeDef *DACx, uint3
   */
 __STATIC_INLINE uint32_t LL_DAC_GetSampleAndHoldRefreshTime(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->SHRR, DAC_SHRR_TREFRESH1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->SHRR, DAC_SHRR_TREFRESH1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -1295,9 +1294,9 @@ __STATIC_INLINE uint32_t LL_DAC_GetSampleAndHoldRefreshTime(const DAC_TypeDef *D
   */
 __STATIC_INLINE void LL_DAC_SetSignedFormat(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t SignedFormat)
 {
-  MODIFY_REG(DACx->MCR,
-             DAC_MCR_SINFORMAT1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
-             SignedFormat << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	MODIFY_REG(DACx->MCR,
+		   DAC_MCR_SINFORMAT1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK),
+		   SignedFormat << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1314,9 +1313,9 @@ __STATIC_INLINE void LL_DAC_SetSignedFormat(DAC_TypeDef *DACx, uint32_t DAC_Chan
   */
 __STATIC_INLINE uint32_t LL_DAC_GetSignedFormat(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return (uint32_t)(READ_BIT(DACx->MCR, DAC_MCR_SINFORMAT1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-                    >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
-                   );
+	return (uint32_t)(READ_BIT(DACx->MCR, DAC_MCR_SINFORMAT1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+			  >> (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK)
+			 );
 }
 
 /**
@@ -1341,8 +1340,8 @@ __STATIC_INLINE uint32_t LL_DAC_GetSignedFormat(const DAC_TypeDef *DACx, uint32_
   */
 __STATIC_INLINE void LL_DAC_EnableDMAReq(DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  SET_BIT(DACx->CR,
-          DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	SET_BIT(DACx->CR,
+		DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1359,8 +1358,8 @@ __STATIC_INLINE void LL_DAC_EnableDMAReq(DAC_TypeDef *DACx, uint32_t DAC_Channel
   */
 __STATIC_INLINE void LL_DAC_DisableDMAReq(DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  CLEAR_BIT(DACx->CR,
-            DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	CLEAR_BIT(DACx->CR,
+		  DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1376,9 +1375,9 @@ __STATIC_INLINE void LL_DAC_DisableDMAReq(DAC_TypeDef *DACx, uint32_t DAC_Channe
   */
 __STATIC_INLINE uint32_t LL_DAC_IsDMAReqEnabled(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return ((READ_BIT(DACx->CR,
-                    DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-           == (DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->CR,
+			  DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+		 == (DAC_CR_DMAEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))) ? 1UL : 0UL);
 }
 
 /**
@@ -1393,8 +1392,8 @@ __STATIC_INLINE uint32_t LL_DAC_IsDMAReqEnabled(const DAC_TypeDef *DACx, uint32_
   */
 __STATIC_INLINE void LL_DAC_EnableDMADoubleDataMode(DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  SET_BIT(DACx->MCR,
-          DAC_MCR_DMADOUBLE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	SET_BIT(DACx->MCR,
+		DAC_MCR_DMADOUBLE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1409,8 +1408,8 @@ __STATIC_INLINE void LL_DAC_EnableDMADoubleDataMode(DAC_TypeDef *DACx, uint32_t 
   */
 __STATIC_INLINE void LL_DAC_DisableDMADoubleDataMode(DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  CLEAR_BIT(DACx->MCR,
-            DAC_MCR_DMADOUBLE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	CLEAR_BIT(DACx->MCR,
+		  DAC_MCR_DMADOUBLE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1426,9 +1425,9 @@ __STATIC_INLINE void LL_DAC_DisableDMADoubleDataMode(DAC_TypeDef *DACx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_DAC_IsDMADoubleDataModeEnabled(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return ((READ_BIT(DACx->MCR,
-                    DAC_MCR_DMADOUBLE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-           == (DAC_MCR_DMADOUBLE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->MCR,
+			  DAC_MCR_DMADOUBLE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+		 == (DAC_MCR_DMADOUBLE1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))) ? 1UL : 0UL);
 }
 
 /**
@@ -1465,10 +1464,10 @@ __STATIC_INLINE uint32_t LL_DAC_IsDMADoubleDataModeEnabled(const DAC_TypeDef *DA
   */
 __STATIC_INLINE uint32_t LL_DAC_DMA_GetRegAddr(const DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t Register)
 {
-  /* Retrieve address of register DHR12Rx, DHR12Lx or DHR8Rx depending on     */
-  /* DAC channel selected.                                                    */
-  return ((uint32_t)(__DAC_PTR_REG_OFFSET((DACx)->DHR12R1, ((DAC_Channel >> (Register & 0x1FUL))
-                                                            & DAC_REG_DHR_REGOFFSET_MASK_POSBIT0))));
+	/* Retrieve address of register DHR12Rx, DHR12Lx or DHR8Rx depending on     */
+	/* DAC channel selected.                                                    */
+	return ((uint32_t)(__DAC_PTR_REG_OFFSET((DACx)->DHR12R1, ((DAC_Channel >> (Register & 0x1FUL))
+						& DAC_REG_DHR_REGOFFSET_MASK_POSBIT0))));
 }
 /**
   * @}
@@ -1493,8 +1492,8 @@ __STATIC_INLINE uint32_t LL_DAC_DMA_GetRegAddr(const DAC_TypeDef *DACx, uint32_t
   */
 __STATIC_INLINE void LL_DAC_Enable(DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  SET_BIT(DACx->CR,
-          DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	SET_BIT(DACx->CR,
+		DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1509,8 +1508,8 @@ __STATIC_INLINE void LL_DAC_Enable(DAC_TypeDef *DACx, uint32_t DAC_Channel)
   */
 __STATIC_INLINE void LL_DAC_Disable(DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  CLEAR_BIT(DACx->CR,
-            DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	CLEAR_BIT(DACx->CR,
+		  DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1526,9 +1525,9 @@ __STATIC_INLINE void LL_DAC_Disable(DAC_TypeDef *DACx, uint32_t DAC_Channel)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsEnabled(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return ((READ_BIT(DACx->CR,
-                    DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-           == (DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->CR,
+			  DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+		 == (DAC_CR_EN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))) ? 1UL : 0UL);
 }
 
 /**
@@ -1544,9 +1543,9 @@ __STATIC_INLINE uint32_t LL_DAC_IsEnabled(const DAC_TypeDef *DACx, uint32_t DAC_
   */
 __STATIC_INLINE uint32_t LL_DAC_IsReady(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return ((READ_BIT(DACx->SR,
-                    DAC_SR_DAC1RDY << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-           == (DAC_SR_DAC1RDY << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR,
+			  DAC_SR_DAC1RDY << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+		 == (DAC_SR_DAC1RDY << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))) ? 1UL : 0UL);
 }
 
 /**
@@ -1569,8 +1568,8 @@ __STATIC_INLINE uint32_t LL_DAC_IsReady(const DAC_TypeDef *DACx, uint32_t DAC_Ch
   */
 __STATIC_INLINE void LL_DAC_EnableTrigger(DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  SET_BIT(DACx->CR,
-          DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	SET_BIT(DACx->CR,
+		DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1585,8 +1584,8 @@ __STATIC_INLINE void LL_DAC_EnableTrigger(DAC_TypeDef *DACx, uint32_t DAC_Channe
   */
 __STATIC_INLINE void LL_DAC_DisableTrigger(DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  CLEAR_BIT(DACx->CR,
-            DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
+	CLEAR_BIT(DACx->CR,
+		  DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK));
 }
 
 /**
@@ -1602,9 +1601,9 @@ __STATIC_INLINE void LL_DAC_DisableTrigger(DAC_TypeDef *DACx, uint32_t DAC_Chann
   */
 __STATIC_INLINE uint32_t LL_DAC_IsTriggerEnabled(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  return ((READ_BIT(DACx->CR,
-                    DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
-           == (DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->CR,
+			  DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))
+		 == (DAC_CR_TEN1 << (DAC_Channel & DAC_CR_CHX_BITOFFSET_MASK))) ? 1UL : 0UL);
 }
 
 /**
@@ -1630,8 +1629,8 @@ __STATIC_INLINE uint32_t LL_DAC_IsTriggerEnabled(const DAC_TypeDef *DACx, uint32
   */
 __STATIC_INLINE void LL_DAC_TrigSWConversion(DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  SET_BIT(DACx->SWTRIGR,
-          (DAC_Channel & DAC_SWTR_CHX_MASK));
+	SET_BIT(DACx->SWTRIGR,
+		(DAC_Channel & DAC_SWTR_CHX_MASK));
 }
 
 /**
@@ -1649,10 +1648,10 @@ __STATIC_INLINE void LL_DAC_TrigSWConversion(DAC_TypeDef *DACx, uint32_t DAC_Cha
   */
 __STATIC_INLINE void LL_DAC_ConvertData12RightAligned(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t Data)
 {
-  __IO uint32_t *preg = __DAC_PTR_REG_OFFSET(DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR12RX_REGOFFSET_BITOFFSET_POS)
-                                             & DAC_REG_DHR_REGOFFSET_MASK_POSBIT0);
+	__IO uint32_t *preg = __DAC_PTR_REG_OFFSET(DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR12RX_REGOFFSET_BITOFFSET_POS)
+			      & DAC_REG_DHR_REGOFFSET_MASK_POSBIT0);
 
-  MODIFY_REG(*preg, DAC_DHR12R1_DACC1DHR, Data);
+	MODIFY_REG(*preg, DAC_DHR12R1_DACC1DHR, Data);
 }
 
 /**
@@ -1670,10 +1669,10 @@ __STATIC_INLINE void LL_DAC_ConvertData12RightAligned(DAC_TypeDef *DACx, uint32_
   */
 __STATIC_INLINE void LL_DAC_ConvertData12LeftAligned(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t Data)
 {
-  __IO uint32_t *preg = __DAC_PTR_REG_OFFSET(DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR12LX_REGOFFSET_BITOFFSET_POS)
-                                             & DAC_REG_DHR_REGOFFSET_MASK_POSBIT0);
+	__IO uint32_t *preg = __DAC_PTR_REG_OFFSET(DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR12LX_REGOFFSET_BITOFFSET_POS)
+			      & DAC_REG_DHR_REGOFFSET_MASK_POSBIT0);
 
-  MODIFY_REG(*preg, DAC_DHR12L1_DACC1DHR, Data);
+	MODIFY_REG(*preg, DAC_DHR12L1_DACC1DHR, Data);
 }
 
 /**
@@ -1691,10 +1690,10 @@ __STATIC_INLINE void LL_DAC_ConvertData12LeftAligned(DAC_TypeDef *DACx, uint32_t
   */
 __STATIC_INLINE void LL_DAC_ConvertData8RightAligned(DAC_TypeDef *DACx, uint32_t DAC_Channel, uint32_t Data)
 {
-  __IO uint32_t *preg = __DAC_PTR_REG_OFFSET(DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR8RX_REGOFFSET_BITOFFSET_POS)
-                                             & DAC_REG_DHR_REGOFFSET_MASK_POSBIT0);
+	__IO uint32_t *preg = __DAC_PTR_REG_OFFSET(DACx->DHR12R1, (DAC_Channel >> DAC_REG_DHR8RX_REGOFFSET_BITOFFSET_POS)
+			      & DAC_REG_DHR_REGOFFSET_MASK_POSBIT0);
 
-  MODIFY_REG(*preg, DAC_DHR8R1_DACC1DHR, Data);
+	MODIFY_REG(*preg, DAC_DHR8R1_DACC1DHR, Data);
 }
 
 
@@ -1710,11 +1709,11 @@ __STATIC_INLINE void LL_DAC_ConvertData8RightAligned(DAC_TypeDef *DACx, uint32_t
   * @retval None
   */
 __STATIC_INLINE void LL_DAC_ConvertDualData12RightAligned(DAC_TypeDef *DACx, uint32_t DataChannel1,
-                                                          uint32_t DataChannel2)
+		uint32_t DataChannel2)
 {
-  MODIFY_REG(DACx->DHR12RD,
-             (DAC_DHR12RD_DACC2DHR | DAC_DHR12RD_DACC1DHR),
-             ((DataChannel2 << DAC_DHR12RD_DACC2DHR_BITOFFSET_POS) | DataChannel1));
+	MODIFY_REG(DACx->DHR12RD,
+		   (DAC_DHR12RD_DACC2DHR | DAC_DHR12RD_DACC1DHR),
+		   ((DataChannel2 << DAC_DHR12RD_DACC2DHR_BITOFFSET_POS) | DataChannel1));
 }
 
 /**
@@ -1729,14 +1728,14 @@ __STATIC_INLINE void LL_DAC_ConvertDualData12RightAligned(DAC_TypeDef *DACx, uin
   * @retval None
   */
 __STATIC_INLINE void LL_DAC_ConvertDualData12LeftAligned(DAC_TypeDef *DACx, uint32_t DataChannel1,
-                                                         uint32_t DataChannel2)
+		uint32_t DataChannel2)
 {
-  /* Note: Data of DAC channel 2 shift value subtracted of 4 because          */
-  /*       data on 16 bits and DAC channel 2 bits field is on the 12 MSB,     */
-  /*       the 4 LSB must be taken into account for the shift value.          */
-  MODIFY_REG(DACx->DHR12LD,
-             (DAC_DHR12LD_DACC2DHR | DAC_DHR12LD_DACC1DHR),
-             ((DataChannel2 << (DAC_DHR12LD_DACC2DHR_BITOFFSET_POS - 4U)) | DataChannel1));
+	/* Note: Data of DAC channel 2 shift value subtracted of 4 because          */
+	/*       data on 16 bits and DAC channel 2 bits field is on the 12 MSB,     */
+	/*       the 4 LSB must be taken into account for the shift value.          */
+	MODIFY_REG(DACx->DHR12LD,
+		   (DAC_DHR12LD_DACC2DHR | DAC_DHR12LD_DACC1DHR),
+		   ((DataChannel2 << (DAC_DHR12LD_DACC2DHR_BITOFFSET_POS - 4U)) | DataChannel1));
 }
 
 /**
@@ -1751,11 +1750,11 @@ __STATIC_INLINE void LL_DAC_ConvertDualData12LeftAligned(DAC_TypeDef *DACx, uint
   * @retval None
   */
 __STATIC_INLINE void LL_DAC_ConvertDualData8RightAligned(DAC_TypeDef *DACx, uint32_t DataChannel1,
-                                                         uint32_t DataChannel2)
+		uint32_t DataChannel2)
 {
-  MODIFY_REG(DACx->DHR8RD,
-             (DAC_DHR8RD_DACC2DHR | DAC_DHR8RD_DACC1DHR),
-             ((DataChannel2 << DAC_DHR8RD_DACC2DHR_BITOFFSET_POS) | DataChannel1));
+	MODIFY_REG(DACx->DHR8RD,
+		   (DAC_DHR8RD_DACC2DHR | DAC_DHR8RD_DACC1DHR),
+		   ((DataChannel2 << DAC_DHR8RD_DACC2DHR_BITOFFSET_POS) | DataChannel1));
 }
 
 
@@ -1775,10 +1774,10 @@ __STATIC_INLINE void LL_DAC_ConvertDualData8RightAligned(DAC_TypeDef *DACx, uint
   */
 __STATIC_INLINE uint32_t LL_DAC_RetrieveOutputData(const DAC_TypeDef *DACx, uint32_t DAC_Channel)
 {
-  __IO uint32_t const *preg = __DAC_PTR_REG_OFFSET(DACx->DOR1, (DAC_Channel >> DAC_REG_DORX_REGOFFSET_BITOFFSET_POS)
-                                                   & DAC_REG_DORX_REGOFFSET_MASK_POSBIT0);
+	__IO uint32_t const *preg = __DAC_PTR_REG_OFFSET(DACx->DOR1, (DAC_Channel >> DAC_REG_DORX_REGOFFSET_BITOFFSET_POS)
+				    & DAC_REG_DORX_REGOFFSET_MASK_POSBIT0);
 
-  return (uint16_t) READ_BIT(*preg, DAC_DOR1_DACC1DOR);
+	return (uint16_t) READ_BIT(*preg, DAC_DOR1_DACC1DOR);
 }
 
 /**
@@ -1797,7 +1796,7 @@ __STATIC_INLINE uint32_t LL_DAC_RetrieveOutputData(const DAC_TypeDef *DACx, uint
   */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_CAL1(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->SR, LL_DAC_FLAG_CAL1) == (LL_DAC_FLAG_CAL1)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR, LL_DAC_FLAG_CAL1) == (LL_DAC_FLAG_CAL1)) ? 1UL : 0UL);
 }
 
 
@@ -1809,7 +1808,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_CAL1(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_CAL2(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->SR, LL_DAC_FLAG_CAL2) == (LL_DAC_FLAG_CAL2)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR, LL_DAC_FLAG_CAL2) == (LL_DAC_FLAG_CAL2)) ? 1UL : 0UL);
 }
 
 
@@ -1821,7 +1820,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_CAL2(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_BWST1(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->SR, LL_DAC_FLAG_BWST1) == (LL_DAC_FLAG_BWST1)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR, LL_DAC_FLAG_BWST1) == (LL_DAC_FLAG_BWST1)) ? 1UL : 0UL);
 }
 
 /**
@@ -1832,7 +1831,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_BWST1(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_BWST2(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->SR, LL_DAC_FLAG_BWST2) == (LL_DAC_FLAG_BWST2)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR, LL_DAC_FLAG_BWST2) == (LL_DAC_FLAG_BWST2)) ? 1UL : 0UL);
 }
 
 
@@ -1844,7 +1843,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_BWST2(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DAC1RDY(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DAC1RDY) == (LL_DAC_FLAG_DAC1RDY)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DAC1RDY) == (LL_DAC_FLAG_DAC1RDY)) ? 1UL : 0UL);
 }
 
 
@@ -1856,7 +1855,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DAC1RDY(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DAC2RDY(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DAC2RDY) == (LL_DAC_FLAG_DAC2RDY)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DAC2RDY) == (LL_DAC_FLAG_DAC2RDY)) ? 1UL : 0UL);
 }
 
 
@@ -1868,7 +1867,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DAC2RDY(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DORSTAT1(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DORSTAT1) == (LL_DAC_FLAG_DORSTAT1)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DORSTAT1) == (LL_DAC_FLAG_DORSTAT1)) ? 1UL : 0UL);
 }
 
 
@@ -1880,7 +1879,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DORSTAT1(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DORSTAT2(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DORSTAT2) == (LL_DAC_FLAG_DORSTAT2)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DORSTAT2) == (LL_DAC_FLAG_DORSTAT2)) ? 1UL : 0UL);
 }
 
 /**
@@ -1891,7 +1890,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DORSTAT2(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DMAUDR1(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DMAUDR1) == (LL_DAC_FLAG_DMAUDR1)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DMAUDR1) == (LL_DAC_FLAG_DMAUDR1)) ? 1UL : 0UL);
 }
 
 
@@ -1903,7 +1902,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DMAUDR1(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DMAUDR2(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DMAUDR2) == (LL_DAC_FLAG_DMAUDR2)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->SR, LL_DAC_FLAG_DMAUDR2) == (LL_DAC_FLAG_DMAUDR2)) ? 1UL : 0UL);
 }
 
 
@@ -1915,7 +1914,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsActiveFlag_DMAUDR2(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE void LL_DAC_ClearFlag_DMAUDR1(DAC_TypeDef *DACx)
 {
-  WRITE_REG(DACx->SR, LL_DAC_FLAG_DMAUDR1);
+	WRITE_REG(DACx->SR, LL_DAC_FLAG_DMAUDR1);
 }
 
 
@@ -1927,7 +1926,7 @@ __STATIC_INLINE void LL_DAC_ClearFlag_DMAUDR1(DAC_TypeDef *DACx)
   */
 __STATIC_INLINE void LL_DAC_ClearFlag_DMAUDR2(DAC_TypeDef *DACx)
 {
-  WRITE_REG(DACx->SR, LL_DAC_FLAG_DMAUDR2);
+	WRITE_REG(DACx->SR, LL_DAC_FLAG_DMAUDR2);
 }
 
 
@@ -1947,7 +1946,7 @@ __STATIC_INLINE void LL_DAC_ClearFlag_DMAUDR2(DAC_TypeDef *DACx)
   */
 __STATIC_INLINE void LL_DAC_EnableIT_DMAUDR1(DAC_TypeDef *DACx)
 {
-  SET_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1);
+	SET_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1);
 }
 
 
@@ -1959,7 +1958,7 @@ __STATIC_INLINE void LL_DAC_EnableIT_DMAUDR1(DAC_TypeDef *DACx)
   */
 __STATIC_INLINE void LL_DAC_EnableIT_DMAUDR2(DAC_TypeDef *DACx)
 {
-  SET_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2);
+	SET_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2);
 }
 
 
@@ -1971,7 +1970,7 @@ __STATIC_INLINE void LL_DAC_EnableIT_DMAUDR2(DAC_TypeDef *DACx)
   */
 __STATIC_INLINE void LL_DAC_DisableIT_DMAUDR1(DAC_TypeDef *DACx)
 {
-  CLEAR_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1);
+	CLEAR_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1);
 }
 
 
@@ -1983,7 +1982,7 @@ __STATIC_INLINE void LL_DAC_DisableIT_DMAUDR1(DAC_TypeDef *DACx)
   */
 __STATIC_INLINE void LL_DAC_DisableIT_DMAUDR2(DAC_TypeDef *DACx)
 {
-  CLEAR_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2);
+	CLEAR_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2);
 }
 
 
@@ -1995,7 +1994,7 @@ __STATIC_INLINE void LL_DAC_DisableIT_DMAUDR2(DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsEnabledIT_DMAUDR1(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1) == (LL_DAC_IT_DMAUDRIE1)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE1) == (LL_DAC_IT_DMAUDRIE1)) ? 1UL : 0UL);
 }
 
 
@@ -2007,7 +2006,7 @@ __STATIC_INLINE uint32_t LL_DAC_IsEnabledIT_DMAUDR1(const DAC_TypeDef *DACx)
   */
 __STATIC_INLINE uint32_t LL_DAC_IsEnabledIT_DMAUDR2(const DAC_TypeDef *DACx)
 {
-  return ((READ_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2) == (LL_DAC_IT_DMAUDRIE2)) ? 1UL : 0UL);
+	return ((READ_BIT(DACx->CR, LL_DAC_IT_DMAUDRIE2) == (LL_DAC_IT_DMAUDRIE2)) ? 1UL : 0UL);
 }
 
 

@@ -40,129 +40,129 @@ extern uint8_t CUSTOMHID_InstID;
 extern uint8_t Sample_State;
 
 __ALIGN_BEGIN static uint8_t
-  CustomHID_ReportDesc[USBD_CUSTOM_HID_REPORT_DESC_SIZE] __ALIGN_END = {
-  0x06, 0xFF, 0x00,             /* USAGE_PAGE (Vendor Page: 0xFF00) */
-  0x09, 0x01,                   /* USAGE (Demo Kit) */
-  0xa1, 0x01,                   /* COLLECTION (Application) */
-  /* 6 */
+CustomHID_ReportDesc[USBD_CUSTOM_HID_REPORT_DESC_SIZE] __ALIGN_END = {
+	0x06, 0xFF, 0x00,             /* USAGE_PAGE (Vendor Page: 0xFF00) */
+	0x09, 0x01,                   /* USAGE (Demo Kit) */
+	0xa1, 0x01,                   /* COLLECTION (Application) */
+	/* 6 */
 
-  /* LED1 */
-  0x85, SAMPLE_REPORT_ID,         /* REPORT_ID (1) */
-  0x09, 0x01,                   /* USAGE (LED 1) */
-  0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
-  0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
-  0x75, 0x08,                   /* REPORT_SIZE (8) */
-  0x95, SAMPLE_REPORT_COUNT,      /* REPORT_COUNT (1) */
-  0xB1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
+	/* LED1 */
+	0x85, SAMPLE_REPORT_ID,         /* REPORT_ID (1) */
+	0x09, 0x01,                   /* USAGE (LED 1) */
+	0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
+	0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
+	0x75, 0x08,                   /* REPORT_SIZE (8) */
+	0x95, SAMPLE_REPORT_COUNT,      /* REPORT_COUNT (1) */
+	0xB1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
 
-  0x85, SAMPLE_REPORT_ID,         /* REPORT_ID (1) */
-  0x09, 0x01,                   /* USAGE (LED 1) */
-  0x91, 0x82,                   /* OUTPUT (Data,Var,Abs,Vol) */
-  /* 26 */
+	0x85, SAMPLE_REPORT_ID,         /* REPORT_ID (1) */
+	0x09, 0x01,                   /* USAGE (LED 1) */
+	0x91, 0x82,                   /* OUTPUT (Data,Var,Abs,Vol) */
+	/* 26 */
 
-  /* LED2 */
-  0x85, LED2_REPORT_ID,         /* REPORT_ID 2 */
-  0x09, 0x02,                   /* USAGE (LED 2) */
-  0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
-  0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
-  0x75, 0x08,                   /* REPORT_SIZE (8) */
-  0x95, LED2_REPORT_COUNT,      /* REPORT_COUNT (1) */
-  0xB1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
+	/* LED2 */
+	0x85, LED2_REPORT_ID,         /* REPORT_ID 2 */
+	0x09, 0x02,                   /* USAGE (LED 2) */
+	0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
+	0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
+	0x75, 0x08,                   /* REPORT_SIZE (8) */
+	0x95, LED2_REPORT_COUNT,      /* REPORT_COUNT (1) */
+	0xB1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
 
-  0x85, LED2_REPORT_ID,         /* REPORT_ID (2) */
-  0x09, 0x02,                   /* USAGE (LED 2) */
-  0x91, 0x82,                   /* OUTPUT (Data,Var,Abs,Vol) */
-  /* 46 */
+	0x85, LED2_REPORT_ID,         /* REPORT_ID (2) */
+	0x09, 0x02,                   /* USAGE (LED 2) */
+	0x91, 0x82,                   /* OUTPUT (Data,Var,Abs,Vol) */
+	/* 46 */
 
-  /* LED3 */
-  0x85, LED3_REPORT_ID,         /* REPORT_ID (3) */
-  0x09, 0x03,                   /* USAGE (LED 3) */
-  0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
-  0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
-  0x75, 0x08,                   /* REPORT_SIZE (8) */
-  0x95, LED3_REPORT_COUNT,      /* REPORT_COUNT (1) */
-  0xB1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
+	/* LED3 */
+	0x85, LED3_REPORT_ID,         /* REPORT_ID (3) */
+	0x09, 0x03,                   /* USAGE (LED 3) */
+	0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
+	0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
+	0x75, 0x08,                   /* REPORT_SIZE (8) */
+	0x95, LED3_REPORT_COUNT,      /* REPORT_COUNT (1) */
+	0xB1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
 
-  0x85, LED3_REPORT_ID,         /* REPORT_ID (3) */
-  0x09, 0x03,                   /* USAGE (LED 3) */
-  0x91, 0x82,                   /* OUTPUT (Data,Var,Abs,Vol) */
-  /* 66 */
+	0x85, LED3_REPORT_ID,         /* REPORT_ID (3) */
+	0x09, 0x03,                   /* USAGE (LED 3) */
+	0x91, 0x82,                   /* OUTPUT (Data,Var,Abs,Vol) */
+	/* 66 */
 
-  /* LED4 */
-  0x85, LED4_REPORT_ID,         /* REPORT_ID 4) */
-  0x09, 0x04,                   /* USAGE (LED 4) */
-  0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
-  0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
-  0x75, 0x08,                   /* REPORT_SIZE (8) */
-  0x95, LED4_REPORT_COUNT,      /* REPORT_COUNT (1) */
-  0xB1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
+	/* LED4 */
+	0x85, LED4_REPORT_ID,         /* REPORT_ID 4) */
+	0x09, 0x04,                   /* USAGE (LED 4) */
+	0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
+	0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
+	0x75, 0x08,                   /* REPORT_SIZE (8) */
+	0x95, LED4_REPORT_COUNT,      /* REPORT_COUNT (1) */
+	0xB1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
 
-  0x85, LED4_REPORT_ID,         /* REPORT_ID (4) */
-  0x09, 0x04,                   /* USAGE (LED 4) */
-  0x91, 0x82,                   /* OUTPUT (Data,Var,Abs,Vol) */
-  /* 86 */
+	0x85, LED4_REPORT_ID,         /* REPORT_ID (4) */
+	0x09, 0x04,                   /* USAGE (LED 4) */
+	0x91, 0x82,                   /* OUTPUT (Data,Var,Abs,Vol) */
+	/* 86 */
 
-  /* key Push Button */
-  0x85, KEY_REPORT_ID,          /* REPORT_ID (5) */
-  0x09, 0x05,                   /* USAGE (Push Button) */
-  0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
-  0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
-  0x75, 0x01,                   /* REPORT_SIZE (1) */
-  0x81, 0x82,                   /* INPUT (Data,Var,Abs,Vol) */
+	/* key Push Button */
+	0x85, KEY_REPORT_ID,          /* REPORT_ID (5) */
+	0x09, 0x05,                   /* USAGE (Push Button) */
+	0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
+	0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
+	0x75, 0x01,                   /* REPORT_SIZE (1) */
+	0x81, 0x82,                   /* INPUT (Data,Var,Abs,Vol) */
 
-  0x09, 0x05,                   /* USAGE (Push Button) */
-  0x75, 0x01,                   /* REPORT_SIZE (1) */
-  0xb1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
+	0x09, 0x05,                   /* USAGE (Push Button) */
+	0x75, 0x01,                   /* REPORT_SIZE (1) */
+	0xb1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
 
-  0x75, 0x07,                   /* REPORT_SIZE (7) */
-  0x81, 0x83,                   /* INPUT (Cnst,Var,Abs,Vol) */
-  0x85, KEY_REPORT_ID,          /* REPORT_ID (2) */
+	0x75, 0x07,                   /* REPORT_SIZE (7) */
+	0x81, 0x83,                   /* INPUT (Cnst,Var,Abs,Vol) */
+	0x85, KEY_REPORT_ID,          /* REPORT_ID (2) */
 
-  0x75, 0x07,                   /* REPORT_SIZE (7) */
-  0xb1, 0x83,                   /* FEATURE (Cnst,Var,Abs,Vol) */
-  /* 114 */
+	0x75, 0x07,                   /* REPORT_SIZE (7) */
+	0xb1, 0x83,                   /* FEATURE (Cnst,Var,Abs,Vol) */
+	/* 114 */
 
-  /* Tamper Push Button */
-  0x85, TAMPER_REPORT_ID,       /* REPORT_ID (6) */
-  0x09, 0x06,                   /* USAGE (Tamper Push Button) */
-  0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
-  0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
-  0x75, 0x01,                   /* REPORT_SIZE (1) */
-  0x81, 0x82,                   /* INPUT (Data,Var,Abs,Vol) */
+	/* Tamper Push Button */
+	0x85, TAMPER_REPORT_ID,       /* REPORT_ID (6) */
+	0x09, 0x06,                   /* USAGE (Tamper Push Button) */
+	0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
+	0x25, 0x01,                   /* LOGICAL_MAXIMUM (1) */
+	0x75, 0x01,                   /* REPORT_SIZE (1) */
+	0x81, 0x82,                   /* INPUT (Data,Var,Abs,Vol) */
 
-  0x09, 0x06,                   /* USAGE (Tamper Push Button) */
-  0x75, 0x01,                   /* REPORT_SIZE (1) */
-  0xb1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
+	0x09, 0x06,                   /* USAGE (Tamper Push Button) */
+	0x75, 0x01,                   /* REPORT_SIZE (1) */
+	0xb1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
 
-  0x75, 0x07,                   /* REPORT_SIZE (7) */
-  0x81, 0x83,                   /* INPUT (Cnst,Var,Abs,Vol) */
-  0x85, TAMPER_REPORT_ID,       /* REPORT_ID (6) */
+	0x75, 0x07,                   /* REPORT_SIZE (7) */
+	0x81, 0x83,                   /* INPUT (Cnst,Var,Abs,Vol) */
+	0x85, TAMPER_REPORT_ID,       /* REPORT_ID (6) */
 
-  0x75, 0x07,                   /* REPORT_SIZE (7) */
-  0xb1, 0x83,                   /* FEATURE (Cnst,Var,Abs,Vol) */
-  /* 142 */
+	0x75, 0x07,                   /* REPORT_SIZE (7) */
+	0xb1, 0x83,                   /* FEATURE (Cnst,Var,Abs,Vol) */
+	/* 142 */
 
-  /* ADC IN */
-  0x85, ADC_REPORT_ID,          /* REPORT_ID */
-  0x09, 0x07,                   /* USAGE (ADC IN) */
-  0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
-  0x26, 0xff, 0x00,             /* LOGICAL_MAXIMUM (255) */
-  0x75, 0x08,                   /* REPORT_SIZE (8) */
-  0x95, SAMPLE_REPORT_COUNT,      /* REPORT_COUNT (1) */
-  0x81, 0x82,                   /* INPUT (Data,Var,Abs,Vol) */
-  0x85, ADC_REPORT_ID,          /* REPORT_ID (7) */
-  0x09, 0x07,                   /* USAGE (ADC in) */
-  0xb1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
-  /* 161 */
+	/* ADC IN */
+	0x85, ADC_REPORT_ID,          /* REPORT_ID */
+	0x09, 0x07,                   /* USAGE (ADC IN) */
+	0x15, 0x00,                   /* LOGICAL_MINIMUM (0) */
+	0x26, 0xff, 0x00,             /* LOGICAL_MAXIMUM (255) */
+	0x75, 0x08,                   /* REPORT_SIZE (8) */
+	0x95, SAMPLE_REPORT_COUNT,      /* REPORT_COUNT (1) */
+	0x81, 0x82,                   /* INPUT (Data,Var,Abs,Vol) */
+	0x85, ADC_REPORT_ID,          /* REPORT_ID (7) */
+	0x09, 0x07,                   /* USAGE (ADC in) */
+	0xb1, 0x82,                   /* FEATURE (Data,Var,Abs,Vol) */
+	/* 161 */
 
-  0xc0                          /* END_COLLECTION */
+	0xc0                          /* END_COLLECTION */
 };
 
 USBD_CUSTOM_HID_ItfTypeDef USBD_CustomHID_fops = {
-  CustomHID_ReportDesc,
-  CustomHID_Init,
-  CustomHID_DeInit,
-  CustomHID_OutEvent,
+	CustomHID_ReportDesc,
+	CustomHID_Init,
+	CustomHID_DeInit,
+	CustomHID_OutEvent,
 };
 
 /* Private functions --------------------------------------------------------- */
@@ -175,13 +175,13 @@ USBD_CUSTOM_HID_ItfTypeDef USBD_CustomHID_fops = {
   */
 static int8_t CustomHID_Init(void)
 {
-  // USBD_UsrLog("CustomHID_Init");
+	// USBD_UsrLog("CustomHID_Init");
 
-  // SendBuffer[0] = KEY_REPORT_ID;
-  // SendBuffer[1] = 0x01;
-  // USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, SendBuffer, 2);
+	// SendBuffer[0] = KEY_REPORT_ID;
+	// SendBuffer[1] = 0x01;
+	// USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, SendBuffer, 2);
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -192,9 +192,9 @@ static int8_t CustomHID_Init(void)
   */
 static int8_t CustomHID_DeInit(void)
 {
-  /*
-   * Add your de-initialization code here */
-  return (0);
+	/*
+	 * Add your de-initialization code here */
+	return (0);
 }
 
 
@@ -206,34 +206,35 @@ static int8_t CustomHID_DeInit(void)
   */
 static int8_t CustomHID_OutEvent(uint8_t event_idx, uint8_t cmd_id, uint8_t *data)
 {
-  VoltageConfigPacket_t* cfg = (VoltageConfigPacket_t*)data;
-  USBD_UsrLog("VoltageConfigPacket_t event_idx= %d cmd_id=%d %d %d %d", event_idx, cfg->cmd_id, cfg->channel, cfg->voltage_mv, cfg->current_ma);
+	VoltageConfigPacket_t *cfg = (VoltageConfigPacket_t*)data;
+	USBD_UsrLog("VoltageConfigPacket_t event_idx= %d cmd_id=%d %d %d %d", event_idx, cfg->cmd_id, cfg->channel, cfg->voltage_mv, cfg->current_ma);
 
-  switch (cmd_id)
-  {
-  case 1:                      /* Config voltage */
-    DAC_VoltageConfig(cfg);
-    break;
+	switch (cmd_id) {
+		case 1:                      /* Config voltage */
+			DAC_VoltageConfig(cfg);
+			break;
 
-  case 2:                      /* Powen on/off */
-    DAC_PowerOnOff(*data);
-    break;
-  case 3:                      /* Start sampling */
-    Sample_State = *(data + 1);
-    // ADC_SampleControl(*data);
-    break;
-  case 4:                      /* End sampling */
+		case 2:                      /* Powen on/off */
+			DAC_PowerOnOff(*data);
+			break;
 
-    break;
+		case 3:                      /* Start sampling */
+			Sample_State = *(data + 1);
+			// ADC_SampleControl(*data);
+			break;
 
-  default:
-    break;
-  }
+		case 4:                      /* End sampling */
 
-  /* Start next USB packet transfer once data processing is completed */
-  USBD_CUSTOM_HID_ReceivePacket(&hUsbDeviceFS);
+			break;
 
-  return (0);
+		default:
+			break;
+	}
+
+	/* Start next USB packet transfer once data processing is completed */
+	USBD_CUSTOM_HID_ReceivePacket(&hUsbDeviceFS);
+
+	return (0);
 }
 
 /**

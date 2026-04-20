@@ -41,14 +41,13 @@ static uint8_t CCID_SetSlotStatus(USBD_HandleTypeDef *pdev);
   * @}
   */
 
-USBD_CCID_ItfTypeDef USBD_CCID_If_fops =
-{
-  CCID_Init,
-  CCID_DeInit,
-  CCID_ControlReq,
-  CCID_Response_SendData,
-  CCID_Send_Process,
-  CCID_SetSlotStatus,
+USBD_CCID_ItfTypeDef USBD_CCID_If_fops = {
+	CCID_Init,
+	CCID_DeInit,
+	CCID_ControlReq,
+	CCID_Response_SendData,
+	CCID_Send_Process,
+	CCID_SetSlotStatus,
 };
 
 /**
@@ -60,16 +59,16 @@ USBD_CCID_ItfTypeDef USBD_CCID_If_fops =
 uint8_t CCID_Init(USBD_HandleTypeDef  *pdev)
 {
 #ifdef USE_USBD_COMPOSITE
-  USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassDataCmsit[pdev->classId];
+	USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassDataCmsit[pdev->classId];
 #else
-  USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassData;
+	USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassData;
 #endif /* USE_USBD_COMPOSITE */
 
-  /* CCID Related Initialization */
+	/* CCID Related Initialization */
 
-  hccid->blkt_state = CCID_STATE_IDLE;
+	hccid->blkt_state = CCID_STATE_IDLE;
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 
 /**
@@ -81,14 +80,14 @@ uint8_t CCID_Init(USBD_HandleTypeDef  *pdev)
 uint8_t CCID_DeInit(USBD_HandleTypeDef  *pdev)
 {
 #ifdef USE_USBD_COMPOSITE
-  USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassDataCmsit[pdev->classId];
+	USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassDataCmsit[pdev->classId];
 #else
-  USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassData;
+	USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassData;
 #endif /* USE_USBD_COMPOSITE */
 
-  hccid->blkt_state = CCID_STATE_IDLE;
+	hccid->blkt_state = CCID_STATE_IDLE;
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 
 /**
@@ -102,48 +101,47 @@ uint8_t CCID_DeInit(USBD_HandleTypeDef  *pdev)
 static uint8_t CCID_ControlReq(uint8_t req, uint8_t *pbuf, uint16_t *length)
 {
 #ifdef USE_USBD_COMPOSITE
-  USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)USBD_Device.pClassDataCmsit[USBD_Device.classId];
+	USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)USBD_Device.pClassDataCmsit[USBD_Device.classId];
 #else
-  USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)USBD_Device.pClassData;
+	USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)USBD_Device.pClassData;
 #endif /* USE_USBD_COMPOSITE */
 
-  UNUSED(length);
+	UNUSED(length);
 
-  switch (req)
-  {
-    case REQUEST_ABORT:
-      /* The wValue field contains the slot number (bSlot) in the low byte
-      and the sequence number (bSeq) in the high byte.*/
-      hccid->slot_nb = ((uint16_t) * pbuf & 0x0fU);
-      hccid->seq_nb = (((uint16_t) * pbuf & 0xf0U) >> 8);
+	switch (req) {
+		case REQUEST_ABORT:
+			/* The wValue field contains the slot number (bSlot) in the low byte
+			and the sequence number (bSeq) in the high byte.*/
+			hccid->slot_nb = ((uint16_t) * pbuf & 0x0fU);
+			hccid->seq_nb = (((uint16_t) * pbuf & 0xf0U) >> 8);
 
-      if (CCID_CmdAbort(&USBD_Device, (uint8_t)hccid->slot_nb, (uint8_t)hccid->seq_nb) != 0U)
-      {
-        /* If error is returned by lower layer :
-        Generally Slot# may not have matched */
-        return (int8_t)USBD_FAIL;
-      }
-      break;
+			if (CCID_CmdAbort(&USBD_Device, (uint8_t)hccid->slot_nb, (uint8_t)hccid->seq_nb) != 0U) {
+				/* If error is returned by lower layer :
+				Generally Slot# may not have matched */
+				return (int8_t)USBD_FAIL;
+			}
 
-    case REQUEST_GET_CLOCK_FREQUENCIES:
+			break;
 
-      /* User have to fill the pbuf with the GetClockFrequency data buffer */
+		case REQUEST_GET_CLOCK_FREQUENCIES:
 
-      break;
+			/* User have to fill the pbuf with the GetClockFrequency data buffer */
 
-    case REQUEST_GET_DATA_RATES:
+			break;
 
-      /* User have to fill the pbuf with the GetDataRates data buffer */
+		case REQUEST_GET_DATA_RATES:
 
-      break;
+			/* User have to fill the pbuf with the GetDataRates data buffer */
 
-    default:
-      break;
-  }
+			break;
 
-  UNUSED(pbuf);
+		default:
+			break;
+	}
 
-  return ((int8_t)USBD_OK);
+	UNUSED(pbuf);
+
+	return ((int8_t)USBD_OK);
 }
 
 /**
@@ -156,8 +154,8 @@ static uint8_t CCID_ControlReq(uint8_t req, uint8_t *pbuf, uint16_t *length)
   */
 uint8_t  CCID_Response_SendData(USBD_HandleTypeDef  *pdev, uint8_t *buf, uint16_t len)
 {
-  (void)USBD_LL_Transmit(pdev, CCID_IN_EP, buf, len);
-  return (uint8_t)USBD_OK;
+	(void)USBD_LL_Transmit(pdev, CCID_IN_EP, buf, len);
+	return (uint8_t)USBD_OK;
 }
 
 /**
@@ -168,41 +166,40 @@ uint8_t  CCID_Response_SendData(USBD_HandleTypeDef  *pdev, uint8_t *buf, uint16_
   */
 static uint8_t CCID_Send_Process(uint8_t *Command, uint8_t *Data)
 {
-  Command_State_t Command_State = Command_NOT_OK;
+	Command_State_t Command_State = Command_NOT_OK;
 
-  /* Initialize ICC APP header */
-  uint8_t SC_Command[5] = {0};
-  UNUSED(Data);
-  UNUSED(Command_State);
-  UNUSED(SC_Command);
+	/* Initialize ICC APP header */
+	uint8_t SC_Command[5] = {0};
+	UNUSED(Data);
+	UNUSED(Command_State);
+	UNUSED(SC_Command);
 
-  /* Start SC Demo ---------------------------------------------------------*/
-  switch (Command[1]) /* type of instruction */
-  {
-    case SC_ENABLE:
-      /* Add your code here */
-      break;
+	/* Start SC Demo ---------------------------------------------------------*/
+	switch (Command[1]) { /* type of instruction */
+		case SC_ENABLE:
+			/* Add your code here */
+			break;
 
-    case SC_VERIFY:
-      /* Add your code here */
-      break;
+		case SC_VERIFY:
+			/* Add your code here */
+			break;
 
-    case SC_READ_BINARY :
-      /* Add your code here */
-      break;
+		case SC_READ_BINARY :
+			/* Add your code here */
+			break;
 
-    case SC_CHANGE :
-      /* Add your code here */
-      break;
+		case SC_CHANGE :
+			/* Add your code here */
+			break;
 
-    default:
-      break;
-  }
+		default:
+			break;
+	}
 
-  /* check if Command header is  OK */
-  (void)CCID_Response_Process(); /* Get ICC response */
+	/* check if Command header is  OK */
+	(void)CCID_Response_Process(); /* Get ICC response */
 
-  return ((uint8_t)USBD_OK);
+	return ((uint8_t)USBD_OK);
 }
 
 /**
@@ -212,33 +209,32 @@ static uint8_t CCID_Send_Process(uint8_t *Command, uint8_t *Data)
   */
 static uint8_t CCID_Response_Process(void)
 {
-  switch (REP_command)
-  {
-    case REP_OK:
-      /* Add your code here */
-      break;
+	switch (REP_command) {
+		case REP_OK:
+			/* Add your code here */
+			break;
 
-    case REP_NOT_OK :
-      /* Add your code here */
-      break;
+		case REP_NOT_OK :
+			/* Add your code here */
+			break;
 
-    case REP_NOT_SUPP :
-      /* Add your code here */
-      break;
+		case REP_NOT_SUPP :
+			/* Add your code here */
+			break;
 
-    case REP_ENABLED :
-      /* Add your code here */
-      break;
+		case REP_ENABLED :
+			/* Add your code here */
+			break;
 
-    case REP_CHANGE :
-      /* Add your code here */
-      break;
+		case REP_CHANGE :
+			/* Add your code here */
+			break;
 
-    default:
-      break;
-  }
+		default:
+			break;
+	}
 
-  return ((uint8_t)USBD_OK);
+	return ((uint8_t)USBD_OK);
 }
 
 /**
@@ -249,22 +245,20 @@ static uint8_t CCID_Response_Process(void)
   */
 uint8_t CCID_SetSlotStatus(USBD_HandleTypeDef *pdev)
 {
-  /* Get the CCID handler pointer */
+	/* Get the CCID handler pointer */
 #ifdef USE_USBD_COMPOSITE
-  USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassDataCmsit[pdev->classId];
+	USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassDataCmsit[pdev->classId];
 #else
-  USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassData;
+	USBD_CCID_HandleTypeDef  *hccid = (USBD_CCID_HandleTypeDef *)pdev->pClassData;
 #endif /* USE_USBD_COMPOSITE */
 
-  if ((hccid->SlotStatus.SlotStatus) == 1U) /* Transfer Complete Status
+	if ((hccid->SlotStatus.SlotStatus) == 1U) /* Transfer Complete Status
                         of previous Interrupt transfer */
-  {
-    /* Add your code here */
-  }
-  else
-  {
-    /* Add your code here */
-  }
+	{
+		/* Add your code here */
+	} else {
+		/* Add your code here */
+	}
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }

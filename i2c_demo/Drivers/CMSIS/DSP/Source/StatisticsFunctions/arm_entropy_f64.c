@@ -46,26 +46,25 @@
 
 float64_t arm_entropy_f64(const float64_t * pSrcA, uint32_t blockSize)
 {
-    const float64_t *pIn;
-    uint32_t blkCnt;
-    float64_t accum, p;
- 
-    pIn = pSrcA;
-    blkCnt = blockSize;
+	const float64_t *pIn;
+	uint32_t blkCnt;
+	float64_t accum, p;
 
-    accum = 0.0;
+	pIn = pSrcA;
+	blkCnt = blockSize;
 
-    while(blkCnt > 0)
-    {
-        p = *pIn++;
+	accum = 0.0;
 
-        accum += p * log(p);
-       
-        blkCnt--;
-    
-    }
+	while (blkCnt > 0) {
+		p = *pIn++;
 
-    return(-accum);
+		accum += p * log(p);
+
+		blkCnt--;
+
+	}
+
+	return (-accum);
 }
 
 /**

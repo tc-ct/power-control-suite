@@ -43,12 +43,11 @@ extern "C" {
   * @brief  DLYB Configuration Structure definition
  */
 
-typedef struct
-{
-  uint32_t Units;                  /*!< Specifies the Delay of a unit delay cell.
+typedef struct {
+	uint32_t Units;                  /*!< Specifies the Delay of a unit delay cell.
                                         This parameter can be a value between 0 and DLYB_MAX_UNIT               */
 
-  uint32_t PhaseSel;               /*!< Specifies the Phase for the output clock.
+	uint32_t PhaseSel;               /*!< Specifies the Phase for the output clock.
                                         This parameter can be a value between 0 and DLYB_MAX_SELECT             */
 } LL_DLYB_CfgTypeDef;
 
@@ -92,7 +91,7 @@ typedef struct
 
 __STATIC_INLINE void LL_DLYB_Enable(DLYB_TypeDef *DLYBx)
 {
-  SET_BIT(DLYBx->CR, DLYB_CR_DEN);
+	SET_BIT(DLYBx->CR, DLYB_CR_DEN);
 }
 
 /** @brief  Disable the DLYB.
@@ -102,7 +101,7 @@ __STATIC_INLINE void LL_DLYB_Enable(DLYB_TypeDef *DLYBx)
 
 __STATIC_INLINE void LL_DLYB_Disable(DLYB_TypeDef *DLYBx)
 {
-  CLEAR_BIT(DLYBx->CR, DLYB_CR_DEN);
+	CLEAR_BIT(DLYBx->CR, DLYB_CR_DEN);
 }
 
 /**

@@ -64,27 +64,26 @@ static uint16_t USBD_MTP_Itf_DeleteObject(uint32_t Param1);
 static void     USBD_MTP_Itf_Cancel(uint32_t Phase);
 /* static uint32_t USBD_MTP_Get_idx_to_delete(uint32_t Param, uint8_t *tab); */
 
-USBD_MTP_ItfTypeDef USBD_MTP_fops =
-{
-  USBD_MTP_Itf_Init,
-  USBD_MTP_Itf_DeInit,
-  USBD_MTP_Itf_ReadData,
-  USBD_MTP_Itf_Create_NewObject,
-  USBD_MTP_Itf_GetIdx,
-  USBD_MTP_Itf_GetParentObject,
-  USBD_MTP_Itf_GetObjectFormat,
-  USBD_MTP_Itf_GetObjectName_len,
-  USBD_MTP_Itf_GetObjectName,
-  USBD_MTP_Itf_GetObjectSize,
-  USBD_MTP_Itf_GetMaxCapability,
-  USBD_MTP_Itf_GetFreeSpaceInBytes,
-  USBD_MTP_Itf_GetNewIndex,
-  USBD_MTP_Itf_WriteData,
-  USBD_MTP_Itf_GetContainerLength,
-  USBD_MTP_Itf_DeleteObject,
-  USBD_MTP_Itf_Cancel,
-  sc_buff,
-  MTP_IF_SCRATCH_BUFF_SZE,
+USBD_MTP_ItfTypeDef USBD_MTP_fops = {
+	USBD_MTP_Itf_Init,
+	USBD_MTP_Itf_DeInit,
+	USBD_MTP_Itf_ReadData,
+	USBD_MTP_Itf_Create_NewObject,
+	USBD_MTP_Itf_GetIdx,
+	USBD_MTP_Itf_GetParentObject,
+	USBD_MTP_Itf_GetObjectFormat,
+	USBD_MTP_Itf_GetObjectName_len,
+	USBD_MTP_Itf_GetObjectName,
+	USBD_MTP_Itf_GetObjectSize,
+	USBD_MTP_Itf_GetMaxCapability,
+	USBD_MTP_Itf_GetFreeSpaceInBytes,
+	USBD_MTP_Itf_GetNewIndex,
+	USBD_MTP_Itf_WriteData,
+	USBD_MTP_Itf_GetContainerLength,
+	USBD_MTP_Itf_DeleteObject,
+	USBD_MTP_Itf_Cancel,
+	sc_buff,
+	MTP_IF_SCRATCH_BUFF_SZE,
 };
 
 /* Private functions ---------------------------------------------------------*/
@@ -97,7 +96,7 @@ USBD_MTP_ItfTypeDef USBD_MTP_fops =
   */
 static uint8_t USBD_MTP_Itf_Init(void)
 {
-  return 0;
+	return 0;
 }
 
 /**
@@ -108,7 +107,7 @@ static uint8_t USBD_MTP_Itf_Init(void)
   */
 static uint8_t USBD_MTP_Itf_DeInit(void)
 {
-  return 0;
+	return 0;
 }
 
 /**
@@ -120,11 +119,11 @@ static uint8_t USBD_MTP_Itf_DeInit(void)
   */
 static uint32_t USBD_MTP_Itf_GetIdx(uint32_t Param3, uint32_t *obj_handle)
 {
-  uint32_t count = 0U;
-  UNUSED(Param3);
-  UNUSED(obj_handle);
+	uint32_t count = 0U;
+	UNUSED(Param3);
+	UNUSED(obj_handle);
 
-  return count;
+	return count;
 }
 
 /**
@@ -135,10 +134,10 @@ static uint32_t USBD_MTP_Itf_GetIdx(uint32_t Param3, uint32_t *obj_handle)
   */
 static uint32_t USBD_MTP_Itf_GetParentObject(uint32_t Param)
 {
-  uint32_t parentobj = 0U;
-  UNUSED(Param);
+	uint32_t parentobj = 0U;
+	UNUSED(Param);
 
-  return parentobj;
+	return parentobj;
 }
 
 /**
@@ -149,10 +148,10 @@ static uint32_t USBD_MTP_Itf_GetParentObject(uint32_t Param)
   */
 static uint16_t USBD_MTP_Itf_GetObjectFormat(uint32_t Param)
 {
-  uint16_t objformat = 0U;
-  UNUSED(Param);
+	uint16_t objformat = 0U;
+	UNUSED(Param);
 
-  return objformat;
+	return objformat;
 }
 
 /**
@@ -163,10 +162,10 @@ static uint16_t USBD_MTP_Itf_GetObjectFormat(uint32_t Param)
   */
 static uint8_t USBD_MTP_Itf_GetObjectName_len(uint32_t Param)
 {
-  uint8_t obj_len = 0U;
-  UNUSED(Param);
+	uint8_t obj_len = 0U;
+	UNUSED(Param);
 
-  return obj_len;
+	return obj_len;
 }
 
 /**
@@ -179,11 +178,11 @@ static uint8_t USBD_MTP_Itf_GetObjectName_len(uint32_t Param)
   */
 static void USBD_MTP_Itf_GetObjectName(uint32_t Param, uint8_t obj_len, uint16_t *buf)
 {
-  UNUSED(Param);
-  UNUSED(obj_len);
-  UNUSED(buf);
+	UNUSED(Param);
+	UNUSED(obj_len);
+	UNUSED(buf);
 
-  return;
+	return;
 }
 
 /**
@@ -194,10 +193,10 @@ static void USBD_MTP_Itf_GetObjectName(uint32_t Param, uint8_t obj_len, uint16_t
   */
 static uint32_t USBD_MTP_Itf_GetObjectSize(uint32_t Param)
 {
-  uint32_t ObjCompSize = 0U;
-  UNUSED(Param);
+	uint32_t ObjCompSize = 0U;
+	UNUSED(Param);
 
-  return ObjCompSize;
+	return ObjCompSize;
 }
 
 /**
@@ -209,11 +208,11 @@ static uint32_t USBD_MTP_Itf_GetObjectSize(uint32_t Param)
   */
 static uint16_t USBD_MTP_Itf_Create_NewObject(MTP_ObjectInfoTypeDef ObjectInfo, uint32_t objhandle)
 {
-  uint16_t rep_code = 0U;
-  UNUSED(ObjectInfo);
-  UNUSED(objhandle);
+	uint16_t rep_code = 0U;
+	UNUSED(ObjectInfo);
+	UNUSED(objhandle);
 
-  return rep_code;
+	return rep_code;
 }
 
 /**
@@ -224,9 +223,9 @@ static uint16_t USBD_MTP_Itf_Create_NewObject(MTP_ObjectInfoTypeDef ObjectInfo, 
   */
 static uint64_t USBD_MTP_Itf_GetMaxCapability(void)
 {
-  uint64_t max_cap = 0U;
+	uint64_t max_cap = 0U;
 
-  return max_cap;
+	return max_cap;
 }
 
 /**
@@ -237,9 +236,9 @@ static uint64_t USBD_MTP_Itf_GetMaxCapability(void)
   */
 static uint64_t USBD_MTP_Itf_GetFreeSpaceInBytes(void)
 {
-  uint64_t f_space_inbytes = 0U;
+	uint64_t f_space_inbytes = 0U;
 
-  return f_space_inbytes;
+	return f_space_inbytes;
 }
 
 /**
@@ -250,10 +249,10 @@ static uint64_t USBD_MTP_Itf_GetFreeSpaceInBytes(void)
   */
 static uint32_t USBD_MTP_Itf_GetNewIndex(uint16_t objformat)
 {
-  uint32_t n_index = 0U;
-  UNUSED(objformat);
+	uint32_t n_index = 0U;
+	UNUSED(objformat);
 
-  return n_index;
+	return n_index;
 }
 
 /**
@@ -265,10 +264,10 @@ static uint32_t USBD_MTP_Itf_GetNewIndex(uint16_t objformat)
   */
 static void USBD_MTP_Itf_WriteData(uint16_t len, uint8_t *buff)
 {
-  UNUSED(len);
-  UNUSED(buff);
+	UNUSED(len);
+	UNUSED(buff);
 
-  return;
+	return;
 }
 
 /**
@@ -279,10 +278,10 @@ static void USBD_MTP_Itf_WriteData(uint16_t len, uint8_t *buff)
   */
 static uint32_t USBD_MTP_Itf_GetContainerLength(uint32_t Param1)
 {
-  uint32_t length = 0U;
-  UNUSED(Param1);
+	uint32_t length = 0U;
+	UNUSED(Param1);
 
-  return length;
+	return length;
 }
 
 /**
@@ -293,10 +292,10 @@ static uint32_t USBD_MTP_Itf_GetContainerLength(uint32_t Param1)
   */
 static uint16_t USBD_MTP_Itf_DeleteObject(uint32_t Param1)
 {
-  uint16_t rep_code = 0U;
-  UNUSED(Param1);
+	uint16_t rep_code = 0U;
+	UNUSED(Param1);
 
-  return rep_code;
+	return rep_code;
 }
 
 /**
@@ -324,11 +323,11 @@ static uint16_t USBD_MTP_Itf_DeleteObject(uint32_t Param1)
   */
 static uint32_t USBD_MTP_Itf_ReadData(uint32_t Param1, uint8_t *buff, MTP_DataLengthTypeDef *data_length)
 {
-  UNUSED(Param1);
-  UNUSED(buff);
-  UNUSED(data_length);
+	UNUSED(Param1);
+	UNUSED(buff);
+	UNUSED(data_length);
 
-  return 0U;
+	return 0U;
 }
 
 /**
@@ -339,9 +338,9 @@ static uint32_t USBD_MTP_Itf_ReadData(uint32_t Param1, uint8_t *buff, MTP_DataLe
   */
 static void USBD_MTP_Itf_Cancel(uint32_t Phase)
 {
-  UNUSED(Phase);
+	UNUSED(Phase);
 
-  /* Make sure to close open file while canceling transaction */
+	/* Make sure to close open file while canceling transaction */
 
-  return;
+	return;
 }

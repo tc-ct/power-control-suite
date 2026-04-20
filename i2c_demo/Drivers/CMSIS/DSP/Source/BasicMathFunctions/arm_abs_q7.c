@@ -56,121 +56,120 @@
 #include "arm_helium_utils.h"
 
 void arm_abs_q7(
-    const q7_t * pSrc,
-    q7_t * pDst,
-    uint32_t blockSize)
+	const q7_t * pSrc,
+	q7_t * pDst,
+	uint32_t blockSize)
 {
-    uint32_t  blkCnt;           /* loop counters */
-    q7x16_t vecSrc;
+	uint32_t  blkCnt;           /* loop counters */
+	q7x16_t vecSrc;
 
-    /* Compute 16 outputs at a time */
-    blkCnt = blockSize >> 4;
-    while (blkCnt > 0U)
-    {
-        /*
-         * C = |A|
-         * Calculate absolute and then store the results in the destination buffer.
-         */
-        vecSrc = vld1q(pSrc);
-        vst1q(pDst, vqabsq(vecSrc));
-        /*
-         * Decrement the blockSize loop counter
-         */
-        blkCnt--;
-        /*
-         * advance vector source and destination pointers
-         */
-        pSrc += 16;
-        pDst += 16;
-    }
-    /*
-     * tail
-     */
-    blkCnt = blockSize & 0xF;
-    if (blkCnt > 0U)
-    {
-        mve_pred16_t p0 = vctp8q(blkCnt);
-        vecSrc = vld1q(pSrc);
-        vstrbq_p(pDst, vqabsq(vecSrc), p0);
-    }
+	/* Compute 16 outputs at a time */
+	blkCnt = blockSize >> 4;
+
+	while (blkCnt > 0U) {
+		/*
+		 * C = |A|
+		 * Calculate absolute and then store the results in the destination buffer.
+		 */
+		vecSrc = vld1q(pSrc);
+		vst1q(pDst, vqabsq(vecSrc));
+		/*
+		 * Decrement the blockSize loop counter
+		 */
+		blkCnt--;
+		/*
+		 * advance vector source and destination pointers
+		 */
+		pSrc += 16;
+		pDst += 16;
+	}
+
+	/*
+	 * tail
+	 */
+	blkCnt = blockSize & 0xF;
+
+	if (blkCnt > 0U) {
+		mve_pred16_t p0 = vctp8q(blkCnt);
+		vecSrc = vld1q(pSrc);
+		vstrbq_p(pDst, vqabsq(vecSrc), p0);
+	}
 }
 
 #else
 void arm_abs_q7(
-  const q7_t * pSrc,
-        q7_t * pDst,
-        uint32_t blockSize)
+	const q7_t * pSrc,
+	q7_t * pDst,
+	uint32_t blockSize)
 {
-        uint32_t blkCnt;                               /* Loop counter */
-        q7_t in;                                       /* Temporary input variable */
+	uint32_t blkCnt;                               /* Loop counter */
+	q7_t in;                                       /* Temporary input variable */
 
 #if defined (ARM_MATH_LOOPUNROLL)
 
-  /* Loop unrolling: Compute 4 outputs at a time */
-  blkCnt = blockSize >> 2U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = blockSize >> 2U;
 
-  while (blkCnt > 0U)
-  {
-    /* C = |A| */
+	while (blkCnt > 0U) {
+		/* C = |A| */
 
-    /* Calculate absolute of input (if -1 then saturated to 0x7f) and store result in destination buffer. */
-    in = *pSrc++;
+		/* Calculate absolute of input (if -1 then saturated to 0x7f) and store result in destination buffer. */
+		in = *pSrc++;
 #if defined (ARM_MATH_DSP)
-    *pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
+		*pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
 #else
-    *pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
+		*pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
 #endif
 
-    in = *pSrc++;
+		in = *pSrc++;
 #if defined (ARM_MATH_DSP)
-    *pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
+		*pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
 #else
-    *pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
+		*pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
 #endif
 
-    in = *pSrc++;
+		in = *pSrc++;
 #if defined (ARM_MATH_DSP)
-    *pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
+		*pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
 #else
-    *pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
+		*pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
 #endif
 
-    in = *pSrc++;
+		in = *pSrc++;
 #if defined (ARM_MATH_DSP)
-    *pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
+		*pDst++ = (in > 0) ? in : (q7_t)__QSUB8(0, in);
 #else
-    *pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
+		*pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
 #endif
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* Loop unrolling: Compute remaining outputs */
-  blkCnt = blockSize % 0x4U;
+	/* Loop unrolling: Compute remaining outputs */
+	blkCnt = blockSize % 0x4U;
 
 #else
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = blockSize;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = blockSize;
 
 #endif /* #if defined (ARM_MATH_LOOPUNROLL) */
 
-  while (blkCnt > 0U)
-  {
-    /* C = |A| */
+	while (blkCnt > 0U) {
+		/* C = |A| */
 
-    /* Calculate absolute of input (if -1 then saturated to 0x7f) and store result in destination buffer. */
-    in = *pSrc++;
+		/* Calculate absolute of input (if -1 then saturated to 0x7f) and store result in destination buffer. */
+		in = *pSrc++;
 #if defined (ARM_MATH_DSP)
-    *pDst++ = (in > 0) ? in : (q7_t) __QSUB8(0, in);
+		*pDst++ = (in > 0) ? in : (q7_t) __QSUB8(0, in);
 #else
-    *pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
+		*pDst++ = (in > 0) ? in : ((in == (q7_t) 0x80) ? (q7_t) 0x7f : -in);
 #endif
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
 }
 #endif /* defined(ARM_MATH_MVEI) */

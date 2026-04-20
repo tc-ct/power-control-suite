@@ -180,113 +180,95 @@
   */
 HAL_StatusTypeDef HAL_IWDG_Init(IWDG_HandleTypeDef *hiwdg)
 {
-  uint32_t tickstart;
+	uint32_t tickstart;
 
-  /* Check the IWDG handle allocation */
-  if (hiwdg == NULL)
-  {
-    return HAL_ERROR;
-  }
+	/* Check the IWDG handle allocation */
+	if (hiwdg == NULL)
+		return HAL_ERROR;
 
-  /* Check the parameters */
-  assert_param(IS_IWDG_ALL_INSTANCE(hiwdg->Instance));
-  assert_param(IS_IWDG_PRESCALER(hiwdg->Init.Prescaler));
-  assert_param(IS_IWDG_RELOAD(hiwdg->Init.Reload));
-  assert_param(IS_IWDG_WINDOW(hiwdg->Init.Window));
-  assert_param(IS_IWDG_EWI(hiwdg->Init.EWI));
+	/* Check the parameters */
+	assert_param(IS_IWDG_ALL_INSTANCE(hiwdg->Instance));
+	assert_param(IS_IWDG_PRESCALER(hiwdg->Init.Prescaler));
+	assert_param(IS_IWDG_RELOAD(hiwdg->Init.Reload));
+	assert_param(IS_IWDG_WINDOW(hiwdg->Init.Window));
+	assert_param(IS_IWDG_EWI(hiwdg->Init.EWI));
 
 #if (USE_HAL_IWDG_REGISTER_CALLBACKS == 1)
-  /* Reset Callback pointers */
-  if (hiwdg->EwiCallback == NULL)
-  {
-    hiwdg->EwiCallback = HAL_IWDG_EarlyWakeupCallback;
-  }
-  if (hiwdg->MspInitCallback == NULL)
-  {
-    hiwdg->MspInitCallback = HAL_IWDG_MspInit;
-  }
 
-  /* Init the low level hardware */
-  hiwdg->MspInitCallback(hiwdg);
+	/* Reset Callback pointers */
+	if (hiwdg->EwiCallback == NULL)
+		hiwdg->EwiCallback = HAL_IWDG_EarlyWakeupCallback;
+
+	if (hiwdg->MspInitCallback == NULL)
+		hiwdg->MspInitCallback = HAL_IWDG_MspInit;
+
+	/* Init the low level hardware */
+	hiwdg->MspInitCallback(hiwdg);
 #else
-  /* Init the low level hardware */
-  HAL_IWDG_MspInit(hiwdg);
+	/* Init the low level hardware */
+	HAL_IWDG_MspInit(hiwdg);
 #endif /* USE_HAL_IWDG_REGISTER_CALLBACKS */
 
-  /* Enable IWDG. LSI is turned on automatically */
-  __HAL_IWDG_START(hiwdg);
+	/* Enable IWDG. LSI is turned on automatically */
+	__HAL_IWDG_START(hiwdg);
 
-  /* Enable write access to IWDG_PR, IWDG_RLR, IWDG_WINR and EWCR registers by writing
-  0x5555 in KR */
-  IWDG_ENABLE_WRITE_ACCESS(hiwdg);
+	/* Enable write access to IWDG_PR, IWDG_RLR, IWDG_WINR and EWCR registers by writing
+	0x5555 in KR */
+	IWDG_ENABLE_WRITE_ACCESS(hiwdg);
 
-  /* Write to IWDG registers the Prescaler & Reload values to work with */
-  hiwdg->Instance->PR = hiwdg->Init.Prescaler;
-  hiwdg->Instance->RLR = hiwdg->Init.Reload;
+	/* Write to IWDG registers the Prescaler & Reload values to work with */
+	hiwdg->Instance->PR = hiwdg->Init.Prescaler;
+	hiwdg->Instance->RLR = hiwdg->Init.Reload;
 
-  /* Check Reload update flag, before performing any reload of the counter, else previous value
-  will be taken. */
-  tickstart = HAL_GetTick();
+	/* Check Reload update flag, before performing any reload of the counter, else previous value
+	will be taken. */
+	tickstart = HAL_GetTick();
 
-  /* Wait for register to be updated */
-  while ((hiwdg->Instance->SR & IWDG_SR_RVU) != 0x00u)
-  {
-    if ((HAL_GetTick() - tickstart) > HAL_IWDG_DEFAULT_TIMEOUT)
-    {
-      if ((hiwdg->Instance->SR & IWDG_SR_RVU) != 0x00u)
-      {
-        return HAL_TIMEOUT;
-      }
-    }
-  }
+	/* Wait for register to be updated */
+	while ((hiwdg->Instance->SR & IWDG_SR_RVU) != 0x00u) {
+		if ((HAL_GetTick() - tickstart) > HAL_IWDG_DEFAULT_TIMEOUT) {
+			if ((hiwdg->Instance->SR & IWDG_SR_RVU) != 0x00u)
+				return HAL_TIMEOUT;
+		}
+	}
 
-  if (hiwdg->Init.EWI == IWDG_EWI_DISABLE)
-  {
-    /* EWI comparator value equal 0, disable the early wakeup interrupt
-     * acknowledge the early wakeup interrupt in any cases. it clears the EWIF flag in SR register
-     * Set Watchdog Early Wakeup Comparator to 0x00 */
-    hiwdg->Instance->EWCR = IWDG_EWCR_EWIC;
-  }
-  else
-  {
-    /* EWI comparator value different from 0, enable the early wakeup interrupt,
-     * acknowledge the early wakeup interrupt in any cases. it clears the EWIF flag in SR register
-     * Set Watchdog Early Wakeup Comparator value */
-    hiwdg->Instance->EWCR = IWDG_EWCR_EWIE | IWDG_EWCR_EWIC | hiwdg->Init.EWI;
-  }
+	if (hiwdg->Init.EWI == IWDG_EWI_DISABLE) {
+		/* EWI comparator value equal 0, disable the early wakeup interrupt
+		 * acknowledge the early wakeup interrupt in any cases. it clears the EWIF flag in SR register
+		 * Set Watchdog Early Wakeup Comparator to 0x00 */
+		hiwdg->Instance->EWCR = IWDG_EWCR_EWIC;
+	} else {
+		/* EWI comparator value different from 0, enable the early wakeup interrupt,
+		 * acknowledge the early wakeup interrupt in any cases. it clears the EWIF flag in SR register
+		 * Set Watchdog Early Wakeup Comparator value */
+		hiwdg->Instance->EWCR = IWDG_EWCR_EWIE | IWDG_EWCR_EWIC | hiwdg->Init.EWI;
+	}
 
-  /* Check pending flag, if previous update not done, return timeout */
-  tickstart = HAL_GetTick();
+	/* Check pending flag, if previous update not done, return timeout */
+	tickstart = HAL_GetTick();
 
-  /* Wait for register to be updated */
-  while ((hiwdg->Instance->SR & IWDG_KERNEL_UPDATE_FLAGS) != 0x00u)
-  {
-    if ((HAL_GetTick() - tickstart) > HAL_IWDG_DEFAULT_TIMEOUT)
-    {
-      if ((hiwdg->Instance->SR & IWDG_KERNEL_UPDATE_FLAGS) != 0x00u)
-      {
-        return HAL_TIMEOUT;
-      }
-    }
-  }
+	/* Wait for register to be updated */
+	while ((hiwdg->Instance->SR & IWDG_KERNEL_UPDATE_FLAGS) != 0x00u) {
+		if ((HAL_GetTick() - tickstart) > HAL_IWDG_DEFAULT_TIMEOUT) {
+			if ((hiwdg->Instance->SR & IWDG_KERNEL_UPDATE_FLAGS) != 0x00u)
+				return HAL_TIMEOUT;
+		}
+	}
 
-  /* If window parameter is different than current value, modify window
-  register */
-  if (hiwdg->Instance->WINR != hiwdg->Init.Window)
-  {
-    /* Write to IWDG WINR the IWDG_Window value to compare with. In any case,
-    even if window feature is disabled, Watchdog will be reloaded by writing
-    windows register */
-    hiwdg->Instance->WINR = hiwdg->Init.Window;
-  }
-  else
-  {
-    /* Reload IWDG counter with value defined in the reload register */
-    __HAL_IWDG_RELOAD_COUNTER(hiwdg);
-  }
+	/* If window parameter is different than current value, modify window
+	register */
+	if (hiwdg->Instance->WINR != hiwdg->Init.Window) {
+		/* Write to IWDG WINR the IWDG_Window value to compare with. In any case,
+		even if window feature is disabled, Watchdog will be reloaded by writing
+		windows register */
+		hiwdg->Instance->WINR = hiwdg->Init.Window;
+	} else {
+		/* Reload IWDG counter with value defined in the reload register */
+		__HAL_IWDG_RELOAD_COUNTER(hiwdg);
+	}
 
-  /* Return function status */
-  return HAL_OK;
+	/* Return function status */
+	return HAL_OK;
 }
 
 
@@ -301,12 +283,12 @@ HAL_StatusTypeDef HAL_IWDG_Init(IWDG_HandleTypeDef *hiwdg)
   */
 __weak void HAL_IWDG_MspInit(IWDG_HandleTypeDef *hiwdg)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(hiwdg);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(hiwdg);
 
-  /* NOTE: This function should not be modified, when the callback is needed,
-           the HAL_IWDG_MspInit could be implemented in the user file
-   */
+	/* NOTE: This function should not be modified, when the callback is needed,
+	         the HAL_IWDG_MspInit could be implemented in the user file
+	 */
 }
 
 
@@ -323,32 +305,29 @@ __weak void HAL_IWDG_MspInit(IWDG_HandleTypeDef *hiwdg)
   * @retval status
   */
 HAL_StatusTypeDef HAL_IWDG_RegisterCallback(IWDG_HandleTypeDef *hiwdg, HAL_IWDG_CallbackIDTypeDef CallbackID,
-                                            pIWDG_CallbackTypeDef pCallback)
+		pIWDG_CallbackTypeDef pCallback)
 {
-  HAL_StatusTypeDef status = HAL_OK;
+	HAL_StatusTypeDef status = HAL_OK;
 
-  if (pCallback == NULL)
-  {
-    status = HAL_ERROR;
-  }
-  else
-  {
-    switch (CallbackID)
-    {
-      case HAL_IWDG_EWI_CB_ID:
-        hiwdg->EwiCallback = pCallback;
-        break;
-      case HAL_IWDG_MSPINIT_CB_ID:
-        hiwdg->MspInitCallback = pCallback;
-        break;
+	if (pCallback == NULL)
+		status = HAL_ERROR;
+	else {
+		switch (CallbackID) {
+			case HAL_IWDG_EWI_CB_ID:
+				hiwdg->EwiCallback = pCallback;
+				break;
 
-      default:
-        status = HAL_ERROR;
-        break;
-    }
-  }
+			case HAL_IWDG_MSPINIT_CB_ID:
+				hiwdg->MspInitCallback = pCallback;
+				break;
 
-  return status;
+			default:
+				status = HAL_ERROR;
+				break;
+		}
+	}
+
+	return status;
 }
 
 
@@ -364,23 +343,23 @@ HAL_StatusTypeDef HAL_IWDG_RegisterCallback(IWDG_HandleTypeDef *hiwdg, HAL_IWDG_
   */
 HAL_StatusTypeDef HAL_IWDG_UnRegisterCallback(IWDG_HandleTypeDef *hiwdg, HAL_IWDG_CallbackIDTypeDef CallbackID)
 {
-  HAL_StatusTypeDef status = HAL_OK;
+	HAL_StatusTypeDef status = HAL_OK;
 
-  switch (CallbackID)
-  {
-    case HAL_IWDG_EWI_CB_ID:
-      hiwdg->EwiCallback = HAL_IWDG_EarlyWakeupCallback;
-      break;
-    case HAL_IWDG_MSPINIT_CB_ID:
-      hiwdg->MspInitCallback = HAL_IWDG_MspInit;
-      break;
+	switch (CallbackID) {
+		case HAL_IWDG_EWI_CB_ID:
+			hiwdg->EwiCallback = HAL_IWDG_EarlyWakeupCallback;
+			break;
 
-    default:
-      status = HAL_ERROR;
-      break;
-  }
+		case HAL_IWDG_MSPINIT_CB_ID:
+			hiwdg->MspInitCallback = HAL_IWDG_MspInit;
+			break;
 
-  return status;
+		default:
+			status = HAL_ERROR;
+			break;
+	}
+
+	return status;
 }
 #endif /* USE_HAL_IWDG_REGISTER_CALLBACKS */
 
@@ -412,11 +391,11 @@ HAL_StatusTypeDef HAL_IWDG_UnRegisterCallback(IWDG_HandleTypeDef *hiwdg, HAL_IWD
   */
 HAL_StatusTypeDef HAL_IWDG_Refresh(IWDG_HandleTypeDef *hiwdg)
 {
-  /* Reload IWDG counter with value defined in the reload register */
-  __HAL_IWDG_RELOAD_COUNTER(hiwdg);
+	/* Reload IWDG counter with value defined in the reload register */
+	__HAL_IWDG_RELOAD_COUNTER(hiwdg);
 
-  /* Return function status */
-  return HAL_OK;
+	/* Return function status */
+	return HAL_OK;
 }
 
 
@@ -432,13 +411,13 @@ HAL_StatusTypeDef HAL_IWDG_Refresh(IWDG_HandleTypeDef *hiwdg)
   */
 uint32_t HAL_IWDG_GetActiveStatus(const IWDG_HandleTypeDef *hiwdg)
 {
-  uint32_t status;
+	uint32_t status;
 
-  /* Get back ONF flag */
-  status = (hiwdg->Instance->SR & IWDG_SR_ONF);
+	/* Get back ONF flag */
+	status = (hiwdg->Instance->SR & IWDG_SR_ONF);
 
-  /* Return status */
-  return status;
+	/* Return status */
+	return status;
 }
 
 
@@ -458,20 +437,19 @@ uint32_t HAL_IWDG_GetActiveStatus(const IWDG_HandleTypeDef *hiwdg)
   */
 void HAL_IWDG_IRQHandler(IWDG_HandleTypeDef *hiwdg)
 {
-  /* Check if IWDG Early Wakeup Interrupt occurred */
-  if ((hiwdg->Instance->SR & IWDG_SR_EWIF) != 0x00u)
-  {
-    /* Clear the IWDG Early Wakeup flag */
-    hiwdg->Instance->EWCR |= IWDG_EWCR_EWIC;
+	/* Check if IWDG Early Wakeup Interrupt occurred */
+	if ((hiwdg->Instance->SR & IWDG_SR_EWIF) != 0x00u) {
+		/* Clear the IWDG Early Wakeup flag */
+		hiwdg->Instance->EWCR |= IWDG_EWCR_EWIC;
 
 #if (USE_HAL_IWDG_REGISTER_CALLBACKS == 1)
-    /* Early Wakeup registered callback */
-    hiwdg->EwiCallback(hiwdg);
+		/* Early Wakeup registered callback */
+		hiwdg->EwiCallback(hiwdg);
 #else
-    /* Early Wakeup callback */
-    HAL_IWDG_EarlyWakeupCallback(hiwdg);
+		/* Early Wakeup callback */
+		HAL_IWDG_EarlyWakeupCallback(hiwdg);
 #endif /* USE_HAL_IWDG_REGISTER_CALLBACKS */
-  }
+	}
 }
 
 
@@ -483,12 +461,12 @@ void HAL_IWDG_IRQHandler(IWDG_HandleTypeDef *hiwdg)
   */
 __weak void HAL_IWDG_EarlyWakeupCallback(IWDG_HandleTypeDef *hiwdg)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(hiwdg);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(hiwdg);
 
-  /* NOTE: This function should not be modified, when the callback is needed,
-           the HAL_IWDG_EarlyWakeupCallback could be implemented in the user file
-   */
+	/* NOTE: This function should not be modified, when the callback is needed,
+	         the HAL_IWDG_EarlyWakeupCallback could be implemented in the user file
+	 */
 }
 
 

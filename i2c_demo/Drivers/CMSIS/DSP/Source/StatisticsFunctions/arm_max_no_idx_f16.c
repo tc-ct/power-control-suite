@@ -55,83 +55,79 @@
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 void arm_max_no_idx_f16(
-    const float16_t *pSrc,
-    uint32_t   blockSize,
-    float16_t *pResult)
+	const float16_t *pSrc,
+	uint32_t   blockSize,
+	float16_t *pResult)
 {
-   f16x8_t     vecSrc;
-   f16x8_t     curExtremValVec = vdupq_n_f16(F16_MIN);
-   float16_t   maxValue = F16_MIN;
-   float16_t   newVal;
-   uint32_t    blkCnt;
+	f16x8_t     vecSrc;
+	f16x8_t     curExtremValVec = vdupq_n_f16(F16_MIN);
+	float16_t   maxValue = F16_MIN;
+	float16_t   newVal;
+	uint32_t    blkCnt;
 
-   /* Loop unrolling: Compute 4 outputs at a time */
-   blkCnt = blockSize >> 3U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = blockSize >> 3U;
 
-   while (blkCnt > 0U)
-   {
+	while (blkCnt > 0U) {
 
-        vecSrc = vldrhq_f16(pSrc);
-        /*
-         * update per-lane max.
-         */
-        curExtremValVec = vmaxnmq(vecSrc, curExtremValVec);
-        /*
-         * Decrement the blockSize loop counter
-         * Advance vector source and destination pointers
-         */
-        pSrc += 8;
-        blkCnt --;
-    }
-    /*
-     * Get max value across the vector
-     */
-    maxValue = vmaxnmvq(maxValue, curExtremValVec);
+		vecSrc = vldrhq_f16(pSrc);
+		/*
+		 * update per-lane max.
+		 */
+		curExtremValVec = vmaxnmq(vecSrc, curExtremValVec);
+		/*
+		 * Decrement the blockSize loop counter
+		 * Advance vector source and destination pointers
+		 */
+		pSrc += 8;
+		blkCnt --;
+	}
 
-    blkCnt = blockSize & 7;
+	/*
+	 * Get max value across the vector
+	 */
+	maxValue = vmaxnmvq(maxValue, curExtremValVec);
 
-    while (blkCnt > 0U)
-    {
-        newVal = *pSrc++;
+	blkCnt = blockSize & 7;
 
-        /* compare for the maximum value */
-        if ((_Float16)maxValue < (_Float16)newVal)
-        {
-            /* Update the maximum value and it's index */
-            maxValue = newVal;
-        }
+	while (blkCnt > 0U) {
+		newVal = *pSrc++;
 
-        blkCnt --;
-    }
+		/* compare for the maximum value */
+		if ((_Float16)maxValue < (_Float16)newVal) {
+			/* Update the maximum value and it's index */
+			maxValue = newVal;
+		}
 
-    *pResult = maxValue;
+		blkCnt --;
+	}
+
+	*pResult = maxValue;
 }
 
 #else
 
 void arm_max_no_idx_f16(
-    const float16_t *pSrc,
-    uint32_t   blockSize,
-    float16_t *pResult)
+	const float16_t *pSrc,
+	uint32_t   blockSize,
+	float16_t *pResult)
 {
-   float16_t   maxValue = F16_MIN;
-   float16_t   newVal;
+	float16_t   maxValue = F16_MIN;
+	float16_t   newVal;
 
-   while (blockSize > 0U)
-   {
-       newVal = *pSrc++;
-   
-       /* compare for the maximum value */
-       if ((_Float16)maxValue < (_Float16)newVal)
-       {
-           /* Update the maximum value and it's index */
-           maxValue = newVal;
-       }
-   
-       blockSize --;
-   }
-    
-   *pResult = maxValue;
+	while (blockSize > 0U) {
+		newVal = *pSrc++;
+
+		/* compare for the maximum value */
+		if ((_Float16)maxValue < (_Float16)newVal) {
+			/* Update the maximum value and it's index */
+			maxValue = newVal;
+		}
+
+		blockSize --;
+	}
+
+	*pResult = maxValue;
 }
 
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
@@ -140,5 +136,5 @@ void arm_max_no_idx_f16(
   @} end of Max group
  */
 
-#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
 

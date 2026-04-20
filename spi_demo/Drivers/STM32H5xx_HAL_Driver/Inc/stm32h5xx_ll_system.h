@@ -417,7 +417,7 @@ extern "C" {
   */
 __STATIC_INLINE void LL_SBS_SetPHYInterface(uint32_t Interface)
 {
-  MODIFY_REG(SBS->PMCR, SBS_PMCR_ETH_SEL_PHY, Interface);
+	MODIFY_REG(SBS->PMCR, SBS_PMCR_ETH_SEL_PHY, Interface);
 }
 
 /**
@@ -429,7 +429,7 @@ __STATIC_INLINE void LL_SBS_SetPHYInterface(uint32_t Interface)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetPHYInterface(void)
 {
-  return (uint32_t)(READ_BIT(SBS->PMCR, SBS_PMCR_ETH_SEL_PHY));
+	return (uint32_t)(READ_BIT(SBS->PMCR, SBS_PMCR_ETH_SEL_PHY));
 }
 #endif /* SBS_PMCR_ETH_SEL_PHY */
 
@@ -446,7 +446,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetPHYInterface(void)
   */
 __STATIC_INLINE void LL_SBS_EnableFastModePlus(uint32_t ConfigFastModePlus)
 {
-  SET_BIT(SBS->PMCR, ConfigFastModePlus);
+	SET_BIT(SBS->PMCR, ConfigFastModePlus);
 }
 
 /**
@@ -462,7 +462,7 @@ __STATIC_INLINE void LL_SBS_EnableFastModePlus(uint32_t ConfigFastModePlus)
   */
 __STATIC_INLINE void LL_SBS_DisableFastModePlus(uint32_t ConfigFastModePlus)
 {
-  CLEAR_BIT(SBS->PMCR, ConfigFastModePlus);
+	CLEAR_BIT(SBS->PMCR, ConfigFastModePlus);
 }
 
 /**
@@ -472,7 +472,7 @@ __STATIC_INLINE void LL_SBS_DisableFastModePlus(uint32_t ConfigFastModePlus)
   */
 __STATIC_INLINE void LL_SBS_EnableIT_FPU_IOC(void)
 {
-  SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_0);
+	SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_0);
 }
 
 /**
@@ -482,7 +482,7 @@ __STATIC_INLINE void LL_SBS_EnableIT_FPU_IOC(void)
   */
 __STATIC_INLINE void LL_SBS_EnableIT_FPU_DZC(void)
 {
-  SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_1);
+	SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_1);
 }
 
 /**
@@ -492,7 +492,7 @@ __STATIC_INLINE void LL_SBS_EnableIT_FPU_DZC(void)
   */
 __STATIC_INLINE void LL_SBS_EnableIT_FPU_UFC(void)
 {
-  SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_2);
+	SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_2);
 }
 
 /**
@@ -502,7 +502,7 @@ __STATIC_INLINE void LL_SBS_EnableIT_FPU_UFC(void)
   */
 __STATIC_INLINE void LL_SBS_EnableIT_FPU_OFC(void)
 {
-  SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_3);
+	SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_3);
 }
 
 /**
@@ -512,7 +512,7 @@ __STATIC_INLINE void LL_SBS_EnableIT_FPU_OFC(void)
   */
 __STATIC_INLINE void LL_SBS_EnableIT_FPU_IDC(void)
 {
-  SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_4);
+	SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_4);
 }
 
 /**
@@ -522,7 +522,7 @@ __STATIC_INLINE void LL_SBS_EnableIT_FPU_IDC(void)
   */
 __STATIC_INLINE void LL_SBS_EnableIT_FPU_IXC(void)
 {
-  SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_5);
+	SET_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_5);
 }
 
 /**
@@ -532,7 +532,7 @@ __STATIC_INLINE void LL_SBS_EnableIT_FPU_IXC(void)
   */
 __STATIC_INLINE void LL_SBS_DisableIT_FPU_IOC(void)
 {
-  CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_0);
+	CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_0);
 }
 
 /**
@@ -542,7 +542,7 @@ __STATIC_INLINE void LL_SBS_DisableIT_FPU_IOC(void)
   */
 __STATIC_INLINE void LL_SBS_DisableIT_FPU_DZC(void)
 {
-  CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_1);
+	CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_1);
 }
 
 /**
@@ -552,7 +552,7 @@ __STATIC_INLINE void LL_SBS_DisableIT_FPU_DZC(void)
   */
 __STATIC_INLINE void LL_SBS_DisableIT_FPU_UFC(void)
 {
-  CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_2);
+	CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_2);
 }
 
 /**
@@ -562,7 +562,7 @@ __STATIC_INLINE void LL_SBS_DisableIT_FPU_UFC(void)
   */
 __STATIC_INLINE void LL_SBS_DisableIT_FPU_OFC(void)
 {
-  CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_3);
+	CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_3);
 }
 
 /**
@@ -572,7 +572,7 @@ __STATIC_INLINE void LL_SBS_DisableIT_FPU_OFC(void)
   */
 __STATIC_INLINE void LL_SBS_DisableIT_FPU_IDC(void)
 {
-  CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_4);
+	CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_4);
 }
 
 /**
@@ -582,7 +582,7 @@ __STATIC_INLINE void LL_SBS_DisableIT_FPU_IDC(void)
   */
 __STATIC_INLINE void LL_SBS_DisableIT_FPU_IXC(void)
 {
-  CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_5);
+	CLEAR_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_5);
 }
 
 /**
@@ -592,7 +592,7 @@ __STATIC_INLINE void LL_SBS_DisableIT_FPU_IXC(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_IOC(void)
 {
-  return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_0) == SBS_FPUIMR_FPU_IE_0) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_0) == SBS_FPUIMR_FPU_IE_0) ? 1UL : 0UL);
 }
 
 /**
@@ -602,7 +602,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_IOC(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_DZC(void)
 {
-  return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_1) == SBS_FPUIMR_FPU_IE_1) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_1) == SBS_FPUIMR_FPU_IE_1) ? 1UL : 0UL);
 }
 
 /**
@@ -612,7 +612,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_DZC(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_UFC(void)
 {
-  return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_2) == SBS_FPUIMR_FPU_IE_2) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_2) == SBS_FPUIMR_FPU_IE_2) ? 1UL : 0UL);
 }
 
 /**
@@ -622,7 +622,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_UFC(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_OFC(void)
 {
-  return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_3) == SBS_FPUIMR_FPU_IE_3) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_3) == SBS_FPUIMR_FPU_IE_3) ? 1UL : 0UL);
 }
 
 /**
@@ -632,7 +632,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_OFC(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_IDC(void)
 {
-  return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_4) == SBS_FPUIMR_FPU_IE_4) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_4) == SBS_FPUIMR_FPU_IE_4) ? 1UL : 0UL);
 }
 
 /**
@@ -642,7 +642,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_IDC(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_IXC(void)
 {
-  return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_5) == SBS_FPUIMR_FPU_IE_5) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->FPUIMR, SBS_FPUIMR_FPU_IE_5) == SBS_FPUIMR_FPU_IE_5) ? 1UL : 0UL);
 }
 
 /**
@@ -661,7 +661,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsEnabledIT_FPU_IXC(void)
   */
 __STATIC_INLINE void LL_SBS_SetTIMBreakInputs(uint32_t Break)
 {
-  MODIFY_REG(SBS->CFGR2, SBS_CFGR2_CLL | SBS_CFGR2_SEL | SBS_CFGR2_PVDL | SBS_CFGR2_ECCL, Break);
+	MODIFY_REG(SBS->CFGR2, SBS_CFGR2_CLL | SBS_CFGR2_SEL | SBS_CFGR2_PVDL | SBS_CFGR2_ECCL, Break);
 }
 
 /**
@@ -678,7 +678,7 @@ __STATIC_INLINE void LL_SBS_SetTIMBreakInputs(uint32_t Break)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetTIMBreakInputs(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CFGR2, SBS_CFGR2_CLL | SBS_CFGR2_SEL | SBS_CFGR2_PVDL | SBS_CFGR2_ECCL));
+	return (uint32_t)(READ_BIT(SBS->CFGR2, SBS_CFGR2_CLL | SBS_CFGR2_SEL | SBS_CFGR2_PVDL | SBS_CFGR2_ECCL));
 }
 
 #if defined(SBS_EPOCHSELCR_EPOCH_SEL)
@@ -694,7 +694,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetTIMBreakInputs(void)
   */
 __STATIC_INLINE void LL_SBS_EPOCHSelection(uint32_t Epoch_Selection)
 {
-  MODIFY_REG(SBS->EPOCHSELCR, SBS_EPOCHSELCR_EPOCH_SEL, (uint32_t)(Epoch_Selection));
+	MODIFY_REG(SBS->EPOCHSELCR, SBS_EPOCHSELCR_EPOCH_SEL, (uint32_t)(Epoch_Selection));
 }
 
 /**
@@ -707,7 +707,7 @@ __STATIC_INLINE void LL_SBS_EPOCHSelection(uint32_t Epoch_Selection)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetEPOCHSelection(void)
 {
-  return (uint32_t)(READ_BIT(SBS->EPOCHSELCR, SBS_EPOCHSELCR_EPOCH_SEL));
+	return (uint32_t)(READ_BIT(SBS->EPOCHSELCR, SBS_EPOCHSELCR_EPOCH_SEL));
 }
 #endif /* SBS_EPOCHSELCR_EPOCH_SEL */
 
@@ -718,7 +718,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetEPOCHSelection(void)
   */
 __STATIC_INLINE  void LL_SBS_FLASH_DisableECCNMI(void)
 {
-  SET_BIT(SBS->ECCNMIR, SBS_ECCNMIR_ECCNMI_MASK_EN);
+	SET_BIT(SBS->ECCNMIR, SBS_ECCNMIR_ECCNMI_MASK_EN);
 }
 
 /**
@@ -728,7 +728,7 @@ __STATIC_INLINE  void LL_SBS_FLASH_DisableECCNMI(void)
   */
 __STATIC_INLINE  void LL_SBS_FLASH_EnableECCNMI(void)
 {
-  CLEAR_BIT(SBS->ECCNMIR, SBS_ECCNMIR_ECCNMI_MASK_EN);
+	CLEAR_BIT(SBS->ECCNMIR, SBS_ECCNMIR_ECCNMI_MASK_EN);
 }
 
 /** @defgroup SYSTEM_LL_SBS_EF_HDPL_Management HDPL Management
@@ -742,7 +742,7 @@ __STATIC_INLINE  void LL_SBS_FLASH_EnableECCNMI(void)
   */
 __STATIC_INLINE void LL_SBS_IncrementHDPLValue(void)
 {
-  MODIFY_REG(SBS->HDPLCR, SBS_HDPLCR_INCR_HDPL, LL_SBS_HDPL_INCREMENT_VALUE);
+	MODIFY_REG(SBS->HDPLCR, SBS_HDPLCR_INCR_HDPL, LL_SBS_HDPL_INCREMENT_VALUE);
 }
 
 /**
@@ -757,7 +757,7 @@ __STATIC_INLINE void LL_SBS_IncrementHDPLValue(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetHDPLValue(void)
 {
-  return (uint32_t)(READ_BIT(SBS->HDPLSR, SBS_HDPLSR_HDPL));
+	return (uint32_t)(READ_BIT(SBS->HDPLSR, SBS_HDPLSR_HDPL));
 }
 
 #if defined(SBS_NEXTHDPLCR_NEXTHDPL)
@@ -774,7 +774,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetHDPLValue(void)
   */
 __STATIC_INLINE void LL_SBS_SetOBKHDPL(uint32_t OBKHDPL_Value)
 {
-  MODIFY_REG(SBS->NEXTHDPLCR, SBS_NEXTHDPLCR_NEXTHDPL, (uint32_t)(OBKHDPL_Value));
+	MODIFY_REG(SBS->NEXTHDPLCR, SBS_NEXTHDPLCR_NEXTHDPL, (uint32_t)(OBKHDPL_Value));
 }
 
 /**
@@ -789,7 +789,7 @@ __STATIC_INLINE void LL_SBS_SetOBKHDPL(uint32_t OBKHDPL_Value)
   */
 __STATIC_INLINE  uint32_t LL_SBS_GetOBKHDPL(void)
 {
-  return (uint32_t)(READ_BIT(SBS->NEXTHDPLCR, SBS_NEXTHDPLCR_NEXTHDPL));
+	return (uint32_t)(READ_BIT(SBS->NEXTHDPLCR, SBS_NEXTHDPLCR_NEXTHDPL));
 }
 #endif /* SBS_NEXTHDPLCR_NEXTHDPL */
 
@@ -812,7 +812,7 @@ __STATIC_INLINE  uint32_t LL_SBS_GetOBKHDPL(void)
   */
 __STATIC_INLINE void LL_SBS_SetAuthDbgHDPL(uint32_t Level)
 {
-  MODIFY_REG(SBS->DBGCR, SBS_DBGCR_DBG_AUTH_HDPL, (Level << SBS_DBGCR_DBG_AUTH_HDPL_Pos));
+	MODIFY_REG(SBS->DBGCR, SBS_DBGCR_DBG_AUTH_HDPL, (Level << SBS_DBGCR_DBG_AUTH_HDPL_Pos));
 }
 
 /**
@@ -825,7 +825,7 @@ __STATIC_INLINE void LL_SBS_SetAuthDbgHDPL(uint32_t Level)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetAuthDbgHDPL(void)
 {
-  return (uint32_t)(READ_BIT(SBS->DBGCR, SBS_DBGCR_DBG_AUTH_HDPL) >> SBS_DBGCR_DBG_AUTH_HDPL_Pos);
+	return (uint32_t)(READ_BIT(SBS->DBGCR, SBS_DBGCR_DBG_AUTH_HDPL) >> SBS_DBGCR_DBG_AUTH_HDPL_Pos);
 }
 
 #if defined(SBS_DBGCR_DBG_AUTH_SEC)
@@ -840,7 +840,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetAuthDbgHDPL(void)
   */
 __STATIC_INLINE void LL_SBS_SetAuthDbgSec(uint32_t Security)
 {
-  MODIFY_REG(SBS->DBGCR, SBS_DBGCR_DBG_AUTH_SEC, (Security << SBS_DBGCR_DBG_AUTH_SEC_Pos));
+	MODIFY_REG(SBS->DBGCR, SBS_DBGCR_DBG_AUTH_SEC, (Security << SBS_DBGCR_DBG_AUTH_SEC_Pos));
 }
 
 /**
@@ -853,7 +853,7 @@ __STATIC_INLINE void LL_SBS_SetAuthDbgSec(uint32_t Security)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetAuthDbgSec(void)
 {
-  return ((SBS->DBGCR & SBS_DBGCR_DBG_AUTH_SEC) >> SBS_DBGCR_DBG_AUTH_SEC_Pos);
+	return ((SBS->DBGCR & SBS_DBGCR_DBG_AUTH_SEC) >> SBS_DBGCR_DBG_AUTH_SEC_Pos);
 }
 #endif /* SBS_DBGCR_DBG_AUTH_SEC */
 
@@ -864,7 +864,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetAuthDbgSec(void)
   */
 __STATIC_INLINE void LL_SBS_UnlockDebug(void)
 {
-  MODIFY_REG(SBS->DBGCR, SBS_DBGCR_DBG_UNLOCK, LL_SBS_DBG_UNLOCK);
+	MODIFY_REG(SBS->DBGCR, SBS_DBGCR_DBG_UNLOCK, LL_SBS_DBG_UNLOCK);
 }
 
 /**
@@ -874,7 +874,7 @@ __STATIC_INLINE void LL_SBS_UnlockDebug(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsUnlockedDebug(void)
 {
-  return ((READ_BIT(SBS->DBGCR, SBS_DBGCR_DBG_UNLOCK) == LL_SBS_DBG_UNLOCK) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->DBGCR, SBS_DBGCR_DBG_UNLOCK) == LL_SBS_DBG_UNLOCK) ? 1UL : 0UL);
 }
 
 /**
@@ -884,7 +884,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsUnlockedDebug(void)
   */
 __STATIC_INLINE void LL_SBS_UnlockAccessPort(void)
 {
-  MODIFY_REG(SBS->DBGCR, SBS_DBGCR_AP_UNLOCK, LL_SBS_ACCESS_PORT_UNLOCK);
+	MODIFY_REG(SBS->DBGCR, SBS_DBGCR_AP_UNLOCK, LL_SBS_ACCESS_PORT_UNLOCK);
 }
 
 /**
@@ -894,7 +894,7 @@ __STATIC_INLINE void LL_SBS_UnlockAccessPort(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsUnlockedAccessPort(void)
 {
-  return ((READ_BIT(SBS->DBGCR, SBS_DBGCR_AP_UNLOCK) == LL_SBS_ACCESS_PORT_UNLOCK) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->DBGCR, SBS_DBGCR_AP_UNLOCK) == LL_SBS_ACCESS_PORT_UNLOCK) ? 1UL : 0UL);
 }
 
 /**
@@ -904,7 +904,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsUnlockedAccessPort(void)
   */
 __STATIC_INLINE void LL_SBS_LockDebugConfig(void)
 {
-  MODIFY_REG(SBS->DBGLOCKR, SBS_DBGLOCKR_DBGCFG_LOCK, LL_SBS_DBG_CONFIG_LOCK);
+	MODIFY_REG(SBS->DBGLOCKR, SBS_DBGLOCKR_DBGCFG_LOCK, LL_SBS_DBG_CONFIG_LOCK);
 }
 
 /**
@@ -914,7 +914,7 @@ __STATIC_INLINE void LL_SBS_LockDebugConfig(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsLockedDebugConfig(void)
 {
-  return ((READ_BIT(SBS->DBGLOCKR, SBS_DBGLOCKR_DBGCFG_LOCK) != LL_SBS_DBG_CONFIG_UNLOCK) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->DBGLOCKR, SBS_DBGLOCKR_DBGCFG_LOCK) != LL_SBS_DBG_CONFIG_UNLOCK) ? 1UL : 0UL);
 }
 
 /**
@@ -940,8 +940,8 @@ __STATIC_INLINE uint32_t LL_SBS_IsLockedDebugConfig(void)
   */
 __STATIC_INLINE void LL_SBS_NonSecureLock(uint32_t Item)
 {
-  /* Privilege secure/non-secure locks */
-  SBS->CNSLCKR = Item;
+	/* Privilege secure/non-secure locks */
+	SBS->CNSLCKR = Item;
 }
 
 /**
@@ -956,7 +956,7 @@ __STATIC_INLINE void LL_SBS_NonSecureLock(uint32_t Item)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetNonSecureLock(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CNSLCKR, LL_SBS_LOCK_ALL_NSEC));
+	return (uint32_t)(READ_BIT(SBS->CNSLCKR, LL_SBS_LOCK_ALL_NSEC));
 }
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
@@ -977,8 +977,8 @@ __STATIC_INLINE uint32_t LL_SBS_GetNonSecureLock(void)
   */
 __STATIC_INLINE void LL_SBS_SecureLock(uint32_t Item)
 {
-  /* Privilege secure only locks */
-  SBS->CSLCKR = Item;
+	/* Privilege secure only locks */
+	SBS->CSLCKR = Item;
 }
 
 /**
@@ -995,7 +995,7 @@ __STATIC_INLINE void LL_SBS_SecureLock(uint32_t Item)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetSecureLock(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CSLCKR, LL_SBS_LOCK_ALL_SEC));
+	return (uint32_t)(READ_BIT(SBS->CSLCKR, LL_SBS_LOCK_ALL_SEC));
 }
 #endif /* __ARM_FEATURE_CMSE && __ARM_FEATURE_CMSE == 3U */
 
@@ -1023,7 +1023,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetSecureLock(void)
   */
 __STATIC_INLINE void LL_SBS_ConfigSecure(uint32_t Configuration)
 {
-  WRITE_REG(SBS->SECCFGR, Configuration);
+	WRITE_REG(SBS->SECCFGR, Configuration);
 }
 
 /**
@@ -1039,7 +1039,7 @@ __STATIC_INLINE void LL_SBS_ConfigSecure(uint32_t Configuration)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetConfigSecure(void)
 {
-  return (uint32_t)(READ_BIT(SBS->SECCFGR, LL_SBS_CLOCK_SEC | LL_SBS_CLASSB_SEC | LL_SBS_FPU_SEC));
+	return (uint32_t)(READ_BIT(SBS->SECCFGR, LL_SBS_CLOCK_SEC | LL_SBS_CLASSB_SEC | LL_SBS_FPU_SEC));
 }
 #endif /* __ARM_FEATURE_CMSE && __ARM_FEATURE_CMSE == 3U */
 
@@ -1062,7 +1062,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetConfigSecure(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetPMOSVddCompensationValue(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CCVALR, SBS_CCVALR_APSRC1));
+	return (uint32_t)(READ_BIT(SBS->CCVALR, SBS_CCVALR_APSRC1));
 }
 
 /**
@@ -1072,7 +1072,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetPMOSVddCompensationValue(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetNMOSVddCompensationValue(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CCVALR, SBS_CCVALR_ANSRC1));
+	return (uint32_t)(READ_BIT(SBS->CCVALR, SBS_CCVALR_ANSRC1));
 }
 
 /**
@@ -1082,7 +1082,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetNMOSVddCompensationValue(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetPMOSVddIO2CompensationValue(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CCVALR, SBS_CCVALR_APSRC2));
+	return (uint32_t)(READ_BIT(SBS->CCVALR, SBS_CCVALR_APSRC2));
 }
 
 /**
@@ -1092,7 +1092,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetPMOSVddIO2CompensationValue(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetNMOSVddIO2CompensationValue(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CCVALR, SBS_CCVALR_ANSRC2));
+	return (uint32_t)(READ_BIT(SBS->CCVALR, SBS_CCVALR_ANSRC2));
 }
 
 /**
@@ -1105,7 +1105,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetNMOSVddIO2CompensationValue(void)
   */
 __STATIC_INLINE void LL_SBS_SetPMOSVddCompensationCode(uint32_t PMOSCode)
 {
-  MODIFY_REG(SBS->CCSWCR, SBS_CCSWCR_SW_APSRC1, PMOSCode << SBS_CCSWCR_SW_APSRC1_Pos);
+	MODIFY_REG(SBS->CCSWCR, SBS_CCSWCR_SW_APSRC1, PMOSCode << SBS_CCSWCR_SW_APSRC1_Pos);
 }
 
 /**
@@ -1115,7 +1115,7 @@ __STATIC_INLINE void LL_SBS_SetPMOSVddCompensationCode(uint32_t PMOSCode)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetPMOSVddCompensationCode(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CCSWCR, SBS_CCSWCR_SW_APSRC1));
+	return (uint32_t)(READ_BIT(SBS->CCSWCR, SBS_CCSWCR_SW_APSRC1));
 }
 
 /**
@@ -1128,7 +1128,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetPMOSVddCompensationCode(void)
   */
 __STATIC_INLINE void LL_SBS_SetPMOSVddIOCompensationCode(uint32_t PMOSCode)
 {
-  MODIFY_REG(SBS->CCSWCR, SBS_CCSWCR_SW_APSRC2, PMOSCode << SBS_CCSWCR_SW_APSRC2_Pos);
+	MODIFY_REG(SBS->CCSWCR, SBS_CCSWCR_SW_APSRC2, PMOSCode << SBS_CCSWCR_SW_APSRC2_Pos);
 }
 
 /**
@@ -1138,7 +1138,7 @@ __STATIC_INLINE void LL_SBS_SetPMOSVddIOCompensationCode(uint32_t PMOSCode)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetPMOSVddIOCompensationCode(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CCSWCR, SBS_CCSWCR_SW_APSRC2));
+	return (uint32_t)(READ_BIT(SBS->CCSWCR, SBS_CCSWCR_SW_APSRC2));
 }
 
 /**
@@ -1151,7 +1151,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetPMOSVddIOCompensationCode(void)
   */
 __STATIC_INLINE void LL_SBS_SetNMOSVddCompensationCode(uint32_t NMOSCode)
 {
-  MODIFY_REG(SBS->CCSWCR, SBS_CCSWCR_SW_ANSRC1, NMOSCode << SBS_CCSWCR_SW_ANSRC1_Pos);
+	MODIFY_REG(SBS->CCSWCR, SBS_CCSWCR_SW_ANSRC1, NMOSCode << SBS_CCSWCR_SW_ANSRC1_Pos);
 }
 
 /**
@@ -1161,7 +1161,7 @@ __STATIC_INLINE void LL_SBS_SetNMOSVddCompensationCode(uint32_t NMOSCode)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetNMOSVddCompensationCode(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CCSWCR, SBS_CCSWCR_SW_ANSRC1));
+	return (uint32_t)(READ_BIT(SBS->CCSWCR, SBS_CCSWCR_SW_ANSRC1));
 }
 
 /**
@@ -1174,7 +1174,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetNMOSVddCompensationCode(void)
   */
 __STATIC_INLINE void LL_SBS_SetNMOSVddIOCompensationCode(uint32_t NMOSCode)
 {
-  MODIFY_REG(SBS->CCSWCR, SBS_CCSWCR_SW_ANSRC2, NMOSCode << SBS_CCSWCR_SW_ANSRC2_Pos);
+	MODIFY_REG(SBS->CCSWCR, SBS_CCSWCR_SW_ANSRC2, NMOSCode << SBS_CCSWCR_SW_ANSRC2_Pos);
 }
 
 
@@ -1185,7 +1185,7 @@ __STATIC_INLINE void LL_SBS_SetNMOSVddIOCompensationCode(uint32_t NMOSCode)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetNMOSVddIOCompensationCode(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CCSWCR, SBS_CCSWCR_SW_ANSRC2));
+	return (uint32_t)(READ_BIT(SBS->CCSWCR, SBS_CCSWCR_SW_ANSRC2));
 }
 
 /**
@@ -1197,7 +1197,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetNMOSVddIOCompensationCode(void)
   */
 __STATIC_INLINE void LL_SBS_EnableVddCompensationCell(void)
 {
-  SET_BIT(SBS->CCCSR, SBS_CCCSR_EN1);
+	SET_BIT(SBS->CCCSR, SBS_CCCSR_EN1);
 }
 
 /**
@@ -1209,7 +1209,7 @@ __STATIC_INLINE void LL_SBS_EnableVddCompensationCell(void)
   */
 __STATIC_INLINE void LL_SBS_EnableVddIOCompensationCell(void)
 {
-  SET_BIT(SBS->CCCSR, SBS_CCCSR_EN2);
+	SET_BIT(SBS->CCCSR, SBS_CCCSR_EN2);
 }
 
 /**
@@ -1221,7 +1221,7 @@ __STATIC_INLINE void LL_SBS_EnableVddIOCompensationCell(void)
   */
 __STATIC_INLINE void LL_SBS_DisableVddCompensationCell(void)
 {
-  CLEAR_BIT(SBS->CCCSR, SBS_CCCSR_EN1);
+	CLEAR_BIT(SBS->CCCSR, SBS_CCCSR_EN1);
 }
 
 /**
@@ -1233,7 +1233,7 @@ __STATIC_INLINE void LL_SBS_DisableVddCompensationCell(void)
   */
 __STATIC_INLINE void LL_SBS_DisableVddIOCompensationCell(void)
 {
-  CLEAR_BIT(SBS->CCCSR, SBS_CCCSR_EN2);
+	CLEAR_BIT(SBS->CCCSR, SBS_CCCSR_EN2);
 }
 
 /**
@@ -1243,7 +1243,7 @@ __STATIC_INLINE void LL_SBS_DisableVddIOCompensationCell(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsEnabled_VddCompensationCell(void)
 {
-  return ((READ_BIT(SBS->CCCSR, SBS_CCCSR_EN1) == SBS_CCCSR_EN1) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->CCCSR, SBS_CCCSR_EN1) == SBS_CCCSR_EN1) ? 1UL : 0UL);
 }
 
 /**
@@ -1253,7 +1253,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsEnabled_VddCompensationCell(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsEnabled_VddIOCompensationCell(void)
 {
-  return ((READ_BIT(SBS->CCCSR, SBS_CCCSR_EN2) == SBS_CCCSR_EN2) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->CCCSR, SBS_CCCSR_EN2) == SBS_CCCSR_EN2) ? 1UL : 0UL);
 }
 
 /**
@@ -1263,7 +1263,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsEnabled_VddIOCompensationCell(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsActiveFlag_VddCMPCR(void)
 {
-  return ((READ_BIT(SBS->CCCSR, SBS_CCCSR_RDY1) == (SBS_CCCSR_RDY1)) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->CCCSR, SBS_CCCSR_RDY1) == (SBS_CCCSR_RDY1)) ? 1UL : 0UL);
 }
 
 /**
@@ -1273,7 +1273,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsActiveFlag_VddCMPCR(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_IsActiveFlag_VddIOCMPCR(void)
 {
-  return ((READ_BIT(SBS->CCCSR, SBS_CCCSR_RDY2) == (SBS_CCCSR_RDY2)) ? 1UL : 0UL);
+	return ((READ_BIT(SBS->CCCSR, SBS_CCCSR_RDY2) == (SBS_CCCSR_RDY2)) ? 1UL : 0UL);
 }
 
 
@@ -1288,7 +1288,7 @@ __STATIC_INLINE uint32_t LL_SBS_IsActiveFlag_VddIOCMPCR(void)
   */
 __STATIC_INLINE void LL_SBS_SetVddCellCompensationCode(uint32_t CompCode)
 {
-  SET_BIT(SBS->CCCSR, CompCode);
+	SET_BIT(SBS->CCCSR, CompCode);
 }
 
 /**
@@ -1302,7 +1302,7 @@ __STATIC_INLINE void LL_SBS_SetVddCellCompensationCode(uint32_t CompCode)
   */
 __STATIC_INLINE void LL_SBS_SetVddIOCellCompensationCode(uint32_t CompCode)
 {
-  SET_BIT(SBS->CCCSR, CompCode);
+	SET_BIT(SBS->CCCSR, CompCode);
 }
 
 /**
@@ -1314,7 +1314,7 @@ __STATIC_INLINE void LL_SBS_SetVddIOCellCompensationCode(uint32_t CompCode)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetVddCellCompensationCode(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CCCSR, SBS_CCCSR_CS1));
+	return (uint32_t)(READ_BIT(SBS->CCCSR, SBS_CCCSR_CS1));
 }
 
 /**
@@ -1326,7 +1326,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetVddCellCompensationCode(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetVddIOCellCompensationCode(void)
 {
-  return (uint32_t)(READ_BIT(SBS->CCCSR, SBS_CCCSR_CS2));
+	return (uint32_t)(READ_BIT(SBS->CCCSR, SBS_CCCSR_CS2));
 }
 
 #if defined(SBS_OTGHSPHYTUNER2_COMPDISTUNE)
@@ -1340,7 +1340,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetVddIOCellCompensationCode(void)
   */
 __STATIC_INLINE void LL_SBS_SetOTGPHYDisconnectThresholdAdjustment(uint32_t DisconnectThreshold)
 {
-  MODIFY_REG(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_COMPDISTUNE, DisconnectThreshold);
+	MODIFY_REG(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_COMPDISTUNE, DisconnectThreshold);
 }
 
 /**
@@ -1352,7 +1352,7 @@ __STATIC_INLINE void LL_SBS_SetOTGPHYDisconnectThresholdAdjustment(uint32_t Disc
   */
 __STATIC_INLINE uint32_t LL_SBS_GetOTGPHYDisconnectThresholdAdjustment(void)
 {
-  return (uint32_t)(READ_BIT(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_COMPDISTUNE));
+	return (uint32_t)(READ_BIT(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_COMPDISTUNE));
 }
 #endif /* SBS_OTGHSPHYTUNER2_COMPDISTUNE */
 
@@ -1367,7 +1367,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetOTGPHYDisconnectThresholdAdjustment(void)
   */
 __STATIC_INLINE void LL_SBS_SetOTGPHYSquelchThresholdAdjustment(uint32_t SquelchThreshold)
 {
-  MODIFY_REG(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_SQRXTUNE, SquelchThreshold);
+	MODIFY_REG(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_SQRXTUNE, SquelchThreshold);
 }
 
 /**
@@ -1379,7 +1379,7 @@ __STATIC_INLINE void LL_SBS_SetOTGPHYSquelchThresholdAdjustment(uint32_t Squelch
   */
 __STATIC_INLINE uint32_t LL_SBS_GetOTGPHYSquelchThresholdAdjustment(void)
 {
-  return (uint32_t)(READ_BIT(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_SQRXTUNE));
+	return (uint32_t)(READ_BIT(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_SQRXTUNE));
 }
 #endif /* SBS_OTGHSPHYTUNER2_SQRXTUNE */
 
@@ -1396,7 +1396,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetOTGPHYSquelchThresholdAdjustment(void)
   */
 __STATIC_INLINE void LL_SBS_SetOTGPHYTransmitterPreemphasisCurrent(uint32_t PreemphasisCurrent)
 {
-  MODIFY_REG(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_TXPREEMPAMPTUNE, PreemphasisCurrent);
+	MODIFY_REG(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_TXPREEMPAMPTUNE, PreemphasisCurrent);
 }
 
 /**
@@ -1410,7 +1410,7 @@ __STATIC_INLINE void LL_SBS_SetOTGPHYTransmitterPreemphasisCurrent(uint32_t Pree
   */
 __STATIC_INLINE uint32_t LL_SBS_GetOTGPHYTransmitterPreemphasisCurrent(void)
 {
-  return (uint32_t)(READ_BIT(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_TXPREEMPAMPTUNE));
+	return (uint32_t)(READ_BIT(SBS->OTGHSPHYTUNER2, SBS_OTGHSPHYTUNER2_TXPREEMPAMPTUNE));
 }
 #endif /* SBS_OTGHSPHYTUNER2_TXPREEMPAMPTUNE */
 
@@ -1429,7 +1429,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetOTGPHYTransmitterPreemphasisCurrent(void)
   */
 __STATIC_INLINE uint32_t LL_DBGMCU_GetDeviceID(void)
 {
-  return (uint32_t)(READ_BIT(DBGMCU->IDCODE, DBGMCU_IDCODE_DEV_ID));
+	return (uint32_t)(READ_BIT(DBGMCU->IDCODE, DBGMCU_IDCODE_DEV_ID));
 }
 
 /**
@@ -1440,7 +1440,7 @@ __STATIC_INLINE uint32_t LL_DBGMCU_GetDeviceID(void)
   */
 __STATIC_INLINE uint32_t LL_DBGMCU_GetRevisionID(void)
 {
-  return (uint32_t)(READ_BIT(DBGMCU->IDCODE, DBGMCU_IDCODE_REV_ID) >> DBGMCU_IDCODE_REV_ID_Pos);
+	return (uint32_t)(READ_BIT(DBGMCU->IDCODE, DBGMCU_IDCODE_REV_ID) >> DBGMCU_IDCODE_REV_ID_Pos);
 }
 
 /**
@@ -1450,7 +1450,7 @@ __STATIC_INLINE uint32_t LL_DBGMCU_GetRevisionID(void)
   */
 __STATIC_INLINE void LL_DBGMCU_EnableDBGStopMode(void)
 {
-  SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STOP);
+	SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STOP);
 }
 
 /**
@@ -1460,7 +1460,7 @@ __STATIC_INLINE void LL_DBGMCU_EnableDBGStopMode(void)
   */
 __STATIC_INLINE void LL_DBGMCU_DisableDBGStopMode(void)
 {
-  CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STOP);
+	CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STOP);
 }
 
 /**
@@ -1470,7 +1470,7 @@ __STATIC_INLINE void LL_DBGMCU_DisableDBGStopMode(void)
   */
 __STATIC_INLINE void LL_DBGMCU_EnableDBGStandbyMode(void)
 {
-  SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STANDBY);
+	SET_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STANDBY);
 }
 
 /**
@@ -1480,7 +1480,7 @@ __STATIC_INLINE void LL_DBGMCU_EnableDBGStandbyMode(void)
   */
 __STATIC_INLINE void LL_DBGMCU_DisableDBGStandbyMode(void)
 {
-  CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STANDBY);
+	CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STANDBY);
 }
 
 
@@ -1491,7 +1491,7 @@ __STATIC_INLINE void LL_DBGMCU_DisableDBGStandbyMode(void)
   */
 __STATIC_INLINE void LL_DBGMCU_EnableTraceClock(void)
 {
-  SET_BIT(DBGMCU->CR, DBGMCU_CR_TRACE_CLKEN);
+	SET_BIT(DBGMCU->CR, DBGMCU_CR_TRACE_CLKEN);
 }
 
 /**
@@ -1501,7 +1501,7 @@ __STATIC_INLINE void LL_DBGMCU_EnableTraceClock(void)
   */
 __STATIC_INLINE void LL_DBGMCU_DisableTraceClock(void)
 {
-  CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_TRACE_CLKEN);
+	CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_TRACE_CLKEN);
 }
 
 
@@ -1512,7 +1512,7 @@ __STATIC_INLINE void LL_DBGMCU_DisableTraceClock(void)
   */
 __STATIC_INLINE uint32_t LL_DBGMCU_IsEnabledTraceClock(void)
 {
-  return ((READ_BIT(DBGMCU->CR, DBGMCU_CR_TRACE_CLKEN) == DBGMCU_CR_TRACE_CLKEN) ? 1UL : 0UL);
+	return ((READ_BIT(DBGMCU->CR, DBGMCU_CR_TRACE_CLKEN) == DBGMCU_CR_TRACE_CLKEN) ? 1UL : 0UL);
 }
 
 /**
@@ -1529,7 +1529,7 @@ __STATIC_INLINE uint32_t LL_DBGMCU_IsEnabledTraceClock(void)
   */
 __STATIC_INLINE void LL_DBGMCU_SetTracePinAssignment(uint32_t PinAssignment)
 {
-  MODIFY_REG(DBGMCU->CR, DBGMCU_CR_TRACE_IOEN | DBGMCU_CR_TRACE_MODE, PinAssignment);
+	MODIFY_REG(DBGMCU->CR, DBGMCU_CR_TRACE_IOEN | DBGMCU_CR_TRACE_MODE, PinAssignment);
 }
 
 /**
@@ -1545,7 +1545,7 @@ __STATIC_INLINE void LL_DBGMCU_SetTracePinAssignment(uint32_t PinAssignment)
   */
 __STATIC_INLINE uint32_t LL_DBGMCU_GetTracePinAssignment(void)
 {
-  return (uint32_t)(READ_BIT(DBGMCU->CR, DBGMCU_CR_TRACE_IOEN | DBGMCU_CR_TRACE_MODE));
+	return (uint32_t)(READ_BIT(DBGMCU->CR, DBGMCU_CR_TRACE_IOEN | DBGMCU_CR_TRACE_MODE));
 }
 
 /**
@@ -1570,7 +1570,7 @@ __STATIC_INLINE uint32_t LL_DBGMCU_GetTracePinAssignment(void)
   */
 __STATIC_INLINE void LL_DBGMCU_APB1_GRP1_FreezePeriph(uint32_t Periphs)
 {
-  SET_BIT(DBGMCU->APB1FZR1, Periphs);
+	SET_BIT(DBGMCU->APB1FZR1, Periphs);
 }
 
 /**
@@ -1582,7 +1582,7 @@ __STATIC_INLINE void LL_DBGMCU_APB1_GRP1_FreezePeriph(uint32_t Periphs)
   */
 __STATIC_INLINE void LL_DBGMCU_APB1_GRP2_FreezePeriph(uint32_t Periphs)
 {
-  SET_BIT(DBGMCU->APB1FZR2, Periphs);
+	SET_BIT(DBGMCU->APB1FZR2, Periphs);
 }
 
 /**
@@ -1607,7 +1607,7 @@ __STATIC_INLINE void LL_DBGMCU_APB1_GRP2_FreezePeriph(uint32_t Periphs)
   */
 __STATIC_INLINE void LL_DBGMCU_APB1_GRP1_UnFreezePeriph(uint32_t Periphs)
 {
-  CLEAR_BIT(DBGMCU->APB1FZR1, Periphs);
+	CLEAR_BIT(DBGMCU->APB1FZR1, Periphs);
 }
 
 /**
@@ -1619,7 +1619,7 @@ __STATIC_INLINE void LL_DBGMCU_APB1_GRP1_UnFreezePeriph(uint32_t Periphs)
   */
 __STATIC_INLINE void LL_DBGMCU_APB1_GRP2_UnFreezePeriph(uint32_t Periphs)
 {
-  CLEAR_BIT(DBGMCU->APB1FZR2, Periphs);
+	CLEAR_BIT(DBGMCU->APB1FZR2, Periphs);
 }
 
 /**
@@ -1635,7 +1635,7 @@ __STATIC_INLINE void LL_DBGMCU_APB1_GRP2_UnFreezePeriph(uint32_t Periphs)
   */
 __STATIC_INLINE void LL_DBGMCU_APB2_GRP1_FreezePeriph(uint32_t Periphs)
 {
-  SET_BIT(DBGMCU->APB2FZR, Periphs);
+	SET_BIT(DBGMCU->APB2FZR, Periphs);
 }
 
 /**
@@ -1651,7 +1651,7 @@ __STATIC_INLINE void LL_DBGMCU_APB2_GRP1_FreezePeriph(uint32_t Periphs)
   */
 __STATIC_INLINE void LL_DBGMCU_APB2_GRP1_UnFreezePeriph(uint32_t Periphs)
 {
-  CLEAR_BIT(DBGMCU->APB2FZR, Periphs);
+	CLEAR_BIT(DBGMCU->APB2FZR, Periphs);
 }
 
 /**
@@ -1666,7 +1666,7 @@ __STATIC_INLINE void LL_DBGMCU_APB2_GRP1_UnFreezePeriph(uint32_t Periphs)
   */
 __STATIC_INLINE void LL_DBGMCU_APB3_GRP1_FreezePeriph(uint32_t Periphs)
 {
-  SET_BIT(DBGMCU->APB3FZR, Periphs);
+	SET_BIT(DBGMCU->APB3FZR, Periphs);
 }
 
 /**
@@ -1681,7 +1681,7 @@ __STATIC_INLINE void LL_DBGMCU_APB3_GRP1_FreezePeriph(uint32_t Periphs)
   */
 __STATIC_INLINE void LL_DBGMCU_APB3_GRP1_UnFreezePeriph(uint32_t Periphs)
 {
-  CLEAR_BIT(DBGMCU->APB3FZR, Periphs);
+	CLEAR_BIT(DBGMCU->APB3FZR, Periphs);
 }
 
 /**
@@ -1700,7 +1700,7 @@ __STATIC_INLINE void LL_DBGMCU_APB3_GRP1_UnFreezePeriph(uint32_t Periphs)
   */
 __STATIC_INLINE void LL_VREFBUF_Enable(void)
 {
-  SET_BIT(VREFBUF->CSR, VREFBUF_CSR_ENVR);
+	SET_BIT(VREFBUF->CSR, VREFBUF_CSR_ENVR);
 }
 
 /**
@@ -1710,7 +1710,7 @@ __STATIC_INLINE void LL_VREFBUF_Enable(void)
   */
 __STATIC_INLINE void LL_VREFBUF_Disable(void)
 {
-  CLEAR_BIT(VREFBUF->CSR, VREFBUF_CSR_ENVR);
+	CLEAR_BIT(VREFBUF->CSR, VREFBUF_CSR_ENVR);
 }
 
 /**
@@ -1720,7 +1720,7 @@ __STATIC_INLINE void LL_VREFBUF_Disable(void)
   */
 __STATIC_INLINE void LL_VREFBUF_EnableHIZ(void)
 {
-  SET_BIT(VREFBUF->CSR, VREFBUF_CSR_HIZ);
+	SET_BIT(VREFBUF->CSR, VREFBUF_CSR_HIZ);
 }
 
 /**
@@ -1730,7 +1730,7 @@ __STATIC_INLINE void LL_VREFBUF_EnableHIZ(void)
   */
 __STATIC_INLINE void LL_VREFBUF_DisableHIZ(void)
 {
-  CLEAR_BIT(VREFBUF->CSR, VREFBUF_CSR_HIZ);
+	CLEAR_BIT(VREFBUF->CSR, VREFBUF_CSR_HIZ);
 }
 
 /**
@@ -1745,7 +1745,7 @@ __STATIC_INLINE void LL_VREFBUF_DisableHIZ(void)
   */
 __STATIC_INLINE void LL_VREFBUF_SetVoltageScaling(uint32_t Scale)
 {
-  MODIFY_REG(VREFBUF->CSR, VREFBUF_CSR_VRS, Scale);
+	MODIFY_REG(VREFBUF->CSR, VREFBUF_CSR_VRS, Scale);
 }
 
 /**
@@ -1759,7 +1759,7 @@ __STATIC_INLINE void LL_VREFBUF_SetVoltageScaling(uint32_t Scale)
   */
 __STATIC_INLINE uint32_t LL_VREFBUF_GetVoltageScaling(void)
 {
-  return (uint32_t)(READ_BIT(VREFBUF->CSR, VREFBUF_CSR_VRS));
+	return (uint32_t)(READ_BIT(VREFBUF->CSR, VREFBUF_CSR_VRS));
 }
 
 /**
@@ -1769,7 +1769,7 @@ __STATIC_INLINE uint32_t LL_VREFBUF_GetVoltageScaling(void)
   */
 __STATIC_INLINE uint32_t LL_VREFBUF_IsVREFReady(void)
 {
-  return ((READ_BIT(VREFBUF->CSR, VREFBUF_CSR_VRR) == VREFBUF_CSR_VRR) ? 1UL : 0UL);
+	return ((READ_BIT(VREFBUF->CSR, VREFBUF_CSR_VRR) == VREFBUF_CSR_VRR) ? 1UL : 0UL);
 }
 
 /**
@@ -1779,7 +1779,7 @@ __STATIC_INLINE uint32_t LL_VREFBUF_IsVREFReady(void)
   */
 __STATIC_INLINE uint32_t LL_VREFBUF_GetTrimming(void)
 {
-  return (uint32_t)(READ_BIT(VREFBUF->CCR, VREFBUF_CCR_TRIM));
+	return (uint32_t)(READ_BIT(VREFBUF->CCR, VREFBUF_CCR_TRIM));
 }
 
 /**
@@ -1790,7 +1790,7 @@ __STATIC_INLINE uint32_t LL_VREFBUF_GetTrimming(void)
   */
 __STATIC_INLINE void LL_VREFBUF_SetTrimming(uint32_t Value)
 {
-  WRITE_REG(VREFBUF->CCR, Value);
+	WRITE_REG(VREFBUF->CCR, Value);
 }
 
 /**
@@ -1825,7 +1825,7 @@ __STATIC_INLINE void LL_VREFBUF_SetTrimming(uint32_t Value)
   */
 __STATIC_INLINE void LL_FLASH_SetLatency(uint32_t Latency)
 {
-  MODIFY_REG(FLASH->ACR, FLASH_ACR_LATENCY, Latency);
+	MODIFY_REG(FLASH->ACR, FLASH_ACR_LATENCY, Latency);
 }
 
 /**
@@ -1851,7 +1851,7 @@ __STATIC_INLINE void LL_FLASH_SetLatency(uint32_t Latency)
   */
 __STATIC_INLINE uint32_t LL_FLASH_GetLatency(void)
 {
-  return (uint32_t)(READ_BIT(FLASH->ACR, FLASH_ACR_LATENCY));
+	return (uint32_t)(READ_BIT(FLASH->ACR, FLASH_ACR_LATENCY));
 }
 
 /**
@@ -1870,7 +1870,7 @@ __STATIC_INLINE uint32_t LL_FLASH_GetLatency(void)
   */
 __STATIC_INLINE void LL_SBS_ClearEraseEndStatus(void)
 {
-  WRITE_REG(SBS->MESR, SBS_MESR_IPMEE);
+	WRITE_REG(SBS->MESR, SBS_MESR_IPMEE);
 }
 
 /**
@@ -1882,7 +1882,7 @@ __STATIC_INLINE void LL_SBS_ClearEraseEndStatus(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetEraseEndStatus(void)
 {
-  return (uint32_t)(READ_BIT(SBS->MESR, SBS_MESR_IPMEE));
+	return (uint32_t)(READ_BIT(SBS->MESR, SBS_MESR_IPMEE));
 }
 
 /**
@@ -1892,7 +1892,7 @@ __STATIC_INLINE uint32_t LL_SBS_GetEraseEndStatus(void)
   */
 __STATIC_INLINE void LL_SBS_ClearEraseAfterResetStatus(void)
 {
-  WRITE_REG(SBS->MESR, SBS_MESR_MCLR);
+	WRITE_REG(SBS->MESR, SBS_MESR_MCLR);
 }
 
 /**
@@ -1904,7 +1904,7 @@ __STATIC_INLINE void LL_SBS_ClearEraseAfterResetStatus(void)
   */
 __STATIC_INLINE uint32_t LL_SBS_GetEraseAfterResetStatus(void)
 {
-  return (uint32_t)(READ_BIT(SBS->MESR, SBS_MESR_MCLR));
+	return (uint32_t)(READ_BIT(SBS->MESR, SBS_MESR_MCLR));
 }
 /**
   * @}

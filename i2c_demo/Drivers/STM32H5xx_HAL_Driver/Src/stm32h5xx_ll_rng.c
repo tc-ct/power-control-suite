@@ -81,24 +81,21 @@
   */
 ErrorStatus LL_RNG_DeInit(const RNG_TypeDef *RNGx)
 {
-  ErrorStatus status = SUCCESS;
+	ErrorStatus status = SUCCESS;
 
-  /* Check the parameters */
-  assert_param(IS_RNG_ALL_INSTANCE(RNGx));
-  if (RNGx == RNG)
-  {
-    /* Enable RNG reset state */
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_RNG);
+	/* Check the parameters */
+	assert_param(IS_RNG_ALL_INSTANCE(RNGx));
 
-    /* Release RNG from reset state */
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_RNG);
-  }
-  else
-  {
-    status = ERROR;
-  }
+	if (RNGx == RNG) {
+		/* Enable RNG reset state */
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_RNG);
 
-  return status;
+		/* Release RNG from reset state */
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_RNG);
+	} else
+		status = ERROR;
+
+	return status;
 }
 
 /**
@@ -112,16 +109,16 @@ ErrorStatus LL_RNG_DeInit(const RNG_TypeDef *RNGx)
   */
 ErrorStatus LL_RNG_Init(RNG_TypeDef *RNGx, const LL_RNG_InitTypeDef *RNG_InitStruct)
 {
-  /* Check the parameters */
-  assert_param(IS_RNG_ALL_INSTANCE(RNGx));
-  assert_param(IS_LL_RNG_CED(RNG_InitStruct->ClockErrorDetection));
+	/* Check the parameters */
+	assert_param(IS_RNG_ALL_INSTANCE(RNGx));
+	assert_param(IS_LL_RNG_CED(RNG_InitStruct->ClockErrorDetection));
 
-  /* Clock Error Detection Configuration when CONDRT bit is set to 1 */
-  MODIFY_REG(RNGx->CR, RNG_CR_CED | RNG_CR_CONDRST, RNG_InitStruct->ClockErrorDetection | RNG_CR_CONDRST);
-  /* Writing bits CONDRST=0*/
-  CLEAR_BIT(RNGx->CR, RNG_CR_CONDRST);
+	/* Clock Error Detection Configuration when CONDRT bit is set to 1 */
+	MODIFY_REG(RNGx->CR, RNG_CR_CED | RNG_CR_CONDRST, RNG_InitStruct->ClockErrorDetection | RNG_CR_CONDRST);
+	/* Writing bits CONDRST=0*/
+	CLEAR_BIT(RNGx->CR, RNG_CR_CONDRST);
 
-  return (SUCCESS);
+	return (SUCCESS);
 }
 
 /**
@@ -132,8 +129,8 @@ ErrorStatus LL_RNG_Init(RNG_TypeDef *RNGx, const LL_RNG_InitTypeDef *RNG_InitStr
   */
 void LL_RNG_StructInit(LL_RNG_InitTypeDef *RNG_InitStruct)
 {
-  /* Set RNG_InitStruct fields to default values */
-  RNG_InitStruct->ClockErrorDetection = LL_RNG_CED_ENABLE;
+	/* Set RNG_InitStruct fields to default values */
+	RNG_InitStruct->ClockErrorDetection = LL_RNG_CED_ENABLE;
 
 }
 /**

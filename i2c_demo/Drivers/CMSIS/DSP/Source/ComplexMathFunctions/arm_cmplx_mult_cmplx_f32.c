@@ -71,231 +71,229 @@
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 void arm_cmplx_mult_cmplx_f32(
-  const float32_t * pSrcA,
-  const float32_t * pSrcB,
-        float32_t * pDst,
-        uint32_t numSamples)
+	const float32_t *pSrcA,
+	const float32_t *pSrcB,
+	float32_t *pDst,
+	uint32_t numSamples)
 {
-     int32_t         blkCnt;
-    f32x4_t         vecSrcA, vecSrcB;
-    f32x4_t         vecSrcC, vecSrcD;
-    f32x4_t         vec_acc;
+	int32_t         blkCnt;
+	f32x4_t         vecSrcA, vecSrcB;
+	f32x4_t         vecSrcC, vecSrcD;
+	f32x4_t         vec_acc;
 
-    blkCnt = numSamples >> 2;
-    blkCnt -= 1;
-    if (blkCnt > 0) {
-        /* should give more freedom to generate stall free code */
-        vecSrcA = vld1q(pSrcA);
-        vecSrcB = vld1q(pSrcB);
-        pSrcA += 4;
-        pSrcB += 4;
+	blkCnt = numSamples >> 2;
+	blkCnt -= 1;
 
-        while (blkCnt > 0) {
-            vec_acc = vcmulq(vecSrcA, vecSrcB);
-            vecSrcC = vld1q(pSrcA);
-            pSrcA += 4;
+	if (blkCnt > 0) {
+		/* should give more freedom to generate stall free code */
+		vecSrcA = vld1q(pSrcA);
+		vecSrcB = vld1q(pSrcB);
+		pSrcA += 4;
+		pSrcB += 4;
 
-            vec_acc = vcmlaq_rot90(vec_acc, vecSrcA, vecSrcB);
-            vecSrcD = vld1q(pSrcB);
-            pSrcB += 4;
-            vst1q(pDst, vec_acc);
-            pDst += 4;
+		while (blkCnt > 0) {
+			vec_acc = vcmulq(vecSrcA, vecSrcB);
+			vecSrcC = vld1q(pSrcA);
+			pSrcA += 4;
 
-            vec_acc = vcmulq(vecSrcC, vecSrcD);
-            vecSrcA = vld1q(pSrcA);
-            pSrcA += 4;
+			vec_acc = vcmlaq_rot90(vec_acc, vecSrcA, vecSrcB);
+			vecSrcD = vld1q(pSrcB);
+			pSrcB += 4;
+			vst1q(pDst, vec_acc);
+			pDst += 4;
 
-            vec_acc = vcmlaq_rot90(vec_acc, vecSrcC, vecSrcD);
-            vecSrcB = vld1q(pSrcB);
-            pSrcB += 4;
-            vst1q(pDst, vec_acc);
-            pDst += 4;
-            /*
-             * Decrement the blockSize loop counter
-             */
-            blkCnt--;
-        }
+			vec_acc = vcmulq(vecSrcC, vecSrcD);
+			vecSrcA = vld1q(pSrcA);
+			pSrcA += 4;
 
-        /* process last elements out of the loop avoid the armclang breaking the SW pipeline */
-        vec_acc = vcmulq(vecSrcA, vecSrcB);
-        vecSrcC = vld1q(pSrcA);
+			vec_acc = vcmlaq_rot90(vec_acc, vecSrcC, vecSrcD);
+			vecSrcB = vld1q(pSrcB);
+			pSrcB += 4;
+			vst1q(pDst, vec_acc);
+			pDst += 4;
+			/*
+			 * Decrement the blockSize loop counter
+			 */
+			blkCnt--;
+		}
 
-        vec_acc = vcmlaq_rot90(vec_acc, vecSrcA, vecSrcB);
-        vecSrcD = vld1q(pSrcB);
-        vst1q(pDst, vec_acc);
-        pDst += 4;
+		/* process last elements out of the loop avoid the armclang breaking the SW pipeline */
+		vec_acc = vcmulq(vecSrcA, vecSrcB);
+		vecSrcC = vld1q(pSrcA);
 
-        vec_acc = vcmulq(vecSrcC, vecSrcD);
-        vec_acc = vcmlaq_rot90(vec_acc, vecSrcC, vecSrcD);
-        vst1q(pDst, vec_acc);
-        pDst += 4;
+		vec_acc = vcmlaq_rot90(vec_acc, vecSrcA, vecSrcB);
+		vecSrcD = vld1q(pSrcB);
+		vst1q(pDst, vec_acc);
+		pDst += 4;
 
-        /*
-         * tail
-         */
-        blkCnt = CMPLX_DIM * (numSamples & 3);
-        while (blkCnt > 0) {
-            mve_pred16_t    p = vctp32q(blkCnt);
-            pSrcA += 4;
-            pSrcB += 4;
+		vec_acc = vcmulq(vecSrcC, vecSrcD);
+		vec_acc = vcmlaq_rot90(vec_acc, vecSrcC, vecSrcD);
+		vst1q(pDst, vec_acc);
+		pDst += 4;
 
-            vecSrcA = vldrwq_z_f32(pSrcA, p);
-            vecSrcB = vldrwq_z_f32(pSrcB, p);
-            vec_acc = vcmulq_m(vuninitializedq_f32(),vecSrcA, vecSrcB, p);
-            vec_acc = vcmlaq_rot90_m(vec_acc, vecSrcA, vecSrcB, p);
+		/*
+		 * tail
+		 */
+		blkCnt = CMPLX_DIM * (numSamples & 3);
 
-            vstrwq_p_f32(pDst, vec_acc, p);
-            pDst += 4;
+		while (blkCnt > 0) {
+			mve_pred16_t    p = vctp32q(blkCnt);
+			pSrcA += 4;
+			pSrcB += 4;
 
-            blkCnt -= 4;
-        }
-    } else {
-        /* small vector */
-        blkCnt = numSamples * CMPLX_DIM;
-        vec_acc = vdupq_n_f32(0.0f);
+			vecSrcA = vldrwq_z_f32(pSrcA, p);
+			vecSrcB = vldrwq_z_f32(pSrcB, p);
+			vec_acc = vcmulq_m(vuninitializedq_f32(), vecSrcA, vecSrcB, p);
+			vec_acc = vcmlaq_rot90_m(vec_acc, vecSrcA, vecSrcB, p);
 
-        do {
-            mve_pred16_t    p = vctp32q(blkCnt);
+			vstrwq_p_f32(pDst, vec_acc, p);
+			pDst += 4;
 
-            vecSrcA = vldrwq_z_f32(pSrcA, p);
-            vecSrcB = vldrwq_z_f32(pSrcB, p);
+			blkCnt -= 4;
+		}
+	} else {
+		/* small vector */
+		blkCnt = numSamples * CMPLX_DIM;
+		vec_acc = vdupq_n_f32(0.0f);
 
-            vec_acc = vcmulq_m(vuninitializedq_f32(),vecSrcA, vecSrcB, p);
-            vec_acc = vcmlaq_rot90_m(vec_acc, vecSrcA, vecSrcB, p);
-            vstrwq_p_f32(pDst, vec_acc, p);
-            pDst += 4;
+		do {
+			mve_pred16_t    p = vctp32q(blkCnt);
 
-            /*
-             * Decrement the blkCnt loop counter
-             * Advance vector source and destination pointers
-             */
-            pSrcA += 4;
-            pSrcB += 4;
-            blkCnt -= 4;
-        }
-        while (blkCnt > 0);
-    }
+			vecSrcA = vldrwq_z_f32(pSrcA, p);
+			vecSrcB = vldrwq_z_f32(pSrcB, p);
+
+			vec_acc = vcmulq_m(vuninitializedq_f32(), vecSrcA, vecSrcB, p);
+			vec_acc = vcmlaq_rot90_m(vec_acc, vecSrcA, vecSrcB, p);
+			vstrwq_p_f32(pDst, vec_acc, p);
+			pDst += 4;
+
+			/*
+			 * Decrement the blkCnt loop counter
+			 * Advance vector source and destination pointers
+			 */
+			pSrcA += 4;
+			pSrcB += 4;
+			blkCnt -= 4;
+		} while (blkCnt > 0);
+	}
 
 }
 
 #else
 void arm_cmplx_mult_cmplx_f32(
-  const float32_t * pSrcA,
-  const float32_t * pSrcB,
-        float32_t * pDst,
-        uint32_t numSamples)
+	const float32_t *pSrcA,
+	const float32_t *pSrcB,
+	float32_t *pDst,
+	uint32_t numSamples)
 {
-    uint32_t blkCnt;                               /* Loop counter */
-    float32_t a, b, c, d;  /* Temporary variables to store real and imaginary values */
+	uint32_t blkCnt;                               /* Loop counter */
+	float32_t a, b, c, d;  /* Temporary variables to store real and imaginary values */
 
 #if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
-    float32x4x2_t va, vb;
-    float32x4x2_t outCplx;
+	float32x4x2_t va, vb;
+	float32x4x2_t outCplx;
 
-    /* Compute 4 outputs at a time */
-    blkCnt = numSamples >> 2U;
+	/* Compute 4 outputs at a time */
+	blkCnt = numSamples >> 2U;
 
-    while (blkCnt > 0U)
-    {
-        va = vld2q_f32(pSrcA);  // load & separate real/imag pSrcA (de-interleave 2)
-        vb = vld2q_f32(pSrcB);  // load & separate real/imag pSrcB
+	while (blkCnt > 0U) {
+		va = vld2q_f32(pSrcA);  // load & separate real/imag pSrcA (de-interleave 2)
+		vb = vld2q_f32(pSrcB);  // load & separate real/imag pSrcB
 
-	/* Increment pointers */
-        pSrcA += 8;
-        pSrcB += 8;
-	
-	/* Re{C} = Re{A}*Re{B} - Im{A}*Im{B} */
-        outCplx.val[0] = vmulq_f32(va.val[0], vb.val[0]);
-        outCplx.val[0] = vmlsq_f32(outCplx.val[0], va.val[1], vb.val[1]);
+		/* Increment pointers */
+		pSrcA += 8;
+		pSrcB += 8;
 
-	/* Im{C} = Re{A}*Im{B} + Im{A}*Re{B} */
-        outCplx.val[1] = vmulq_f32(va.val[0], vb.val[1]);
-        outCplx.val[1] = vmlaq_f32(outCplx.val[1], va.val[1], vb.val[0]);
+		/* Re{C} = Re{A}*Re{B} - Im{A}*Im{B} */
+		outCplx.val[0] = vmulq_f32(va.val[0], vb.val[0]);
+		outCplx.val[0] = vmlsq_f32(outCplx.val[0], va.val[1], vb.val[1]);
 
-        vst2q_f32(pDst, outCplx);
+		/* Im{C} = Re{A}*Im{B} + Im{A}*Re{B} */
+		outCplx.val[1] = vmulq_f32(va.val[0], vb.val[1]);
+		outCplx.val[1] = vmlaq_f32(outCplx.val[1], va.val[1], vb.val[0]);
 
-	/* Increment pointer */
-        pDst += 8;
+		vst2q_f32(pDst, outCplx);
 
-	/* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Increment pointer */
+		pDst += 8;
 
-    /* Tail */
-    blkCnt = numSamples & 3;
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
+
+	/* Tail */
+	blkCnt = numSamples & 3;
 
 #else
 #if defined (ARM_MATH_LOOPUNROLL) && !defined(ARM_MATH_AUTOVECTORIZE)
 
-  /* Loop unrolling: Compute 4 outputs at a time */
-  blkCnt = numSamples >> 2U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = numSamples >> 2U;
 
-  while (blkCnt > 0U)
-  {
-    /* C[2 * i    ] = A[2 * i] * B[2 * i    ] - A[2 * i + 1] * B[2 * i + 1]. */
-    /* C[2 * i + 1] = A[2 * i] * B[2 * i + 1] + A[2 * i + 1] * B[2 * i    ]. */
+	while (blkCnt > 0U) {
+		/* C[2 * i    ] = A[2 * i] * B[2 * i    ] - A[2 * i + 1] * B[2 * i + 1]. */
+		/* C[2 * i + 1] = A[2 * i] * B[2 * i + 1] + A[2 * i + 1] * B[2 * i    ]. */
 
-    a = *pSrcA++;
-    b = *pSrcA++;
-    c = *pSrcB++;
-    d = *pSrcB++;
-    /* store result in destination buffer. */
-    *pDst++ = (a * c) - (b * d);
-    *pDst++ = (a * d) + (b * c);
+		a = *pSrcA++;
+		b = *pSrcA++;
+		c = *pSrcB++;
+		d = *pSrcB++;
+		/* store result in destination buffer. */
+		*pDst++ = (a * c) - (b * d);
+		*pDst++ = (a * d) + (b * c);
 
-    a = *pSrcA++;
-    b = *pSrcA++;
-    c = *pSrcB++;
-    d = *pSrcB++;
-    *pDst++ = (a * c) - (b * d);
-    *pDst++ = (a * d) + (b * c);
+		a = *pSrcA++;
+		b = *pSrcA++;
+		c = *pSrcB++;
+		d = *pSrcB++;
+		*pDst++ = (a * c) - (b * d);
+		*pDst++ = (a * d) + (b * c);
 
-    a = *pSrcA++;
-    b = *pSrcA++;
-    c = *pSrcB++;
-    d = *pSrcB++;
-    *pDst++ = (a * c) - (b * d);
-    *pDst++ = (a * d) + (b * c);
+		a = *pSrcA++;
+		b = *pSrcA++;
+		c = *pSrcB++;
+		d = *pSrcB++;
+		*pDst++ = (a * c) - (b * d);
+		*pDst++ = (a * d) + (b * c);
 
-    a = *pSrcA++;
-    b = *pSrcA++;
-    c = *pSrcB++;
-    d = *pSrcB++;
-    *pDst++ = (a * c) - (b * d);
-    *pDst++ = (a * d) + (b * c);
+		a = *pSrcA++;
+		b = *pSrcA++;
+		c = *pSrcB++;
+		d = *pSrcB++;
+		*pDst++ = (a * c) - (b * d);
+		*pDst++ = (a * d) + (b * c);
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* Loop unrolling: Compute remaining outputs */
-  blkCnt = numSamples % 0x4U;
+	/* Loop unrolling: Compute remaining outputs */
+	blkCnt = numSamples % 0x4U;
 
 #else
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = numSamples;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = numSamples;
 
 #endif /* #if defined (ARM_MATH_LOOPUNROLL) */
 #endif /* #if defined(ARM_MATH_NEON) */
 
-  while (blkCnt > 0U)
-  {
-    /* C[2 * i    ] = A[2 * i] * B[2 * i    ] - A[2 * i + 1] * B[2 * i + 1]. */
-    /* C[2 * i + 1] = A[2 * i] * B[2 * i + 1] + A[2 * i + 1] * B[2 * i    ]. */
+	while (blkCnt > 0U) {
+		/* C[2 * i    ] = A[2 * i] * B[2 * i    ] - A[2 * i + 1] * B[2 * i + 1]. */
+		/* C[2 * i + 1] = A[2 * i] * B[2 * i + 1] + A[2 * i + 1] * B[2 * i    ]. */
 
-    a = *pSrcA++;
-    b = *pSrcA++;
-    c = *pSrcB++;
-    d = *pSrcB++;
+		a = *pSrcA++;
+		b = *pSrcA++;
+		c = *pSrcB++;
+		d = *pSrcB++;
 
-    /* store result in destination buffer. */
-    *pDst++ = (a * c) - (b * d);
-    *pDst++ = (a * d) + (b * c);
+		/* store result in destination buffer. */
+		*pDst++ = (a * c) - (b * d);
+		*pDst++ = (a * d) + (b * c);
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
 }
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */

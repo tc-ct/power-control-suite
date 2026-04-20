@@ -50,15 +50,14 @@ extern "C" {
 /**
   * @brief OTFDEC region configuration structure definition
   */
-typedef struct
-{
-  uint32_t          Nonce[2];        /*!< OTFDEC region nonce */
+typedef struct {
+	uint32_t          Nonce[2];        /*!< OTFDEC region nonce */
 
-  uint32_t          StartAddress;    /*!< OTFDEC region start address */
+	uint32_t          StartAddress;    /*!< OTFDEC region start address */
 
-  uint32_t          EndAddress;      /*!< OTFDEC region end address */
+	uint32_t          EndAddress;      /*!< OTFDEC region end address */
 
-  uint16_t          Version;         /*!< OTFDEC region firmware version */
+	uint16_t          Version;         /*!< OTFDEC region firmware version */
 
 } OTFDEC_RegionConfigTypeDef;
 
@@ -73,11 +72,10 @@ typedef struct
 /**
   * @brief OTFDEC states structure definition
   */
-typedef enum
-{
-  HAL_OTFDEC_STATE_RESET             = 0x00U,  /*!< OTFDEC not yet initialized or disabled */
-  HAL_OTFDEC_STATE_READY             = 0x01U,  /*!< OTFDEC initialized and ready for use   */
-  HAL_OTFDEC_STATE_BUSY              = 0x02U,  /*!< OTFDEC internal processing is ongoing  */
+typedef enum {
+	HAL_OTFDEC_STATE_RESET             = 0x00U,  /*!< OTFDEC not yet initialized or disabled */
+	HAL_OTFDEC_STATE_READY             = 0x01U,  /*!< OTFDEC initialized and ready for use   */
+	HAL_OTFDEC_STATE_BUSY              = 0x02U,  /*!< OTFDEC internal processing is ongoing  */
 } HAL_OTFDEC_StateTypeDef;
 
 /**
@@ -89,20 +87,20 @@ typedef struct __OTFDEC_HandleTypeDef
 typedef struct
 #endif /* USE_HAL_OTFDEC_REGISTER_CALLBACKS */
 {
-  OTFDEC_TypeDef             *Instance;  /*!< OTFDEC registers base address */
+	OTFDEC_TypeDef             *Instance;  /*!< OTFDEC registers base address */
 
-  HAL_OTFDEC_StateTypeDef    State;      /*!< OTFDEC state */
+	HAL_OTFDEC_StateTypeDef    State;      /*!< OTFDEC state */
 
-  HAL_LockTypeDef            Lock;       /*!< OTFDEC locking object */
+	HAL_LockTypeDef            Lock;       /*!< OTFDEC locking object */
 
-  __IO uint32_t              ErrorCode;  /*!< OTFDEC error code */
+	__IO uint32_t              ErrorCode;  /*!< OTFDEC error code */
 
 #if (USE_HAL_OTFDEC_REGISTER_CALLBACKS == 1)
-  void (* ErrorCallback)(struct __OTFDEC_HandleTypeDef *hotfdec);     /*!< OTFDEC error callback */
+	void (* ErrorCallback)(struct __OTFDEC_HandleTypeDef *hotfdec);     /*!< OTFDEC error callback */
 
-  void (* MspInitCallback)(struct __OTFDEC_HandleTypeDef *hotfdec);   /*!< OTFDEC Msp Init callback */
+	void (* MspInitCallback)(struct __OTFDEC_HandleTypeDef *hotfdec);   /*!< OTFDEC Msp Init callback */
 
-  void (* MspDeInitCallback)(struct __OTFDEC_HandleTypeDef *hotfdec); /*!< OTFDEC Msp DeInit callback */
+	void (* MspDeInitCallback)(struct __OTFDEC_HandleTypeDef *hotfdec); /*!< OTFDEC Msp DeInit callback */
 #endif /* USE_HAL_OTFDEC_REGISTER_CALLBACKS */
 
 } OTFDEC_HandleTypeDef;
@@ -111,11 +109,10 @@ typedef struct
 /**
   * @brief  HAL OTFDEC Callback ID enumeration definition
   */
-typedef enum
-{
-  HAL_OTFDEC_ERROR_CB_ID       = 0x00U,  /*!< OTFDEC error callback ID      */
-  HAL_OTFDEC_MSPINIT_CB_ID     = 0x01U,  /*!< OTFDEC Msp DeInit callback ID */
-  HAL_OTFDEC_MSPDEINIT_CB_ID   = 0x02U   /*!< OTFDEC Msp DeInit callback ID */
+typedef enum {
+	HAL_OTFDEC_ERROR_CB_ID       = 0x00U,  /*!< OTFDEC error callback ID      */
+	HAL_OTFDEC_MSPINIT_CB_ID     = 0x01U,  /*!< OTFDEC Msp DeInit callback ID */
+	HAL_OTFDEC_MSPDEINIT_CB_ID   = 0x02U   /*!< OTFDEC Msp DeInit callback ID */
 } HAL_OTFDEC_CallbackIDTypeDef;
 
 /**
@@ -325,7 +322,7 @@ void HAL_OTFDEC_MspDeInit(OTFDEC_HandleTypeDef *hotfdec);
 #if (USE_HAL_OTFDEC_REGISTER_CALLBACKS == 1)
 /* Callbacks Register/UnRegister functions  ***********************************/
 HAL_StatusTypeDef HAL_OTFDEC_RegisterCallback(OTFDEC_HandleTypeDef *hotfdec, HAL_OTFDEC_CallbackIDTypeDef CallbackID,
-                                              pOTFDEC_CallbackTypeDef pCallback);
+		pOTFDEC_CallbackTypeDef pCallback);
 HAL_StatusTypeDef HAL_OTFDEC_UnRegisterCallback(OTFDEC_HandleTypeDef *hotfdec, HAL_OTFDEC_CallbackIDTypeDef CallbackID);
 #endif /* USE_HAL_OTFDEC_REGISTER_CALLBACKS */
 /**
@@ -349,7 +346,7 @@ HAL_StatusTypeDef HAL_OTFDEC_RegionKeyLock(OTFDEC_HandleTypeDef *hotfdec, uint32
 HAL_StatusTypeDef HAL_OTFDEC_RegionSetKey(OTFDEC_HandleTypeDef *hotfdec, uint32_t RegionIndex, uint32_t *pKey);
 HAL_StatusTypeDef HAL_OTFDEC_RegionSetMode(OTFDEC_HandleTypeDef *hotfdec, uint32_t RegionIndex, uint32_t mode);
 HAL_StatusTypeDef HAL_OTFDEC_RegionConfig(OTFDEC_HandleTypeDef *hotfdec, uint32_t RegionIndex,
-                                          const OTFDEC_RegionConfigTypeDef *Config, uint32_t lock);
+		const OTFDEC_RegionConfigTypeDef *Config, uint32_t lock);
 uint32_t HAL_OTFDEC_KeyCRCComputation(const uint32_t *pKey);
 HAL_StatusTypeDef HAL_OTFDEC_RegionEnable(OTFDEC_HandleTypeDef *hotfdec, uint32_t RegionIndex);
 HAL_StatusTypeDef HAL_OTFDEC_RegionDisable(OTFDEC_HandleTypeDef *hotfdec, uint32_t RegionIndex);
@@ -357,7 +354,7 @@ HAL_StatusTypeDef HAL_OTFDEC_ConfigAttributes(OTFDEC_HandleTypeDef *hotfdec, uin
 HAL_StatusTypeDef HAL_OTFDEC_EnableEnciphering(OTFDEC_HandleTypeDef *hotfdec);
 HAL_StatusTypeDef HAL_OTFDEC_DisableEnciphering(OTFDEC_HandleTypeDef *hotfdec);
 HAL_StatusTypeDef HAL_OTFDEC_Cipher(OTFDEC_HandleTypeDef *hotfdec, uint32_t RegionIndex, const uint32_t *input,
-                                    uint32_t *output, uint32_t size, uint32_t start_address);
+				    uint32_t *output, uint32_t size, uint32_t start_address);
 /**
   * @}
   */
@@ -369,7 +366,7 @@ HAL_OTFDEC_StateTypeDef HAL_OTFDEC_GetState(const OTFDEC_HandleTypeDef *hotfdec)
 HAL_StatusTypeDef HAL_OTFDEC_GetConfigAttributes(OTFDEC_HandleTypeDef *hotfdec, uint32_t *Attributes);
 uint32_t HAL_OTFDEC_RegionGetKeyCRC(const OTFDEC_HandleTypeDef *hotfdec, uint32_t RegionIndex);
 HAL_StatusTypeDef HAL_OTFDEC_RegionGetConfig(OTFDEC_HandleTypeDef *hotfdec, uint32_t RegionIndex,
-                                             OTFDEC_RegionConfigTypeDef *Config);
+		OTFDEC_RegionConfigTypeDef *Config);
 /**
   * @}
   */

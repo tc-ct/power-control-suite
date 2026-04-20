@@ -186,59 +186,53 @@ extern "C" {
 
 
 /* MTP Session state    */
-typedef enum
-{
-  MTP_SESSION_NOT_OPENED = 0x00,
-  MTP_SESSION_OPENED     = 0x01,
+typedef enum {
+	MTP_SESSION_NOT_OPENED = 0x00,
+	MTP_SESSION_OPENED     = 0x01,
 } MTP_SessionStateTypeDef;
 
 /* MTP response phases    */
-typedef enum
-{
-  MTP_PHASE_IDLE       = 0x00,
-  MTP_RESPONSE_PHASE   = 0x01,
-  MTP_READ_DATA        = 0x02,
-  MTP_RECEIVE_DATA     = 0x03,
+typedef enum {
+	MTP_PHASE_IDLE       = 0x00,
+	MTP_RESPONSE_PHASE   = 0x01,
+	MTP_READ_DATA        = 0x02,
+	MTP_RECEIVE_DATA     = 0x03,
 } MTP_ResponsePhaseTypeDef;
 
-typedef struct
-{
-  uint32_t temp_length;
-  uint32_t prv_len;
-  uint32_t totallen;
-  uint32_t rx_length;
-  uint32_t readbytes;  /* File write/read counts */
+typedef struct {
+	uint32_t temp_length;
+	uint32_t prv_len;
+	uint32_t totallen;
+	uint32_t rx_length;
+	uint32_t readbytes;  /* File write/read counts */
 } MTP_DataLengthTypeDef;
 
-typedef enum
-{
-  RECEIVE_IDLE_STATE     = 0x00U,
-  RECEIVE_COMMAND_DATA   = 0x01U,
-  RECEIVE_FIRST_DATA     = 0x02U,
-  RECEIVE_REST_OF_DATA   = 0x03U,
-  SEND_RESPONSE          = 0x04U,
+typedef enum {
+	RECEIVE_IDLE_STATE     = 0x00U,
+	RECEIVE_COMMAND_DATA   = 0x01U,
+	RECEIVE_FIRST_DATA     = 0x02U,
+	RECEIVE_REST_OF_DATA   = 0x03U,
+	SEND_RESPONSE          = 0x04U,
 } MTP_RECEIVE_DATA_STATUS;
 
-typedef struct
-{
-  uint32_t length;
-  uint16_t type;
-  uint16_t code;
-  uint32_t trans_id;
-  uint32_t Param1;
-  uint32_t Param2;
-  uint32_t Param3;
-  uint32_t Param4;
-  uint32_t Param5;
+typedef struct {
+	uint32_t length;
+	uint16_t type;
+	uint16_t code;
+	uint32_t trans_id;
+	uint32_t Param1;
+	uint32_t Param2;
+	uint32_t Param3;
+	uint32_t Param4;
+	uint32_t Param5;
 } MTP_OperationsTypeDef;
 
-typedef struct
-{
-  uint32_t length;
-  uint16_t type;
-  uint16_t code;
-  uint32_t trans_id;
-  uint8_t  data[MTP_MEDIA_PACKET];
+typedef struct {
+	uint32_t length;
+	uint16_t type;
+	uint16_t code;
+	uint32_t trans_id;
+	uint8_t  data[MTP_MEDIA_PACKET];
 } MTP_GenericContainerTypeDef;
 
 #if defined ( __GNUC__ )
@@ -247,41 +241,40 @@ typedef __PACKED_STRUCT
 __packed typedef struct
 #endif /* __GNUC__ */
 {
-  uint32_t Storage_id;
-  uint16_t ObjectFormat;
-  uint16_t ProtectionStatus;
-  uint32_t ObjectCompressedSize;
-  uint16_t ThumbFormat;
-  uint32_t ThumbCompressedSize;
-  uint32_t ThumbPixWidth;
-  uint32_t ThumbPixHeight;
-  uint32_t ImagePixWidth;
-  uint32_t ImagePixHeight;
-  uint32_t ImageBitDepth;
-  uint32_t ParentObject;
-  uint16_t AssociationType;
-  uint32_t AssociationDesc;
-  uint32_t SequenceNumber;
-  uint8_t  Filename_len;
-  uint16_t Filename[255];
-  uint32_t CaptureDate;
-  uint32_t ModificationDate;
-  uint8_t  Keywords;
+	uint32_t Storage_id;
+	uint16_t ObjectFormat;
+	uint16_t ProtectionStatus;
+	uint32_t ObjectCompressedSize;
+	uint16_t ThumbFormat;
+	uint32_t ThumbCompressedSize;
+	uint32_t ThumbPixWidth;
+	uint32_t ThumbPixHeight;
+	uint32_t ImagePixWidth;
+	uint32_t ImagePixHeight;
+	uint32_t ImageBitDepth;
+	uint32_t ParentObject;
+	uint16_t AssociationType;
+	uint32_t AssociationDesc;
+	uint32_t SequenceNumber;
+	uint8_t  Filename_len;
+	uint16_t Filename[255];
+	uint32_t CaptureDate;
+	uint32_t ModificationDate;
+	uint8_t  Keywords;
 } MTP_ObjectInfoTypeDef;
 
-typedef struct
-{
-  uint32_t                     alt_setting;
-  uint32_t                     dev_status;
-  uint32_t                     ResponseLength;
-  uint32_t                     ResponseCode;
-  __IO uint16_t                MaxPcktLen;
-  uint32_t                     rx_buff[MTP_MEDIA_PACKET / 4U];               /* Force 32-bit alignment */
-  MTP_ResponsePhaseTypeDef     MTP_ResponsePhase;
-  MTP_SessionStateTypeDef      MTP_SessionState;
-  MTP_RECEIVE_DATA_STATUS      RECEIVE_DATA_STATUS;
-  MTP_OperationsTypeDef        OperationsContainer;
-  MTP_GenericContainerTypeDef  GenericContainer;
+typedef struct {
+	uint32_t                     alt_setting;
+	uint32_t                     dev_status;
+	uint32_t                     ResponseLength;
+	uint32_t                     ResponseCode;
+	__IO uint16_t                MaxPcktLen;
+	uint32_t                     rx_buff[MTP_MEDIA_PACKET / 4U];               /* Force 32-bit alignment */
+	MTP_ResponsePhaseTypeDef     MTP_ResponsePhase;
+	MTP_SessionStateTypeDef      MTP_SessionState;
+	MTP_RECEIVE_DATA_STATUS      RECEIVE_DATA_STATUS;
+	MTP_OperationsTypeDef        OperationsContainer;
+	MTP_GenericContainerTypeDef  GenericContainer;
 } USBD_MTP_HandleTypeDef;
 
 /** @defgroup USBD_CORE_Exported_Macros
@@ -307,28 +300,27 @@ extern USBD_ClassTypeDef  USBD_MTP;
   * @{
   */
 
-typedef struct _USBD_MTP_ItfTypeDef
-{
-  uint8_t (*Init)(void);
-  uint8_t (*DeInit)(void);
-  uint32_t (*ReadData)(uint32_t Param1, uint8_t *buff, MTP_DataLengthTypeDef *data_length);
-  uint16_t (*Create_NewObject)(MTP_ObjectInfoTypeDef ObjectInfo, uint32_t objhandle);
+typedef struct _USBD_MTP_ItfTypeDef {
+	uint8_t (*Init)(void);
+	uint8_t (*DeInit)(void);
+	uint32_t (*ReadData)(uint32_t Param1, uint8_t *buff, MTP_DataLengthTypeDef *data_length);
+	uint16_t (*Create_NewObject)(MTP_ObjectInfoTypeDef ObjectInfo, uint32_t objhandle);
 
-  uint32_t (*GetIdx)(uint32_t Param3, uint32_t *obj_handle);
-  uint32_t (*GetParentObject)(uint32_t Param);
-  uint16_t (*GetObjectFormat)(uint32_t Param);
-  uint8_t (*GetObjectName_len)(uint32_t Param);
-  void (*GetObjectName)(uint32_t Param, uint8_t obj_len, uint16_t *buf);
-  uint32_t (*GetObjectSize)(uint32_t Param);
-  uint64_t (*GetMaxCapability)(void);
-  uint64_t (*GetFreeSpaceInBytes)(void);
-  uint32_t (*GetNewIndex)(uint16_t objformat);
-  void (*WriteData)(uint16_t len, uint8_t buff[]);
-  uint32_t (*GetContainerLength)(uint32_t Param1);
-  uint16_t (*DeleteObject)(uint32_t Param1);
-  void (*Cancel)(uint32_t Phase);
-  uint32_t                      *ScratchBuff;
-  uint32_t                       ScratchBuffSze;
+	uint32_t (*GetIdx)(uint32_t Param3, uint32_t *obj_handle);
+	uint32_t (*GetParentObject)(uint32_t Param);
+	uint16_t (*GetObjectFormat)(uint32_t Param);
+	uint8_t (*GetObjectName_len)(uint32_t Param);
+	void (*GetObjectName)(uint32_t Param, uint8_t obj_len, uint16_t *buf);
+	uint32_t (*GetObjectSize)(uint32_t Param);
+	uint64_t (*GetMaxCapability)(void);
+	uint64_t (*GetFreeSpaceInBytes)(void);
+	uint32_t (*GetNewIndex)(uint16_t objformat);
+	void (*WriteData)(uint16_t len, uint8_t buff[]);
+	uint32_t (*GetContainerLength)(uint32_t Param1);
+	uint16_t (*DeleteObject)(uint32_t Param1);
+	void (*Cancel)(uint32_t Phase);
+	uint32_t                      *ScratchBuff;
+	uint32_t                       ScratchBuffSze;
 } USBD_MTP_ItfTypeDef;
 
 /**

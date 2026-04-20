@@ -71,35 +71,35 @@
  */
 
 arm_status arm_mfcc_init_q15(
-  arm_mfcc_instance_q15 * S,
-  uint32_t fftLen,
-  uint32_t nbMelFilters,
-  uint32_t nbDctOutputs,
-  const q15_t *dctCoefs,
-  const uint32_t *filterPos,
-  const uint32_t *filterLengths,
-  const q15_t *filterCoefs,
-  const q15_t *windowCoefs
-  )
+	arm_mfcc_instance_q15 * S,
+	uint32_t fftLen,
+	uint32_t nbMelFilters,
+	uint32_t nbDctOutputs,
+	const q15_t *dctCoefs,
+	const uint32_t *filterPos,
+	const uint32_t *filterLengths,
+	const q15_t *filterCoefs,
+	const q15_t *windowCoefs
+)
 {
- arm_status status;
+	arm_status status;
 
- S->fftLen=fftLen;
- S->nbMelFilters=nbMelFilters;
- S->nbDctOutputs=nbDctOutputs;
- S->dctCoefs=dctCoefs;
- S->filterPos=filterPos;
- S->filterLengths=filterLengths;
- S->filterCoefs=filterCoefs;
- S->windowCoefs=windowCoefs;
+	S->fftLen = fftLen;
+	S->nbMelFilters = nbMelFilters;
+	S->nbDctOutputs = nbDctOutputs;
+	S->dctCoefs = dctCoefs;
+	S->filterPos = filterPos;
+	S->filterLengths = filterLengths;
+	S->filterCoefs = filterCoefs;
+	S->windowCoefs = windowCoefs;
 
- #if defined(ARM_MFCC_CFFT_BASED)
- status=arm_cfft_init_q15(&(S->cfft),fftLen);
- #else
- status=arm_rfft_init_q15(&(S->rfft),fftLen,0,1);
- #endif
- 
- return(status);
+#if defined(ARM_MFCC_CFFT_BASED)
+	status = arm_cfft_init_q15(&(S->cfft), fftLen);
+#else
+	status = arm_rfft_init_q15(&(S->rfft), fftLen, 0, 1);
+#endif
+
+	return (status);
 }
 
 /**

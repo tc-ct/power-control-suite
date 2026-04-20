@@ -51,17 +51,15 @@ extern "C" {
   * @{
   */
 
-typedef enum
-{
-  DATA_TYPE = 0x00,
-  REP_TYPE = 0x01,
+typedef enum {
+	DATA_TYPE = 0x00,
+	REP_TYPE = 0x01,
 } MTP_CONTAINER_TYPE;
 
 
-typedef enum
-{
-  READ_FIRST_DATA = 0x00,
-  READ_REST_OF_DATA = 0x01,
+typedef enum {
+	READ_FIRST_DATA = 0x00,
+	READ_REST_OF_DATA = 0x01,
 } MTP_READ_DATA_STATUS;
 
 

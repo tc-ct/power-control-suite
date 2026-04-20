@@ -55,88 +55,90 @@
 #include "arm_helium_utils.h"
 #include "arm_vec_math.h"
 
-uint32_t arm_gaussian_naive_bayes_predict_f32(const arm_gaussian_naive_bayes_instance_f32 *S, 
-   const float32_t * in, 
-   float32_t *pOutputProbabilities,
-   float32_t *pBufferB
-   )
+uint32_t arm_gaussian_naive_bayes_predict_f32(const arm_gaussian_naive_bayes_instance_f32 *S,
+		const float32_t *in,
+		float32_t *pOutputProbabilities,
+		float32_t *pBufferB
+					     )
 {
-    uint32_t         nbClass;
-    const float32_t *pTheta = S->theta;
-    const float32_t *pSigma = S->sigma;
-    float32_t      *buffer = pOutputProbabilities;
-    const float32_t *pIn = in;
-    float32_t       result;
-    f32x4_t         vsigma;
-    float32_t       tmp;
-    f32x4_t         vacc1, vacc2;
-    uint32_t        index;
-    float32_t       *logclassPriors=pBufferB;
-    float32_t      *pLogPrior = logclassPriors;
+	uint32_t         nbClass;
+	const float32_t *pTheta = S->theta;
+	const float32_t *pSigma = S->sigma;
+	float32_t      *buffer = pOutputProbabilities;
+	const float32_t *pIn = in;
+	float32_t       result;
+	f32x4_t         vsigma;
+	float32_t       tmp;
+	f32x4_t         vacc1, vacc2;
+	uint32_t        index;
+	float32_t       *logclassPriors = pBufferB;
+	float32_t      *pLogPrior = logclassPriors;
 
-    arm_vlog_f32((float32_t *) S->classPriors, logclassPriors, S->numberOfClasses);
+	arm_vlog_f32((float32_t *) S->classPriors, logclassPriors, S->numberOfClasses);
 
-    pTheta = S->theta;
-    pSigma = S->sigma;
+	pTheta = S->theta;
+	pSigma = S->sigma;
 
-    for (nbClass = 0; nbClass < S->numberOfClasses; nbClass++) {
-        pIn = in;
+	for (nbClass = 0; nbClass < S->numberOfClasses; nbClass++) {
+		pIn = in;
 
-        vacc1 = vdupq_n_f32(0);
-        vacc2 = vdupq_n_f32(0);
+		vacc1 = vdupq_n_f32(0);
+		vacc2 = vdupq_n_f32(0);
 
-        uint32_t         blkCnt =S->vectorDimension >> 2;
-        while (blkCnt > 0U) {
-            f32x4_t         vinvSigma, vtmp;
+		uint32_t         blkCnt = S->vectorDimension >> 2;
 
-            vsigma = vaddq_n_f32(vld1q(pSigma), S->epsilon);
-            vacc1 = vaddq(vacc1, vlogq_f32(vmulq_n_f32(vsigma, 2.0f * PI)));
+		while (blkCnt > 0U) {
+			f32x4_t         vinvSigma, vtmp;
 
-            vinvSigma = vrecip_medprec_f32(vsigma);
+			vsigma = vaddq_n_f32(vld1q(pSigma), S->epsilon);
+			vacc1 = vaddq(vacc1, vlogq_f32(vmulq_n_f32(vsigma, 2.0f * PI)));
 
-            vtmp = vsubq(vld1q(pIn), vld1q(pTheta));
-            /* squaring */
-            vtmp = vmulq(vtmp, vtmp);
+			vinvSigma = vrecip_medprec_f32(vsigma);
 
-            vacc2 = vfmaq(vacc2, vtmp, vinvSigma);
+			vtmp = vsubq(vld1q(pIn), vld1q(pTheta));
+			/* squaring */
+			vtmp = vmulq(vtmp, vtmp);
 
-            pIn += 4;
-            pTheta += 4;
-            pSigma += 4;
-            blkCnt--;
-        }
+			vacc2 = vfmaq(vacc2, vtmp, vinvSigma);
 
-        blkCnt = S->vectorDimension & 3;
-        if (blkCnt > 0U) {
-            mve_pred16_t    p0 = vctp32q(blkCnt);
-            f32x4_t         vinvSigma, vtmp;
+			pIn += 4;
+			pTheta += 4;
+			pSigma += 4;
+			blkCnt--;
+		}
 
-            vsigma = vaddq_n_f32(vld1q(pSigma), S->epsilon);
-            vacc1 =
-                vaddq_m_f32(vacc1, vacc1, vlogq_f32(vmulq_n_f32(vsigma, 2.0f * PI)), p0);
+		blkCnt = S->vectorDimension & 3;
 
-            vinvSigma = vrecip_medprec_f32(vsigma);
+		if (blkCnt > 0U) {
+			mve_pred16_t    p0 = vctp32q(blkCnt);
+			f32x4_t         vinvSigma, vtmp;
 
-            vtmp = vsubq(vld1q(pIn), vld1q(pTheta));
-            /* squaring */
-            vtmp = vmulq(vtmp, vtmp);
+			vsigma = vaddq_n_f32(vld1q(pSigma), S->epsilon);
+			vacc1 =
+				vaddq_m_f32(vacc1, vacc1, vlogq_f32(vmulq_n_f32(vsigma, 2.0f * PI)), p0);
 
-            vacc2 = vfmaq_m_f32(vacc2, vtmp, vinvSigma, p0);
+			vinvSigma = vrecip_medprec_f32(vsigma);
 
-            pTheta += blkCnt;
-            pSigma += blkCnt;
-        }
+			vtmp = vsubq(vld1q(pIn), vld1q(pTheta));
+			/* squaring */
+			vtmp = vmulq(vtmp, vtmp);
 
-        tmp = -0.5f * vecAddAcrossF32Mve(vacc1);
-        tmp -= 0.5f * vecAddAcrossF32Mve(vacc2);
+			vacc2 = vfmaq_m_f32(vacc2, vtmp, vinvSigma, p0);
 
-        *buffer = tmp + *pLogPrior++;
-        buffer++;
-    }
+			pTheta += blkCnt;
+			pSigma += blkCnt;
+		}
 
-    arm_max_f32(pOutputProbabilities, S->numberOfClasses, &result, &index);
+		tmp = -0.5f * vecAddAcrossF32Mve(vacc1);
+		tmp -= 0.5f * vecAddAcrossF32Mve(vacc2);
 
-    return (index);
+		*buffer = tmp + *pLogPrior++;
+		buffer++;
+	}
+
+	arm_max_f32(pOutputProbabilities, S->numberOfClasses, &result, &index);
+
+	return (index);
 }
 
 #else
@@ -147,245 +149,245 @@ uint32_t arm_gaussian_naive_bayes_predict_f32(const arm_gaussian_naive_bayes_ins
 
 
 
-uint32_t arm_gaussian_naive_bayes_predict_f32(const arm_gaussian_naive_bayes_instance_f32 *S, 
-   const float32_t * in, 
-   float32_t *pOutputProbabilities,
-   float32_t *pBufferB)
+uint32_t arm_gaussian_naive_bayes_predict_f32(const arm_gaussian_naive_bayes_instance_f32 *S,
+		const float32_t *in,
+		float32_t *pOutputProbabilities,
+		float32_t *pBufferB)
 {
-    
-    const float32_t *pPrior = S->classPriors;
 
-    const float32_t *pTheta = S->theta;
-    const float32_t *pSigma = S->sigma;
+	const float32_t *pPrior = S->classPriors;
 
-    const float32_t *pTheta1 = S->theta + S->vectorDimension;
-    const float32_t *pSigma1 = S->sigma + S->vectorDimension;
+	const float32_t *pTheta = S->theta;
+	const float32_t *pSigma = S->sigma;
 
-    float32_t *buffer = pOutputProbabilities;
-    const float32_t *pIn=in;
+	const float32_t *pTheta1 = S->theta + S->vectorDimension;
+	const float32_t *pSigma1 = S->sigma + S->vectorDimension;
 
-    float32_t result;
-    float32_t sigma,sigma1;
-    float32_t tmp,tmp1;
-    uint32_t index;
-    uint32_t vecBlkCnt;
-    uint32_t classBlkCnt;
-    float32x4_t epsilonV;
-    float32x4_t sigmaV,sigmaV1;
-    float32x4_t tmpV,tmpVb,tmpV1;
-    float32x2_t tmpV2;
-    float32x4_t thetaV,thetaV1;
-    float32x4_t inV;
-    (void)pBufferB;
+	float32_t *buffer = pOutputProbabilities;
+	const float32_t *pIn = in;
 
-    epsilonV = vdupq_n_f32(S->epsilon);
+	float32_t result;
+	float32_t sigma, sigma1;
+	float32_t tmp, tmp1;
+	uint32_t index;
+	uint32_t vecBlkCnt;
+	uint32_t classBlkCnt;
+	float32x4_t epsilonV;
+	float32x4_t sigmaV, sigmaV1;
+	float32x4_t tmpV, tmpVb, tmpV1;
+	float32x2_t tmpV2;
+	float32x4_t thetaV, thetaV1;
+	float32x4_t inV;
+	(void)pBufferB;
 
-    classBlkCnt = S->numberOfClasses >> 1;
-    while(classBlkCnt > 0)
-    {
+	epsilonV = vdupq_n_f32(S->epsilon);
 
-        
-        pIn = in;
+	classBlkCnt = S->numberOfClasses >> 1;
 
-        tmp = logf(*pPrior++);
-        tmp1 = logf(*pPrior++);
-        tmpV = vdupq_n_f32(0.0f);
-        tmpV1 = vdupq_n_f32(0.0f);
+	while (classBlkCnt > 0) {
 
-        vecBlkCnt = S->vectorDimension >> 2;
-        while(vecBlkCnt > 0)
-        {
-           sigmaV = vld1q_f32(pSigma);
-           thetaV = vld1q_f32(pTheta);
 
-           sigmaV1 = vld1q_f32(pSigma1);
-           thetaV1 = vld1q_f32(pTheta1);
+		pIn = in;
 
-           inV = vld1q_f32(pIn);
+		tmp = logf(*pPrior++);
+		tmp1 = logf(*pPrior++);
+		tmpV = vdupq_n_f32(0.0f);
+		tmpV1 = vdupq_n_f32(0.0f);
 
-           sigmaV = vaddq_f32(sigmaV, epsilonV);
-           sigmaV1 = vaddq_f32(sigmaV1, epsilonV);
+		vecBlkCnt = S->vectorDimension >> 2;
 
-           tmpVb = vmulq_n_f32(sigmaV,DPI_F);
-           tmpVb = vlogq_f32(tmpVb);
-           tmpV = vmlsq_n_f32(tmpV,tmpVb,0.5f);
+		while (vecBlkCnt > 0) {
+			sigmaV = vld1q_f32(pSigma);
+			thetaV = vld1q_f32(pTheta);
 
-           tmpVb = vmulq_n_f32(sigmaV1,DPI_F);
-           tmpVb = vlogq_f32(tmpVb);
-           tmpV1 = vmlsq_n_f32(tmpV1,tmpVb,0.5f);
-           
-           tmpVb = vsubq_f32(inV,thetaV);
-           tmpVb = vmulq_f32(tmpVb,tmpVb);
-           tmpVb = vmulq_f32(tmpVb, vinvq_f32(sigmaV));
-           tmpV = vmlsq_n_f32(tmpV,tmpVb,0.5f);
+			sigmaV1 = vld1q_f32(pSigma1);
+			thetaV1 = vld1q_f32(pTheta1);
 
-           tmpVb = vsubq_f32(inV,thetaV1);
-           tmpVb = vmulq_f32(tmpVb,tmpVb);
-           tmpVb = vmulq_f32(tmpVb, vinvq_f32(sigmaV1));
-           tmpV1 = vmlsq_n_f32(tmpV1,tmpVb,0.5f);
+			inV = vld1q_f32(pIn);
 
-           pIn += 4;
-           pTheta += 4;
-           pSigma += 4;
-           pTheta1 += 4;
-           pSigma1 += 4;
+			sigmaV = vaddq_f32(sigmaV, epsilonV);
+			sigmaV1 = vaddq_f32(sigmaV1, epsilonV);
 
-           vecBlkCnt--;
-        }
-        tmpV2 = vpadd_f32(vget_low_f32(tmpV),vget_high_f32(tmpV));
-        tmp += vget_lane_f32(tmpV2, 0) + vget_lane_f32(tmpV2, 1);
-         
-        tmpV2 = vpadd_f32(vget_low_f32(tmpV1),vget_high_f32(tmpV1));
-        tmp1 += vget_lane_f32(tmpV2, 0) + vget_lane_f32(tmpV2, 1);
+			tmpVb = vmulq_n_f32(sigmaV, DPI_F);
+			tmpVb = vlogq_f32(tmpVb);
+			tmpV = vmlsq_n_f32(tmpV, tmpVb, 0.5f);
 
-        vecBlkCnt = S->vectorDimension & 3;
-        while(vecBlkCnt > 0)
-        {
-           sigma = *pSigma + S->epsilon;
-           sigma1 = *pSigma1 + S->epsilon;
+			tmpVb = vmulq_n_f32(sigmaV1, DPI_F);
+			tmpVb = vlogq_f32(tmpVb);
+			tmpV1 = vmlsq_n_f32(tmpV1, tmpVb, 0.5f);
 
-           tmp -= 0.5f*logf(2.0f * PI_F * sigma);
-           tmp -= 0.5f*(*pIn - *pTheta) * (*pIn - *pTheta) / sigma;
+			tmpVb = vsubq_f32(inV, thetaV);
+			tmpVb = vmulq_f32(tmpVb, tmpVb);
+			tmpVb = vmulq_f32(tmpVb, vinvq_f32(sigmaV));
+			tmpV = vmlsq_n_f32(tmpV, tmpVb, 0.5f);
 
-           tmp1 -= 0.5f*logf(2.0f * PI_F * sigma1);
-           tmp1 -= 0.5f*(*pIn - *pTheta1) * (*pIn - *pTheta1) / sigma1;
+			tmpVb = vsubq_f32(inV, thetaV1);
+			tmpVb = vmulq_f32(tmpVb, tmpVb);
+			tmpVb = vmulq_f32(tmpVb, vinvq_f32(sigmaV1));
+			tmpV1 = vmlsq_n_f32(tmpV1, tmpVb, 0.5f);
 
-           pIn++;
-           pTheta++;
-           pSigma++;
-           pTheta1++;
-           pSigma1++;
-           vecBlkCnt--;
-        }
+			pIn += 4;
+			pTheta += 4;
+			pSigma += 4;
+			pTheta1 += 4;
+			pSigma1 += 4;
 
-        *buffer++ = tmp;
-        *buffer++ = tmp1;
+			vecBlkCnt--;
+		}
 
-        pSigma += S->vectorDimension;
-        pTheta += S->vectorDimension;
-        pSigma1 += S->vectorDimension;
-        pTheta1 += S->vectorDimension;
-        
-        classBlkCnt--;
-    }
+		tmpV2 = vpadd_f32(vget_low_f32(tmpV), vget_high_f32(tmpV));
+		tmp += vget_lane_f32(tmpV2, 0) + vget_lane_f32(tmpV2, 1);
 
-    classBlkCnt = S->numberOfClasses & 1;
+		tmpV2 = vpadd_f32(vget_low_f32(tmpV1), vget_high_f32(tmpV1));
+		tmp1 += vget_lane_f32(tmpV2, 0) + vget_lane_f32(tmpV2, 1);
 
-    while(classBlkCnt > 0)
-    {
+		vecBlkCnt = S->vectorDimension & 3;
 
-        
-        pIn = in;
+		while (vecBlkCnt > 0) {
+			sigma = *pSigma + S->epsilon;
+			sigma1 = *pSigma1 + S->epsilon;
 
-        tmp = logf(*pPrior++);
-        tmpV = vdupq_n_f32(0.0f);
+			tmp -= 0.5f * logf(2.0f * PI_F * sigma);
+			tmp -= 0.5f * (*pIn - *pTheta) * (*pIn - *pTheta) / sigma;
 
-        vecBlkCnt = S->vectorDimension >> 2;
-        while(vecBlkCnt > 0)
-        {
-           sigmaV = vld1q_f32(pSigma);
-           thetaV = vld1q_f32(pTheta);
-           inV = vld1q_f32(pIn);
+			tmp1 -= 0.5f * logf(2.0f * PI_F * sigma1);
+			tmp1 -= 0.5f * (*pIn - *pTheta1) * (*pIn - *pTheta1) / sigma1;
 
-           sigmaV = vaddq_f32(sigmaV, epsilonV);
+			pIn++;
+			pTheta++;
+			pSigma++;
+			pTheta1++;
+			pSigma1++;
+			vecBlkCnt--;
+		}
 
-           tmpVb = vmulq_n_f32(sigmaV,DPI_F);
-           tmpVb = vlogq_f32(tmpVb);
-           tmpV = vmlsq_n_f32(tmpV,tmpVb,0.5f);
-           
-           tmpVb = vsubq_f32(inV,thetaV);
-           tmpVb = vmulq_f32(tmpVb,tmpVb);
-           tmpVb = vmulq_f32(tmpVb, vinvq_f32(sigmaV));
-           tmpV = vmlsq_n_f32(tmpV,tmpVb,0.5f);
+		*buffer++ = tmp;
+		*buffer++ = tmp1;
 
-           pIn += 4;
-           pTheta += 4;
-           pSigma += 4;
+		pSigma += S->vectorDimension;
+		pTheta += S->vectorDimension;
+		pSigma1 += S->vectorDimension;
+		pTheta1 += S->vectorDimension;
 
-           vecBlkCnt--;
-        }
-        tmpV2 = vpadd_f32(vget_low_f32(tmpV),vget_high_f32(tmpV));
-        tmp += vget_lane_f32(tmpV2, 0) + vget_lane_f32(tmpV2, 1);
+		classBlkCnt--;
+	}
 
-        vecBlkCnt = S->vectorDimension & 3;
-        while(vecBlkCnt > 0)
-        {
-           sigma = *pSigma + S->epsilon;
-           tmp -= 0.5f*logf(2.0f * PI_F * sigma);
-           tmp -= 0.5f*(*pIn - *pTheta) * (*pIn - *pTheta) / sigma;
+	classBlkCnt = S->numberOfClasses & 1;
 
-           pIn++;
-           pTheta++;
-           pSigma++;
-           vecBlkCnt--;
-        }
+	while (classBlkCnt > 0) {
 
-        *buffer++ = tmp;
-        
-        classBlkCnt--;
-    }
 
-    arm_max_f32(pOutputProbabilities,S->numberOfClasses,&result,&index);
+		pIn = in;
 
-    return(index);
+		tmp = logf(*pPrior++);
+		tmpV = vdupq_n_f32(0.0f);
+
+		vecBlkCnt = S->vectorDimension >> 2;
+
+		while (vecBlkCnt > 0) {
+			sigmaV = vld1q_f32(pSigma);
+			thetaV = vld1q_f32(pTheta);
+			inV = vld1q_f32(pIn);
+
+			sigmaV = vaddq_f32(sigmaV, epsilonV);
+
+			tmpVb = vmulq_n_f32(sigmaV, DPI_F);
+			tmpVb = vlogq_f32(tmpVb);
+			tmpV = vmlsq_n_f32(tmpV, tmpVb, 0.5f);
+
+			tmpVb = vsubq_f32(inV, thetaV);
+			tmpVb = vmulq_f32(tmpVb, tmpVb);
+			tmpVb = vmulq_f32(tmpVb, vinvq_f32(sigmaV));
+			tmpV = vmlsq_n_f32(tmpV, tmpVb, 0.5f);
+
+			pIn += 4;
+			pTheta += 4;
+			pSigma += 4;
+
+			vecBlkCnt--;
+		}
+
+		tmpV2 = vpadd_f32(vget_low_f32(tmpV), vget_high_f32(tmpV));
+		tmp += vget_lane_f32(tmpV2, 0) + vget_lane_f32(tmpV2, 1);
+
+		vecBlkCnt = S->vectorDimension & 3;
+
+		while (vecBlkCnt > 0) {
+			sigma = *pSigma + S->epsilon;
+			tmp -= 0.5f * logf(2.0f * PI_F * sigma);
+			tmp -= 0.5f * (*pIn - *pTheta) * (*pIn - *pTheta) / sigma;
+
+			pIn++;
+			pTheta++;
+			pSigma++;
+			vecBlkCnt--;
+		}
+
+		*buffer++ = tmp;
+
+		classBlkCnt--;
+	}
+
+	arm_max_f32(pOutputProbabilities, S->numberOfClasses, &result, &index);
+
+	return (index);
 }
 
 #else
 
-uint32_t arm_gaussian_naive_bayes_predict_f32(const arm_gaussian_naive_bayes_instance_f32 *S, 
-   const float32_t * in, 
-   float32_t *pOutputProbabilities,
-   float32_t *pBufferB)
+uint32_t arm_gaussian_naive_bayes_predict_f32(const arm_gaussian_naive_bayes_instance_f32 *S,
+		const float32_t *in,
+		float32_t *pOutputProbabilities,
+		float32_t *pBufferB)
 {
-    uint32_t nbClass;
-    uint32_t nbDim;
-    const float32_t *pPrior = S->classPriors;
-    const float32_t *pTheta = S->theta;
-    const float32_t *pSigma = S->sigma;
-    float32_t *buffer = pOutputProbabilities;
-    const float32_t *pIn=in;
-    float32_t result;
-    float32_t sigma;
-    float32_t tmp;
-    float32_t acc1,acc2;
-    uint32_t index;
+	uint32_t nbClass;
+	uint32_t nbDim;
+	const float32_t *pPrior = S->classPriors;
+	const float32_t *pTheta = S->theta;
+	const float32_t *pSigma = S->sigma;
+	float32_t *buffer = pOutputProbabilities;
+	const float32_t *pIn = in;
+	float32_t result;
+	float32_t sigma;
+	float32_t tmp;
+	float32_t acc1, acc2;
+	uint32_t index;
 
-    (void)pBufferB;
+	(void)pBufferB;
 
-    pTheta=S->theta;
-    pSigma=S->sigma;
+	pTheta = S->theta;
+	pSigma = S->sigma;
 
-    for(nbClass = 0; nbClass < S->numberOfClasses; nbClass++)
-    {
-
-        
-        pIn = in;
-
-        tmp = 0.0;
-        acc1 = 0.0f;
-        acc2 = 0.0f;
-        for(nbDim = 0; nbDim < S->vectorDimension; nbDim++)
-        {
-           sigma = *pSigma + S->epsilon;
-           acc1 += logf(2.0f * PI_F * sigma);
-           acc2 += (*pIn - *pTheta) * (*pIn - *pTheta) / sigma;
-
-           pIn++;
-           pTheta++;
-           pSigma++;
-        }
-
-        tmp = -0.5f * acc1;
-        tmp -= 0.5f * acc2;
+	for (nbClass = 0; nbClass < S->numberOfClasses; nbClass++) {
 
 
-        *buffer = tmp + logf(*pPrior++);
-        buffer++;
-    }
+		pIn = in;
 
-    arm_max_f32(pOutputProbabilities,S->numberOfClasses,&result,&index);
+		tmp = 0.0;
+		acc1 = 0.0f;
+		acc2 = 0.0f;
 
-    return(index);
+		for (nbDim = 0; nbDim < S->vectorDimension; nbDim++) {
+			sigma = *pSigma + S->epsilon;
+			acc1 += logf(2.0f * PI_F * sigma);
+			acc2 += (*pIn - *pTheta) * (*pIn - *pTheta) / sigma;
+
+			pIn++;
+			pTheta++;
+			pSigma++;
+		}
+
+		tmp = -0.5f * acc1;
+		tmp -= 0.5f * acc2;
+
+
+		*buffer = tmp + logf(*pPrior++);
+		buffer++;
+	}
+
+	arm_max_f32(pOutputProbabilities, S->numberOfClasses, &result, &index);
+
+	return (index);
 }
 
 #endif

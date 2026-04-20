@@ -54,168 +54,152 @@
 
 #include "arm_helium_utils.h"
 
-  arm_status arm_mat_solve_upper_triangular_f16(
-  const arm_matrix_instance_f16 * ut,
-  const arm_matrix_instance_f16 * a,
-  arm_matrix_instance_f16 * dst)
-  {
-arm_status status;                             /* status of matrix inverse */
+arm_status arm_mat_solve_upper_triangular_f16(
+	const arm_matrix_instance_f16 * ut,
+	const arm_matrix_instance_f16 * a,
+	arm_matrix_instance_f16 * dst)
+{
+	arm_status status;                             /* status of matrix inverse */
 
 
 #ifdef ARM_MATH_MATRIX_CHECK
 
-  /* Check for matrix mismatch condition */
-  if ((ut->numRows != ut->numCols) ||
-      (ut->numRows != a->numRows)   )
-  {
-    /* Set status as ARM_MATH_SIZE_MISMATCH */
-    status = ARM_MATH_SIZE_MISMATCH;
-  }
-  else
+	/* Check for matrix mismatch condition */
+	if ((ut->numRows != ut->numCols) ||
+	    (ut->numRows != a->numRows)   ) {
+		/* Set status as ARM_MATH_SIZE_MISMATCH */
+		status = ARM_MATH_SIZE_MISMATCH;
+	} else
 
 #endif /* #ifdef ARM_MATH_MATRIX_CHECK */
 
-  {
+	{
 
-    int i,j,k,n,cols;
+		int i, j, k, n, cols;
 
-    n = dst->numRows;
-    cols = dst->numCols;
+		n = dst->numRows;
+		cols = dst->numCols;
 
-    float16_t *pX = dst->pData;
-    float16_t *pUT = ut->pData;
-    float16_t *pA = a->pData;
+		float16_t *pX = dst->pData;
+		float16_t *pUT = ut->pData;
+		float16_t *pA = a->pData;
 
-    float16_t *ut_row;
-    float16_t *a_col;
+		float16_t *ut_row;
+		float16_t *a_col;
 
-    _Float16 invUT;
+		_Float16 invUT;
 
-    f16x8_t vecA;
-    f16x8_t vecX;
-    
-    for(i=n-1; i >= 0 ; i--)
-    {
-      for(j=0; j+7 < cols; j +=8)
-      {
-            vecA = vld1q_f16(&pA[i * cols + j]);
-            
-            for(k=n-1; k > i; k--)
-            {
-                vecX = vld1q_f16(&pX[cols*k+j]);          
-                vecA = vfmsq(vecA,vdupq_n_f16(pUT[n*i + k]),vecX);
-            }
+		f16x8_t vecA;
+		f16x8_t vecX;
 
-            if ((_Float16)pUT[n*i + i]==0.0f16)
-            {
-              return(ARM_MATH_SINGULAR);
-            }
+		for (i = n - 1; i >= 0 ; i--) {
+			for (j = 0; j + 7 < cols; j += 8) {
+				vecA = vld1q_f16(&pA[i * cols + j]);
 
-            invUT = 1.0f16 / (_Float16)pUT[n*i + i];
-            vecA = vmulq(vecA,vdupq_n_f16(invUT));
-           
+				for (k = n - 1; k > i; k--) {
+					vecX = vld1q_f16(&pX[cols * k + j]);
+					vecA = vfmsq(vecA, vdupq_n_f16(pUT[n * i + k]), vecX);
+				}
 
-            vst1q(&pX[i*cols+j],vecA);
-      }
+				if ((_Float16)pUT[n * i + i] == 0.0f16)
+					return (ARM_MATH_SINGULAR);
 
-      for(; j < cols; j ++)
-      {
-            a_col = &pA[j];
+				invUT = 1.0f16 / (_Float16)pUT[n * i + i];
+				vecA = vmulq(vecA, vdupq_n_f16(invUT));
 
-            ut_row = &pUT[n*i];
 
-            _Float16 tmp=a_col[i * cols];
-            
-            for(k=n-1; k > i; k--)
-            {
-                tmp -= (_Float16)ut_row[k] * (_Float16)pX[cols*k+j];
-            }
+				vst1q(&pX[i * cols + j], vecA);
+			}
 
-            if ((_Float16)ut_row[i]==0.0f16)
-            {
-              return(ARM_MATH_SINGULAR);
-            }
-            tmp = tmp / (_Float16)ut_row[i];
-            pX[i*cols+j] = tmp;
-       }
+			for (; j < cols; j ++) {
+				a_col = &pA[j];
 
-    }
-    status = ARM_MATH_SUCCESS;
+				ut_row = &pUT[n * i];
 
-  }
+				_Float16 tmp = a_col[i * cols];
 
-  
-  /* Return to application */
-  return (status);
+				for (k = n - 1; k > i; k--)
+					tmp -= (_Float16)ut_row[k] * (_Float16)pX[cols * k + j];
+
+				if ((_Float16)ut_row[i] == 0.0f16)
+					return (ARM_MATH_SINGULAR);
+
+				tmp = tmp / (_Float16)ut_row[i];
+				pX[i * cols + j] = tmp;
+			}
+
+		}
+
+		status = ARM_MATH_SUCCESS;
+
+	}
+
+
+	/* Return to application */
+	return (status);
 }
 
 #else
-  arm_status arm_mat_solve_upper_triangular_f16(
-  const arm_matrix_instance_f16 * ut,
-  const arm_matrix_instance_f16 * a,
-  arm_matrix_instance_f16 * dst)
-  {
-arm_status status;                             /* status of matrix inverse */
+arm_status arm_mat_solve_upper_triangular_f16(
+	const arm_matrix_instance_f16 * ut,
+	const arm_matrix_instance_f16 * a,
+	arm_matrix_instance_f16 * dst)
+{
+	arm_status status;                             /* status of matrix inverse */
 
 
 #ifdef ARM_MATH_MATRIX_CHECK
 
-  /* Check for matrix mismatch condition */
-  if ((ut->numRows != ut->numCols) ||
-      (ut->numRows != a->numRows)   )
-  {
-    /* Set status as ARM_MATH_SIZE_MISMATCH */
-    status = ARM_MATH_SIZE_MISMATCH;
-  }
-  else
+	/* Check for matrix mismatch condition */
+	if ((ut->numRows != ut->numCols) ||
+	    (ut->numRows != a->numRows)   ) {
+		/* Set status as ARM_MATH_SIZE_MISMATCH */
+		status = ARM_MATH_SIZE_MISMATCH;
+	} else
 
 #endif /* #ifdef ARM_MATH_MATRIX_CHECK */
 
-  {
+	{
 
-    int i,j,k,n,cols;
+		int i, j, k, n, cols;
 
-    n = dst->numRows;
-    cols = dst->numCols;
+		n = dst->numRows;
+		cols = dst->numCols;
 
-    float16_t *pX = dst->pData;
-    float16_t *pUT = ut->pData;
-    float16_t *pA = a->pData;
+		float16_t *pX = dst->pData;
+		float16_t *pUT = ut->pData;
+		float16_t *pA = a->pData;
 
-    float16_t *ut_row;
-    float16_t *a_col;
+		float16_t *ut_row;
+		float16_t *a_col;
 
-    for(j=0; j < cols; j ++)
-    {
-       a_col = &pA[j];
+		for (j = 0; j < cols; j ++) {
+			a_col = &pA[j];
 
-       for(i=n-1; i >= 0 ; i--)
-       {
-            ut_row = &pUT[n*i];
+			for (i = n - 1; i >= 0 ; i--) {
+				ut_row = &pUT[n * i];
 
-            float16_t tmp=a_col[i * cols];
-            
-            for(k=n-1; k > i; k--)
-            {
-                tmp -= (_Float16)ut_row[k] * (_Float16)pX[cols*k+j];
-            }
+				float16_t tmp = a_col[i * cols];
 
-            if ((_Float16)ut_row[i]==0.0f16)
-            {
-              return(ARM_MATH_SINGULAR);
-            }
-            tmp = (_Float16)tmp / (_Float16)ut_row[i];
-            pX[i*cols+j] = tmp;
-       }
+				for (k = n - 1; k > i; k--)
+					tmp -= (_Float16)ut_row[k] * (_Float16)pX[cols * k + j];
 
-    }
-    status = ARM_MATH_SUCCESS;
+				if ((_Float16)ut_row[i] == 0.0f16)
+					return (ARM_MATH_SINGULAR);
 
-  }
+				tmp = (_Float16)tmp / (_Float16)ut_row[i];
+				pX[i * cols + j] = tmp;
+			}
 
-  
-  /* Return to application */
-  return (status);
+		}
+
+		status = ARM_MATH_SUCCESS;
+
+	}
+
+
+	/* Return to application */
+	return (status);
 }
 
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
@@ -223,4 +207,4 @@ arm_status status;                             /* status of matrix inverse */
 /**
   @} end of MatrixInv group
  */
-#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */

@@ -209,25 +209,23 @@ extern "C" {
   * @}
   */
 
-typedef struct
-{
-  uint32_t bitrate;
-  uint8_t  format;
-  uint8_t  paritytype;
-  uint8_t  datatype;
+typedef struct {
+	uint32_t bitrate;
+	uint8_t  format;
+	uint8_t  paritytype;
+	uint8_t  datatype;
 } USBD_CCID_LineCodingTypeDef;
 
-typedef struct
-{
-  uint8_t bMessageType; /* Offset = 0*/
-  uint32_t dwLength;    /* Offset = 1, The length field (dwLength) is the length
+typedef struct {
+	uint8_t bMessageType; /* Offset = 0*/
+	uint32_t dwLength;    /* Offset = 1, The length field (dwLength) is the length
                           of the message not including the 10-byte header.*/
-  uint8_t bSlot;        /* Offset = 5*/
-  uint8_t bSeq;         /* Offset = 6*/
-  uint8_t bSpecific_0;  /* Offset = 7*/
-  uint8_t bSpecific_1;  /* Offset = 8*/
-  uint8_t bSpecific_2;  /* Offset = 9*/
-  uint8_t abData [ABDATA_SIZE]; /* Offset = 10, For reference, the absolute
+	uint8_t bSlot;        /* Offset = 5*/
+	uint8_t bSeq;         /* Offset = 6*/
+	uint8_t bSpecific_0;  /* Offset = 7*/
+	uint8_t bSpecific_1;  /* Offset = 8*/
+	uint8_t bSpecific_2;  /* Offset = 9*/
+	uint8_t abData [ABDATA_SIZE]; /* Offset = 10, For reference, the absolute
                            maximum block size for a TPDU T=0 block is 260 bytes
                            (5 bytes command; 255 bytes data),
                            or for a TPDU T=1 block is 259 bytes,
@@ -235,31 +233,28 @@ typedef struct
                            or for an extended APDU T=1 block is 65544 bytes.*/
 } __PACKED USBD_CCID_BulkOut_DataTypeDef;
 
-typedef struct
-{
-  uint8_t bMessageType;   /* Offset = 0 */
-  uint32_t dwLength;      /* Offset = 1 */
-  uint8_t bSlot;          /* Offset = 5, Same as Bulk-OUT message */
-  uint8_t bSeq;           /* Offset = 6, Same as Bulk-OUT message */
-  uint8_t bStatus;        /* Offset = 7, Slot status as defined in section 6.2.6 */
-  uint8_t bError;         /* Offset = 8, Slot error  as defined in section 6.2.6 */
-  uint8_t bSpecific;      /* Offset = 9 */
-  uint8_t abData[ABDATA_SIZE]; /* Offset = 10 */
-  uint16_t u16SizeToSend;
+typedef struct {
+	uint8_t bMessageType;   /* Offset = 0 */
+	uint32_t dwLength;      /* Offset = 1 */
+	uint8_t bSlot;          /* Offset = 5, Same as Bulk-OUT message */
+	uint8_t bSeq;           /* Offset = 6, Same as Bulk-OUT message */
+	uint8_t bStatus;        /* Offset = 7, Slot status as defined in section 6.2.6 */
+	uint8_t bError;         /* Offset = 8, Slot error  as defined in section 6.2.6 */
+	uint8_t bSpecific;      /* Offset = 9 */
+	uint8_t abData[ABDATA_SIZE]; /* Offset = 10 */
+	uint16_t u16SizeToSend;
 } __PACKED USBD_CCID_BulkIn_DataTypeDef;
 
-typedef struct
-{
-  __IO uint8_t SlotStatus;
-  __IO uint8_t SlotStatusChange;
+typedef struct {
+	__IO uint8_t SlotStatus;
+	__IO uint8_t SlotStatusChange;
 } USBD_CCID_SlotStatusTypeDef;
 
 
-typedef struct
-{
-  __IO uint8_t bAbortRequestFlag;
-  __IO uint8_t bSeq;
-  __IO uint8_t bSlot;
+typedef struct {
+	__IO uint8_t bAbortRequestFlag;
+	__IO uint8_t bSeq;
+	__IO uint8_t bSlot;
 } USBD_CCID_ParamTypeDef;
 
 /*
@@ -267,49 +262,47 @@ typedef struct
  * Smart Card Device Class Descriptor Table
  */
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint16_t          bcdCCID;
-  uint8_t           bMaxSlotIndex;
-  uint8_t           bVoltageSupport;
-  uint32_t          dwProtocols;
-  uint32_t          dwDefaultClock;
-  uint32_t          dwMaximumClock;
-  uint8_t           bNumClockSupported;
-  uint32_t          dwDataRate;
-  uint32_t          dwMaxDataRate;
-  uint8_t           bNumDataRatesSupported;
-  uint32_t          dwMaxIFSD;
-  uint32_t          dwSynchProtocols;
-  uint32_t          dwMechanical;
-  uint32_t          dwFeatures;
-  uint32_t          dwMaxCCIDMessageLength;
-  uint8_t           bClassGetResponse;
-  uint8_t           bClassEnvelope;
-  uint16_t          wLcdLayout;
-  uint8_t           bPINSupport;
-  uint8_t           bMaxCCIDBusySlots;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint16_t          bcdCCID;
+	uint8_t           bMaxSlotIndex;
+	uint8_t           bVoltageSupport;
+	uint32_t          dwProtocols;
+	uint32_t          dwDefaultClock;
+	uint32_t          dwMaximumClock;
+	uint8_t           bNumClockSupported;
+	uint32_t          dwDataRate;
+	uint32_t          dwMaxDataRate;
+	uint8_t           bNumDataRatesSupported;
+	uint32_t          dwMaxIFSD;
+	uint32_t          dwSynchProtocols;
+	uint32_t          dwMechanical;
+	uint32_t          dwFeatures;
+	uint32_t          dwMaxCCIDMessageLength;
+	uint8_t           bClassGetResponse;
+	uint8_t           bClassEnvelope;
+	uint16_t          wLcdLayout;
+	uint8_t           bPINSupport;
+	uint8_t           bMaxCCIDBusySlots;
 } __PACKED USBD_CCID_DescTypeDef;
 
-typedef struct
-{
-  uint8_t data[CCID_DATA_HS_MAX_PACKET_SIZE / 4U];   /* Force 32-bit alignment */
-  uint32_t UsbMessageLength;
-  uint8_t UsbIntData[CCID_CMD_PACKET_SIZE];          /* Buffer for the Interrupt In Data */
-  uint32_t alt_setting;
+typedef struct {
+	uint8_t data[CCID_DATA_HS_MAX_PACKET_SIZE / 4U];   /* Force 32-bit alignment */
+	uint32_t UsbMessageLength;
+	uint8_t UsbIntData[CCID_CMD_PACKET_SIZE];          /* Buffer for the Interrupt In Data */
+	uint32_t alt_setting;
 
-  USBD_CCID_BulkIn_DataTypeDef UsbBlkInData;         /* Buffer for the Out Data */
-  USBD_CCID_BulkOut_DataTypeDef UsbBlkOutData;       /* Buffer for the In Data */
-  USBD_CCID_SlotStatusTypeDef SlotStatus;
-  USBD_CCID_ParamTypeDef USBD_CCID_Param;
+	USBD_CCID_BulkIn_DataTypeDef UsbBlkInData;         /* Buffer for the Out Data */
+	USBD_CCID_BulkOut_DataTypeDef UsbBlkOutData;       /* Buffer for the In Data */
+	USBD_CCID_SlotStatusTypeDef SlotStatus;
+	USBD_CCID_ParamTypeDef USBD_CCID_Param;
 
-  __IO uint32_t MaxPcktLen;
-  __IO uint8_t blkt_state;                           /* Bulk transfer state */
+	__IO uint32_t MaxPcktLen;
+	__IO uint8_t blkt_state;                           /* Bulk transfer state */
 
-  uint16_t slot_nb;
-  uint16_t seq_nb;
+	uint16_t slot_nb;
+	uint16_t seq_nb;
 } USBD_CCID_HandleTypeDef;
 
 /** @defgroup USBD_CORE_Exported_Macros
@@ -333,14 +326,13 @@ extern USBD_ClassTypeDef  USBD_CCID;
 /** @defgroup USB_CORE_Exported_Functions
   * @{
   */
-typedef struct _USBD_CCID_Itf
-{
-  uint8_t (* Init)(USBD_HandleTypeDef  *pdev);
-  uint8_t (* DeInit)(USBD_HandleTypeDef  *pdev);
-  uint8_t (* Control)(uint8_t req, uint8_t *pbuf, uint16_t *length);
-  uint8_t (* Response_SendData)(USBD_HandleTypeDef  *pdev, uint8_t *buf, uint16_t len);
-  uint8_t (* Send_Process)(uint8_t *Command, uint8_t *Data);
-  uint8_t (* SetSlotStatus)(USBD_HandleTypeDef *pdev);
+typedef struct _USBD_CCID_Itf {
+	uint8_t (* Init)(USBD_HandleTypeDef  *pdev);
+	uint8_t (* DeInit)(USBD_HandleTypeDef  *pdev);
+	uint8_t (* Control)(uint8_t req, uint8_t *pbuf, uint16_t *length);
+	uint8_t (* Response_SendData)(USBD_HandleTypeDef  *pdev, uint8_t *buf, uint16_t len);
+	uint8_t (* Send_Process)(uint8_t *Command, uint8_t *Data);
+	uint8_t (* SetSlotStatus)(USBD_HandleTypeDef *pdev);
 } USBD_CCID_ItfTypeDef;
 
 /**
@@ -350,7 +342,7 @@ typedef struct _USBD_CCID_Itf
   * @{
   */
 uint8_t USBD_CCID_RegisterInterface(USBD_HandleTypeDef *pdev,
-                                    USBD_CCID_ItfTypeDef *fops);
+				    USBD_CCID_ItfTypeDef *fops);
 
 uint8_t USBD_CCID_IntMessage(USBD_HandleTypeDef  *pdev);
 

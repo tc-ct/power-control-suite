@@ -92,27 +92,25 @@ extern "C" {
   * @}
   */
 
-typedef struct _USBD_PRNT_Itf
-{
-  int8_t (* Init)(void);
-  int8_t (* DeInit)(void);
-  int8_t (* Control_req)(uint8_t req, uint8_t *pbuf, uint16_t *length);
-  int8_t (* Receive)(uint8_t *Buf, uint32_t *Len);
+typedef struct _USBD_PRNT_Itf {
+	int8_t (* Init)(void);
+	int8_t (* DeInit)(void);
+	int8_t (* Control_req)(uint8_t req, uint8_t *pbuf, uint16_t *length);
+	int8_t (* Receive)(uint8_t *Buf, uint32_t *Len);
 
 } USBD_PRNT_ItfTypeDef;
 
-typedef struct
-{
-  uint32_t data[PRNT_DATA_HS_MAX_PACKET_SIZE / 4U];  /* Force 32-bit alignment */
-  uint8_t CmdOpCode;
-  uint8_t CmdLength;
-  uint8_t *RxBuffer;
-  uint8_t *TxBuffer;
-  uint32_t RxLength;
-  uint32_t TxLength;
+typedef struct {
+	uint32_t data[PRNT_DATA_HS_MAX_PACKET_SIZE / 4U];  /* Force 32-bit alignment */
+	uint8_t CmdOpCode;
+	uint8_t CmdLength;
+	uint8_t *RxBuffer;
+	uint8_t *TxBuffer;
+	uint32_t RxLength;
+	uint32_t TxLength;
 
-  __IO uint32_t TxState;
-  __IO uint32_t RxState;
+	__IO uint32_t TxState;
+	__IO uint32_t RxState;
 } USBD_PRNT_HandleTypeDef;
 
 

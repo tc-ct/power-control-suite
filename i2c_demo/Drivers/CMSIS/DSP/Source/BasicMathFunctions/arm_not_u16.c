@@ -47,81 +47,79 @@
 
 /**
   @brief         Compute the logical bitwise NOT of a fixed-point vector.
-  @param[in]     pSrc       points to input vector 
+  @param[in]     pSrc       points to input vector
   @param[out]    pDst       points to output vector
   @param[in]     blockSize  number of samples in each vector
   @return        none
  */
 
 void arm_not_u16(
-    const uint16_t * pSrc,
-          uint16_t * pDst,
-          uint32_t blockSize)
+	const uint16_t *pSrc,
+	uint16_t *pDst,
+	uint32_t blockSize)
 {
-    uint32_t blkCnt;      /* Loop counter */
+	uint32_t blkCnt;      /* Loop counter */
 
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
-    uint16x8_t vecSrc;
+	uint16x8_t vecSrc;
 
-    /* Compute 8 outputs at a time */
-    blkCnt = blockSize >> 3;
+	/* Compute 8 outputs at a time */
+	blkCnt = blockSize >> 3;
 
-    while (blkCnt > 0U)
-    {
-        vecSrc = vld1q(pSrc);
+	while (blkCnt > 0U) {
+		vecSrc = vld1q(pSrc);
 
-        vst1q(pDst, vmvnq_u16(vecSrc) );
+		vst1q(pDst, vmvnq_u16(vecSrc) );
 
-        pSrc += 8;
-        pDst += 8;
+		pSrc += 8;
+		pDst += 8;
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 
-    /* Tail */
-    blkCnt = blockSize & 7;
+	/* Tail */
+	blkCnt = blockSize & 7;
 
-    if (blkCnt > 0U)
-    {
-        mve_pred16_t p0 = vctp16q(blkCnt);
-        vecSrc = vld1q(pSrc);
-        vstrhq_p(pDst, vmvnq_u16(vecSrc), p0);
-    }
+	if (blkCnt > 0U) {
+		mve_pred16_t p0 = vctp16q(blkCnt);
+		vecSrc = vld1q(pSrc);
+		vstrhq_p(pDst, vmvnq_u16(vecSrc), p0);
+	}
+
 #else
 #if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
-    uint16x8_t inV;
+	uint16x8_t inV;
 
-    /* Compute 8 outputs at a time */
-    blkCnt = blockSize >> 3U;
+	/* Compute 8 outputs at a time */
+	blkCnt = blockSize >> 3U;
 
-    while (blkCnt > 0U)
-    {
-        inV = vld1q_u16(pSrc);
+	while (blkCnt > 0U) {
+		inV = vld1q_u16(pSrc);
 
-        vst1q_u16(pDst, vmvnq_u16(inV) );
+		vst1q_u16(pDst, vmvnq_u16(inV) );
 
-        pSrc += 8;
-        pDst += 8;
+		pSrc += 8;
+		pDst += 8;
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 
-    /* Tail */
-    blkCnt = blockSize & 7;
+	/* Tail */
+	blkCnt = blockSize & 7;
 #else
-    /* Initialize blkCnt with number of samples */
-    blkCnt = blockSize;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = blockSize;
 #endif
 
-    while (blkCnt > 0U)
-    {
-        *pDst++ = ~(*pSrc++);
+	while (blkCnt > 0U) {
+		*pDst++ = ~(*pSrc++);
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
+
 #endif /* if defined(ARM_MATH_MVEI) */
 }
 

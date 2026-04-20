@@ -48,37 +48,36 @@
  */
 
 void arm_sort_f32(
-  const arm_sort_instance_f32 * S, 
-        float32_t * pSrc, 
-        float32_t * pDst, 
-        uint32_t blockSize)
+	const arm_sort_instance_f32 * S,
+	float32_t *pSrc,
+	float32_t *pDst,
+	uint32_t blockSize)
 {
-    switch(S->alg)
-    {
-        case ARM_SORT_BITONIC:
-        arm_bitonic_sort_f32(S, pSrc, pDst, blockSize);
-        break;
+	switch (S->alg) {
+		case ARM_SORT_BITONIC:
+			arm_bitonic_sort_f32(S, pSrc, pDst, blockSize);
+			break;
 
-        case ARM_SORT_BUBBLE:
-        arm_bubble_sort_f32(S, pSrc, pDst, blockSize);
-        break;
+		case ARM_SORT_BUBBLE:
+			arm_bubble_sort_f32(S, pSrc, pDst, blockSize);
+			break;
 
-        case ARM_SORT_HEAP:
-        arm_heap_sort_f32(S, pSrc, pDst, blockSize);
-        break;
+		case ARM_SORT_HEAP:
+			arm_heap_sort_f32(S, pSrc, pDst, blockSize);
+			break;
 
-        case ARM_SORT_INSERTION:
-        arm_insertion_sort_f32(S, pSrc, pDst, blockSize);
-        break;
+		case ARM_SORT_INSERTION:
+			arm_insertion_sort_f32(S, pSrc, pDst, blockSize);
+			break;
 
-        case ARM_SORT_QUICK:
-        arm_quick_sort_f32(S, pSrc, pDst, blockSize);
-        break;
+		case ARM_SORT_QUICK:
+			arm_quick_sort_f32(S, pSrc, pDst, blockSize);
+			break;
 
-        case ARM_SORT_SELECTION:
-        arm_selection_sort_f32(S, pSrc, pDst, blockSize);
-        break;
-    }
+		case ARM_SORT_SELECTION:
+			arm_selection_sort_f32(S, pSrc, pDst, blockSize);
+			break;
+	}
 }
 
 /**

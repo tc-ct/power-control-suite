@@ -43,45 +43,42 @@ extern "C" {
 /*!< Values needed for MPCBB_Attribute_ConfigTypeDef structure sizing */
 #define GTZC_MPCBB_NB_VCTR_REG_MAX      (32U)
 #define GTZC_MPCBB_NB_LCK_VCTR_REG_MAX  (1U)
-typedef struct
-{
-  uint32_t MPCBB_SecConfig_array[GTZC_MPCBB_NB_VCTR_REG_MAX];  /*!< Each element specifies secure access mode for
+typedef struct {
+	uint32_t MPCBB_SecConfig_array[GTZC_MPCBB_NB_VCTR_REG_MAX];  /*!< Each element specifies secure access mode for
                                                                     a super-block. Each bit corresponds to a block
                                                                     inside the super-block. 0 means non-secure,
                                                                     1 means secure */
-  uint32_t MPCBB_PrivConfig_array[GTZC_MPCBB_NB_VCTR_REG_MAX]; /*!< Each element specifies privilege access mode for
+	uint32_t MPCBB_PrivConfig_array[GTZC_MPCBB_NB_VCTR_REG_MAX]; /*!< Each element specifies privilege access mode for
                                                                     a super-block. Each bit corresponds to a block
                                                                     inside the super-block. 0 means non-privilege,
                                                                     1 means privilege */
-  uint32_t MPCBB_LockConfig_array[GTZC_MPCBB_NB_LCK_VCTR_REG_MAX]; /*!< Each bit specifies the lock configuration of
+	uint32_t MPCBB_LockConfig_array[GTZC_MPCBB_NB_LCK_VCTR_REG_MAX]; /*!< Each bit specifies the lock configuration of
                                                                         a super-block (32 blocks). 0 means unlocked,
                                                                         1 means locked */
 } MPCBB_Attribute_ConfigTypeDef;
 
-typedef struct
-{
-  uint32_t SecureRWIllegalMode; /*!< Secure read/write illegal access
+typedef struct {
+	uint32_t SecureRWIllegalMode; /*!< Secure read/write illegal access
                                      field. It can be a value of @ref GTZC_MPCBB_SecureRWIllegalMode */
-  uint32_t InvertSecureState;   /*!< Default security state field (can be inverted or not).
+	uint32_t InvertSecureState;   /*!< Default security state field (can be inverted or not).
                                      It can be a value of @ref GTZC_MPCBB_InvertSecureState */
-  MPCBB_Attribute_ConfigTypeDef AttributeConfig; /*!< MPCBB attribute configuration sub-structure */
+	MPCBB_Attribute_ConfigTypeDef AttributeConfig; /*!< MPCBB attribute configuration sub-structure */
 } MPCBB_ConfigTypeDef;
 
-typedef struct
-{
-  uint32_t AreaId;     /*!< Area identifier field. It can be a value of @ref
+typedef struct {
+	uint32_t AreaId;     /*!< Area identifier field. It can be a value of @ref
                             GTZC_MPCWM_AreaId */
-  uint32_t Offset;     /*!< Offset of the watermark area, starting from the selected
+	uint32_t Offset;     /*!< Offset of the watermark area, starting from the selected
                             memory base address. It must aligned on 128KB for FMC
                             and OCTOSPI memories, and on 32-byte for BKPSRAM */
-  uint32_t Length;     /*!< Length of the watermark area, starting from the selected
+	uint32_t Length;     /*!< Length of the watermark area, starting from the selected
                             Offset. It must aligned on 128KB for FMC and OCTOSPI
                             memories, and on 32-byte for BKPSRAM */
-  uint32_t Attribute;  /*!< Attributes of the watermark area. It can be a value
+	uint32_t Attribute;  /*!< Attributes of the watermark area. It can be a value
                             of @ref GTZC_MPCWM_Attribute */
-  uint32_t Lock;       /*!< Lock of the watermark area. It can be a value
+	uint32_t Lock;       /*!< Lock of the watermark area. It can be a value
                             of @ref GTZC_MPCWM_Lock */
-  uint32_t AreaStatus; /*!< Status of the watermark area. It can be set to
+	uint32_t AreaStatus; /*!< Status of the watermark area. It can be set to
                             ENABLE or DISABLE */
 } MPCWM_ConfigTypeDef;
 
@@ -581,9 +578,9 @@ typedef struct
   */
 
 HAL_StatusTypeDef HAL_GTZC_TZSC_ConfigPeriphAttributes(uint32_t PeriphId,
-                                                       uint32_t PeriphAttributes);
+		uint32_t PeriphAttributes);
 HAL_StatusTypeDef HAL_GTZC_TZSC_GetConfigPeriphAttributes(uint32_t PeriphId,
-                                                          uint32_t *PeriphAttributes);
+		uint32_t *PeriphAttributes);
 
 /**
   * @}
@@ -595,9 +592,9 @@ HAL_StatusTypeDef HAL_GTZC_TZSC_GetConfigPeriphAttributes(uint32_t PeriphId,
   */
 
 HAL_StatusTypeDef HAL_GTZC_TZSC_MPCWM_ConfigMemAttributes(uint32_t MemBaseAddress,
-                                                          const MPCWM_ConfigTypeDef *pMPCWM_Desc);
+		const MPCWM_ConfigTypeDef *pMPCWM_Desc);
 HAL_StatusTypeDef HAL_GTZC_TZSC_MPCWM_GetConfigMemAttributes(uint32_t MemBaseAddress,
-                                                             MPCWM_ConfigTypeDef *pMPCWM_Desc);
+		MPCWM_ConfigTypeDef *pMPCWM_Desc);
 /**
   * @}
   */
@@ -622,26 +619,26 @@ uint32_t HAL_GTZC_TZSC_GetLock(const GTZC_TZSC_TypeDef *TZSC_Instance);
   */
 
 HAL_StatusTypeDef HAL_GTZC_MPCBB_ConfigMem(uint32_t MemBaseAddress,
-                                           const MPCBB_ConfigTypeDef *pMPCBB_desc);
+		const MPCBB_ConfigTypeDef *pMPCBB_desc);
 HAL_StatusTypeDef HAL_GTZC_MPCBB_GetConfigMem(uint32_t MemBaseAddress,
-                                              MPCBB_ConfigTypeDef *pMPCBB_desc);
+		MPCBB_ConfigTypeDef *pMPCBB_desc);
 HAL_StatusTypeDef HAL_GTZC_MPCBB_ConfigMemAttributes(uint32_t MemAddress,
-                                                     uint32_t NbBlocks,
-                                                     const uint32_t *pMemAttributes);
+		uint32_t NbBlocks,
+		const uint32_t *pMemAttributes);
 HAL_StatusTypeDef HAL_GTZC_MPCBB_GetConfigMemAttributes(uint32_t MemAddress,
-                                                        uint32_t NbBlocks,
-                                                        uint32_t *pMemAttributes);
+		uint32_t NbBlocks,
+		uint32_t *pMemAttributes);
 
 #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 HAL_StatusTypeDef HAL_GTZC_MPCBB_LockConfig(uint32_t MemAddress,
-                                            uint32_t NbSuperBlocks,
-                                            const uint32_t *pLockAttributes);
+		uint32_t NbSuperBlocks,
+		const uint32_t *pLockAttributes);
 HAL_StatusTypeDef HAL_GTZC_MPCBB_GetLockConfig(uint32_t MemAddress,
-                                               uint32_t NbSuperBlocks,
-                                               uint32_t *pLockAttributes);
+		uint32_t NbSuperBlocks,
+		uint32_t *pLockAttributes);
 HAL_StatusTypeDef HAL_GTZC_MPCBB_Lock(uint32_t MemBaseAddress);
 HAL_StatusTypeDef HAL_GTZC_MPCBB_GetLock(uint32_t MemBaseAddress,
-                                         uint32_t *pLockState);
+		uint32_t *pLockState);
 #endif /* defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U) */
 
 /**

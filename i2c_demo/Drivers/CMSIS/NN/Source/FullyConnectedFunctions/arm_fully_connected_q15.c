@@ -63,131 +63,129 @@
  */
 
 arm_status arm_fully_connected_q15(const q15_t *pV,
-                                   const q15_t *pM,
-                                   const uint16_t dim_vec,
-                                   const uint16_t num_of_rows,
-                                   const uint16_t bias_shift,
-                                   const uint16_t out_shift,
-                                   const q15_t *bias,
-                                   q15_t *pOut,
-                                   q15_t *vec_buffer)
+				   const q15_t *pM,
+				   const uint16_t dim_vec,
+				   const uint16_t num_of_rows,
+				   const uint16_t bias_shift,
+				   const uint16_t out_shift,
+				   const q15_t *bias,
+				   q15_t *pOut,
+				   q15_t *vec_buffer)
 {
-    (void)vec_buffer;
+	(void)vec_buffer;
 #if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
-    /* Run the following code for Cortex-M4 and Cortex-M7 */
+	/* Run the following code for Cortex-M4 and Cortex-M7 */
 
-    const q15_t *pB = pM;
-    const q15_t *pB2 = pB + dim_vec;
-    q15_t *pO = pOut;
-    const q15_t *pA;
-    const q15_t *pBias = bias;
-    uint16_t rowCnt = num_of_rows >> 1;
+	const q15_t *pB = pM;
+	const q15_t *pB2 = pB + dim_vec;
+	q15_t *pO = pOut;
+	const q15_t *pA;
+	const q15_t *pBias = bias;
+	uint16_t rowCnt = num_of_rows >> 1;
 
-    /* this loop loops over different output */
-    while (rowCnt)
-    {
-        q31_t sum = ((q31_t)(*pBias++) << bias_shift) + NN_ROUND(out_shift);
-        q31_t sum2 = ((q31_t)(*pBias++) << bias_shift) + NN_ROUND(out_shift);
+	/* this loop loops over different output */
+	while (rowCnt) {
+		q31_t sum = ((q31_t)(*pBias++) << bias_shift) + NN_ROUND(out_shift);
+		q31_t sum2 = ((q31_t)(*pBias++) << bias_shift) + NN_ROUND(out_shift);
 
-        uint16_t colCnt = dim_vec >> 2;
+		uint16_t colCnt = dim_vec >> 2;
 
-        pA = pV;
-        pB2 = pB + dim_vec;
+		pA = pV;
+		pB2 = pB + dim_vec;
 
-        while (colCnt)
-        {
-            q31_t inV1, inM1, inM2;
-            inV1 = arm_nn_read_q15x2_ia(&pA);
-            inM1 = arm_nn_read_q15x2_ia(&pB);
-            sum = __SMLAD(inV1, inM1, sum);
-            inM2 = arm_nn_read_q15x2_ia(&pB2);
-            sum2 = __SMLAD(inV1, inM2, sum2);
+		while (colCnt) {
+			q31_t inV1, inM1, inM2;
+			inV1 = arm_nn_read_q15x2_ia(&pA);
+			inM1 = arm_nn_read_q15x2_ia(&pB);
+			sum = __SMLAD(inV1, inM1, sum);
+			inM2 = arm_nn_read_q15x2_ia(&pB2);
+			sum2 = __SMLAD(inV1, inM2, sum2);
 
-            inV1 = arm_nn_read_q15x2_ia(&pA);
-            inM1 = arm_nn_read_q15x2_ia(&pB);
-            sum = __SMLAD(inV1, inM1, sum);
-            inM2 = arm_nn_read_q15x2_ia(&pB2);
-            sum2 = __SMLAD(inV1, inM2, sum2);
+			inV1 = arm_nn_read_q15x2_ia(&pA);
+			inM1 = arm_nn_read_q15x2_ia(&pB);
+			sum = __SMLAD(inV1, inM1, sum);
+			inM2 = arm_nn_read_q15x2_ia(&pB2);
+			sum2 = __SMLAD(inV1, inM2, sum2);
 
-            colCnt--;
-        }
-        colCnt = dim_vec & 0x3;
-        while (colCnt)
-        {
-            q15_t inV = *pA++;
-            q15_t inM = *pB++;
-            q15_t inM2 = *pB2++;
+			colCnt--;
+		}
 
-            sum += inV * inM;
-            sum2 += inV * inM2;
-            colCnt--;
-        } /* while over colCnt */
-        *pO++ = (q15_t)(__SSAT((sum >> out_shift), 16));
-        *pO++ = (q15_t)(__SSAT((sum2 >> out_shift), 16));
+		colCnt = dim_vec & 0x3;
 
-        /* adjust the pointers and counters */
-        pB = pB + dim_vec;
-        rowCnt--;
-    }
+		while (colCnt) {
+			q15_t inV = *pA++;
+			q15_t inM = *pB++;
+			q15_t inM2 = *pB2++;
 
-    rowCnt = num_of_rows & 0x1;
+			sum += inV * inM;
+			sum2 += inV * inM2;
+			colCnt--;
+		} /* while over colCnt */
 
-    while (rowCnt)
-    {
-        q31_t sum = ((q31_t)(*pBias++) << bias_shift) + NN_ROUND(out_shift);
+		*pO++ = (q15_t)(__SSAT((sum >> out_shift), 16));
+		*pO++ = (q15_t)(__SSAT((sum2 >> out_shift), 16));
 
-        uint16_t colCnt = dim_vec >> 2;
+		/* adjust the pointers and counters */
+		pB = pB + dim_vec;
+		rowCnt--;
+	}
 
-        pA = pV;
+	rowCnt = num_of_rows & 0x1;
 
-        while (colCnt)
-        {
-            q31_t inV1, inM1;
-            inV1 = arm_nn_read_q15x2_ia(&pA);
-            inM1 = arm_nn_read_q15x2_ia(&pB);
-            sum = __SMLAD(inV1, inM1, sum);
+	while (rowCnt) {
+		q31_t sum = ((q31_t)(*pBias++) << bias_shift) + NN_ROUND(out_shift);
 
-            inV1 = arm_nn_read_q15x2_ia(&pA);
-            inM1 = arm_nn_read_q15x2_ia(&pB);
-            sum = __SMLAD(inV1, inM1, sum);
+		uint16_t colCnt = dim_vec >> 2;
 
-            colCnt--;
-        }
+		pA = pV;
 
-        /* left-over of the vector */
-        colCnt = dim_vec & 0x3;
-        while (colCnt)
-        {
-            q15_t inV = *pA++;
-            q15_t inM = *pB++;
+		while (colCnt) {
+			q31_t inV1, inM1;
+			inV1 = arm_nn_read_q15x2_ia(&pA);
+			inM1 = arm_nn_read_q15x2_ia(&pB);
+			sum = __SMLAD(inV1, inM1, sum);
 
-            sum += inV * inM;
+			inV1 = arm_nn_read_q15x2_ia(&pA);
+			inM1 = arm_nn_read_q15x2_ia(&pB);
+			sum = __SMLAD(inV1, inM1, sum);
 
-            colCnt--;
-        }
+			colCnt--;
+		}
 
-        *pO++ = (q15_t)(__SSAT((sum >> out_shift), 16));
+		/* left-over of the vector */
+		colCnt = dim_vec & 0x3;
 
-        rowCnt--;
-    }
+		while (colCnt) {
+			q15_t inV = *pA++;
+			q15_t inM = *pB++;
+
+			sum += inV * inM;
+
+			colCnt--;
+		}
+
+		*pO++ = (q15_t)(__SSAT((sum >> out_shift), 16));
+
+		rowCnt--;
+	}
 
 #else
-    int i, j;
-    /* Run the following code as reference implementation for Cortex-M0 and Cortex-M3 */
-    for (i = 0; i < num_of_rows; i++)
-    {
-        int ip_out = ((q31_t)(bias[i]) << bias_shift) + NN_ROUND(out_shift);
-        for (j = 0; j < dim_vec; j++)
-        {
-            ip_out += pV[j] * pM[i * dim_vec + j];
-        }
-        pOut[i] = (q15_t)__SSAT((ip_out >> out_shift), 16);
-    }
+	int i, j;
+
+	/* Run the following code as reference implementation for Cortex-M0 and Cortex-M3 */
+	for (i = 0; i < num_of_rows; i++) {
+		int ip_out = ((q31_t)(bias[i]) << bias_shift) + NN_ROUND(out_shift);
+
+		for (j = 0; j < dim_vec; j++)
+			ip_out += pV[j] * pM[i * dim_vec + j];
+
+		pOut[i] = (q15_t)__SSAT((ip_out >> out_shift), 16);
+	}
 
 #endif /* ARM_MATH_DSP */
 
-    /* Return to application */
-    return (ARM_MATH_SUCCESS);
+	/* Return to application */
+	return (ARM_MATH_SUCCESS);
 }
 
 /**

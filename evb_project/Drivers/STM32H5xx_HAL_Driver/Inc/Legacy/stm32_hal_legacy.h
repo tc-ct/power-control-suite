@@ -474,7 +474,7 @@ extern "C" {
 #define TYPEPROGRAMDATA_FASTBYTE      FLASH_TYPEPROGRAMDATA_FASTBYTE
 #define TYPEPROGRAMDATA_FASTHALFWORD  FLASH_TYPEPROGRAMDATA_FASTHALFWORD
 #define TYPEPROGRAMDATA_FASTWORD      FLASH_TYPEPROGRAMDATA_FASTWORD
-#if !defined(STM32F2) && !defined(STM32F4) && !defined(STM32F7) && !defined(STM32H7) && !defined(STM32H5) 
+#if !defined(STM32F2) && !defined(STM32F4) && !defined(STM32F7) && !defined(STM32H7) && !defined(STM32H5)
 #define PAGESIZE                      FLASH_PAGE_SIZE
 #endif /* STM32F2 && STM32F4 && STM32F7 &&  STM32H7 && STM32H5 */
 #define TYPEPROGRAM_FASTBYTE          FLASH_TYPEPROGRAM_BYTE
@@ -3966,7 +3966,7 @@ extern "C" {
 #if defined (STM32G0) || defined (STM32L5) || defined (STM32L412xx) || defined (STM32L422xx) || \
     defined (STM32L4P5xx)|| defined (STM32L4Q5xx) || defined (STM32G4) || defined (STM32WL) || defined (STM32U5) || \
     defined (STM32U3) || defined (STM32WBA)  || defined (STM32H5) || defined (STM32U0) || \
-    defined (STM32C0) || defined (STM32N6) || defined (STM32H7RS)    
+    defined (STM32C0) || defined (STM32N6) || defined (STM32H7RS)
 #else
 #define __HAL_RTC_CLEAR_FLAG                      __HAL_RTC_EXTI_CLEAR_FLAG
 #endif

@@ -85,77 +85,75 @@
    */
 
 
-  /**
-   * @addtogroup BilinearInterpolate
-   * @{
-   */
+/**
+ * @addtogroup BilinearInterpolate
+ * @{
+ */
 
 
-  /**
-  * @brief  Floating-point bilinear interpolation.
-  * @param[in,out] S  points to an instance of the interpolation structure.
-  * @param[in]     X  interpolation coordinate.
-  * @param[in]     Y  interpolation coordinate.
-  * @return out interpolated value.
-  */
-  float32_t arm_bilinear_interp_f32(
-  const arm_bilinear_interp_instance_f32 * S,
-  float32_t X,
-  float32_t Y)
-  {
-    float32_t out;
-    float32_t f00, f01, f10, f11;
-    float32_t *pData = S->pData;
-    int32_t xIndex, yIndex, index;
-    float32_t xdiff, ydiff;
-    float32_t b1, b2, b3, b4;
+/**
+* @brief  Floating-point bilinear interpolation.
+* @param[in,out] S  points to an instance of the interpolation structure.
+* @param[in]     X  interpolation coordinate.
+* @param[in]     Y  interpolation coordinate.
+* @return out interpolated value.
+*/
+float32_t arm_bilinear_interp_f32(
+	const arm_bilinear_interp_instance_f32 * S,
+	float32_t X,
+	float32_t Y)
+{
+	float32_t out;
+	float32_t f00, f01, f10, f11;
+	float32_t *pData = S->pData;
+	int32_t xIndex, yIndex, index;
+	float32_t xdiff, ydiff;
+	float32_t b1, b2, b3, b4;
 
-    xIndex = (int32_t) X;
-    yIndex = (int32_t) Y;
+	xIndex = (int32_t) X;
+	yIndex = (int32_t) Y;
 
-    /* Care taken for table outside boundary */
-    /* Returns zero output when values are outside table boundary */
-    if (xIndex < 0 || xIndex > (S->numCols - 2) || yIndex < 0 || yIndex > (S->numRows - 2))
-    {
-      return (0);
-    }
+	/* Care taken for table outside boundary */
+	/* Returns zero output when values are outside table boundary */
+	if (xIndex < 0 || xIndex > (S->numCols - 2) || yIndex < 0 || yIndex > (S->numRows - 2))
+		return (0);
 
-    /* Calculation of index for two nearest points in X-direction */
-    index = (xIndex ) + (yIndex ) * S->numCols;
+	/* Calculation of index for two nearest points in X-direction */
+	index = (xIndex ) + (yIndex ) * S->numCols;
 
 
-    /* Read two nearest points in X-direction */
-    f00 = pData[index];
-    f01 = pData[index + 1];
+	/* Read two nearest points in X-direction */
+	f00 = pData[index];
+	f01 = pData[index + 1];
 
-    /* Calculation of index for two nearest points in Y-direction */
-    index = (xIndex ) + (yIndex+1) * S->numCols;
+	/* Calculation of index for two nearest points in Y-direction */
+	index = (xIndex ) + (yIndex + 1) * S->numCols;
 
 
-    /* Read two nearest points in Y-direction */
-    f10 = pData[index];
-    f11 = pData[index + 1];
+	/* Read two nearest points in Y-direction */
+	f10 = pData[index];
+	f11 = pData[index + 1];
 
-    /* Calculation of intermediate values */
-    b1 = f00;
-    b2 = f01 - f00;
-    b3 = f10 - f00;
-    b4 = f00 - f01 - f10 + f11;
+	/* Calculation of intermediate values */
+	b1 = f00;
+	b2 = f01 - f00;
+	b3 = f10 - f00;
+	b4 = f00 - f01 - f10 + f11;
 
-    /* Calculation of fractional part in X */
-    xdiff = X - xIndex;
+	/* Calculation of fractional part in X */
+	xdiff = X - xIndex;
 
-    /* Calculation of fractional part in Y */
-    ydiff = Y - yIndex;
+	/* Calculation of fractional part in Y */
+	ydiff = Y - yIndex;
 
-    /* Calculation of bi-linear interpolated output */
-    out = b1 + b2 * xdiff + b3 * ydiff + b4 * xdiff * ydiff;
+	/* Calculation of bi-linear interpolated output */
+	out = b1 + b2 * xdiff + b3 * ydiff + b4 * xdiff * ydiff;
 
-    /* return to application */
-    return (out);
-  }
+	/* return to application */
+	return (out);
+}
 
-  /**
-   * @} end of BilinearInterpolate group
-   */
+/**
+ * @} end of BilinearInterpolate group
+ */
 

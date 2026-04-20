@@ -14,7 +14,7 @@
   *
   ******************************************************************************
   * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
-  * Copyright (c) 2023 STMicroelectronics. All rights reserved.  
+  * Copyright (c) 2023 STMicroelectronics. All rights reserved.
   *
   * SPDX-License-Identifier: Apache-2.0
   *
@@ -596,91 +596,91 @@ __STATIC_INLINE void TZ_SAU_Setup (void)
 
 #if defined (__SAUREGION_PRESENT) && (__SAUREGION_PRESENT == 1U)
 
-  #if defined (SAU_INIT_REGION0) && (SAU_INIT_REGION0 == 1U)
-    SAU_INIT_REGION(0);
-  #endif
+#if defined (SAU_INIT_REGION0) && (SAU_INIT_REGION0 == 1U)
+	SAU_INIT_REGION(0);
+#endif
 
-  #if defined (SAU_INIT_REGION1) && (SAU_INIT_REGION1 == 1U)
-    SAU_INIT_REGION(1);
-  #endif
+#if defined (SAU_INIT_REGION1) && (SAU_INIT_REGION1 == 1U)
+	SAU_INIT_REGION(1);
+#endif
 
-  #if defined (SAU_INIT_REGION2) && (SAU_INIT_REGION2 == 1U)
-    SAU_INIT_REGION(2);
-  #endif
+#if defined (SAU_INIT_REGION2) && (SAU_INIT_REGION2 == 1U)
+	SAU_INIT_REGION(2);
+#endif
 
-  #if defined (SAU_INIT_REGION3) && (SAU_INIT_REGION3 == 1U)
-    SAU_INIT_REGION(3);
-  #endif
+#if defined (SAU_INIT_REGION3) && (SAU_INIT_REGION3 == 1U)
+	SAU_INIT_REGION(3);
+#endif
 
-  #if defined (SAU_INIT_REGION4) && (SAU_INIT_REGION4 == 1U)
-    SAU_INIT_REGION(4);
-  #endif
+#if defined (SAU_INIT_REGION4) && (SAU_INIT_REGION4 == 1U)
+	SAU_INIT_REGION(4);
+#endif
 
-  #if defined (SAU_INIT_REGION5) && (SAU_INIT_REGION5 == 1U)
-    SAU_INIT_REGION(5);
-  #endif
+#if defined (SAU_INIT_REGION5) && (SAU_INIT_REGION5 == 1U)
+	SAU_INIT_REGION(5);
+#endif
 
-  #if defined (SAU_INIT_REGION6) && (SAU_INIT_REGION6 == 1U)
-    SAU_INIT_REGION(6);
-  #endif
+#if defined (SAU_INIT_REGION6) && (SAU_INIT_REGION6 == 1U)
+	SAU_INIT_REGION(6);
+#endif
 
-  #if defined (SAU_INIT_REGION7) && (SAU_INIT_REGION7 == 1U)
-    SAU_INIT_REGION(7);
-  #endif
+#if defined (SAU_INIT_REGION7) && (SAU_INIT_REGION7 == 1U)
+	SAU_INIT_REGION(7);
+#endif
 
-  /* repeat this for all possible SAU regions */
+	/* repeat this for all possible SAU regions */
 
 #endif /* defined (__SAUREGION_PRESENT) && (__SAUREGION_PRESENT == 1U) */
 
 
-  #if defined (SAU_INIT_CTRL) && (SAU_INIT_CTRL == 1U)
-    SAU->CTRL = ((SAU_INIT_CTRL_ENABLE << SAU_CTRL_ENABLE_Pos) & SAU_CTRL_ENABLE_Msk) |
-                ((SAU_INIT_CTRL_ALLNS  << SAU_CTRL_ALLNS_Pos)  & SAU_CTRL_ALLNS_Msk)   ;
-  #endif
+#if defined (SAU_INIT_CTRL) && (SAU_INIT_CTRL == 1U)
+	SAU->CTRL = ((SAU_INIT_CTRL_ENABLE << SAU_CTRL_ENABLE_Pos) & SAU_CTRL_ENABLE_Msk) |
+		    ((SAU_INIT_CTRL_ALLNS  << SAU_CTRL_ALLNS_Pos)  & SAU_CTRL_ALLNS_Msk)   ;
+#endif
 
-  #if defined (SCB_CSR_AIRCR_INIT) && (SCB_CSR_AIRCR_INIT == 1U)
-    SCB->SCR   = (SCB->SCR   & ~(SCB_SCR_SLEEPDEEPS_Msk    )) |
-                   ((SCB_CSR_DEEPSLEEPS_VAL     << SCB_SCR_SLEEPDEEPS_Pos)     & SCB_SCR_SLEEPDEEPS_Msk);
+#if defined (SCB_CSR_AIRCR_INIT) && (SCB_CSR_AIRCR_INIT == 1U)
+	SCB->SCR   = (SCB->SCR   & ~(SCB_SCR_SLEEPDEEPS_Msk    )) |
+		     ((SCB_CSR_DEEPSLEEPS_VAL     << SCB_SCR_SLEEPDEEPS_Pos)     & SCB_SCR_SLEEPDEEPS_Msk);
 
-    SCB->AIRCR = (SCB->AIRCR & ~(SCB_AIRCR_VECTKEY_Msk   | SCB_AIRCR_SYSRESETREQS_Msk |
-                                 SCB_AIRCR_BFHFNMINS_Msk | SCB_AIRCR_PRIS_Msk)        )                     |
-                   ((0x05FAU                    << SCB_AIRCR_VECTKEY_Pos)      & SCB_AIRCR_VECTKEY_Msk)      |
-                   ((SCB_AIRCR_SYSRESETREQS_VAL << SCB_AIRCR_SYSRESETREQS_Pos) & SCB_AIRCR_SYSRESETREQS_Msk) |
-                   ((SCB_AIRCR_PRIS_VAL         << SCB_AIRCR_PRIS_Pos)         & SCB_AIRCR_PRIS_Msk)         |
-                   ((SCB_AIRCR_BFHFNMINS_VAL    << SCB_AIRCR_BFHFNMINS_Pos)    & SCB_AIRCR_BFHFNMINS_Msk);
-  #endif /* defined (SCB_CSR_AIRCR_INIT) && (SCB_CSR_AIRCR_INIT == 1U) */
+	SCB->AIRCR = (SCB->AIRCR & ~(SCB_AIRCR_VECTKEY_Msk   | SCB_AIRCR_SYSRESETREQS_Msk |
+				     SCB_AIRCR_BFHFNMINS_Msk | SCB_AIRCR_PRIS_Msk)        )                     |
+		     ((0x05FAU                    << SCB_AIRCR_VECTKEY_Pos)      & SCB_AIRCR_VECTKEY_Msk)      |
+		     ((SCB_AIRCR_SYSRESETREQS_VAL << SCB_AIRCR_SYSRESETREQS_Pos) & SCB_AIRCR_SYSRESETREQS_Msk) |
+		     ((SCB_AIRCR_PRIS_VAL         << SCB_AIRCR_PRIS_Pos)         & SCB_AIRCR_PRIS_Msk)         |
+		     ((SCB_AIRCR_BFHFNMINS_VAL    << SCB_AIRCR_BFHFNMINS_Pos)    & SCB_AIRCR_BFHFNMINS_Msk);
+#endif /* defined (SCB_CSR_AIRCR_INIT) && (SCB_CSR_AIRCR_INIT == 1U) */
 
-  #if defined (__FPU_USED) && (__FPU_USED == 1U) && \
+#if defined (__FPU_USED) && (__FPU_USED == 1U) && \
       defined (TZ_FPU_NS_USAGE) && (TZ_FPU_NS_USAGE == 1U)
 
-    SCB->NSACR = (SCB->NSACR & ~(SCB_NSACR_CP10_Msk | SCB_NSACR_CP11_Msk)) |
-                   ((SCB_NSACR_CP10_11_VAL << SCB_NSACR_CP10_Pos) & (SCB_NSACR_CP10_Msk | SCB_NSACR_CP11_Msk));
+	SCB->NSACR = (SCB->NSACR & ~(SCB_NSACR_CP10_Msk | SCB_NSACR_CP11_Msk)) |
+		     ((SCB_NSACR_CP10_11_VAL << SCB_NSACR_CP10_Pos) & (SCB_NSACR_CP10_Msk | SCB_NSACR_CP11_Msk));
 
-    FPU->FPCCR = (FPU->FPCCR & ~(FPU_FPCCR_TS_Msk | FPU_FPCCR_CLRONRETS_Msk | FPU_FPCCR_CLRONRET_Msk)) |
-                   ((FPU_FPCCR_TS_VAL        << FPU_FPCCR_TS_Pos       ) & FPU_FPCCR_TS_Msk       ) |
-                   ((FPU_FPCCR_CLRONRETS_VAL << FPU_FPCCR_CLRONRETS_Pos) & FPU_FPCCR_CLRONRETS_Msk) |
-                   ((FPU_FPCCR_CLRONRET_VAL  << FPU_FPCCR_CLRONRET_Pos ) & FPU_FPCCR_CLRONRET_Msk );
-  #endif
+	FPU->FPCCR = (FPU->FPCCR & ~(FPU_FPCCR_TS_Msk | FPU_FPCCR_CLRONRETS_Msk | FPU_FPCCR_CLRONRET_Msk)) |
+		     ((FPU_FPCCR_TS_VAL        << FPU_FPCCR_TS_Pos       ) & FPU_FPCCR_TS_Msk       ) |
+		     ((FPU_FPCCR_CLRONRETS_VAL << FPU_FPCCR_CLRONRETS_Pos) & FPU_FPCCR_CLRONRETS_Msk) |
+		     ((FPU_FPCCR_CLRONRET_VAL  << FPU_FPCCR_CLRONRET_Pos ) & FPU_FPCCR_CLRONRET_Msk );
+#endif
 
-  #if defined (NVIC_INIT_ITNS0) && (NVIC_INIT_ITNS0 == 1U)
-    NVIC->ITNS[0] = NVIC_INIT_ITNS0_VAL;
-  #endif
+#if defined (NVIC_INIT_ITNS0) && (NVIC_INIT_ITNS0 == 1U)
+	NVIC->ITNS[0] = NVIC_INIT_ITNS0_VAL;
+#endif
 
-  #if defined (NVIC_INIT_ITNS1) && (NVIC_INIT_ITNS1 == 1U)
-    NVIC->ITNS[1] = NVIC_INIT_ITNS1_VAL;
-  #endif
+#if defined (NVIC_INIT_ITNS1) && (NVIC_INIT_ITNS1 == 1U)
+	NVIC->ITNS[1] = NVIC_INIT_ITNS1_VAL;
+#endif
 
-  #if defined (NVIC_INIT_ITNS2) && (NVIC_INIT_ITNS2 == 1U)
-    NVIC->ITNS[2] = NVIC_INIT_ITNS2_VAL;
-  #endif
+#if defined (NVIC_INIT_ITNS2) && (NVIC_INIT_ITNS2 == 1U)
+	NVIC->ITNS[2] = NVIC_INIT_ITNS2_VAL;
+#endif
 
-  #if defined (NVIC_INIT_ITNS3) && (NVIC_INIT_ITNS3 == 1U)
-    NVIC->ITNS[3] = NVIC_INIT_ITNS3_VAL;
-  #endif
+#if defined (NVIC_INIT_ITNS3) && (NVIC_INIT_ITNS3 == 1U)
+	NVIC->ITNS[3] = NVIC_INIT_ITNS3_VAL;
+#endif
 
-  #if defined (NVIC_INIT_ITNS4) && (NVIC_INIT_ITNS4 == 1U)
-    NVIC->ITNS[4] = NVIC_INIT_ITNS4_VAL;
-  #endif
+#if defined (NVIC_INIT_ITNS4) && (NVIC_INIT_ITNS4 == 1U)
+	NVIC->ITNS[4] = NVIC_INIT_ITNS4_VAL;
+#endif
 
 }
 

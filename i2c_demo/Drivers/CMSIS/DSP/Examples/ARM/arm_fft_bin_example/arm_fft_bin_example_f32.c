@@ -107,7 +107,7 @@
 * External Input and Output buffer Declarations for FFT Bin Example
 * ------------------------------------------------------------------- */
 extern float32_t testInput_f32_10khz[TEST_LENGTH_SAMPLES];
-static float32_t testOutput[TEST_LENGTH_SAMPLES/2];
+static float32_t testOutput[TEST_LENGTH_SAMPLES / 2];
 
 /* ------------------------------------------------------------------
 * Global variables for FFT Bin Example
@@ -127,41 +127,42 @@ uint32_t refIndex = 213, testIndex = 0;
 int32_t main(void)
 {
 
-  arm_status status;
-  float32_t maxValue;
+	arm_status status;
+	float32_t maxValue;
 
-  status = ARM_MATH_SUCCESS;
+	status = ARM_MATH_SUCCESS;
 
-  status=arm_cfft_init_f32(&varInstCfftF32,fftSize);
+	status = arm_cfft_init_f32(&varInstCfftF32, fftSize);
 
-  /* Process the data through the CFFT/CIFFT module */
-  arm_cfft_f32(&varInstCfftF32, testInput_f32_10khz, ifftFlag, doBitReverse);
+	/* Process the data through the CFFT/CIFFT module */
+	arm_cfft_f32(&varInstCfftF32, testInput_f32_10khz, ifftFlag, doBitReverse);
 
-  /* Process the data through the Complex Magnitude Module for
-  calculating the magnitude at each bin */
-  arm_cmplx_mag_f32(testInput_f32_10khz, testOutput, fftSize);
+	/* Process the data through the Complex Magnitude Module for
+	calculating the magnitude at each bin */
+	arm_cmplx_mag_f32(testInput_f32_10khz, testOutput, fftSize);
 
-  /* Calculates maxValue and returns corresponding BIN value */
-  arm_max_f32(testOutput, fftSize, &maxValue, &testIndex);
+	/* Calculates maxValue and returns corresponding BIN value */
+	arm_max_f32(testOutput, fftSize, &maxValue, &testIndex);
 
-  status = (testIndex != refIndex) ? ARM_MATH_TEST_FAILURE : ARM_MATH_SUCCESS;
-  
-  if (status != ARM_MATH_SUCCESS)
-  {
+	status = (testIndex != refIndex) ? ARM_MATH_TEST_FAILURE : ARM_MATH_SUCCESS;
+
+	if (status != ARM_MATH_SUCCESS) {
 #if defined (SEMIHOSTING)
-    printf("FAILURE\n");
+		printf("FAILURE\n");
 #else
-    while (1);                             /* main function does not return */
+
+		while (1);                             /* main function does not return */
+
 #endif
-  }
-  else
-  {
+	} else {
 #if defined (SEMIHOSTING)
-    printf("SUCCESS\n");
+		printf("SUCCESS\n");
 #else
-    while (1);                             /* main function does not return */
+
+		while (1);                             /* main function does not return */
+
 #endif
-  }
+	}
 }
 
- /** \endlink */
+/** \endlink */

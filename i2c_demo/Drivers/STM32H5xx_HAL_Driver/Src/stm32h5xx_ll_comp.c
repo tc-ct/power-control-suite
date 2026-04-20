@@ -132,27 +132,24 @@
   */
 ErrorStatus LL_COMP_DeInit(COMP_TypeDef *COMPx)
 {
-  ErrorStatus status = SUCCESS;
+	ErrorStatus status = SUCCESS;
 
-  /* Check the parameters */
-  assert_param(IS_COMP_ALL_INSTANCE(COMPx));
+	/* Check the parameters */
+	assert_param(IS_COMP_ALL_INSTANCE(COMPx));
 
-  /* Note: Hardware constraint (refer to description of this function):       */
-  /*       COMP instance must not be locked.                                  */
-  if (LL_COMP_IsLocked(COMPx) == 0UL)
-  {
-    LL_COMP_WriteReg(COMPx, CFGR1, 0x00000000UL);
-    LL_COMP_WriteReg(COMPx, CFGR2, 0x00000000UL);
-  }
-  else
-  {
-    /* Comparator instance is locked: de-initialization by software is         */
-    /* not possible.                                                           */
-    /* The only way to unlock the comparator is a device hardware reset.       */
-    status = ERROR;
-  }
+	/* Note: Hardware constraint (refer to description of this function):       */
+	/*       COMP instance must not be locked.                                  */
+	if (LL_COMP_IsLocked(COMPx) == 0UL) {
+		LL_COMP_WriteReg(COMPx, CFGR1, 0x00000000UL);
+		LL_COMP_WriteReg(COMPx, CFGR2, 0x00000000UL);
+	} else {
+		/* Comparator instance is locked: de-initialization by software is         */
+		/* not possible.                                                           */
+		/* The only way to unlock the comparator is a device hardware reset.       */
+		status = ERROR;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -169,57 +166,54 @@ ErrorStatus LL_COMP_DeInit(COMP_TypeDef *COMPx)
   */
 ErrorStatus LL_COMP_Init(COMP_TypeDef *COMPx, const LL_COMP_InitTypeDef *COMP_InitStruct)
 {
-  ErrorStatus status = SUCCESS;
+	ErrorStatus status = SUCCESS;
 
-  /* Check the parameters */
-  assert_param(IS_COMP_ALL_INSTANCE(COMPx));
-  assert_param(IS_LL_COMP_POWER_MODE(COMP_InitStruct->PowerMode));
-  assert_param(IS_LL_COMP_INPUT_PLUS(COMPx, COMP_InitStruct->InputPlus));
-  assert_param(IS_LL_COMP_INPUT_MINUS(COMPx, COMP_InitStruct->InputMinus));
-  assert_param(IS_LL_COMP_INPUT_HYSTERESIS(COMP_InitStruct->InputHysteresis));
-  assert_param(IS_LL_COMP_OUTPUT_POLARITY(COMP_InitStruct->OutputPolarity));
-  assert_param(IS_LL_COMP_OUTPUT_BLANKING_SOURCE(COMPx, COMP_InitStruct->OutputBlankingSource));
+	/* Check the parameters */
+	assert_param(IS_COMP_ALL_INSTANCE(COMPx));
+	assert_param(IS_LL_COMP_POWER_MODE(COMP_InitStruct->PowerMode));
+	assert_param(IS_LL_COMP_INPUT_PLUS(COMPx, COMP_InitStruct->InputPlus));
+	assert_param(IS_LL_COMP_INPUT_MINUS(COMPx, COMP_InitStruct->InputMinus));
+	assert_param(IS_LL_COMP_INPUT_HYSTERESIS(COMP_InitStruct->InputHysteresis));
+	assert_param(IS_LL_COMP_OUTPUT_POLARITY(COMP_InitStruct->OutputPolarity));
+	assert_param(IS_LL_COMP_OUTPUT_BLANKING_SOURCE(COMPx, COMP_InitStruct->OutputBlankingSource));
 
-  /* Note: Hardware constraint (refer to description of this function)        */
-  /*       COMP instance must not be locked.                                  */
-  if (LL_COMP_IsLocked(COMPx) == 0UL)
-  {
-    /* Configuration of comparator instance :                                 */
-    /*  - PowerMode                                                           */
-    /*  - InputPlus                                                           */
-    /*  - InputMinus                                                          */
-    /*  - InputHysteresis                                                     */
-    /*  - OutputPolarity                                                      */
-    /*  - OutputBlankingSource                                                */
-    MODIFY_REG(COMPx->CFGR1,
-               COMP_CFGR1_PWRMODE
-               | COMP_CFGR1_INPSEL1
-               | COMP_CFGR1_INPSEL2
-               | COMP_CFGR1_SCALEN
-               | COMP_CFGR1_BRGEN
-               | COMP_CFGR1_INMSEL
-               | COMP_CFGR1_HYST
-               | COMP_CFGR1_POLARITY
-               | COMP_CFGR1_BLANKING
-               ,
-               COMP_InitStruct->PowerMode
-               | COMP_InitStruct->InputPlus
-               | COMP_InitStruct->InputMinus
-               | COMP_InitStruct->InputHysteresis
-               | COMP_InitStruct->OutputPolarity
-               | COMP_InitStruct->OutputBlankingSource
-              );
+	/* Note: Hardware constraint (refer to description of this function)        */
+	/*       COMP instance must not be locked.                                  */
+	if (LL_COMP_IsLocked(COMPx) == 0UL) {
+		/* Configuration of comparator instance :                                 */
+		/*  - PowerMode                                                           */
+		/*  - InputPlus                                                           */
+		/*  - InputMinus                                                          */
+		/*  - InputHysteresis                                                     */
+		/*  - OutputPolarity                                                      */
+		/*  - OutputBlankingSource                                                */
+		MODIFY_REG(COMPx->CFGR1,
+			   COMP_CFGR1_PWRMODE
+			   | COMP_CFGR1_INPSEL1
+			   | COMP_CFGR1_INPSEL2
+			   | COMP_CFGR1_SCALEN
+			   | COMP_CFGR1_BRGEN
+			   | COMP_CFGR1_INMSEL
+			   | COMP_CFGR1_HYST
+			   | COMP_CFGR1_POLARITY
+			   | COMP_CFGR1_BLANKING
+			   ,
+			   COMP_InitStruct->PowerMode
+			   | COMP_InitStruct->InputPlus
+			   | COMP_InitStruct->InputMinus
+			   | COMP_InitStruct->InputHysteresis
+			   | COMP_InitStruct->OutputPolarity
+			   | COMP_InitStruct->OutputBlankingSource
+			  );
 
-    MODIFY_REG(COMPx->CFGR2, COMP_CFGR2_INPSEL0,
-               ((COMP_InitStruct->InputPlus == LL_COMP_INPUT_PLUS_IO2) ? COMP_CFGR2_INPSEL0 : 0U));
-  }
-  else
-  {
-    /* Initialization error: COMP instance is locked */
-    status = ERROR;
-  }
+		MODIFY_REG(COMPx->CFGR2, COMP_CFGR2_INPSEL0,
+			   ((COMP_InitStruct->InputPlus == LL_COMP_INPUT_PLUS_IO2) ? COMP_CFGR2_INPSEL0 : 0U));
+	} else {
+		/* Initialization error: COMP instance is locked */
+		status = ERROR;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -230,13 +224,13 @@ ErrorStatus LL_COMP_Init(COMP_TypeDef *COMPx, const LL_COMP_InitTypeDef *COMP_In
   */
 void LL_COMP_StructInit(LL_COMP_InitTypeDef *COMP_InitStruct)
 {
-  /* Set COMP_InitStruct fields to default values */
-  COMP_InitStruct->PowerMode            = LL_COMP_POWERMODE_ULTRALOWPOWER;
-  COMP_InitStruct->InputPlus            = LL_COMP_INPUT_PLUS_IO1;
-  COMP_InitStruct->InputMinus           = LL_COMP_INPUT_MINUS_VREFINT;
-  COMP_InitStruct->InputHysteresis      = LL_COMP_HYSTERESIS_NONE;
-  COMP_InitStruct->OutputPolarity       = LL_COMP_OUTPUTPOL_NONINVERTED;
-  COMP_InitStruct->OutputBlankingSource = LL_COMP_BLANKINGSRC_NONE;
+	/* Set COMP_InitStruct fields to default values */
+	COMP_InitStruct->PowerMode            = LL_COMP_POWERMODE_ULTRALOWPOWER;
+	COMP_InitStruct->InputPlus            = LL_COMP_INPUT_PLUS_IO1;
+	COMP_InitStruct->InputMinus           = LL_COMP_INPUT_MINUS_VREFINT;
+	COMP_InitStruct->InputHysteresis      = LL_COMP_HYSTERESIS_NONE;
+	COMP_InitStruct->OutputPolarity       = LL_COMP_OUTPUTPOL_NONINVERTED;
+	COMP_InitStruct->OutputBlankingSource = LL_COMP_BLANKINGSRC_NONE;
 }
 
 /**

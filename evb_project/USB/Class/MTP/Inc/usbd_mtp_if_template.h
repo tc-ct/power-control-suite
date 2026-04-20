@@ -69,13 +69,13 @@ extern USBD_MTP_ItfTypeDef USBD_MTP_fops;
 static const uint16_t Manuf[] = {'S', 'T', 'M', 0}; /* last 2 bytes must be 0*/
 static const uint16_t Model[] = {'S', 'T', 'M', '3', '2', 0}; /* last 2 bytes must be 0*/
 static const uint16_t VendExtDesc[] = {'m', 'i', 'c', 'r', 'o', 's', 'o', 'f', 't', '.',
-                                       'c', 'o', 'm', ':', ' ', '1', '.', '0', ';', ' ', 0
-                                      };  /* last 2 bytes must be 0*/
+				       'c', 'o', 'm', ':', ' ', '1', '.', '0', ';', ' ', 0
+				      };  /* last 2 bytes must be 0*/
 /*SerialNbr shall be 32 character hexadecimal string for legacy compatibility reasons */
 static const uint16_t SerialNbr[] = {'0', '0', '0', '0', '1', '0', '0', '0', '0', '1', '0', '0', '0', '0',
-                                     '1', '0', '0', '0', '0', '1', '0', '0', '0', '0', '1', '0', '0', '0',
-                                     '0', '1', '0', '0', 0
-                                    };  /* last 2 bytes must be 0*/
+				     '1', '0', '0', '0', '0', '1', '0', '0', '0', '0', '1', '0', '0', '0',
+				     '0', '1', '0', '0', 0
+				    };  /* last 2 bytes must be 0*/
 static const uint16_t DeviceVers[] = {'V', '1', '.', '0', '0', 0}; /* last 2 bytes must be 0*/
 
 static const uint16_t DefaultFileName[] = {'N', 'e', 'w', ' ', 'F', 'o', 'l', 'd', 'e', 'r', 0};

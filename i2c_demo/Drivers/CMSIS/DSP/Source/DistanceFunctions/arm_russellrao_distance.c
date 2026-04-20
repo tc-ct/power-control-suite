@@ -34,10 +34,10 @@
 
 
 extern void arm_boolean_distance_TT(const uint32_t *pA
-       , const uint32_t *pB
-       , uint32_t numberOfBools
-       , uint32_t *cTT
-       );
+				    , const uint32_t *pB
+				    , uint32_t numberOfBools
+				    , uint32_t *cTT
+				   );
 
 
 /**
@@ -57,13 +57,13 @@ extern void arm_boolean_distance_TT(const uint32_t *pA
 
 float32_t arm_russellrao_distance(const uint32_t *pA, const uint32_t *pB, uint32_t numberOfBools)
 {
-    uint32_t ctt=0;
+	uint32_t ctt = 0;
 
 
-    arm_boolean_distance_TT(pA, pB, numberOfBools, &ctt);
+	arm_boolean_distance_TT(pA, pB, numberOfBools, &ctt);
 
 
-    return(1.0f*(numberOfBools - ctt) / ((float32_t)numberOfBools));
+	return (1.0f * (numberOfBools - ctt) / ((float32_t)numberOfBools));
 }
 
 

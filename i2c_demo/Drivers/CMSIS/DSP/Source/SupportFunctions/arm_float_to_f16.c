@@ -51,75 +51,76 @@
 
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE) && defined(__CMSIS_GCC_H)
 #pragma GCC warning "Scalar version of arm_float_to_f16 built. Helium version has build issues with gcc."
-#endif 
+#endif
 
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE) &&  !defined(__CMSIS_GCC_H)
 
 void arm_float_to_f16(
-  const float32_t * pSrc,
-        float16_t * pDst,
-        uint32_t blockSize)
+	const float32_t *pSrc,
+	float16_t *pDst,
+	uint32_t blockSize)
 {
-    int32_t  blkCnt;           /* loop counters */
-    float32x4x2_t tmp;
-    float16x8_t vecDst;
-    float32_t const *pSrcVec;
+	int32_t  blkCnt;           /* loop counters */
+	float32x4x2_t tmp;
+	float16x8_t vecDst;
+	float32_t const *pSrcVec;
 
 
-    pSrcVec = (float32_t const *) pSrc;
-    blkCnt = blockSize >> 3;
-    while (blkCnt > 0)
-    {
-        /* convert from float32 to float16 and then store the results in the destination buffer */
-        tmp = vld2q(pSrcVec);   pSrcVec += 8;
-        /* narrow / merge */
-        vecDst = vcvtbq_f16_f32(vecDst, tmp.val[0]);
-        vecDst = vcvttq_f16_f32(vecDst, tmp.val[1]);
-        vst1q(pDst, vecDst);    pDst += 8;
-        /*
-         * Decrement the blockSize loop counter
-         */
-        blkCnt--;
-    }
+	pSrcVec = (float32_t const *) pSrc;
+	blkCnt = blockSize >> 3;
 
-    /*
-     * tail
-     */
-    blkCnt = blockSize & 7;
-    if (blkCnt > 0)
-    {
-        mve_pred16_t p0 = vctp16q(blkCnt);
-        tmp = vld2q(pSrcVec);
-        vecDst = vcvtbq_f16_f32(vecDst, tmp.val[0]);
-        vecDst = vcvttq_f16_f32(vecDst, tmp.val[1]);
-        vstrhq_p(pDst, vecDst, p0);
-    }
+	while (blkCnt > 0) {
+		/* convert from float32 to float16 and then store the results in the destination buffer */
+		tmp = vld2q(pSrcVec);
+		pSrcVec += 8;
+		/* narrow / merge */
+		vecDst = vcvtbq_f16_f32(vecDst, tmp.val[0]);
+		vecDst = vcvttq_f16_f32(vecDst, tmp.val[1]);
+		vst1q(pDst, vecDst);
+		pDst += 8;
+		/*
+		 * Decrement the blockSize loop counter
+		 */
+		blkCnt--;
+	}
+
+	/*
+	 * tail
+	 */
+	blkCnt = blockSize & 7;
+
+	if (blkCnt > 0) {
+		mve_pred16_t p0 = vctp16q(blkCnt);
+		tmp = vld2q(pSrcVec);
+		vecDst = vcvtbq_f16_f32(vecDst, tmp.val[0]);
+		vecDst = vcvttq_f16_f32(vecDst, tmp.val[1]);
+		vstrhq_p(pDst, vecDst, p0);
+	}
 }
 
 #else
 
 void arm_float_to_f16(
-  const float32_t * pSrc,
-        float16_t * pDst,
-        uint32_t blockSize)
+	const float32_t *pSrc,
+	float16_t *pDst,
+	uint32_t blockSize)
 {
-    const float32_t *pIn = pSrc;      /* Src pointer */
-    uint32_t  blkCnt;           /* loop counter */
+	const float32_t *pIn = pSrc;      /* Src pointer */
+	uint32_t  blkCnt;           /* loop counter */
 
-    /*
-     * Loop over blockSize number of values
-     */
-    blkCnt = blockSize;
+	/*
+	 * Loop over blockSize number of values
+	 */
+	blkCnt = blockSize;
 
-    while (blkCnt > 0U)
-    {
+	while (blkCnt > 0U) {
 
-        *pDst++ = (float16_t) * pIn++;
-        /*
-         * Decrement the loop counter
-         */
-        blkCnt--;
-    }
+		*pDst++ = (float16_t) * pIn++;
+		/*
+		 * Decrement the loop counter
+		 */
+		blkCnt--;
+	}
 }
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
@@ -127,5 +128,5 @@ void arm_float_to_f16(
   @} end of float_to_x group
  */
 
-#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
 

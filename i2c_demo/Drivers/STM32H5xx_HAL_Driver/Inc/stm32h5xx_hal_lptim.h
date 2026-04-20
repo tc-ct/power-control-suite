@@ -48,12 +48,11 @@ extern "C" {
 /**
   * @brief  LPTIM Clock configuration definition
   */
-typedef struct
-{
-  uint32_t Source;         /*!< Selects the clock source.
+typedef struct {
+	uint32_t Source;         /*!< Selects the clock source.
                            This parameter can be a value of @ref LPTIM_Clock_Source   */
 
-  uint32_t Prescaler;      /*!< Specifies the counter clock Prescaler.
+	uint32_t Prescaler;      /*!< Specifies the counter clock Prescaler.
                            This parameter can be a value of @ref LPTIM_Clock_Prescaler */
 
 } LPTIM_ClockConfigTypeDef;
@@ -61,16 +60,15 @@ typedef struct
 /**
   * @brief  LPTIM Clock configuration definition
   */
-typedef struct
-{
-  uint32_t Polarity;      /*!< Selects the polarity of the active edge for the counter unit
+typedef struct {
+	uint32_t Polarity;      /*!< Selects the polarity of the active edge for the counter unit
                            if the ULPTIM input is selected.
                            Note: This parameter is used only when Ultra low power clock source is used.
                            Note: If the polarity is configured on 'both edges', an auxiliary clock
                            (one of the Low power oscillator) must be active.
                            This parameter can be a value of @ref LPTIM_Clock_Polarity */
 
-  uint32_t SampleTime;     /*!< Selects the clock sampling time to configure the clock glitch filter.
+	uint32_t SampleTime;     /*!< Selects the clock sampling time to configure the clock glitch filter.
                            Note: This parameter is used only when Ultra low power clock source is used.
                            This parameter can be a value of @ref LPTIM_Clock_Sample_Time */
 
@@ -79,16 +77,15 @@ typedef struct
 /**
   * @brief  LPTIM Trigger configuration definition
   */
-typedef struct
-{
-  uint32_t Source;        /*!< Selects the Trigger source.
+typedef struct {
+	uint32_t Source;        /*!< Selects the Trigger source.
                           This parameter can be a value of @ref LPTIM_Trigger_Source */
 
-  uint32_t ActiveEdge;    /*!< Selects the Trigger active edge.
+	uint32_t ActiveEdge;    /*!< Selects the Trigger active edge.
                           Note: This parameter is used only when an external trigger is used.
                           This parameter can be a value of @ref LPTIM_External_Trigger_Polarity */
 
-  uint32_t SampleTime;    /*!< Selects the trigger sampling time to configure the clock glitch filter.
+	uint32_t SampleTime;    /*!< Selects the trigger sampling time to configure the clock glitch filter.
                           Note: This parameter is used only when an external trigger is used.
                           This parameter can be a value of @ref LPTIM_Trigger_Sample_Time  */
 } LPTIM_TriggerConfigTypeDef;
@@ -96,36 +93,35 @@ typedef struct
 /**
   * @brief  LPTIM Initialization Structure definition
   */
-typedef struct
-{
-  LPTIM_ClockConfigTypeDef     Clock;             /*!< Specifies the clock parameters */
+typedef struct {
+	LPTIM_ClockConfigTypeDef     Clock;             /*!< Specifies the clock parameters */
 
-  LPTIM_ULPClockConfigTypeDef  UltraLowPowerClock;/*!< Specifies the Ultra Low Power clock parameters */
+	LPTIM_ULPClockConfigTypeDef  UltraLowPowerClock;/*!< Specifies the Ultra Low Power clock parameters */
 
-  LPTIM_TriggerConfigTypeDef   Trigger;           /*!< Specifies the Trigger parameters */
+	LPTIM_TriggerConfigTypeDef   Trigger;           /*!< Specifies the Trigger parameters */
 
-  uint32_t                     Period;            /*!< Specifies the period value to be loaded into the active
+	uint32_t                     Period;            /*!< Specifies the period value to be loaded into the active
                                                   Auto-Reload Register at the next update event.
                                                   This parameter can be a number between
                                                   Min_Data = 0x0001 and Max_Data = 0xFFFF.  */
 
-  uint32_t                     UpdateMode;        /*!< Specifies whether the update of the autoreload and the compare
+	uint32_t                     UpdateMode;        /*!< Specifies whether the update of the autoreload and the compare
                                                   values is done immediately or after the end of current period.
                                                   This parameter can be a value of @ref LPTIM_Updating_Mode */
 
-  uint32_t                     CounterSource;     /*!< Specifies whether the counter is incremented each internal event
+	uint32_t                     CounterSource;     /*!< Specifies whether the counter is incremented each internal event
                                                   or each external event.
                                                   This parameter can be a value of @ref LPTIM_Counter_Source */
 
-  uint32_t                     Input1Source;      /*!< Specifies source selected for input1 (GPIO or comparator output).
+	uint32_t                     Input1Source;      /*!< Specifies source selected for input1 (GPIO or comparator output).
                                                   This parameter can be a value of @ref LPTIM_Input1_Source */
 
-  uint32_t                     Input2Source;      /*!< Specifies source selected for input2 (GPIO or comparator output).
+	uint32_t                     Input2Source;      /*!< Specifies source selected for input2 (GPIO or comparator output).
                                                   Note: This parameter is used only for encoder feature so is used only
                                                   for LPTIM1 instance.
                                                   This parameter can be a value of @ref LPTIM_Input2_Source */
 
-  uint32_t                     RepetitionCounter;/*!< Specifies the repetition counter value.
+	uint32_t                     RepetitionCounter;/*!< Specifies the repetition counter value.
                                                   Each time the RCR downcounter reaches zero, an update event is
                                                   generated and counting restarts from the RCR value (N).
                                                   Note: When using repetition counter the UpdateMode field must be
@@ -138,62 +134,57 @@ typedef struct
 /**
   * @brief  LPTIM Output Compare Configuration Structure definition
   */
-typedef struct
-{
-  uint32_t Pulse;                 /*!< Specifies the pulse value to be loaded into the Capture Compare Register.
+typedef struct {
+	uint32_t Pulse;                 /*!< Specifies the pulse value to be loaded into the Capture Compare Register.
                                        This parameter can be a number between Min_Data = 0x0000 and Max_Data = 0xFFFF */
-  uint32_t OCPolarity;            /*!< Specifies the output polarity.
+	uint32_t OCPolarity;            /*!< Specifies the output polarity.
                                        This parameter can be a value of @ref LPTIM_Output_Compare_Polarity */
 } LPTIM_OC_ConfigTypeDef;
 
 /**
   * @brief  LPTIM Input Capture Configuration Structure definition
   */
-typedef struct
-{
-  uint32_t ICInputSource; /*!< Specifies source selected for IC channel.
+typedef struct {
+	uint32_t ICInputSource; /*!< Specifies source selected for IC channel.
                                This parameter can be a value of @ref LPTIM_Input_Capture_Source */
 
-  uint32_t ICPrescaler;   /*!< Specifies the Input Capture Prescaler.
+	uint32_t ICPrescaler;   /*!< Specifies the Input Capture Prescaler.
                                This parameter can be a value of @ref LPTIM_Input_Capture_Prescaler */
 
-  uint32_t ICPolarity;    /*!< Specifies the active edge of the input signal.
+	uint32_t ICPolarity;    /*!< Specifies the active edge of the input signal.
                                This parameter can be a value of @ref LPTIM_Input_Capture_Polarity */
 
-  uint32_t ICFilter;      /*!< Specifies the input capture filter.
+	uint32_t ICFilter;      /*!< Specifies the input capture filter.
                                This parameter can be a value of @ref LPTIM_Input_Capture_Filter */
 } LPTIM_IC_ConfigTypeDef;
 
 /**
   * @brief  HAL LPTIM State structure definition
   */
-typedef enum
-{
-  HAL_LPTIM_STATE_RESET            = 0x00U,    /*!< Peripheral not yet initialized or disabled  */
-  HAL_LPTIM_STATE_READY            = 0x01U,    /*!< Peripheral Initialized and ready for use    */
-  HAL_LPTIM_STATE_BUSY             = 0x02U,    /*!< An internal process is ongoing              */
-  HAL_LPTIM_STATE_TIMEOUT          = 0x03U,    /*!< Timeout state                               */
-  HAL_LPTIM_STATE_ERROR            = 0x04U     /*!< Internal Process is ongoing                 */
+typedef enum {
+	HAL_LPTIM_STATE_RESET            = 0x00U,    /*!< Peripheral not yet initialized or disabled  */
+	HAL_LPTIM_STATE_READY            = 0x01U,    /*!< Peripheral Initialized and ready for use    */
+	HAL_LPTIM_STATE_BUSY             = 0x02U,    /*!< An internal process is ongoing              */
+	HAL_LPTIM_STATE_TIMEOUT          = 0x03U,    /*!< Timeout state                               */
+	HAL_LPTIM_STATE_ERROR            = 0x04U     /*!< Internal Process is ongoing                 */
 } HAL_LPTIM_StateTypeDef;
 
 /**
   * @brief  HAL Active channel structures definition
   */
-typedef enum
-{
-  HAL_LPTIM_ACTIVE_CHANNEL_1        = 0x01U,    /*!< The active channel is 1     */
-  HAL_LPTIM_ACTIVE_CHANNEL_2        = 0x02U,    /*!< The active channel is 2     */
-  HAL_LPTIM_ACTIVE_CHANNEL_CLEARED  = 0x00U     /*!< All active channels cleared */
+typedef enum {
+	HAL_LPTIM_ACTIVE_CHANNEL_1        = 0x01U,    /*!< The active channel is 1     */
+	HAL_LPTIM_ACTIVE_CHANNEL_2        = 0x02U,    /*!< The active channel is 2     */
+	HAL_LPTIM_ACTIVE_CHANNEL_CLEARED  = 0x00U     /*!< All active channels cleared */
 } HAL_LPTIM_ActiveChannel;
 
 /**
   * @brief  LPTIM Channel States definition
   */
-typedef enum
-{
-  HAL_LPTIM_CHANNEL_STATE_RESET             = 0x00U,    /*!< LPTIM Channel initial state                         */
-  HAL_LPTIM_CHANNEL_STATE_READY             = 0x01U,    /*!< LPTIM Channel ready for use                         */
-  HAL_LPTIM_CHANNEL_STATE_BUSY              = 0x02U,    /*!< An internal process is ongoing on the LPTIM channel */
+typedef enum {
+	HAL_LPTIM_CHANNEL_STATE_RESET             = 0x00U,    /*!< LPTIM Channel initial state                         */
+	HAL_LPTIM_CHANNEL_STATE_READY             = 0x01U,    /*!< LPTIM Channel ready for use                         */
+	HAL_LPTIM_CHANNEL_STATE_BUSY              = 0x02U,    /*!< An internal process is ongoing on the LPTIM channel */
 } HAL_LPTIM_ChannelStateTypeDef;
 
 /**
@@ -205,38 +196,38 @@ typedef struct __LPTIM_HandleTypeDef
 typedef struct
 #endif /* USE_HAL_LPTIM_REGISTER_CALLBACKS */
 {
-  LPTIM_TypeDef                 *Instance;         /*!< Register base address     */
+	LPTIM_TypeDef                 *Instance;         /*!< Register base address     */
 
-  LPTIM_InitTypeDef              Init;             /*!< LPTIM required parameters */
+	LPTIM_InitTypeDef              Init;             /*!< LPTIM required parameters */
 
-  HAL_LPTIM_ActiveChannel        Channel;          /*!< Active channel            */
+	HAL_LPTIM_ActiveChannel        Channel;          /*!< Active channel            */
 
-  DMA_HandleTypeDef             *hdma[3];          /*!< DMA Handlers array, This array is accessed by a @ref LPTIM_DMA_Handle_index */
+	DMA_HandleTypeDef             *hdma[3];          /*!< DMA Handlers array, This array is accessed by a @ref LPTIM_DMA_Handle_index */
 
-  HAL_StatusTypeDef              Status;           /*!< LPTIM peripheral status   */
+	HAL_StatusTypeDef              Status;           /*!< LPTIM peripheral status   */
 
-  HAL_LockTypeDef                Lock;             /*!< LPTIM locking object      */
+	HAL_LockTypeDef                Lock;             /*!< LPTIM locking object      */
 
-  __IO  HAL_LPTIM_StateTypeDef   State;            /*!< LPTIM peripheral state    */
+	__IO  HAL_LPTIM_StateTypeDef   State;            /*!< LPTIM peripheral state    */
 
-  __IO  HAL_LPTIM_ChannelStateTypeDef   ChannelState[2];  /*!< LPTIM channel operation state                       */
+	__IO  HAL_LPTIM_ChannelStateTypeDef   ChannelState[2];  /*!< LPTIM channel operation state                       */
 #if (USE_HAL_LPTIM_REGISTER_CALLBACKS == 1)
-  void (* MspInitCallback)(struct __LPTIM_HandleTypeDef *hlptim);            /*!< LPTIM Base Msp Init Callback                 */
-  void (* MspDeInitCallback)(struct __LPTIM_HandleTypeDef *hlptim);          /*!< LPTIM Base Msp DeInit Callback               */
-  void (* CompareMatchCallback)(struct __LPTIM_HandleTypeDef *hlptim);       /*!< Compare match Callback                       */
-  void (* AutoReloadMatchCallback)(struct __LPTIM_HandleTypeDef *hlptim);    /*!< Auto-reload match Callback                   */
-  void (* TriggerCallback)(struct __LPTIM_HandleTypeDef *hlptim);            /*!< External trigger event detection Callback    */
-  void (* CompareWriteCallback)(struct __LPTIM_HandleTypeDef *hlptim);       /*!< Compare register write complete Callback     */
-  void (* AutoReloadWriteCallback)(struct __LPTIM_HandleTypeDef *hlptim);    /*!< Auto-reload register write complete Callback */
-  void (* DirectionUpCallback)(struct __LPTIM_HandleTypeDef *hlptim);        /*!< Up-counting direction change Callback        */
-  void (* DirectionDownCallback)(struct __LPTIM_HandleTypeDef *hlptim);      /*!< Down-counting direction change Callback      */
-  void (* UpdateEventCallback)(struct __LPTIM_HandleTypeDef *hlptim);        /*!< Update event detection Callback              */
-  void (* RepCounterWriteCallback)(struct __LPTIM_HandleTypeDef *hlptim);    /*!< Repetition counter register write complete Callback */
-  void (* UpdateEventHalfCpltCallback)(struct __LPTIM_HandleTypeDef *hlptim);/*!< Update event half complete detection Callback */
-  void (* ErrorCallback)(struct __LPTIM_HandleTypeDef *hlptim);              /*!< LPTIM Error Callback                         */
-  void (* IC_CaptureCallback)(struct __LPTIM_HandleTypeDef *hlptim);         /*!< Input capture Callback                       */
-  void (* IC_CaptureHalfCpltCallback)(struct __LPTIM_HandleTypeDef *htim);   /*!< Input Capture half complete Callback         */
-  void (* IC_OverCaptureCallback)(struct __LPTIM_HandleTypeDef *hlptim);     /*!< Over capture Callback                        */
+	void (* MspInitCallback)(struct __LPTIM_HandleTypeDef *hlptim);            /*!< LPTIM Base Msp Init Callback                 */
+	void (* MspDeInitCallback)(struct __LPTIM_HandleTypeDef *hlptim);          /*!< LPTIM Base Msp DeInit Callback               */
+	void (* CompareMatchCallback)(struct __LPTIM_HandleTypeDef *hlptim);       /*!< Compare match Callback                       */
+	void (* AutoReloadMatchCallback)(struct __LPTIM_HandleTypeDef *hlptim);    /*!< Auto-reload match Callback                   */
+	void (* TriggerCallback)(struct __LPTIM_HandleTypeDef *hlptim);            /*!< External trigger event detection Callback    */
+	void (* CompareWriteCallback)(struct __LPTIM_HandleTypeDef *hlptim);       /*!< Compare register write complete Callback     */
+	void (* AutoReloadWriteCallback)(struct __LPTIM_HandleTypeDef *hlptim);    /*!< Auto-reload register write complete Callback */
+	void (* DirectionUpCallback)(struct __LPTIM_HandleTypeDef *hlptim);        /*!< Up-counting direction change Callback        */
+	void (* DirectionDownCallback)(struct __LPTIM_HandleTypeDef *hlptim);      /*!< Down-counting direction change Callback      */
+	void (* UpdateEventCallback)(struct __LPTIM_HandleTypeDef *hlptim);        /*!< Update event detection Callback              */
+	void (* RepCounterWriteCallback)(struct __LPTIM_HandleTypeDef *hlptim);    /*!< Repetition counter register write complete Callback */
+	void (* UpdateEventHalfCpltCallback)(struct __LPTIM_HandleTypeDef *hlptim);/*!< Update event half complete detection Callback */
+	void (* ErrorCallback)(struct __LPTIM_HandleTypeDef *hlptim);              /*!< LPTIM Error Callback                         */
+	void (* IC_CaptureCallback)(struct __LPTIM_HandleTypeDef *hlptim);         /*!< Input capture Callback                       */
+	void (* IC_CaptureHalfCpltCallback)(struct __LPTIM_HandleTypeDef *htim);   /*!< Input Capture half complete Callback         */
+	void (* IC_OverCaptureCallback)(struct __LPTIM_HandleTypeDef *hlptim);     /*!< Over capture Callback                        */
 #endif /* USE_HAL_LPTIM_REGISTER_CALLBACKS */
 } LPTIM_HandleTypeDef;
 
@@ -244,24 +235,23 @@ typedef struct
 /**
   * @brief  HAL LPTIM Callback ID enumeration definition
   */
-typedef enum
-{
-  HAL_LPTIM_MSPINIT_CB_ID          = 0x00U,    /*!< LPTIM Base Msp Init Callback ID                  */
-  HAL_LPTIM_MSPDEINIT_CB_ID        = 0x01U,    /*!< LPTIM Base Msp DeInit Callback ID                */
-  HAL_LPTIM_COMPARE_MATCH_CB_ID    = 0x02U,    /*!< Compare match Callback ID                        */
-  HAL_LPTIM_AUTORELOAD_MATCH_CB_ID = 0x03U,    /*!< Auto-reload match Callback ID                    */
-  HAL_LPTIM_TRIGGER_CB_ID          = 0x04U,    /*!< External trigger event detection Callback ID     */
-  HAL_LPTIM_COMPARE_WRITE_CB_ID    = 0x05U,    /*!< Compare register write complete Callback ID      */
-  HAL_LPTIM_AUTORELOAD_WRITE_CB_ID = 0x06U,    /*!< Auto-reload register write complete Callback ID  */
-  HAL_LPTIM_DIRECTION_UP_CB_ID     = 0x07U,    /*!< Up-counting direction change Callback ID         */
-  HAL_LPTIM_DIRECTION_DOWN_CB_ID   = 0x08U,    /*!< Down-counting direction change Callback ID       */
-  HAL_LPTIM_UPDATE_EVENT_CB_ID      = 0x09U,   /*!< Update event detection Callback ID               */
-  HAL_LPTIM_REP_COUNTER_WRITE_CB_ID = 0x0AU,   /*!< Repetition counter register write complete Callback ID */
-  HAL_LPTIM_UPDATE_EVENT_HALF_CB_ID = 0x0BU,   /*!< Update event half complete detection Callback ID */
-  HAL_LPTIM_ERROR_CB_ID             = 0x0CU,   /*!< LPTIM Error Callback ID                          */
-  HAL_LPTIM_IC_CAPTURE_CB_ID        = 0x0DU,   /*!< Input capture Callback ID                        */
-  HAL_LPTIM_IC_CAPTURE_HALF_CB_ID   = 0x0EU,   /*!< Input capture half complete Callback ID          */
-  HAL_LPTIM_OVER_CAPTURE_CB_ID      = 0x0FU,   /*!< Over capture Callback ID                         */
+typedef enum {
+	HAL_LPTIM_MSPINIT_CB_ID          = 0x00U,    /*!< LPTIM Base Msp Init Callback ID                  */
+	HAL_LPTIM_MSPDEINIT_CB_ID        = 0x01U,    /*!< LPTIM Base Msp DeInit Callback ID                */
+	HAL_LPTIM_COMPARE_MATCH_CB_ID    = 0x02U,    /*!< Compare match Callback ID                        */
+	HAL_LPTIM_AUTORELOAD_MATCH_CB_ID = 0x03U,    /*!< Auto-reload match Callback ID                    */
+	HAL_LPTIM_TRIGGER_CB_ID          = 0x04U,    /*!< External trigger event detection Callback ID     */
+	HAL_LPTIM_COMPARE_WRITE_CB_ID    = 0x05U,    /*!< Compare register write complete Callback ID      */
+	HAL_LPTIM_AUTORELOAD_WRITE_CB_ID = 0x06U,    /*!< Auto-reload register write complete Callback ID  */
+	HAL_LPTIM_DIRECTION_UP_CB_ID     = 0x07U,    /*!< Up-counting direction change Callback ID         */
+	HAL_LPTIM_DIRECTION_DOWN_CB_ID   = 0x08U,    /*!< Down-counting direction change Callback ID       */
+	HAL_LPTIM_UPDATE_EVENT_CB_ID      = 0x09U,   /*!< Update event detection Callback ID               */
+	HAL_LPTIM_REP_COUNTER_WRITE_CB_ID = 0x0AU,   /*!< Repetition counter register write complete Callback ID */
+	HAL_LPTIM_UPDATE_EVENT_HALF_CB_ID = 0x0BU,   /*!< Update event half complete detection Callback ID */
+	HAL_LPTIM_ERROR_CB_ID             = 0x0CU,   /*!< LPTIM Error Callback ID                          */
+	HAL_LPTIM_IC_CAPTURE_CB_ID        = 0x0DU,   /*!< Input capture Callback ID                        */
+	HAL_LPTIM_IC_CAPTURE_HALF_CB_ID   = 0x0EU,   /*!< Input capture half complete Callback ID          */
+	HAL_LPTIM_OVER_CAPTURE_CB_ID      = 0x0FU,   /*!< Over capture Callback ID                         */
 } HAL_LPTIM_CallbackIDTypeDef;
 
 /**
@@ -876,7 +866,7 @@ void HAL_LPTIM_MspDeInit(LPTIM_HandleTypeDef *hlptim);
   */
 /* Config functions  **********************************************************/
 HAL_StatusTypeDef HAL_LPTIM_OC_ConfigChannel(LPTIM_HandleTypeDef *hlptim, const LPTIM_OC_ConfigTypeDef *sConfig,
-                                             uint32_t Channel);
+		uint32_t Channel);
 
 /* Start/Stop operation functions  *********************************************/
 /* ################################# PWM Mode ################################*/
@@ -887,7 +877,7 @@ HAL_StatusTypeDef HAL_LPTIM_PWM_Stop(LPTIM_HandleTypeDef *hlptim, uint32_t Chann
 HAL_StatusTypeDef HAL_LPTIM_PWM_Start_IT(LPTIM_HandleTypeDef *hlptim, uint32_t Channel);
 HAL_StatusTypeDef HAL_LPTIM_PWM_Stop_IT(LPTIM_HandleTypeDef *hlptim, uint32_t Channel);
 HAL_StatusTypeDef HAL_LPTIM_PWM_Start_DMA(LPTIM_HandleTypeDef *hlptim, uint32_t Channel, const uint32_t *pData,
-                                          uint32_t Length);
+		uint32_t Length);
 HAL_StatusTypeDef HAL_LPTIM_PWM_Stop_DMA(LPTIM_HandleTypeDef *hlptim, uint32_t Channel);
 
 /* ############################# One Pulse Mode ##############################*/
@@ -933,14 +923,14 @@ HAL_StatusTypeDef HAL_LPTIM_Counter_Stop_IT(LPTIM_HandleTypeDef *hlptim);
 /* ############################## Input Capture Mode ###############################*/
 /* Blocking mode: Polling */
 HAL_StatusTypeDef HAL_LPTIM_IC_ConfigChannel(LPTIM_HandleTypeDef *hlptim, const LPTIM_IC_ConfigTypeDef *sConfig,
-                                             uint32_t Channel);
+		uint32_t Channel);
 HAL_StatusTypeDef HAL_LPTIM_IC_Start(LPTIM_HandleTypeDef *hlptim, uint32_t Channel);
 HAL_StatusTypeDef HAL_LPTIM_IC_Stop(LPTIM_HandleTypeDef *hlptim, uint32_t Channel);
 /* Non-Blocking mode: Interrupt */
 HAL_StatusTypeDef HAL_LPTIM_IC_Start_IT(LPTIM_HandleTypeDef *hlptim, uint32_t Channel);
 HAL_StatusTypeDef HAL_LPTIM_IC_Stop_IT(LPTIM_HandleTypeDef *hlptim, uint32_t Channel);
 HAL_StatusTypeDef HAL_LPTIM_IC_Start_DMA(LPTIM_HandleTypeDef *hlptim, uint32_t Channel, uint32_t *pData,
-                                         uint32_t Length);
+		uint32_t Length);
 HAL_StatusTypeDef HAL_LPTIM_IC_Stop_DMA(LPTIM_HandleTypeDef *hlptim, uint32_t Channel);
 /**
   * @}
@@ -985,7 +975,7 @@ void HAL_LPTIM_IC_OverCaptureCallback(LPTIM_HandleTypeDef *hlptim);
 /* Callbacks Register/UnRegister functions  ***********************************/
 #if (USE_HAL_LPTIM_REGISTER_CALLBACKS == 1)
 HAL_StatusTypeDef HAL_LPTIM_RegisterCallback(LPTIM_HandleTypeDef *lphtim, HAL_LPTIM_CallbackIDTypeDef CallbackID,
-                                             pLPTIM_CallbackTypeDef pCallback);
+		pLPTIM_CallbackTypeDef pCallback);
 HAL_StatusTypeDef HAL_LPTIM_UnRegisterCallback(LPTIM_HandleTypeDef *lphtim, HAL_LPTIM_CallbackIDTypeDef CallbackID);
 #endif /* USE_HAL_LPTIM_REGISTER_CALLBACKS */
 /**

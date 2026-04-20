@@ -39,23 +39,27 @@
 
 /* 6.14 bug */
 #if defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6100100) && (__ARMCC_VERSION < 6150001)
- 
+
 __attribute__((weak)) float __powisf2(float a, int b)
-{ 
-    const int recip = b < 0;
-    float r = 1;
-    while (1)
-    {
-        if (b & 1)
-            r *= a;
-        b /= 2;
-        if (b == 0)
-            break;
-        a *= a;
-    }
-    return recip ? 1/r : r;
+{
+	const int recip = b < 0;
+	float r = 1;
+
+	while (1) {
+		if (b & 1)
+			r *= a;
+
+		b /= 2;
+
+		if (b == 0)
+			break;
+
+		a *= a;
+	}
+
+	return recip ? 1 / r : r;
 }
-#endif 
+#endif
 
 /**
  * @brief        Minkowski distance between two vectors
@@ -73,44 +77,46 @@ __attribute__((weak)) float __powisf2(float a, int b)
 #include "arm_helium_utils.h"
 #include "arm_vec_math.h"
 
-float32_t arm_minkowski_distance_f32(const float32_t *pA,const float32_t *pB, int32_t order, uint32_t blockSize)
+float32_t arm_minkowski_distance_f32(const float32_t *pA, const float32_t *pB, int32_t order, uint32_t blockSize)
 {
-    uint32_t        blkCnt;
-    f32x4_t         a, b, tmpV, sumV;
+	uint32_t        blkCnt;
+	f32x4_t         a, b, tmpV, sumV;
 
-    sumV = vdupq_n_f32(0.0f);
+	sumV = vdupq_n_f32(0.0f);
 
-    blkCnt = blockSize >> 2;
-    while (blkCnt > 0U) {
-        a = vld1q(pA);
-        b = vld1q(pB);
+	blkCnt = blockSize >> 2;
 
-        tmpV = vabdq(a, b);
-        tmpV = vpowq_f32(tmpV, vdupq_n_f32(order));
-        sumV = vaddq(sumV, tmpV);
+	while (blkCnt > 0U) {
+		a = vld1q(pA);
+		b = vld1q(pB);
 
-        pA += 4;
-        pB += 4;
-        blkCnt--;
-    }
+		tmpV = vabdq(a, b);
+		tmpV = vpowq_f32(tmpV, vdupq_n_f32(order));
+		sumV = vaddq(sumV, tmpV);
 
-    /*
-     * tail
-     * (will be merged thru tail predication)
-     */
-    blkCnt = blockSize & 3;
-    if (blkCnt > 0U) {
-        mve_pred16_t    p0 = vctp32q(blkCnt);
+		pA += 4;
+		pB += 4;
+		blkCnt--;
+	}
 
-        a = vldrwq_z_f32(pA, p0);
-        b = vldrwq_z_f32(pB, p0);
+	/*
+	 * tail
+	 * (will be merged thru tail predication)
+	 */
+	blkCnt = blockSize & 3;
 
-        tmpV = vabdq(a, b);
-        tmpV = vpowq_f32(tmpV, vdupq_n_f32(order));
-        sumV = vaddq_m(sumV, sumV, tmpV, p0);
-    }
+	if (blkCnt > 0U) {
+		mve_pred16_t    p0 = vctp32q(blkCnt);
 
-    return (powf(vecAddAcrossF32Mve(sumV), (1.0f / (float32_t) order)));
+		a = vldrwq_z_f32(pA, p0);
+		b = vldrwq_z_f32(pB, p0);
+
+		tmpV = vabdq(a, b);
+		tmpV = vpowq_f32(tmpV, vdupq_n_f32(order));
+		sumV = vaddq_m(sumV, sumV, tmpV, p0);
+	}
+
+	return (powf(vecAddAcrossF32Mve(sumV), (1.0f / (float32_t) order)));
 }
 
 #else
@@ -118,65 +124,64 @@ float32_t arm_minkowski_distance_f32(const float32_t *pA,const float32_t *pB, in
 
 #include "NEMath.h"
 
-float32_t arm_minkowski_distance_f32(const float32_t *pA,const float32_t *pB, int32_t order, uint32_t blockSize)
+float32_t arm_minkowski_distance_f32(const float32_t *pA, const float32_t *pB, int32_t order, uint32_t blockSize)
 {
-    float32_t sum;
-    uint32_t blkCnt;
-    float32x4_t sumV,aV,bV, tmpV, n;
-    float32x2_t sumV2;
+	float32_t sum;
+	uint32_t blkCnt;
+	float32x4_t sumV, aV, bV, tmpV, n;
+	float32x2_t sumV2;
 
-    sum = 0.0f; 
-    sumV = vdupq_n_f32(0.0f);
-    n = vdupq_n_f32(order);
+	sum = 0.0f;
+	sumV = vdupq_n_f32(0.0f);
+	n = vdupq_n_f32(order);
 
-    blkCnt = blockSize >> 2;
-    while(blkCnt > 0)
-    {
-       aV = vld1q_f32(pA);
-       bV = vld1q_f32(pB);
-       pA += 4;
-       pB += 4;
+	blkCnt = blockSize >> 2;
 
-       tmpV = vabdq_f32(aV,bV);
-       tmpV = vpowq_f32(tmpV,n);
-       sumV = vaddq_f32(sumV, tmpV);
+	while (blkCnt > 0) {
+		aV = vld1q_f32(pA);
+		bV = vld1q_f32(pB);
+		pA += 4;
+		pB += 4;
 
-
-       blkCnt --;
-    }
-
-    sumV2 = vpadd_f32(vget_low_f32(sumV),vget_high_f32(sumV));
-    sum = vget_lane_f32(sumV2, 0) + vget_lane_f32(sumV2, 1);
-
-    blkCnt = blockSize & 3;
-    while(blkCnt > 0)
-    {
-       sum += powf(fabsf(*pA++ - *pB++),order);
-
-       blkCnt --;
-    }
+		tmpV = vabdq_f32(aV, bV);
+		tmpV = vpowq_f32(tmpV, n);
+		sumV = vaddq_f32(sumV, tmpV);
 
 
-    return(powf(sum,(1.0f/order)));
+		blkCnt --;
+	}
+
+	sumV2 = vpadd_f32(vget_low_f32(sumV), vget_high_f32(sumV));
+	sum = vget_lane_f32(sumV2, 0) + vget_lane_f32(sumV2, 1);
+
+	blkCnt = blockSize & 3;
+
+	while (blkCnt > 0) {
+		sum += powf(fabsf(*pA++ - *pB++), order);
+
+		blkCnt --;
+	}
+
+
+	return (powf(sum, (1.0f / order)));
 
 }
 
 #else
 
 
-float32_t arm_minkowski_distance_f32(const float32_t *pA,const float32_t *pB, int32_t order, uint32_t blockSize)
+float32_t arm_minkowski_distance_f32(const float32_t *pA, const float32_t *pB, int32_t order, uint32_t blockSize)
 {
-    float32_t sum;
-    uint32_t i;
+	float32_t sum;
+	uint32_t i;
 
-    sum = 0.0f; 
-    for(i=0; i < blockSize; i++)
-    {
-       sum += powf(fabsf(pA[i] - pB[i]),order);
-    }
+	sum = 0.0f;
+
+	for (i = 0; i < blockSize; i++)
+		sum += powf(fabsf(pA[i] - pB[i]), order);
 
 
-    return(powf(sum,(1.0f/order)));
+	return (powf(sum, (1.0f / order)));
 
 }
 #endif

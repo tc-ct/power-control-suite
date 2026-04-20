@@ -45,12 +45,11 @@ extern "C" {
 /**
   * @brief  CORDIC HAL State Structure definition
   */
-typedef enum
-{
-  HAL_CORDIC_STATE_RESET     = 0x00U,  /*!< CORDIC not yet initialized or disabled */
-  HAL_CORDIC_STATE_READY     = 0x01U,  /*!< CORDIC initialized and ready for use   */
-  HAL_CORDIC_STATE_BUSY      = 0x02U,  /*!< CORDIC internal process is ongoing     */
-  HAL_CORDIC_STATE_ERROR     = 0x03U   /*!< CORDIC error state                     */
+typedef enum {
+	HAL_CORDIC_STATE_RESET     = 0x00U,  /*!< CORDIC not yet initialized or disabled */
+	HAL_CORDIC_STATE_READY     = 0x01U,  /*!< CORDIC initialized and ready for use   */
+	HAL_CORDIC_STATE_BUSY      = 0x02U,  /*!< CORDIC internal process is ongoing     */
+	HAL_CORDIC_STATE_ERROR     = 0x03U   /*!< CORDIC error state                     */
 } HAL_CORDIC_StateTypeDef;
 
 /**
@@ -62,35 +61,35 @@ typedef struct __CORDIC_HandleTypeDef
 typedef struct
 #endif /* USE_HAL_CORDIC_REGISTER_CALLBACKS */
 {
-  CORDIC_TypeDef                *Instance;   /*!< Register base address */
+	CORDIC_TypeDef                *Instance;   /*!< Register base address */
 
-  const int32_t                 *pInBuff;    /*!< Pointer to CORDIC input data buffer */
+	const int32_t                 *pInBuff;    /*!< Pointer to CORDIC input data buffer */
 
-  int32_t                       *pOutBuff;   /*!< Pointer to CORDIC output data buffer */
+	int32_t                       *pOutBuff;   /*!< Pointer to CORDIC output data buffer */
 
-  uint32_t                      NbCalcToOrder; /*!< Remaining number of calculation to order */
+	uint32_t                      NbCalcToOrder; /*!< Remaining number of calculation to order */
 
-  uint32_t                      NbCalcToGet; /*!< Remaining number of calculation result to get */
+	uint32_t                      NbCalcToGet; /*!< Remaining number of calculation result to get */
 
-  uint32_t                      DMADirection; /*!< Direction of CORDIC DMA transfers */
+	uint32_t                      DMADirection; /*!< Direction of CORDIC DMA transfers */
 
-  DMA_HandleTypeDef             *hdmaIn;     /*!< CORDIC peripheral input data DMA handle parameters */
+	DMA_HandleTypeDef             *hdmaIn;     /*!< CORDIC peripheral input data DMA handle parameters */
 
-  DMA_HandleTypeDef             *hdmaOut;    /*!< CORDIC peripheral output data DMA handle parameters */
+	DMA_HandleTypeDef             *hdmaOut;    /*!< CORDIC peripheral output data DMA handle parameters */
 
-  HAL_LockTypeDef               Lock;        /*!< CORDIC locking object */
+	HAL_LockTypeDef               Lock;        /*!< CORDIC locking object */
 
-  __IO HAL_CORDIC_StateTypeDef  State;       /*!< CORDIC state */
+	__IO HAL_CORDIC_StateTypeDef  State;       /*!< CORDIC state */
 
-  __IO uint32_t                 ErrorCode;   /*!< CORDIC peripheral error code
+	__IO uint32_t                 ErrorCode;   /*!< CORDIC peripheral error code
                                                   This parameter can be a value of @ref CORDIC_Error_Code */
 
 #if USE_HAL_CORDIC_REGISTER_CALLBACKS == 1
-  void (* ErrorCallback)(struct __CORDIC_HandleTypeDef *hcordic);          /*!< CORDIC error callback */
-  void (* CalculateCpltCallback)(struct __CORDIC_HandleTypeDef *hcordic);  /*!< CORDIC calculate complete callback */
+	void (* ErrorCallback)(struct __CORDIC_HandleTypeDef *hcordic);          /*!< CORDIC error callback */
+	void (* CalculateCpltCallback)(struct __CORDIC_HandleTypeDef *hcordic);  /*!< CORDIC calculate complete callback */
 
-  void (* MspInitCallback)(struct __CORDIC_HandleTypeDef *hcordic);        /*!< CORDIC Msp Init callback */
-  void (* MspDeInitCallback)(struct __CORDIC_HandleTypeDef *hcordic);      /*!< CORDIC Msp DeInit callback */
+	void (* MspInitCallback)(struct __CORDIC_HandleTypeDef *hcordic);        /*!< CORDIC Msp Init callback */
+	void (* MspDeInitCallback)(struct __CORDIC_HandleTypeDef *hcordic);      /*!< CORDIC Msp DeInit callback */
 
 #endif /* (USE_HAL_CORDIC_REGISTER_CALLBACKS) */
 
@@ -99,27 +98,26 @@ typedef struct
 /**
   * @brief  CORDIC Config Structure definition
   */
-typedef struct
-{
-  uint32_t   Function;     /*!< Function
+typedef struct {
+	uint32_t   Function;     /*!< Function
                                 This parameter can be a value of @ref CORDIC_Function */
 
-  uint32_t   Scale;        /*!< Scaling factor
+	uint32_t   Scale;        /*!< Scaling factor
                                 This parameter can be a value of @ref CORDIC_Scale */
 
-  uint32_t   InSize;       /*!< Width of input data
+	uint32_t   InSize;       /*!< Width of input data
                                 This parameter can be a value of @ref CORDIC_In_Size */
 
-  uint32_t   OutSize;      /*!< Width of output data
+	uint32_t   OutSize;      /*!< Width of output data
                                 This parameter can be a value of @ref CORDIC_Out_Size */
 
-  uint32_t   NbWrite;      /*!< Number of 32-bit write expected for one calculation
+	uint32_t   NbWrite;      /*!< Number of 32-bit write expected for one calculation
                                 This parameter can be a value of @ref CORDIC_Nb_Write */
 
-  uint32_t   NbRead;       /*!< Number of 32-bit read expected after one calculation
+	uint32_t   NbRead;       /*!< Number of 32-bit read expected after one calculation
                                 This parameter can be a value of @ref CORDIC_Nb_Read */
 
-  uint32_t   Precision;    /*!< Number of cycles for calculation
+	uint32_t   Precision;    /*!< Number of cycles for calculation
                                 This parameter can be a value of @ref CORDIC_Precision_In_Cycles_Number */
 
 } CORDIC_ConfigTypeDef;
@@ -128,13 +126,12 @@ typedef struct
 /**
   * @brief  HAL CORDIC Callback ID enumeration definition
   */
-typedef enum
-{
-  HAL_CORDIC_ERROR_CB_ID             = 0x00U,    /*!< CORDIC error callback ID */
-  HAL_CORDIC_CALCULATE_CPLT_CB_ID    = 0x01U,    /*!< CORDIC calculate complete callback ID */
+typedef enum {
+	HAL_CORDIC_ERROR_CB_ID             = 0x00U,    /*!< CORDIC error callback ID */
+	HAL_CORDIC_CALCULATE_CPLT_CB_ID    = 0x01U,    /*!< CORDIC calculate complete callback ID */
 
-  HAL_CORDIC_MSPINIT_CB_ID           = 0x02U,    /*!< CORDIC MspInit callback ID */
-  HAL_CORDIC_MSPDEINIT_CB_ID         = 0x03U,    /*!< CORDIC MspDeInit callback ID */
+	HAL_CORDIC_MSPINIT_CB_ID           = 0x02U,    /*!< CORDIC MspInit callback ID */
+	HAL_CORDIC_MSPDEINIT_CB_ID         = 0x03U,    /*!< CORDIC MspDeInit callback ID */
 
 } HAL_CORDIC_CallbackIDTypeDef;
 
@@ -545,7 +542,7 @@ void HAL_CORDIC_MspDeInit(CORDIC_HandleTypeDef *hcordic);
 #if USE_HAL_CORDIC_REGISTER_CALLBACKS == 1
 /* Callbacks Register/UnRegister functions  ***********************************/
 HAL_StatusTypeDef HAL_CORDIC_RegisterCallback(CORDIC_HandleTypeDef *hcordic, HAL_CORDIC_CallbackIDTypeDef CallbackID,
-                                              pCORDIC_CallbackTypeDef pCallback);
+		pCORDIC_CallbackTypeDef pCallback);
 HAL_StatusTypeDef HAL_CORDIC_UnRegisterCallback(CORDIC_HandleTypeDef *hcordic, HAL_CORDIC_CallbackIDTypeDef CallbackID);
 /**
   * @}
@@ -558,13 +555,13 @@ HAL_StatusTypeDef HAL_CORDIC_UnRegisterCallback(CORDIC_HandleTypeDef *hcordic, H
 /* Peripheral Control functions ***********************************************/
 HAL_StatusTypeDef HAL_CORDIC_Configure(CORDIC_HandleTypeDef *hcordic, const CORDIC_ConfigTypeDef *sConfig);
 HAL_StatusTypeDef HAL_CORDIC_Calculate(CORDIC_HandleTypeDef *hcordic, const int32_t *pInBuff, int32_t *pOutBuff,
-                                       uint32_t NbCalc, uint32_t Timeout);
+				       uint32_t NbCalc, uint32_t Timeout);
 HAL_StatusTypeDef HAL_CORDIC_CalculateZO(CORDIC_HandleTypeDef *hcordic, const int32_t *pInBuff, int32_t *pOutBuff,
-                                         uint32_t NbCalc, uint32_t Timeout);
+		uint32_t NbCalc, uint32_t Timeout);
 HAL_StatusTypeDef HAL_CORDIC_Calculate_IT(CORDIC_HandleTypeDef *hcordic, const int32_t *pInBuff, int32_t *pOutBuff,
-                                          uint32_t NbCalc);
+		uint32_t NbCalc);
 HAL_StatusTypeDef HAL_CORDIC_Calculate_DMA(CORDIC_HandleTypeDef *hcordic, const int32_t *pInBuff, int32_t *pOutBuff,
-                                           uint32_t NbCalc, uint32_t DMADirection);
+		uint32_t NbCalc, uint32_t DMADirection);
 /**
   * @}
   */

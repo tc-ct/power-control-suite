@@ -89,25 +89,21 @@
   */
 ErrorStatus LL_PKA_DeInit(const PKA_TypeDef *PKAx)
 {
-  ErrorStatus status = SUCCESS;
+	ErrorStatus status = SUCCESS;
 
-  /* Check the parameters */
-  assert_param(IS_PKA_ALL_INSTANCE(PKAx));
+	/* Check the parameters */
+	assert_param(IS_PKA_ALL_INSTANCE(PKAx));
 
-  if (PKAx == PKA)
-  {
-    /* Force PKA reset */
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_PKA);
+	if (PKAx == PKA) {
+		/* Force PKA reset */
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_PKA);
 
-    /* Release PKA reset */
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_PKA);
-  }
-  else
-  {
-    status = ERROR;
-  }
+		/* Release PKA reset */
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_PKA);
+	} else
+		status = ERROR;
 
-  return (status);
+	return (status);
 }
 
 /**
@@ -121,12 +117,12 @@ ErrorStatus LL_PKA_DeInit(const PKA_TypeDef *PKAx)
   */
 ErrorStatus LL_PKA_Init(PKA_TypeDef *PKAx, LL_PKA_InitTypeDef *PKA_InitStruct)
 {
-  assert_param(IS_PKA_ALL_INSTANCE(PKAx));
-  assert_param(IS_LL_PKA_MODE(PKA_InitStruct->Mode));
+	assert_param(IS_PKA_ALL_INSTANCE(PKAx));
+	assert_param(IS_LL_PKA_MODE(PKA_InitStruct->Mode));
 
-  LL_PKA_Config(PKAx, PKA_InitStruct->Mode);
+	LL_PKA_Config(PKAx, PKA_InitStruct->Mode);
 
-  return (SUCCESS);
+	return (SUCCESS);
 }
 
 /**
@@ -138,8 +134,8 @@ ErrorStatus LL_PKA_Init(PKA_TypeDef *PKAx, LL_PKA_InitTypeDef *PKA_InitStruct)
 
 void LL_PKA_StructInit(LL_PKA_InitTypeDef *PKA_InitStruct)
 {
-  /* Reset PKA init structure parameters values */
-  PKA_InitStruct->Mode       = LL_PKA_MODE_MODULAR_EXP;
+	/* Reset PKA init structure parameters values */
+	PKA_InitStruct->Mode       = LL_PKA_MODE_MODULAR_EXP;
 }
 
 /**

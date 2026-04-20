@@ -72,78 +72,80 @@
 
 #include "arm_helium_utils.h"
 
-float16_t arm_braycurtis_distance_f16(const float16_t *pA,const float16_t *pB, uint32_t blockSize)
+float16_t arm_braycurtis_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize)
 {
-    _Float16        accumDiff = 0.0f, accumSum = 0.0f;
-    uint32_t        blkCnt;
-    f16x8_t         a, b, c, accumDiffV, accumSumV;
+	_Float16        accumDiff = 0.0f, accumSum = 0.0f;
+	uint32_t        blkCnt;
+	f16x8_t         a, b, c, accumDiffV, accumSumV;
 
 
-    accumDiffV = vdupq_n_f16(0.0f);
-    accumSumV = vdupq_n_f16(0.0f);
+	accumDiffV = vdupq_n_f16(0.0f);
+	accumSumV = vdupq_n_f16(0.0f);
 
-    blkCnt = blockSize >> 3;
-    while (blkCnt > 0) {
-        a = vld1q(pA);
-        b = vld1q(pB);
+	blkCnt = blockSize >> 3;
 
-        c = vabdq(a, b);
-        accumDiffV = vaddq(accumDiffV, c);
+	while (blkCnt > 0) {
+		a = vld1q(pA);
+		b = vld1q(pB);
 
-        c = vaddq_f16(a, b);
-        c = vabsq_f16(c);
-        accumSumV = vaddq(accumSumV, c);
+		c = vabdq(a, b);
+		accumDiffV = vaddq(accumDiffV, c);
 
-        pA += 8;
-        pB += 8;
-        blkCnt--;
-    }
+		c = vaddq_f16(a, b);
+		c = vabsq_f16(c);
+		accumSumV = vaddq(accumSumV, c);
 
-    blkCnt = blockSize & 7;
-    if (blkCnt > 0U) {
-        mve_pred16_t    p0 = vctp16q(blkCnt);
+		pA += 8;
+		pB += 8;
+		blkCnt--;
+	}
 
-        a = vldrhq_z_f16(pA, p0);
-        b = vldrhq_z_f16(pB, p0);
+	blkCnt = blockSize & 7;
 
-        c = vabdq(a, b);
-        accumDiffV = vaddq_m(accumDiffV, accumDiffV, c, p0);
+	if (blkCnt > 0U) {
+		mve_pred16_t    p0 = vctp16q(blkCnt);
 
-        c = vaddq_f16(a, b);
-        c = vabsq_f16(c);
-        accumSumV = vaddq_m(accumSumV, accumSumV, c, p0);
-    }
+		a = vldrhq_z_f16(pA, p0);
+		b = vldrhq_z_f16(pB, p0);
 
-    accumDiff = vecAddAcrossF16Mve(accumDiffV);
-    accumSum = vecAddAcrossF16Mve(accumSumV);
+		c = vabdq(a, b);
+		accumDiffV = vaddq_m(accumDiffV, accumDiffV, c, p0);
 
-    /*
-       It is assumed that accumSum is not zero. Since it is the sum of several absolute
-       values it would imply that all of them are zero. It is very unlikely for long vectors.
-     */
-    return (accumDiff / accumSum);
+		c = vaddq_f16(a, b);
+		c = vabsq_f16(c);
+		accumSumV = vaddq_m(accumSumV, accumSumV, c, p0);
+	}
+
+	accumDiff = vecAddAcrossF16Mve(accumDiffV);
+	accumSum = vecAddAcrossF16Mve(accumSumV);
+
+	/*
+	   It is assumed that accumSum is not zero. Since it is the sum of several absolute
+	   values it would imply that all of them are zero. It is very unlikely for long vectors.
+	 */
+	return (accumDiff / accumSum);
 }
 #else
 
-float16_t arm_braycurtis_distance_f16(const float16_t *pA,const float16_t *pB, uint32_t blockSize)
+float16_t arm_braycurtis_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize)
 {
-   _Float16 accumDiff=0.0f16, accumSum=0.0f16, tmpA, tmpB;
+	_Float16 accumDiff = 0.0f16, accumSum = 0.0f16, tmpA, tmpB;
 
-   while(blockSize > 0)
-   {
-      tmpA = *pA++;
-      tmpB = *pB++;
-      accumDiff += (_Float16)fabsf((float32_t)((_Float16)tmpA - (_Float16)tmpB));
-      accumSum += (_Float16)fabsf((float32_t)((_Float16)tmpA + (_Float16)tmpB));
-      blockSize --;
-   }
-   /*
+	while (blockSize > 0) {
+		tmpA = *pA++;
+		tmpB = *pB++;
+		accumDiff += (_Float16)fabsf((float32_t)((_Float16)tmpA - (_Float16)tmpB));
+		accumSum += (_Float16)fabsf((float32_t)((_Float16)tmpA + (_Float16)tmpB));
+		blockSize --;
+	}
 
-   It is assumed that accumSum is not zero. Since it is the sum of several absolute
-   values it would imply that all of them are zero. It is very unlikely for long vectors.
+	/*
 
-   */
-   return(accumDiff / accumSum);
+	It is assumed that accumSum is not zero. Since it is the sum of several absolute
+	values it would imply that all of them are zero. It is very unlikely for long vectors.
+
+	*/
+	return (accumDiff / accumSum);
 }
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
@@ -154,5 +156,5 @@ float16_t arm_braycurtis_distance_f16(const float16_t *pA,const float16_t *pB, u
 
 
 
-#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
 

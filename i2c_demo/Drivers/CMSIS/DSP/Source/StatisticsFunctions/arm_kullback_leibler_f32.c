@@ -57,50 +57,50 @@
 #include "arm_helium_utils.h"
 #include "arm_vec_math.h"
 
-float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSrcB,uint32_t blockSize)
+float32_t arm_kullback_leibler_f32(const float32_t * pSrcA, const float32_t * pSrcB, uint32_t blockSize)
 {
-    uint32_t blkCnt;
-    float32_t accum, pA,pB;
- 
-    
-    blkCnt = blockSize;
+	uint32_t blkCnt;
+	float32_t accum, pA, pB;
 
-    accum = 0.0f;
 
-    f32x4_t         vSum = vdupq_n_f32(0.0f);
-    blkCnt = blockSize >> 2;
-    while(blkCnt > 0)
-    {
-        f32x4_t         vecA = vld1q(pSrcA);
-        f32x4_t         vecB = vld1q(pSrcB);
-        f32x4_t         vRatio;
+	blkCnt = blockSize;
 
-        vRatio = vdiv_f32(vecB, vecA);
-        vSum = vaddq_f32(vSum, vmulq(vecA, vlogq_f32(vRatio)));
+	accum = 0.0f;
 
-        /*
-         * Decrement the blockSize loop counter
-         * Advance vector source and destination pointers
-         */
-        pSrcA += 4;
-        pSrcB += 4;
-        blkCnt --;
-    }
+	f32x4_t         vSum = vdupq_n_f32(0.0f);
+	blkCnt = blockSize >> 2;
 
-    accum = vecAddAcrossF32Mve(vSum);
+	while (blkCnt > 0) {
+		f32x4_t         vecA = vld1q(pSrcA);
+		f32x4_t         vecB = vld1q(pSrcB);
+		f32x4_t         vRatio;
 
-    blkCnt = blockSize & 3;
-    while(blkCnt > 0)
-    {
-       pA = *pSrcA++;
-       pB = *pSrcB++;
-       accum += pA * logf(pB / pA);
-       
-       blkCnt--;
-    
-    }
+		vRatio = vdiv_f32(vecB, vecA);
+		vSum = vaddq_f32(vSum, vmulq(vecA, vlogq_f32(vRatio)));
 
-    return(-accum);
+		/*
+		 * Decrement the blockSize loop counter
+		 * Advance vector source and destination pointers
+		 */
+		pSrcA += 4;
+		pSrcB += 4;
+		blkCnt --;
+	}
+
+	accum = vecAddAcrossF32Mve(vSum);
+
+	blkCnt = blockSize & 3;
+
+	while (blkCnt > 0) {
+		pA = *pSrcA++;
+		pB = *pSrcB++;
+		accum += pA * logf(pB / pA);
+
+		blkCnt--;
+
+	}
+
+	return (-accum);
 }
 
 #else
@@ -108,82 +108,81 @@ float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSr
 
 #include "NEMath.h"
 
-float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSrcB,uint32_t blockSize)
+float32_t arm_kullback_leibler_f32(const float32_t * pSrcA, const float32_t * pSrcB, uint32_t blockSize)
 {
-    const float32_t *pInA, *pInB;
-    uint32_t blkCnt;
-    float32_t accum, pA,pB;
+	const float32_t *pInA, *pInB;
+	uint32_t blkCnt;
+	float32_t accum, pA, pB;
 
-    float32x4_t accumV;
-    float32x2_t accumV2;
-    float32x4_t tmpVA, tmpVB,tmpV;
- 
-    pInA = pSrcA;
-    pInB = pSrcB;
+	float32x4_t accumV;
+	float32x2_t accumV2;
+	float32x4_t tmpVA, tmpVB, tmpV;
 
-    accum = 0.0f;
-    accumV = vdupq_n_f32(0.0f);
+	pInA = pSrcA;
+	pInB = pSrcB;
 
-    blkCnt = blockSize >> 2;
-    while(blkCnt > 0)
-    {
-      tmpVA = vld1q_f32(pInA);
-      pInA += 4;
+	accum = 0.0f;
+	accumV = vdupq_n_f32(0.0f);
 
-      tmpVB = vld1q_f32(pInB);
-      pInB += 4;
+	blkCnt = blockSize >> 2;
 
-      tmpV = vinvq_f32(tmpVA);
-      tmpVB = vmulq_f32(tmpVB, tmpV);
-      tmpVB = vlogq_f32(tmpVB);
+	while (blkCnt > 0) {
+		tmpVA = vld1q_f32(pInA);
+		pInA += 4;
 
-      accumV = vmlaq_f32(accumV, tmpVA, tmpVB);
-       
-      blkCnt--;
-    
-    }
+		tmpVB = vld1q_f32(pInB);
+		pInB += 4;
 
-    accumV2 = vpadd_f32(vget_low_f32(accumV),vget_high_f32(accumV));
-    accum = vget_lane_f32(accumV2, 0) + vget_lane_f32(accumV2, 1);
+		tmpV = vinvq_f32(tmpVA);
+		tmpVB = vmulq_f32(tmpVB, tmpV);
+		tmpVB = vlogq_f32(tmpVB);
 
-    blkCnt = blockSize & 3;
-    while(blkCnt > 0)
-    {
-       pA = *pInA++;
-       pB = *pInB++;
-       accum += pA * logf(pB/pA);
-       
-       blkCnt--;
-    
-    }
+		accumV = vmlaq_f32(accumV, tmpVA, tmpVB);
 
-    return(-accum);
+		blkCnt--;
+
+	}
+
+	accumV2 = vpadd_f32(vget_low_f32(accumV), vget_high_f32(accumV));
+	accum = vget_lane_f32(accumV2, 0) + vget_lane_f32(accumV2, 1);
+
+	blkCnt = blockSize & 3;
+
+	while (blkCnt > 0) {
+		pA = *pInA++;
+		pB = *pInB++;
+		accum += pA * logf(pB / pA);
+
+		blkCnt--;
+
+	}
+
+	return (-accum);
 }
 
 #else
-float32_t arm_kullback_leibler_f32(const float32_t * pSrcA,const float32_t * pSrcB,uint32_t blockSize)
+float32_t arm_kullback_leibler_f32(const float32_t * pSrcA, const float32_t * pSrcB, uint32_t blockSize)
 {
-    const float32_t *pInA, *pInB;
-    uint32_t blkCnt;
-    float32_t accum, pA,pB;
- 
-    pInA = pSrcA;
-    pInB = pSrcB;
-    blkCnt = blockSize;
+	const float32_t *pInA, *pInB;
+	uint32_t blkCnt;
+	float32_t accum, pA, pB;
 
-    accum = 0.0f;
+	pInA = pSrcA;
+	pInB = pSrcB;
+	blkCnt = blockSize;
 
-    while(blkCnt > 0)
-    {
-       pA = *pInA++;
-       pB = *pInB++;
-       accum += pA * logf(pB / pA);
-       
-       blkCnt--;
-    
-    }
+	accum = 0.0f;
 
-    return(-accum);
+	while (blkCnt > 0) {
+		pA = *pInA++;
+		pB = *pInB++;
+		accum += pA * logf(pB / pA);
+
+		blkCnt--;
+
+	}
+
+	return (-accum);
 }
 #endif
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */

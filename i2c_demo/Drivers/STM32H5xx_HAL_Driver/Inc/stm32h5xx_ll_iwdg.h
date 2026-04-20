@@ -142,7 +142,7 @@ extern "C" {
   */
 __STATIC_INLINE void LL_IWDG_Enable(IWDG_TypeDef *IWDGx)
 {
-  WRITE_REG(IWDGx->KR, LL_IWDG_KEY_ENABLE);
+	WRITE_REG(IWDGx->KR, LL_IWDG_KEY_ENABLE);
 }
 
 /**
@@ -153,7 +153,7 @@ __STATIC_INLINE void LL_IWDG_Enable(IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE void LL_IWDG_ReloadCounter(IWDG_TypeDef *IWDGx)
 {
-  WRITE_REG(IWDGx->KR, LL_IWDG_KEY_RELOAD);
+	WRITE_REG(IWDGx->KR, LL_IWDG_KEY_RELOAD);
 }
 
 /**
@@ -164,7 +164,7 @@ __STATIC_INLINE void LL_IWDG_ReloadCounter(IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE void LL_IWDG_EnableWriteAccess(IWDG_TypeDef *IWDGx)
 {
-  WRITE_REG(IWDGx->KR, LL_IWDG_KEY_WR_ACCESS_ENABLE);
+	WRITE_REG(IWDGx->KR, LL_IWDG_KEY_WR_ACCESS_ENABLE);
 }
 
 /**
@@ -175,7 +175,7 @@ __STATIC_INLINE void LL_IWDG_EnableWriteAccess(IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE void LL_IWDG_DisableWriteAccess(IWDG_TypeDef *IWDGx)
 {
-  WRITE_REG(IWDGx->KR, LL_IWDG_KEY_WR_ACCESS_DISABLE);
+	WRITE_REG(IWDGx->KR, LL_IWDG_KEY_WR_ACCESS_DISABLE);
 }
 
 /**
@@ -196,7 +196,7 @@ __STATIC_INLINE void LL_IWDG_DisableWriteAccess(IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE void LL_IWDG_SetPrescaler(IWDG_TypeDef *IWDGx, uint32_t Prescaler)
 {
-  WRITE_REG(IWDGx->PR, IWDG_PR_PR & Prescaler);
+	WRITE_REG(IWDGx->PR, IWDG_PR_PR & Prescaler);
 }
 
 /**
@@ -216,7 +216,7 @@ __STATIC_INLINE void LL_IWDG_SetPrescaler(IWDG_TypeDef *IWDGx, uint32_t Prescale
   */
 __STATIC_INLINE uint32_t LL_IWDG_GetPrescaler(const IWDG_TypeDef *IWDGx)
 {
-  return (READ_REG(IWDGx->PR));
+	return (READ_REG(IWDGx->PR));
 }
 
 /**
@@ -228,7 +228,7 @@ __STATIC_INLINE uint32_t LL_IWDG_GetPrescaler(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE void LL_IWDG_SetReloadCounter(IWDG_TypeDef *IWDGx, uint32_t Counter)
 {
-  WRITE_REG(IWDGx->RLR, IWDG_RLR_RL & Counter);
+	WRITE_REG(IWDGx->RLR, IWDG_RLR_RL & Counter);
 }
 
 /**
@@ -239,7 +239,7 @@ __STATIC_INLINE void LL_IWDG_SetReloadCounter(IWDG_TypeDef *IWDGx, uint32_t Coun
   */
 __STATIC_INLINE uint32_t LL_IWDG_GetReloadCounter(const IWDG_TypeDef *IWDGx)
 {
-  return (READ_REG(IWDGx->RLR));
+	return (READ_REG(IWDGx->RLR));
 }
 
 /**
@@ -251,7 +251,7 @@ __STATIC_INLINE uint32_t LL_IWDG_GetReloadCounter(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE void LL_IWDG_SetWindow(IWDG_TypeDef *IWDGx, uint32_t Window)
 {
-  WRITE_REG(IWDGx->WINR, IWDG_WINR_WIN & Window);
+	WRITE_REG(IWDGx->WINR, IWDG_WINR_WIN & Window);
 }
 
 /**
@@ -262,7 +262,7 @@ __STATIC_INLINE void LL_IWDG_SetWindow(IWDG_TypeDef *IWDGx, uint32_t Window)
   */
 __STATIC_INLINE uint32_t LL_IWDG_GetWindow(const IWDG_TypeDef *IWDGx)
 {
-  return (READ_REG(IWDGx->WINR));
+	return (READ_REG(IWDGx->WINR));
 }
 
 /**
@@ -282,7 +282,7 @@ __STATIC_INLINE uint32_t LL_IWDG_GetWindow(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE void LL_IWDG_SetEwiTime(IWDG_TypeDef *IWDGx, uint32_t Time)
 {
-  MODIFY_REG(IWDGx->EWCR, IWDG_EWCR_EWIT, Time);
+	MODIFY_REG(IWDGx->EWCR, IWDG_EWCR_EWIT, Time);
 }
 
 /**
@@ -293,7 +293,7 @@ __STATIC_INLINE void LL_IWDG_SetEwiTime(IWDG_TypeDef *IWDGx, uint32_t Time)
   */
 __STATIC_INLINE uint32_t LL_IWDG_GetEwiTime(const IWDG_TypeDef *IWDGx)
 {
-  return (READ_BIT(IWDGx->EWCR, IWDG_EWCR_EWIT));
+	return (READ_BIT(IWDGx->EWCR, IWDG_EWCR_EWIT));
 }
 
 /**
@@ -304,7 +304,7 @@ __STATIC_INLINE uint32_t LL_IWDG_GetEwiTime(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE void LL_IWDG_EnableIT_EWI(IWDG_TypeDef *IWDGx)
 {
-  SET_BIT(IWDGx->EWCR, IWDG_EWCR_EWIE);
+	SET_BIT(IWDGx->EWCR, IWDG_EWCR_EWIE);
 }
 
 /**
@@ -315,7 +315,7 @@ __STATIC_INLINE void LL_IWDG_EnableIT_EWI(IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE void LL_IWDG_DisableIT_EWI(IWDG_TypeDef *IWDGx)
 {
-  CLEAR_BIT(IWDGx->EWCR, IWDG_EWCR_EWIE);
+	CLEAR_BIT(IWDGx->EWCR, IWDG_EWCR_EWIE);
 }
 
 /**
@@ -326,7 +326,7 @@ __STATIC_INLINE void LL_IWDG_DisableIT_EWI(IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE uint32_t LL_IWDG_IsEnabledIT_EWI(const IWDG_TypeDef *IWDGx)
 {
-  return ((READ_BIT(IWDGx->EWCR, IWDG_EWCR_EWIE) == (IWDG_EWCR_EWIE)) ? 1UL : 0UL);
+	return ((READ_BIT(IWDGx->EWCR, IWDG_EWCR_EWIE) == (IWDG_EWCR_EWIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -345,7 +345,7 @@ __STATIC_INLINE uint32_t LL_IWDG_IsEnabledIT_EWI(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_PVU(const IWDG_TypeDef *IWDGx)
 {
-  return ((READ_BIT(IWDGx->SR, IWDG_SR_PVU) == (IWDG_SR_PVU)) ? 1UL : 0UL);
+	return ((READ_BIT(IWDGx->SR, IWDG_SR_PVU) == (IWDG_SR_PVU)) ? 1UL : 0UL);
 }
 
 /**
@@ -356,7 +356,7 @@ __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_PVU(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_RVU(const IWDG_TypeDef *IWDGx)
 {
-  return ((READ_BIT(IWDGx->SR, IWDG_SR_RVU) == (IWDG_SR_RVU)) ? 1UL : 0UL);
+	return ((READ_BIT(IWDGx->SR, IWDG_SR_RVU) == (IWDG_SR_RVU)) ? 1UL : 0UL);
 }
 
 /**
@@ -367,7 +367,7 @@ __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_RVU(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_WVU(const IWDG_TypeDef *IWDGx)
 {
-  return ((READ_BIT(IWDGx->SR, IWDG_SR_WVU) == (IWDG_SR_WVU)) ? 1UL : 0UL);
+	return ((READ_BIT(IWDGx->SR, IWDG_SR_WVU) == (IWDG_SR_WVU)) ? 1UL : 0UL);
 }
 
 /**
@@ -378,7 +378,7 @@ __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_WVU(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_EWU(const IWDG_TypeDef *IWDGx)
 {
-  return ((READ_BIT(IWDGx->SR, IWDG_SR_EWU) == (IWDG_SR_EWU)) ? 1UL : 0UL);
+	return ((READ_BIT(IWDGx->SR, IWDG_SR_EWU) == (IWDG_SR_EWU)) ? 1UL : 0UL);
 }
 
 /**
@@ -392,7 +392,7 @@ __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_EWU(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE uint32_t LL_IWDG_IsReady(const IWDG_TypeDef *IWDGx)
 {
-  return ((READ_BIT(IWDGx->SR, IWDG_SR_PVU | IWDG_SR_RVU | IWDG_SR_WVU | IWDG_SR_EWU) == 0U) ? 1UL : 0UL);
+	return ((READ_BIT(IWDGx->SR, IWDG_SR_PVU | IWDG_SR_RVU | IWDG_SR_WVU | IWDG_SR_EWU) == 0U) ? 1UL : 0UL);
 }
 
 /**
@@ -403,7 +403,7 @@ __STATIC_INLINE uint32_t LL_IWDG_IsReady(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_ONF(const IWDG_TypeDef *IWDGx)
 {
-  return ((READ_BIT(IWDGx->SR, IWDG_SR_ONF) == (IWDG_SR_ONF)) ? 1UL : 0UL);
+	return ((READ_BIT(IWDGx->SR, IWDG_SR_ONF) == (IWDG_SR_ONF)) ? 1UL : 0UL);
 }
 
 /**
@@ -414,7 +414,7 @@ __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_ONF(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_EWIF(const IWDG_TypeDef *IWDGx)
 {
-  return ((READ_BIT(IWDGx->SR, IWDG_SR_EWIF) == (IWDG_SR_EWIF)) ? 1UL : 0UL);
+	return ((READ_BIT(IWDGx->SR, IWDG_SR_EWIF) == (IWDG_SR_EWIF)) ? 1UL : 0UL);
 }
 
 /**
@@ -425,7 +425,7 @@ __STATIC_INLINE uint32_t LL_IWDG_IsActiveFlag_EWIF(const IWDG_TypeDef *IWDGx)
   */
 __STATIC_INLINE void LL_IWDG_ClearFlag_EWIF(IWDG_TypeDef *IWDGx)
 {
-  SET_BIT(IWDGx->EWCR, IWDG_EWCR_EWIC);
+	SET_BIT(IWDGx->EWCR, IWDG_EWCR_EWIC);
 }
 
 /**

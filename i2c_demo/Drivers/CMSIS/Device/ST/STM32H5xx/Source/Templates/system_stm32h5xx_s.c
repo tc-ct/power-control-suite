@@ -142,15 +142,15 @@
   * @{
   */
 #if !defined  (HSE_VALUE)
-  #define HSE_VALUE    (25000000UL) /*!< Value of the External oscillator in Hz */
+#define HSE_VALUE    (25000000UL) /*!< Value of the External oscillator in Hz */
 #endif /* HSE_VALUE */
 
 #if !defined  (CSI_VALUE)
-  #define CSI_VALUE    (4000000UL)  /*!< Value of the Internal oscillator in Hz*/
+#define CSI_VALUE    (4000000UL)  /*!< Value of the Internal oscillator in Hz*/
 #endif /* CSI_VALUE */
 
 #if !defined  (HSI_VALUE)
-  #define HSI_VALUE    (64000000UL) /*!< Value of the Internal oscillator in Hz */
+#define HSI_VALUE    (64000000UL) /*!< Value of the Internal oscillator in Hz */
 #endif /* HSI_VALUE */
 
 /************************* Miscellaneous Configuration ************************/
@@ -175,18 +175,18 @@
 /** @addtogroup STM32H5xx_System_Private_Variables
   * @{
   */
-  /* The SystemCoreClock variable is updated in three ways:
-      1) by calling CMSIS function SystemCoreClockUpdate()
-      2) by calling HAL API function HAL_RCC_GetHCLKFreq()
-      3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency
-         Note: If you use this function to configure the system clock; then there
-               is no need to call the 2 first functions listed above, since SystemCoreClock
-               variable is updated automatically.
-  */
-  uint32_t SystemCoreClock = 64000000U;
+/* The SystemCoreClock variable is updated in three ways:
+    1) by calling CMSIS function SystemCoreClockUpdate()
+    2) by calling HAL API function HAL_RCC_GetHCLKFreq()
+    3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency
+       Note: If you use this function to configure the system clock; then there
+             is no need to call the 2 first functions listed above, since SystemCoreClock
+             variable is updated automatically.
+*/
+uint32_t SystemCoreClock = 64000000U;
 
-  const uint8_t  AHBPrescTable[16] = {0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U, 6U, 7U, 8U, 9U};
-  const uint8_t  APBPrescTable[8] =  {0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U};
+const uint8_t  AHBPrescTable[16] = {0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U, 6U, 7U, 8U, 9U};
+const uint8_t  APBPrescTable[8] =  {0U, 0U, 0U, 0U, 1U, 2U, 3U, 4U};
 /**
   * @}
   */
@@ -211,78 +211,78 @@
 
 void SystemInit(void)
 {
-  uint32_t reg_opsr;
+	uint32_t reg_opsr;
 
-  /* SAU/IDAU, FPU and Interrupts secure/non-secure allocation settings */
-  TZ_SAU_Setup();
+	/* SAU/IDAU, FPU and Interrupts secure/non-secure allocation settings */
+	TZ_SAU_Setup();
 
-  /* FPU settings ------------------------------------------------------------*/
-  #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
-    SCB->CPACR |= ((3UL << 20U)|(3UL << 22U));     /* set CP10 and CP11 Full Access */
+	/* FPU settings ------------------------------------------------------------*/
+#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
+	SCB->CPACR |= ((3UL << 20U) | (3UL << 22U));   /* set CP10 and CP11 Full Access */
 
-    SCB_NS->CPACR |= ((3UL << 20U)|(3UL << 22U));  /* set CP10 and CP11 Full Access */
-  #endif
+	SCB_NS->CPACR |= ((3UL << 20U) | (3UL << 22U)); /* set CP10 and CP11 Full Access */
+#endif
 
-  /* Reset the RCC clock configuration to the default reset state ------------*/
-  /* Set HSION bit */
-  RCC->CR = RCC_CR_HSION;
+	/* Reset the RCC clock configuration to the default reset state ------------*/
+	/* Set HSION bit */
+	RCC->CR = RCC_CR_HSION;
 
-  /* Reset CFGR register */
-  RCC->CFGR1 = 0U;
-  RCC->CFGR2 = 0U;
+	/* Reset CFGR register */
+	RCC->CFGR1 = 0U;
+	RCC->CFGR2 = 0U;
 
-  /* Reset HSEON, HSECSSON, HSEBYP, HSEEXT, HSIDIV, HSIKERON, CSION, CSIKERON, HSI48 and PLLxON bits */
-  RCC->CR &= ~(RCC_CR_HSEON | RCC_CR_HSECSSON | RCC_CR_HSEBYP | RCC_CR_HSEEXT | RCC_CR_HSIDIV | RCC_CR_HSIKERON | \
-               RCC_CR_CSION | RCC_CR_CSIKERON |RCC_CR_HSI48ON | RCC_CR_PLL1ON | RCC_CR_PLL2ON | RCC_CR_PLL3ON);
+	/* Reset HSEON, HSECSSON, HSEBYP, HSEEXT, HSIDIV, HSIKERON, CSION, CSIKERON, HSI48 and PLLxON bits */
+	RCC->CR &= ~(RCC_CR_HSEON | RCC_CR_HSECSSON | RCC_CR_HSEBYP | RCC_CR_HSEEXT | RCC_CR_HSIDIV | RCC_CR_HSIKERON | \
+		     RCC_CR_CSION | RCC_CR_CSIKERON | RCC_CR_HSI48ON | RCC_CR_PLL1ON | RCC_CR_PLL2ON | RCC_CR_PLL3ON);
 
-  /* Reset PLLxCFGR register */
-  RCC->PLL1CFGR = 0U;
-  RCC->PLL2CFGR = 0U;
-  RCC->PLL3CFGR = 0U;
+	/* Reset PLLxCFGR register */
+	RCC->PLL1CFGR = 0U;
+	RCC->PLL2CFGR = 0U;
+	RCC->PLL3CFGR = 0U;
 
-  /* Reset PLL1DIVR register */
-  RCC->PLL1DIVR = 0x01010280U;
-  /* Reset PLL1FRACR register */
-  RCC->PLL1FRACR = 0x00000000U;
-  /* Reset PLL2DIVR register */
-  RCC->PLL2DIVR = 0x01010280U;
-  /* Reset PLL2FRACR register */
-  RCC->PLL2FRACR = 0x00000000U;
-  /* Reset PLL3DIVR register */
-  RCC->PLL3DIVR = 0x01010280U;
-  /* Reset PLL3FRACR register */
-  RCC->PLL3FRACR = 0x00000000U;
+	/* Reset PLL1DIVR register */
+	RCC->PLL1DIVR = 0x01010280U;
+	/* Reset PLL1FRACR register */
+	RCC->PLL1FRACR = 0x00000000U;
+	/* Reset PLL2DIVR register */
+	RCC->PLL2DIVR = 0x01010280U;
+	/* Reset PLL2FRACR register */
+	RCC->PLL2FRACR = 0x00000000U;
+	/* Reset PLL3DIVR register */
+	RCC->PLL3DIVR = 0x01010280U;
+	/* Reset PLL3FRACR register */
+	RCC->PLL3FRACR = 0x00000000U;
 
-  /* Reset HSEBYP bit */
-  RCC->CR &= ~(RCC_CR_HSEBYP);
+	/* Reset HSEBYP bit */
+	RCC->CR &= ~(RCC_CR_HSEBYP);
 
-  /* Disable all interrupts */
-  RCC->CIER = 0U;
+	/* Disable all interrupts */
+	RCC->CIER = 0U;
 
-  /* Configure the Vector Table location add offset address ------------------*/
-  #ifdef VECT_TAB_SRAM
-    SCB->VTOR = SRAM1_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
-  #else
-    SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal FLASH */
-  #endif /* VECT_TAB_SRAM */
+	/* Configure the Vector Table location add offset address ------------------*/
+#ifdef VECT_TAB_SRAM
+	SCB->VTOR = SRAM1_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
+#else
+	SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal FLASH */
+#endif /* VECT_TAB_SRAM */
 
-  /* Check OPSR register to verify if there is an ongoing swap or option bytes update interrupted by a reset */
-  reg_opsr = FLASH->OPSR & FLASH_OPSR_CODE_OP;
-  if ((reg_opsr == FLASH_OPSR_CODE_OP) || (reg_opsr == (FLASH_OPSR_CODE_OP_2 | FLASH_OPSR_CODE_OP_1)))
-  {
-    /* Check FLASH Option Control Registers access */
-    if ((FLASH->OPTCR & FLASH_OPTCR_OPTLOCK) != 0U)
-    {
-      /* Authorizes the Option Byte register programming */
-      FLASH->OPTKEYR = 0x08192A3BU;
-      FLASH->OPTKEYR = 0x4C5D6E7FU;
-    }
-    /* Launch the option bytes change operation */
-    FLASH->OPTCR |= FLASH_OPTCR_OPTSTART;
+	/* Check OPSR register to verify if there is an ongoing swap or option bytes update interrupted by a reset */
+	reg_opsr = FLASH->OPSR & FLASH_OPSR_CODE_OP;
 
-    /* Lock the FLASH Option Control Register access */
-    FLASH->OPTCR |= FLASH_OPTCR_OPTLOCK;
-  }
+	if ((reg_opsr == FLASH_OPSR_CODE_OP) || (reg_opsr == (FLASH_OPSR_CODE_OP_2 | FLASH_OPSR_CODE_OP_1))) {
+		/* Check FLASH Option Control Registers access */
+		if ((FLASH->OPTCR & FLASH_OPTCR_OPTLOCK) != 0U) {
+			/* Authorizes the Option Byte register programming */
+			FLASH->OPTKEYR = 0x08192A3BU;
+			FLASH->OPTKEYR = 0x4C5D6E7FU;
+		}
+
+		/* Launch the option bytes change operation */
+		FLASH->OPTCR |= FLASH_OPTCR_OPTSTART;
+
+		/* Lock the FLASH Option Control Register access */
+		FLASH->OPTCR |= FLASH_OPTCR_OPTLOCK;
+	}
 }
 
 /**
@@ -334,70 +334,69 @@ void SystemInit(void)
   */
 void SystemCoreClockUpdate(void)
 {
-  uint32_t pllp, pllsource, pllm, pllfracen, hsivalue, tmp;
-  float_t fracn1, pllvco;
+	uint32_t pllp, pllsource, pllm, pllfracen, hsivalue, tmp;
+	float_t fracn1, pllvco;
 
-  /* Get SYSCLK source -------------------------------------------------------*/
-  switch (RCC->CFGR1 & RCC_CFGR1_SWS)
-  {
-  case 0x00UL:  /* HSI used as system clock source */
-    SystemCoreClock = (uint32_t) (HSI_VALUE >> ((RCC->CR & RCC_CR_HSIDIV)>> 3));
-    break;
+	/* Get SYSCLK source -------------------------------------------------------*/
+	switch (RCC->CFGR1 & RCC_CFGR1_SWS) {
+		case 0x00UL:  /* HSI used as system clock source */
+			SystemCoreClock = (uint32_t) (HSI_VALUE >> ((RCC->CR & RCC_CR_HSIDIV) >> 3));
+			break;
 
-  case 0x08UL:  /* CSI used as system clock  source */
-    SystemCoreClock = CSI_VALUE;
-    break;
+		case 0x08UL:  /* CSI used as system clock  source */
+			SystemCoreClock = CSI_VALUE;
+			break;
 
-  case 0x10UL:  /* HSE used as system clock  source */
-    SystemCoreClock = HSE_VALUE;
-    break;
+		case 0x10UL:  /* HSE used as system clock  source */
+			SystemCoreClock = HSE_VALUE;
+			break;
 
-  case 0x18UL:  /* PLL1 used as system clock source */
-    /* PLL_VCO = (HSE_VALUE or HSI_VALUE or CSI_VALUE/ PLLM) * PLLN
-    SYSCLK = PLL_VCO / PLLR
-    */
-    pllsource = (RCC->PLL1CFGR & RCC_PLL1CFGR_PLL1SRC);
-    pllm = ((RCC->PLL1CFGR & RCC_PLL1CFGR_PLL1M)>> RCC_PLL1CFGR_PLL1M_Pos);
-    pllfracen = ((RCC->PLL1CFGR & RCC_PLL1CFGR_PLL1FRACEN)>>RCC_PLL1CFGR_PLL1FRACEN_Pos);
-    fracn1 = (float_t)(uint32_t)(pllfracen* ((RCC->PLL1FRACR & RCC_PLL1FRACR_PLL1FRACN)>> RCC_PLL1FRACR_PLL1FRACN_Pos));
+		case 0x18UL:  /* PLL1 used as system clock source */
+			/* PLL_VCO = (HSE_VALUE or HSI_VALUE or CSI_VALUE/ PLLM) * PLLN
+			SYSCLK = PLL_VCO / PLLR
+			*/
+			pllsource = (RCC->PLL1CFGR & RCC_PLL1CFGR_PLL1SRC);
+			pllm = ((RCC->PLL1CFGR & RCC_PLL1CFGR_PLL1M) >> RCC_PLL1CFGR_PLL1M_Pos);
+			pllfracen = ((RCC->PLL1CFGR & RCC_PLL1CFGR_PLL1FRACEN) >> RCC_PLL1CFGR_PLL1FRACEN_Pos);
+			fracn1 = (float_t)(uint32_t)(pllfracen * ((RCC->PLL1FRACR & RCC_PLL1FRACR_PLL1FRACN) >> RCC_PLL1FRACR_PLL1FRACN_Pos));
 
-      switch (pllsource)
-      {
-      case 0x01UL:  /* HSI used as PLL clock source */
-        hsivalue = (HSI_VALUE >> ((RCC->CR & RCC_CR_HSIDIV)>> 3)) ;
-        pllvco = ((float_t)hsivalue / (float_t)pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_PLL1N) + \
-                  (fracn1/(float_t)0x2000) +(float_t)1 );
-        break;
+			switch (pllsource) {
+				case 0x01UL:  /* HSI used as PLL clock source */
+					hsivalue = (HSI_VALUE >> ((RCC->CR & RCC_CR_HSIDIV) >> 3)) ;
+					pllvco = ((float_t)hsivalue / (float_t)pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_PLL1N) + \
+						 (fracn1 / (float_t)0x2000) + (float_t)1 );
+					break;
 
-      case 0x02UL:  /* CSI used as PLL clock source */
-        pllvco = ((float_t)CSI_VALUE / (float_t)pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_PLL1N) + \
-                  (fracn1/(float_t)0x2000) +(float_t)1 );
-        break;
+				case 0x02UL:  /* CSI used as PLL clock source */
+					pllvco = ((float_t)CSI_VALUE / (float_t)pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_PLL1N) + \
+						 (fracn1 / (float_t)0x2000) + (float_t)1 );
+					break;
 
-      case 0x03UL:  /* HSE used as PLL clock source */
-          pllvco = ((float_t)HSE_VALUE / (float_t)pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_PLL1N) + \
-                    (fracn1/(float_t)0x2000) +(float_t)1 );
-        break;
+				case 0x03UL:  /* HSE used as PLL clock source */
+					pllvco = ((float_t)HSE_VALUE / (float_t)pllm) * ((float_t)(uint32_t)(RCC->PLL1DIVR & RCC_PLL1DIVR_PLL1N) + \
+						 (fracn1 / (float_t)0x2000) + (float_t)1 );
+					break;
 
-      default: /* No clock sent to PLL*/
-          pllvco = (float_t) 0U;
-        break;
-      }
+				default: /* No clock sent to PLL*/
+					pllvco = (float_t) 0U;
+					break;
+			}
 
-      pllp = (((RCC->PLL1DIVR & RCC_PLL1DIVR_PLL1P) >>RCC_PLL1DIVR_PLL1P_Pos) + 1U ) ;
-      SystemCoreClock =  (uint32_t)(float_t)(pllvco/(float_t)pllp);
+			pllp = (((RCC->PLL1DIVR & RCC_PLL1DIVR_PLL1P) >> RCC_PLL1DIVR_PLL1P_Pos) + 1U ) ;
+			SystemCoreClock =  (uint32_t)(float_t)(pllvco / (float_t)pllp);
 
-      break;
+			break;
 
-  default:
-    SystemCoreClock = HSI_VALUE;
-    break;
-  }
-  /* Compute HCLK clock frequency --------------------------------------------*/
-  /* Get HCLK prescaler */
-  tmp = AHBPrescTable[((RCC->CFGR2 & RCC_CFGR2_HPRE) >> RCC_CFGR2_HPRE_Pos)];
-  /* HCLK clock frequency */
-  SystemCoreClock >>= tmp;
+		default:
+			SystemCoreClock = HSI_VALUE;
+			break;
+	}
+
+	/* Compute HCLK clock frequency --------------------------------------------*/
+	/* Get HCLK prescaler */
+	tmp = AHBPrescTable[((RCC->CFGR2 & RCC_CFGR2_HPRE) >> RCC_CFGR2_HPRE_Pos)];
+	/* HCLK clock frequency */
+	SystemCoreClock >>= tmp;
 
 }
 
@@ -411,9 +410,9 @@ void SystemCoreClockUpdate(void)
   */
 CMSE_NS_ENTRY uint32_t SECURE_SystemCoreClockUpdate(void)
 {
-  SystemCoreClockUpdate();
+	SystemCoreClockUpdate();
 
-  return SystemCoreClock;
+	return SystemCoreClock;
 }
 
 /**

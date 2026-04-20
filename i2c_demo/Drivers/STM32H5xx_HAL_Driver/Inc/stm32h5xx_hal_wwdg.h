@@ -44,18 +44,17 @@ extern "C" {
 /**
   * @brief  WWDG Init structure definition
   */
-typedef struct
-{
-  uint32_t Prescaler;     /*!< Specifies the prescaler value of the WWDG.
+typedef struct {
+	uint32_t Prescaler;     /*!< Specifies the prescaler value of the WWDG.
                                This parameter can be a value of @ref WWDG_Prescaler */
 
-  uint32_t Window;        /*!< Specifies the WWDG window value to be compared to the downcounter.
+	uint32_t Window;        /*!< Specifies the WWDG window value to be compared to the downcounter.
                                This parameter must be a number Min_Data = 0x40 and Max_Data = 0x7F */
 
-  uint32_t Counter;       /*!< Specifies the WWDG free-running downcounter  value.
+	uint32_t Counter;       /*!< Specifies the WWDG free-running downcounter  value.
                                This parameter must be a number between Min_Data = 0x40 and Max_Data = 0x7F */
 
-  uint32_t EWIMode ;      /*!< Specifies if WWDG Early Wakeup Interrupt is enable or not.
+	uint32_t EWIMode ;      /*!< Specifies if WWDG Early Wakeup Interrupt is enable or not.
                                This parameter can be a value of @ref WWDG_EWI_Mode */
 
 } WWDG_InitTypeDef;
@@ -69,14 +68,14 @@ typedef struct __WWDG_HandleTypeDef
 typedef struct
 #endif /* USE_HAL_WWDG_REGISTER_CALLBACKS */
 {
-  WWDG_TypeDef      *Instance;  /*!< Register base address */
+	WWDG_TypeDef      *Instance;  /*!< Register base address */
 
-  WWDG_InitTypeDef  Init;       /*!< WWDG required parameters */
+	WWDG_InitTypeDef  Init;       /*!< WWDG required parameters */
 
 #if (USE_HAL_WWDG_REGISTER_CALLBACKS == 1)
-  void (* EwiCallback)(struct __WWDG_HandleTypeDef *hwwdg);                  /*!< WWDG Early WakeUp Interrupt callback */
+	void (* EwiCallback)(struct __WWDG_HandleTypeDef *hwwdg);                  /*!< WWDG Early WakeUp Interrupt callback */
 
-  void (* MspInitCallback)(struct __WWDG_HandleTypeDef *hwwdg);              /*!< WWDG Msp Init callback */
+	void (* MspInitCallback)(struct __WWDG_HandleTypeDef *hwwdg);              /*!< WWDG Msp Init callback */
 #endif /* USE_HAL_WWDG_REGISTER_CALLBACKS */
 } WWDG_HandleTypeDef;
 
@@ -84,10 +83,9 @@ typedef struct
 /**
   * @brief  HAL WWDG common Callback ID enumeration definition
   */
-typedef enum
-{
-  HAL_WWDG_EWI_CB_ID          = 0x00U,    /*!< WWDG EWI callback ID */
-  HAL_WWDG_MSPINIT_CB_ID      = 0x01U,    /*!< WWDG MspInit callback ID */
+typedef enum {
+	HAL_WWDG_EWI_CB_ID          = 0x00U,    /*!< WWDG EWI callback ID */
+	HAL_WWDG_MSPINIT_CB_ID      = 0x01U,    /*!< WWDG MspInit callback ID */
 } HAL_WWDG_CallbackIDTypeDef;
 
 /**
@@ -268,7 +266,7 @@ void                  HAL_WWDG_MspInit(WWDG_HandleTypeDef *hwwdg);
 /* Callbacks Register/UnRegister functions  ***********************************/
 #if (USE_HAL_WWDG_REGISTER_CALLBACKS == 1)
 HAL_StatusTypeDef     HAL_WWDG_RegisterCallback(WWDG_HandleTypeDef *hwwdg, HAL_WWDG_CallbackIDTypeDef CallbackID,
-                                                pWWDG_CallbackTypeDef pCallback);
+		pWWDG_CallbackTypeDef pCallback);
 HAL_StatusTypeDef     HAL_WWDG_UnRegisterCallback(WWDG_HandleTypeDef *hwwdg, HAL_WWDG_CallbackIDTypeDef CallbackID);
 #endif /* USE_HAL_WWDG_REGISTER_CALLBACKS */
 

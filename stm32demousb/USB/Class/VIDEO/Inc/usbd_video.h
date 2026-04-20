@@ -350,189 +350,174 @@ extern "C" {
 
 
 /* VIDEO Commands enumeration */
-typedef enum
-{
-  VIDEO_CMD_START = 1U,
-  VIDEO_CMD_PLAY,
-  VIDEO_CMD_STOP,
+typedef enum {
+	VIDEO_CMD_START = 1U,
+	VIDEO_CMD_PLAY,
+	VIDEO_CMD_STOP,
 } VIDEO_CMD_TypeDef;
 
-typedef enum
-{
-  VIDEO_OFFSET_NONE = 0U,
-  VIDEO_OFFSET_HALF,
-  VIDEO_OFFSET_FULL,
-  VIDEO_OFFSET_UNKNOWN,
+typedef enum {
+	VIDEO_OFFSET_NONE = 0U,
+	VIDEO_OFFSET_HALF,
+	VIDEO_OFFSET_FULL,
+	VIDEO_OFFSET_UNKNOWN,
 } VIDEO_OffsetTypeDef;
 
-typedef struct
-{
-  uint8_t cmd;
-  uint8_t data[USB_MAX_EP0_SIZE];
-  uint8_t len;
-  uint8_t unit;
+typedef struct {
+	uint8_t cmd;
+	uint8_t data[USB_MAX_EP0_SIZE];
+	uint8_t len;
+	uint8_t unit;
 } USBD_VIDEO_ControlTypeDef;
 
-typedef struct
-{
-  uint32_t                   interface;
-  uint32_t                   uvc_state;
-  uint8_t                    buffer[UVC_TOTAL_BUF_SIZE];
-  VIDEO_OffsetTypeDef        offset;
-  USBD_VIDEO_ControlTypeDef  control;
+typedef struct {
+	uint32_t                   interface;
+	uint32_t                   uvc_state;
+	uint8_t                    buffer[UVC_TOTAL_BUF_SIZE];
+	VIDEO_OffsetTypeDef        offset;
+	USBD_VIDEO_ControlTypeDef  control;
 } USBD_VIDEO_HandleTypeDef;
 
-typedef struct
-{
-  int8_t (* Init)(void);
-  int8_t (* DeInit)(void);
-  int8_t (* Control)(uint8_t, uint8_t *, uint16_t);
-  int8_t (* Data)(uint8_t **, uint16_t *, uint16_t *);
+typedef struct {
+	int8_t (* Init)(void);
+	int8_t (* DeInit)(void);
+	int8_t (* Control)(uint8_t, uint8_t *, uint16_t);
+	int8_t (* Data)(uint8_t **, uint16_t *, uint16_t *);
 } USBD_VIDEO_ItfTypeDef;
 
 /* UVC uses only 26 first bytes */
-typedef struct
-{
-  uint16_t    bmHint;
-  uint8_t     bFormatIndex;
-  uint8_t     bFrameIndex;
-  uint32_t    dwFrameInterval;
-  uint16_t    wKeyFrameRate;
-  uint16_t    wPFrameRate;
-  uint16_t    wCompQuality;
-  uint16_t    wCompWindowSize;
-  uint16_t    wDelay;
-  uint32_t    dwMaxVideoFrameSize;
-  uint32_t    dwMaxPayloadTransferSize;
-  uint32_t    dwClockFrequency;
-  uint8_t     bmFramingInfo;
-  uint8_t     bPreferedVersion;
-  uint8_t     bMinVersion;
-  uint8_t     bMaxVersion;
+typedef struct {
+	uint16_t    bmHint;
+	uint8_t     bFormatIndex;
+	uint8_t     bFrameIndex;
+	uint32_t    dwFrameInterval;
+	uint16_t    wKeyFrameRate;
+	uint16_t    wPFrameRate;
+	uint16_t    wCompQuality;
+	uint16_t    wCompWindowSize;
+	uint16_t    wDelay;
+	uint32_t    dwMaxVideoFrameSize;
+	uint32_t    dwMaxPayloadTransferSize;
+	uint32_t    dwClockFrequency;
+	uint8_t     bmFramingInfo;
+	uint8_t     bPreferedVersion;
+	uint8_t     bMinVersion;
+	uint8_t     bMaxVersion;
 } __PACKED USBD_VideoControlTypeDef;
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bInterfaceNumber;
-  uint8_t           bAlternateSetting;
-  uint8_t           bNumEndpoints;
-  uint8_t           bInterfaceClass;
-  uint8_t           bInterfaceSubClass;
-  uint8_t           bInterfaceProtocol;
-  uint8_t           iFunction;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bInterfaceNumber;
+	uint8_t           bAlternateSetting;
+	uint8_t           bNumEndpoints;
+	uint8_t           bInterfaceClass;
+	uint8_t           bInterfaceSubClass;
+	uint8_t           bInterfaceProtocol;
+	uint8_t           iFunction;
 } __PACKED USBD_StandardVCIfDescTypeDef;
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubtype;
-  uint16_t          bcdUVC;
-  uint16_t          wTotalLength;
-  uint32_t          dwClockFrequency;
-  uint8_t           baInterfaceNr;
-  uint8_t           iTerminal;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubtype;
+	uint16_t          bcdUVC;
+	uint16_t          wTotalLength;
+	uint32_t          dwClockFrequency;
+	uint8_t           baInterfaceNr;
+	uint8_t           iTerminal;
 } __PACKED USBD_specificVCInDescTypeDef;
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubtype;
-  uint8_t           bTerminalID;
-  uint16_t          wTerminalType;
-  uint8_t           bAssocTerminal;
-  uint8_t           iTerminal;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubtype;
+	uint8_t           bTerminalID;
+	uint16_t          wTerminalType;
+	uint8_t           bAssocTerminal;
+	uint8_t           iTerminal;
 } __PACKED USBD_InputTerminalDescTypeDef;
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubtype;
-  uint8_t           bTerminalID;
-  uint16_t          wTerminalType;
-  uint8_t           bAssocTerminal;
-  uint8_t           bSourceID;
-  uint8_t           iTerminal;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubtype;
+	uint8_t           bTerminalID;
+	uint16_t          wTerminalType;
+	uint8_t           bAssocTerminal;
+	uint8_t           bSourceID;
+	uint8_t           iTerminal;
 } __PACKED USBD_OutputTerminalDescTypeDef;
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubtype;
-  uint16_t          bNumFormats;
-  uint8_t           bVideoControlSize;
-  uint8_t           bEndPointAddress;
-  uint8_t           bmInfo;
-  uint8_t           bTerminalLink;
-  uint8_t           bStillCaptureMethod;
-  uint8_t           bTriggerSupport;
-  uint8_t           bTriggerUsage;
-  uint8_t           bControlSize;
-  uint8_t           bmaControls;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubtype;
+	uint16_t          bNumFormats;
+	uint8_t           bVideoControlSize;
+	uint8_t           bEndPointAddress;
+	uint8_t           bmInfo;
+	uint8_t           bTerminalLink;
+	uint8_t           bStillCaptureMethod;
+	uint8_t           bTriggerSupport;
+	uint8_t           bTriggerUsage;
+	uint8_t           bControlSize;
+	uint8_t           bmaControls;
 } __PACKED USBD_ClassSpecificVsHeaderDescTypeDef;
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubType;
-  uint8_t           bFormatIndex;
-  uint8_t           bNumFrameDescriptor;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubType;
+	uint8_t           bFormatIndex;
+	uint8_t           bNumFrameDescriptor;
 #ifdef USBD_UVC_FORMAT_UNCOMPRESSED
-  uint8_t           pGiudFormat[USBD_VC_GIUD_FORMAT_SIZE];
-  uint8_t           bBitsPerPixel;
+	uint8_t           pGiudFormat[USBD_VC_GIUD_FORMAT_SIZE];
+	uint8_t           bBitsPerPixel;
 #else
-  uint8_t           bmFlags;
+	uint8_t           bmFlags;
 #endif /* USBD_UVC_FORMAT_UNCOMPRESSED */
-  uint8_t           bDefaultFrameIndex;
-  uint8_t           bAspectRatioX;
-  uint8_t           bAspectRatioY;
-  uint8_t           bInterlaceFlags;
-  uint8_t           bCopyProtect;
+	uint8_t           bDefaultFrameIndex;
+	uint8_t           bAspectRatioX;
+	uint8_t           bAspectRatioY;
+	uint8_t           bInterlaceFlags;
+	uint8_t           bCopyProtect;
 } __PACKED USBD_PayloadFormatDescTypeDef;
 
 #ifdef USBD_UVC_FORMAT_UNCOMPRESSED
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubType;
-  uint8_t           bColorPrimarie;
-  uint8_t           bTransferCharacteristics;
-  uint8_t           bMatrixCoefficients;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubType;
+	uint8_t           bColorPrimarie;
+	uint8_t           bTransferCharacteristics;
+	uint8_t           bMatrixCoefficients;
 } __PACKED USBD_ColorMatchingDescTypeDef;
 #endif /* USBD_UVC_FORMAT_UNCOMPRESSED */
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bEndpointAddress;
-  uint8_t           bmAttributes;
-  uint16_t          wMaxPacketSize;
-  uint8_t           bInterval;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bEndpointAddress;
+	uint8_t           bmAttributes;
+	uint16_t          wMaxPacketSize;
+	uint8_t           bInterval;
 } __PACKED USBD_StandardVCDataEPDescTypeDef;
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bDescriptorSubType;
-  uint8_t           bFrameIndex;
-  uint8_t           bmCapabilities;
-  uint16_t          wWidth;
-  uint16_t          wHeight;
-  uint32_t          dwMinBitRate;
-  uint32_t          dwMaxBitRate;
-  uint32_t          dwMaxVideoFrameBufSize;
-  uint32_t          dwDefaultFrameInterval;
-  uint8_t           bFrameIntervalType;
-  uint32_t          dwMinFrameInterval;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bDescriptorSubType;
+	uint8_t           bFrameIndex;
+	uint8_t           bmCapabilities;
+	uint16_t          wWidth;
+	uint16_t          wHeight;
+	uint32_t          dwMinBitRate;
+	uint32_t          dwMaxBitRate;
+	uint32_t          dwMaxVideoFrameBufSize;
+	uint32_t          dwDefaultFrameInterval;
+	uint8_t           bFrameIntervalType;
+	uint32_t          dwMinFrameInterval;
 } __PACKED USBD_VIDEO_VSFrameDescTypeDef;
 
 extern USBD_ClassTypeDef    USBD_VIDEO;

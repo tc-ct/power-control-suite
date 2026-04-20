@@ -47,47 +47,46 @@
  *
  */
 arm_status arm_elementwise_mul_s16(const int16_t *input_1_vect,
-                                   const int16_t *input_2_vect,
-                                   const int32_t input_1_offset,
-                                   const int32_t input_2_offset,
-                                   int16_t *output,
-                                   const int32_t out_offset,
-                                   const int32_t out_mult,
-                                   const int32_t out_shift,
-                                   const int32_t out_activation_min,
-                                   const int32_t out_activation_max,
-                                   const int32_t block_size)
+				   const int16_t *input_2_vect,
+				   const int32_t input_1_offset,
+				   const int32_t input_2_offset,
+				   int16_t *output,
+				   const int32_t out_offset,
+				   const int32_t out_mult,
+				   const int32_t out_shift,
+				   const int32_t out_activation_min,
+				   const int32_t out_activation_max,
+				   const int32_t block_size)
 {
-    (void)input_1_offset;
-    (void)input_2_offset;
-    (void)out_offset;
-    int32_t loop_count;
-    int32_t input_1;
-    int32_t input_2;
-    int32_t mul_res;
+	(void)input_1_offset;
+	(void)input_2_offset;
+	(void)out_offset;
+	int32_t loop_count;
+	int32_t input_1;
+	int32_t input_2;
+	int32_t mul_res;
 
-    loop_count = block_size;
+	loop_count = block_size;
 
-    while (loop_count > 0)
-    {
-        /* C = A * B */
+	while (loop_count > 0) {
+		/* C = A * B */
 
-        input_1 = *input_1_vect++;
-        input_2 = *input_2_vect++;
+		input_1 = *input_1_vect++;
+		input_2 = *input_2_vect++;
 
-        mul_res = input_1 * input_2;
-        mul_res = arm_nn_requantize(mul_res, out_mult, out_shift);
+		mul_res = input_1 * input_2;
+		mul_res = arm_nn_requantize(mul_res, out_mult, out_shift);
 
-        mul_res = MAX(mul_res, out_activation_min);
-        mul_res = MIN(mul_res, out_activation_max);
+		mul_res = MAX(mul_res, out_activation_min);
+		mul_res = MIN(mul_res, out_activation_max);
 
-        *output++ = (int16_t)mul_res;
+		*output++ = (int16_t)mul_res;
 
-        /* Decrement loop counter */
-        loop_count--;
-    }
+		/* Decrement loop counter */
+		loop_count--;
+	}
 
-    return ARM_MATH_SUCCESS;
+	return ARM_MATH_SUCCESS;
 }
 
 /**

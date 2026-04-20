@@ -34,7 +34,7 @@
 
 /**
   @defgroup MatrixInit Matrix Initialization
- 
+
   Initializes the underlying matrix data structure.
   The functions set the <code>numRows</code>,
   <code>numCols</code>, and <code>pData</code> fields
@@ -56,19 +56,19 @@
  */
 
 void arm_mat_init_f32(
-  arm_matrix_instance_f32 * S,
-  uint16_t nRows,
-  uint16_t nColumns,
-  float32_t * pData)
+	arm_matrix_instance_f32 * S,
+	uint16_t nRows,
+	uint16_t nColumns,
+	float32_t *pData)
 {
-  /* Assign Number of Rows */
-  S->numRows = nRows;
+	/* Assign Number of Rows */
+	S->numRows = nRows;
 
-  /* Assign Number of Columns */
-  S->numCols = nColumns;
+	/* Assign Number of Columns */
+	S->numCols = nColumns;
 
-  /* Assign Data pointer */
-  S->pData = pData;
+	/* Assign Data pointer */
+	S->pData = pData;
 }
 
 /**

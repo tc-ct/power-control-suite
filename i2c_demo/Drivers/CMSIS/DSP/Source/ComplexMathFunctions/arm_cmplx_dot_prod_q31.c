@@ -58,199 +58,200 @@
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 void arm_cmplx_dot_prod_q31(
-  const q31_t * pSrcA,
-  const q31_t * pSrcB,
-        uint32_t numSamples,
-        q63_t * realResult,
-        q63_t * imagResult)
+	const q31_t * pSrcA,
+	const q31_t * pSrcB,
+	uint32_t numSamples,
+	q63_t * realResult,
+	q63_t * imagResult)
 {
-    int32_t         blkCnt;
-    q63_t           accReal = 0LL;
-    q63_t           accImag = 0LL;
-    q31x4_t         vecSrcA, vecSrcB;
-    q31x4_t         vecSrcC, vecSrcD;
+	int32_t         blkCnt;
+	q63_t           accReal = 0LL;
+	q63_t           accImag = 0LL;
+	q31x4_t         vecSrcA, vecSrcB;
+	q31x4_t         vecSrcC, vecSrcD;
 
-    blkCnt = numSamples >> 2;
-    blkCnt -= 1;
-    if (blkCnt > 0) {
-        /* should give more freedom to generate stall free code */
-        vecSrcA = vld1q(pSrcA);
-        vecSrcB = vld1q(pSrcB);
-        pSrcA += 4;
-        pSrcB += 4;
+	blkCnt = numSamples >> 2;
+	blkCnt -= 1;
 
-        while (blkCnt > 0) {
+	if (blkCnt > 0) {
+		/* should give more freedom to generate stall free code */
+		vecSrcA = vld1q(pSrcA);
+		vecSrcB = vld1q(pSrcB);
+		pSrcA += 4;
+		pSrcB += 4;
 
-            accReal = vrmlsldavhaq(accReal, vecSrcA, vecSrcB);
-            vecSrcC = vld1q(pSrcA);
-            pSrcA += 4;
+		while (blkCnt > 0) {
 
-            accImag = vrmlaldavhaxq(accImag, vecSrcA, vecSrcB);
-            vecSrcD = vld1q(pSrcB);
-            pSrcB += 4;
+			accReal = vrmlsldavhaq(accReal, vecSrcA, vecSrcB);
+			vecSrcC = vld1q(pSrcA);
+			pSrcA += 4;
 
-            accReal = vrmlsldavhaq(accReal, vecSrcC, vecSrcD);
-            vecSrcA = vld1q(pSrcA);
-            pSrcA += 4;
+			accImag = vrmlaldavhaxq(accImag, vecSrcA, vecSrcB);
+			vecSrcD = vld1q(pSrcB);
+			pSrcB += 4;
 
-            accImag = vrmlaldavhaxq(accImag, vecSrcC, vecSrcD);
-            vecSrcB = vld1q(pSrcB);
-            pSrcB += 4;
-            /*
-             * Decrement the blockSize loop counter
-             */
-            blkCnt--;
-        }
+			accReal = vrmlsldavhaq(accReal, vecSrcC, vecSrcD);
+			vecSrcA = vld1q(pSrcA);
+			pSrcA += 4;
 
-        /* process last elements out of the loop avoid the armclang breaking the SW pipeline */
-        accReal = vrmlsldavhaq(accReal, vecSrcA, vecSrcB);
-        vecSrcC = vld1q(pSrcA);
+			accImag = vrmlaldavhaxq(accImag, vecSrcC, vecSrcD);
+			vecSrcB = vld1q(pSrcB);
+			pSrcB += 4;
+			/*
+			 * Decrement the blockSize loop counter
+			 */
+			blkCnt--;
+		}
 
-        accImag = vrmlaldavhaxq(accImag, vecSrcA, vecSrcB);
-        vecSrcD = vld1q(pSrcB);
+		/* process last elements out of the loop avoid the armclang breaking the SW pipeline */
+		accReal = vrmlsldavhaq(accReal, vecSrcA, vecSrcB);
+		vecSrcC = vld1q(pSrcA);
 
-        accReal = vrmlsldavhaq(accReal, vecSrcC, vecSrcD);
-        vecSrcA = vld1q(pSrcA);
+		accImag = vrmlaldavhaxq(accImag, vecSrcA, vecSrcB);
+		vecSrcD = vld1q(pSrcB);
 
-        accImag = vrmlaldavhaxq(accImag, vecSrcC, vecSrcD);
-        vecSrcB = vld1q(pSrcB);
+		accReal = vrmlsldavhaq(accReal, vecSrcC, vecSrcD);
+		vecSrcA = vld1q(pSrcA);
 
-        /*
-         * tail
-         */
-        blkCnt = CMPLX_DIM * (numSamples & 3);
-        do {
-            mve_pred16_t    p = vctp32q(blkCnt);
+		accImag = vrmlaldavhaxq(accImag, vecSrcC, vecSrcD);
+		vecSrcB = vld1q(pSrcB);
 
-            pSrcA += 4;
-            pSrcB += 4;
+		/*
+		 * tail
+		 */
+		blkCnt = CMPLX_DIM * (numSamples & 3);
 
-            vecSrcA = vldrwq_z_s32(pSrcA, p);
-            vecSrcB = vldrwq_z_s32(pSrcB, p);
+		do {
+			mve_pred16_t    p = vctp32q(blkCnt);
 
-            accReal = vrmlsldavhaq_p(accReal, vecSrcA, vecSrcB, p);
-            accImag = vrmlaldavhaxq_p(accImag, vecSrcA, vecSrcB, p);
+			pSrcA += 4;
+			pSrcB += 4;
 
-            blkCnt -= 4;
-        }
-        while ((int32_t) blkCnt > 0);
-    } else {
-        blkCnt = numSamples * CMPLX_DIM;
-        while (blkCnt > 0) {
-            mve_pred16_t    p = vctp32q(blkCnt);
+			vecSrcA = vldrwq_z_s32(pSrcA, p);
+			vecSrcB = vldrwq_z_s32(pSrcB, p);
 
-            vecSrcA = vldrwq_z_s32(pSrcA, p);
-            vecSrcB = vldrwq_z_s32(pSrcB, p);
+			accReal = vrmlsldavhaq_p(accReal, vecSrcA, vecSrcB, p);
+			accImag = vrmlaldavhaxq_p(accImag, vecSrcA, vecSrcB, p);
 
-            accReal = vrmlsldavhaq_p(accReal, vecSrcA, vecSrcB, p);
-            accImag = vrmlaldavhaxq_p(accImag, vecSrcA, vecSrcB, p);
+			blkCnt -= 4;
+		} while ((int32_t) blkCnt > 0);
+	} else {
+		blkCnt = numSamples * CMPLX_DIM;
 
-            /*
-             * Decrement the blkCnt loop counter
-             * Advance vector source and destination pointers
-             */
-            pSrcA += 4;
-            pSrcB += 4;
-            blkCnt -= 4;
-        }
-    }
-    *realResult = asrl(accReal, (14 - 8));
-    *imagResult = asrl(accImag, (14 - 8));
+		while (blkCnt > 0) {
+			mve_pred16_t    p = vctp32q(blkCnt);
+
+			vecSrcA = vldrwq_z_s32(pSrcA, p);
+			vecSrcB = vldrwq_z_s32(pSrcB, p);
+
+			accReal = vrmlsldavhaq_p(accReal, vecSrcA, vecSrcB, p);
+			accImag = vrmlaldavhaxq_p(accImag, vecSrcA, vecSrcB, p);
+
+			/*
+			 * Decrement the blkCnt loop counter
+			 * Advance vector source and destination pointers
+			 */
+			pSrcA += 4;
+			pSrcB += 4;
+			blkCnt -= 4;
+		}
+	}
+
+	*realResult = asrl(accReal, (14 - 8));
+	*imagResult = asrl(accImag, (14 - 8));
 
 }
 
 #else
 void arm_cmplx_dot_prod_q31(
-  const q31_t * pSrcA,
-  const q31_t * pSrcB,
-        uint32_t numSamples,
-        q63_t * realResult,
-        q63_t * imagResult)
+	const q31_t * pSrcA,
+	const q31_t * pSrcB,
+	uint32_t numSamples,
+	q63_t * realResult,
+	q63_t * imagResult)
 {
-        uint32_t blkCnt;                               /* Loop counter */
-        q63_t real_sum = 0, imag_sum = 0;              /* Temporary result variables */
-        q31_t a0,b0,c0,d0;
+	uint32_t blkCnt;                               /* Loop counter */
+	q63_t real_sum = 0, imag_sum = 0;              /* Temporary result variables */
+	q31_t a0, b0, c0, d0;
 
 #if defined (ARM_MATH_LOOPUNROLL)
 
-  /* Loop unrolling: Compute 4 outputs at a time */
-  blkCnt = numSamples >> 2U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = numSamples >> 2U;
 
-  while (blkCnt > 0U)
-  {
-    a0 = *pSrcA++;
-    b0 = *pSrcA++;
-    c0 = *pSrcB++;
-    d0 = *pSrcB++;
+	while (blkCnt > 0U) {
+		a0 = *pSrcA++;
+		b0 = *pSrcA++;
+		c0 = *pSrcB++;
+		d0 = *pSrcB++;
 
-    real_sum += ((q63_t)a0 * c0) >> 14;
-    imag_sum += ((q63_t)a0 * d0) >> 14;
-    real_sum -= ((q63_t)b0 * d0) >> 14;
-    imag_sum += ((q63_t)b0 * c0) >> 14;
+		real_sum += ((q63_t)a0 * c0) >> 14;
+		imag_sum += ((q63_t)a0 * d0) >> 14;
+		real_sum -= ((q63_t)b0 * d0) >> 14;
+		imag_sum += ((q63_t)b0 * c0) >> 14;
 
-    a0 = *pSrcA++;
-    b0 = *pSrcA++;
-    c0 = *pSrcB++;
-    d0 = *pSrcB++;
+		a0 = *pSrcA++;
+		b0 = *pSrcA++;
+		c0 = *pSrcB++;
+		d0 = *pSrcB++;
 
-    real_sum += ((q63_t)a0 * c0) >> 14;
-    imag_sum += ((q63_t)a0 * d0) >> 14;
-    real_sum -= ((q63_t)b0 * d0) >> 14;
-    imag_sum += ((q63_t)b0 * c0) >> 14;
+		real_sum += ((q63_t)a0 * c0) >> 14;
+		imag_sum += ((q63_t)a0 * d0) >> 14;
+		real_sum -= ((q63_t)b0 * d0) >> 14;
+		imag_sum += ((q63_t)b0 * c0) >> 14;
 
-    a0 = *pSrcA++;
-    b0 = *pSrcA++;
-    c0 = *pSrcB++;
-    d0 = *pSrcB++;
+		a0 = *pSrcA++;
+		b0 = *pSrcA++;
+		c0 = *pSrcB++;
+		d0 = *pSrcB++;
 
-    real_sum += ((q63_t)a0 * c0) >> 14;
-    imag_sum += ((q63_t)a0 * d0) >> 14;
-    real_sum -= ((q63_t)b0 * d0) >> 14;
-    imag_sum += ((q63_t)b0 * c0) >> 14;
+		real_sum += ((q63_t)a0 * c0) >> 14;
+		imag_sum += ((q63_t)a0 * d0) >> 14;
+		real_sum -= ((q63_t)b0 * d0) >> 14;
+		imag_sum += ((q63_t)b0 * c0) >> 14;
 
-    a0 = *pSrcA++;
-    b0 = *pSrcA++;
-    c0 = *pSrcB++;
-    d0 = *pSrcB++;
+		a0 = *pSrcA++;
+		b0 = *pSrcA++;
+		c0 = *pSrcB++;
+		d0 = *pSrcB++;
 
-    real_sum += ((q63_t)a0 * c0) >> 14;
-    imag_sum += ((q63_t)a0 * d0) >> 14;
-    real_sum -= ((q63_t)b0 * d0) >> 14;
-    imag_sum += ((q63_t)b0 * c0) >> 14;
+		real_sum += ((q63_t)a0 * c0) >> 14;
+		imag_sum += ((q63_t)a0 * d0) >> 14;
+		real_sum -= ((q63_t)b0 * d0) >> 14;
+		imag_sum += ((q63_t)b0 * c0) >> 14;
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* Loop unrolling: Compute remaining outputs */
-  blkCnt = numSamples % 0x4U;
+	/* Loop unrolling: Compute remaining outputs */
+	blkCnt = numSamples % 0x4U;
 
 #else
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = numSamples;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = numSamples;
 
 #endif /* #if defined (ARM_MATH_LOOPUNROLL) */
 
-  while (blkCnt > 0U)
-  {
-    a0 = *pSrcA++;
-    b0 = *pSrcA++;
-    c0 = *pSrcB++;
-    d0 = *pSrcB++;
+	while (blkCnt > 0U) {
+		a0 = *pSrcA++;
+		b0 = *pSrcA++;
+		c0 = *pSrcB++;
+		d0 = *pSrcB++;
 
-    real_sum += ((q63_t)a0 * c0) >> 14;
-    imag_sum += ((q63_t)a0 * d0) >> 14;
-    real_sum -= ((q63_t)b0 * d0) >> 14;
-    imag_sum += ((q63_t)b0 * c0) >> 14;
+		real_sum += ((q63_t)a0 * c0) >> 14;
+		imag_sum += ((q63_t)a0 * d0) >> 14;
+		real_sum -= ((q63_t)b0 * d0) >> 14;
+		imag_sum += ((q63_t)b0 * c0) >> 14;
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* Store real and imaginary result in 16.48 format  */
-  *realResult = real_sum;
-  *imagResult = imag_sum;
+	/* Store real and imaginary result in 16.48 format  */
+	*realResult = real_sum;
+	*imagResult = imag_sum;
 }
 #endif /* defined(ARM_MATH_MVEI) */
 

@@ -54,7 +54,7 @@
 /// @private
 __STATIC_INLINE float16_t rel_entr(float16_t x, float16_t y)
 {
-    return ((_Float16)x * (_Float16)logf((float32_t)((_Float16)x / (_Float16)y)));
+	return ((_Float16)x * (_Float16)logf((float32_t)((_Float16)x / (_Float16)y)));
 }
 #endif
 
@@ -64,61 +64,63 @@ __STATIC_INLINE float16_t rel_entr(float16_t x, float16_t y)
 #include "arm_helium_utils.h"
 #include "arm_vec_math_f16.h"
 
-float16_t arm_jensenshannon_distance_f16(const float16_t *pA,const float16_t *pB, uint32_t blockSize)
+float16_t arm_jensenshannon_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize)
 {
-    uint32_t        blkCnt;
-    float16_t       tmp;
-    f16x8_t         a, b, t, tmpV, accumV;
+	uint32_t        blkCnt;
+	float16_t       tmp;
+	f16x8_t         a, b, t, tmpV, accumV;
 
-    accumV = vdupq_n_f16(0.0f);
+	accumV = vdupq_n_f16(0.0f);
 
-    blkCnt = blockSize >> 3;
-    while (blkCnt > 0U) {
-        a = vld1q(pA);
-        b = vld1q(pB);
+	blkCnt = blockSize >> 3;
 
-        t = vaddq(a, b);
-        t = vmulq(t, 0.5f);
+	while (blkCnt > 0U) {
+		a = vld1q(pA);
+		b = vld1q(pB);
 
-        tmpV = vmulq(a, vrecip_medprec_f16(t));
-        tmpV = vlogq_f16(tmpV);
-        accumV = vfmaq(accumV, a, tmpV);
+		t = vaddq(a, b);
+		t = vmulq(t, 0.5f);
 
-        tmpV = vmulq_f16(b, vrecip_medprec_f16(t));
-        tmpV = vlogq_f16(tmpV);
-        accumV = vfmaq(accumV, b, tmpV);
+		tmpV = vmulq(a, vrecip_medprec_f16(t));
+		tmpV = vlogq_f16(tmpV);
+		accumV = vfmaq(accumV, a, tmpV);
 
-        pA += 8;
-        pB += 8;
-        blkCnt--;
-    }
+		tmpV = vmulq_f16(b, vrecip_medprec_f16(t));
+		tmpV = vlogq_f16(tmpV);
+		accumV = vfmaq(accumV, b, tmpV);
 
-    /*
-     * tail
-     * (will be merged thru tail predication)
-     */
-    blkCnt = blockSize & 7;
-    if (blkCnt > 0U) {
-        mve_pred16_t    p0 = vctp16q(blkCnt);
+		pA += 8;
+		pB += 8;
+		blkCnt--;
+	}
 
-        a = vldrhq_z_f16(pA, p0);
-        b = vldrhq_z_f16(pB, p0);
+	/*
+	 * tail
+	 * (will be merged thru tail predication)
+	 */
+	blkCnt = blockSize & 7;
 
-        t = vaddq(a, b);
-        t = vmulq(t, 0.5f);
+	if (blkCnt > 0U) {
+		mve_pred16_t    p0 = vctp16q(blkCnt);
 
-        tmpV = vmulq_f16(a, vrecip_medprec_f16(t));
-        tmpV = vlogq_f16(tmpV);
-        accumV = vfmaq_m_f16(accumV, a, tmpV, p0);
+		a = vldrhq_z_f16(pA, p0);
+		b = vldrhq_z_f16(pB, p0);
 
-        tmpV = vmulq_f16(b, vrecip_medprec_f16(t));
-        tmpV = vlogq_f16(tmpV);
-        accumV = vfmaq_m_f16(accumV, b, tmpV, p0);
+		t = vaddq(a, b);
+		t = vmulq(t, 0.5f);
 
-    }
+		tmpV = vmulq_f16(a, vrecip_medprec_f16(t));
+		tmpV = vlogq_f16(tmpV);
+		accumV = vfmaq_m_f16(accumV, a, tmpV, p0);
 
-    arm_sqrt_f16((_Float16)vecAddAcrossF16Mve(accumV) / 2.0f16, &tmp);
-    return (tmp);
+		tmpV = vmulq_f16(b, vrecip_medprec_f16(t));
+		tmpV = vlogq_f16(tmpV);
+		accumV = vfmaq_m_f16(accumV, b, tmpV, p0);
+
+	}
+
+	arm_sqrt_f16((_Float16)vecAddAcrossF16Mve(accumV) / 2.0f16, &tmp);
+	return (tmp);
 }
 
 #else
@@ -145,25 +147,25 @@ float16_t arm_jensenshannon_distance_f16(const float16_t *pA,const float16_t *pB
  */
 
 
-float16_t arm_jensenshannon_distance_f16(const float16_t *pA,const float16_t *pB, uint32_t blockSize)
+float16_t arm_jensenshannon_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize)
 {
-    _Float16 left, right,sum, tmp;
-    float16_t result;
-    uint32_t i;
+	_Float16 left, right, sum, tmp;
+	float16_t result;
+	uint32_t i;
 
-    left = 0.0f16; 
-    right = 0.0f16;
-    for(i=0; i < blockSize; i++)
-    {
-      tmp = ((_Float16)pA[i] + (_Float16)pB[i]) / 2.0f16;
-      left  += (_Float16)rel_entr(pA[i], tmp);
-      right += (_Float16)rel_entr(pB[i], tmp);
-    }
+	left = 0.0f16;
+	right = 0.0f16;
+
+	for (i = 0; i < blockSize; i++) {
+		tmp = ((_Float16)pA[i] + (_Float16)pB[i]) / 2.0f16;
+		left  += (_Float16)rel_entr(pA[i], tmp);
+		right += (_Float16)rel_entr(pB[i], tmp);
+	}
 
 
-    sum = left + right;
-    arm_sqrt_f16((_Float16)sum/2.0f16, &result);
-    return(result);
+	sum = left + right;
+	arm_sqrt_f16((_Float16)sum / 2.0f16, &result);
+	return (result);
 
 }
 
@@ -173,5 +175,5 @@ float16_t arm_jensenshannon_distance_f16(const float16_t *pA,const float16_t *pB
  * @} end of JensenShannon group
  */
 
-#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
 

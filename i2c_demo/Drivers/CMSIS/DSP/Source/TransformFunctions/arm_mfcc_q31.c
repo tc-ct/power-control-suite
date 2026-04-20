@@ -84,122 +84,121 @@
 
 
 arm_status arm_mfcc_q31(
-  const arm_mfcc_instance_q31 * S,
-  q31_t *pSrc,
-  q31_t *pDst,
-  q31_t *pTmp
-  )
+	const arm_mfcc_instance_q31 * S,
+	q31_t *pSrc,
+	q31_t *pDst,
+	q31_t *pTmp
+)
 {
-    q31_t m;
-    uint32_t index;
-    uint32_t fftShift=0;
-    q31_t logExponent;
-    q63_t result;
-    arm_matrix_instance_q31 pDctMat;
-    uint32_t i;
-    uint32_t coefsPos;
-    uint32_t filterLimit;
-    q31_t *pTmp2=(q31_t*)pTmp;
+	q31_t m;
+	uint32_t index;
+	uint32_t fftShift = 0;
+	q31_t logExponent;
+	q63_t result;
+	arm_matrix_instance_q31 pDctMat;
+	uint32_t i;
+	uint32_t coefsPos;
+	uint32_t filterLimit;
+	q31_t *pTmp2 = (q31_t*)pTmp;
 
-    arm_status status = ARM_MATH_SUCCESS;
-    
-    // q31
-    arm_absmax_q31(pSrc,S->fftLen,&m,&index);
+	arm_status status = ARM_MATH_SUCCESS;
 
-    if (m !=0)
-    {
-       q31_t quotient;
-       int16_t shift;
+	// q31
+	arm_absmax_q31(pSrc, S->fftLen, &m, &index);
 
-       status = arm_divide_q31(0x7FFFFFFF,m,&quotient,&shift);
-       if (status != ARM_MATH_SUCCESS)
-       {
-          return(status);
-       }
- 
-       arm_scale_q31(pSrc,quotient,shift,pSrc,S->fftLen);
-    }
+	if (m != 0) {
+		q31_t quotient;
+		int16_t shift;
+
+		status = arm_divide_q31(0x7FFFFFFF, m, &quotient, &shift);
+
+		if (status != ARM_MATH_SUCCESS)
+			return (status);
+
+		arm_scale_q31(pSrc, quotient, shift, pSrc, S->fftLen);
+	}
 
 
-    // q31
-    arm_mult_q31(pSrc,S->windowCoefs, pSrc, S->fftLen);
+	// q31
+	arm_mult_q31(pSrc, S->windowCoefs, pSrc, S->fftLen);
 
 
-    /* Compute spectrum magnitude 
-    */
-    fftShift = 31 - __CLZ(S->fftLen);
+	/* Compute spectrum magnitude
+	*/
+	fftShift = 31 - __CLZ(S->fftLen);
 #if defined(ARM_MFCC_CFFT_BASED)
-    /* some HW accelerator for CMSIS-DSP used in some boards
-       are only providing acceleration for CFFT.
-       With ARM_MFCC_CFFT_BASED enabled, CFFT is used and the MFCC
-       will be accelerated on those boards.
- 
-       The default is to use RFFT
-    */
-    /* Convert from real to complex */
-    for(i=0; i < S->fftLen ; i++)
-    {
-      pTmp2[2*i] = pSrc[i];
-      pTmp2[2*i+1] = 0;
-    }
-    arm_cfft_q31(&(S->cfft),pTmp2,0,1);
+
+	/* some HW accelerator for CMSIS-DSP used in some boards
+	   are only providing acceleration for CFFT.
+	   With ARM_MFCC_CFFT_BASED enabled, CFFT is used and the MFCC
+	   will be accelerated on those boards.
+
+	   The default is to use RFFT
+	*/
+	/* Convert from real to complex */
+	for (i = 0; i < S->fftLen ; i++) {
+		pTmp2[2 * i] = pSrc[i];
+		pTmp2[2 * i + 1] = 0;
+	}
+
+	arm_cfft_q31(&(S->cfft), pTmp2, 0, 1);
 #else
-    /* Default RFFT based implementation */
-    arm_rfft_q31(&(S->rfft),pSrc,pTmp2);
+	/* Default RFFT based implementation */
+	arm_rfft_q31(&(S->rfft), pSrc, pTmp2);
 #endif
-    filterLimit = 1 + (S->fftLen >> 1);
+	filterLimit = 1 + (S->fftLen >> 1);
 
 
-    // q31 - fftShift
-    arm_cmplx_mag_q31(pTmp2,pSrc,filterLimit);
-    // q30 - fftShift
+	// q31 - fftShift
+	arm_cmplx_mag_q31(pTmp2, pSrc, filterLimit);
+	// q30 - fftShift
 
 
-    /* Apply MEL filters */
-    coefsPos = 0;
-    for(i=0; i<S->nbMelFilters; i++)
-    {
-      arm_dot_prod_q31(pSrc+S->filterPos[i],
-        &(S->filterCoefs[coefsPos]),
-        S->filterLengths[i],
-        &result);
+	/* Apply MEL filters */
+	coefsPos = 0;
 
-      coefsPos += S->filterLengths[i];
+	for (i = 0; i < S->nbMelFilters; i++) {
+		arm_dot_prod_q31(pSrc + S->filterPos[i],
+				 &(S->filterCoefs[coefsPos]),
+				 S->filterLengths[i],
+				 &result);
 
-      // q16.48 - fftShift
-      result += MICRO_Q31;
-      result >>= (SHIFT_MELFILTER_SATURATION_Q31 + 18);
-      // q16.29 - fftShift - satShift
-      pTmp[i] = __SSAT(result,31) ;
+		coefsPos += S->filterLengths[i];
 
-    }
+		// q16.48 - fftShift
+		result += MICRO_Q31;
+		result >>= (SHIFT_MELFILTER_SATURATION_Q31 + 18);
+		// q16.29 - fftShift - satShift
+		pTmp[i] = __SSAT(result, 31) ;
 
-
-    // q16.29 - fftShift - satShift
-    /* Compute the log */
-    arm_vlog_q31(pTmp,pTmp,S->nbMelFilters);
+	}
 
 
-    // q5.26
-   
-    logExponent = fftShift + 2 + SHIFT_MELFILTER_SATURATION_Q31;
-    logExponent = logExponent * LOG2TOLOG_Q31;
+	// q16.29 - fftShift - satShift
+	/* Compute the log */
+	arm_vlog_q31(pTmp, pTmp, S->nbMelFilters);
 
 
-    // q5.26
-    arm_offset_q31(pTmp,logExponent,pTmp,S->nbMelFilters);
-    arm_shift_q31(pTmp,-3,pTmp,S->nbMelFilters);
+	// q5.26
 
-    
-    // q8.23
+	logExponent = fftShift + 2 + SHIFT_MELFILTER_SATURATION_Q31;
+	logExponent = logExponent * LOG2TOLOG_Q31;
 
-    pDctMat.numRows=S->nbDctOutputs;
-    pDctMat.numCols=S->nbMelFilters;
-    pDctMat.pData=(q31_t*)S->dctCoefs;
 
-    arm_mat_vec_mult_q31(&pDctMat, pTmp, pDst);
+	// q5.26
+	arm_offset_q31(pTmp, logExponent, pTmp, S->nbMelFilters);
+	arm_shift_q31(pTmp, -3, pTmp, S->nbMelFilters);
 
-    return(status);
+
+	// q8.23
+
+	pDctMat.numRows = S->nbDctOutputs;
+	pDctMat.numCols = S->nbMelFilters;
+	pDctMat.pData = (q31_t*)S->dctCoefs;
+
+	arm_mat_vec_mult_q31(&pDctMat, pTmp, pDst);
+
+	return (status);
 }
 
 /**

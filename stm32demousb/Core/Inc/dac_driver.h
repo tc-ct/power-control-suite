@@ -19,7 +19,7 @@
  *
  * FlyingChip RESERVES ALL RIGHTS NOT EXPRESSLY GRANTED TO YOU HEREUNDER.
  */
- 
+
 #ifndef DAC_DRIVER_H
 #define DAC_DRIVER_H
 
@@ -30,8 +30,8 @@
 
 /* DAC芯片类型枚举 */
 typedef enum {
-    DAC_TYPE_7568,  // 8通道，32位帧
-    DAC_TYPE_7563   // 双通道，24位帧
+	DAC_TYPE_7568,  // 8通道，32位帧
+	DAC_TYPE_7563   // 双通道，24位帧
 } DAC_Device_TypeDef;
 
 

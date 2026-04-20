@@ -72,15 +72,14 @@ static int8_t  TEMPLATE_MuteCtl(uint8_t cmd);
 static int8_t  TEMPLATE_PeriodicTC(uint8_t *pbuf, uint32_t size, uint8_t cmd);
 static int8_t  TEMPLATE_GetState(void);
 
-USBD_AUDIO_ItfTypeDef USBD_AUDIO_Template_fops =
-{
-  TEMPLATE_Init,
-  TEMPLATE_DeInit,
-  TEMPLATE_AudioCmd,
-  TEMPLATE_VolumeCtl,
-  TEMPLATE_MuteCtl,
-  TEMPLATE_PeriodicTC,
-  TEMPLATE_GetState,
+USBD_AUDIO_ItfTypeDef USBD_AUDIO_Template_fops = {
+	TEMPLATE_Init,
+	TEMPLATE_DeInit,
+	TEMPLATE_AudioCmd,
+	TEMPLATE_VolumeCtl,
+	TEMPLATE_MuteCtl,
+	TEMPLATE_PeriodicTC,
+	TEMPLATE_GetState,
 };
 
 /* Private functions ---------------------------------------------------------*/
@@ -93,14 +92,14 @@ USBD_AUDIO_ItfTypeDef USBD_AUDIO_Template_fops =
   */
 static int8_t TEMPLATE_Init(uint32_t  AudioFreq, uint32_t Volume, uint32_t options)
 {
-  UNUSED(AudioFreq);
-  UNUSED(Volume);
-  UNUSED(options);
+	UNUSED(AudioFreq);
+	UNUSED(Volume);
+	UNUSED(options);
 
-  /*
-     Add your initialization code here
-  */
-  return (0);
+	/*
+	   Add your initialization code here
+	*/
+	return (0);
 }
 
 /**
@@ -111,12 +110,12 @@ static int8_t TEMPLATE_Init(uint32_t  AudioFreq, uint32_t Volume, uint32_t optio
   */
 static int8_t TEMPLATE_DeInit(uint32_t options)
 {
-  UNUSED(options);
+	UNUSED(options);
 
-  /*
-     Add your deinitialization code here
-  */
-  return (0);
+	/*
+	   Add your deinitialization code here
+	*/
+	return (0);
 }
 
 
@@ -130,11 +129,11 @@ static int8_t TEMPLATE_DeInit(uint32_t options)
   */
 static int8_t TEMPLATE_AudioCmd(uint8_t *pbuf, uint32_t size, uint8_t cmd)
 {
-  UNUSED(pbuf);
-  UNUSED(size);
-  UNUSED(cmd);
+	UNUSED(pbuf);
+	UNUSED(size);
+	UNUSED(cmd);
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -144,9 +143,9 @@ static int8_t TEMPLATE_AudioCmd(uint8_t *pbuf, uint32_t size, uint8_t cmd)
   */
 static int8_t TEMPLATE_VolumeCtl(uint8_t vol)
 {
-  UNUSED(vol);
+	UNUSED(vol);
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -156,9 +155,9 @@ static int8_t TEMPLATE_VolumeCtl(uint8_t vol)
   */
 static int8_t TEMPLATE_MuteCtl(uint8_t cmd)
 {
-  UNUSED(cmd);
+	UNUSED(cmd);
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -168,11 +167,11 @@ static int8_t TEMPLATE_MuteCtl(uint8_t cmd)
   */
 static int8_t TEMPLATE_PeriodicTC(uint8_t *pbuf, uint32_t size, uint8_t cmd)
 {
-  UNUSED(pbuf);
-  UNUSED(size);
-  UNUSED(cmd);
+	UNUSED(pbuf);
+	UNUSED(size);
+	UNUSED(cmd);
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -182,7 +181,7 @@ static int8_t TEMPLATE_PeriodicTC(uint8_t *pbuf, uint32_t size, uint8_t cmd)
   */
 static int8_t TEMPLATE_GetState(void)
 {
-  return (0);
+	return (0);
 }
 /**
   * @}

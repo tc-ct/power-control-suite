@@ -35,50 +35,57 @@
 using ReceiveCallback = std::function<void(const uint8_t* data, int length)>;
 
 struct USBDeviceInfo {
-    std::string path;
-    std::wstring manufacturer;
-    std::wstring product;
-    int interface_number = -1;
+	std::string path;
+	std::wstring manufacturer;
+	std::wstring product;
+	int interface_number = -1;
 };
 
-class USBDriver {
+class USBDriver
+{
 public:
-    USBDriver(uint16_t vid, uint16_t pid);
-    ~USBDriver();
+	USBDriver(uint16_t vid, uint16_t pid);
+	~USBDriver();
 
-    static std::vector<USBDeviceInfo> queryDevices(uint16_t vid, uint16_t pid);
+	static std::vector<USBDeviceInfo> queryDevices(uint16_t vid, uint16_t pid);
 
-    // 打开设备，成功返回 true
-    bool open();
+	// 打开设备，成功返回 true
+	bool open();
 
-    bool open(const std::string& path);
+	bool open(const std::string& path);
 
-    // 关闭设备并停止接收线程
-    void close();
+	// 关闭设备并停止接收线程
+	void close();
 
-    // 检查设备是否已打开
-    bool isOpen() const { return handle != nullptr; }
+	// 检查设备是否已打开
+	bool isOpen() const
+	{
+		return handle != nullptr;
+	}
 
-    // 发送数据（最大 64 字节），内部自动添加报告 ID（固定为 1）
-    bool send(const uint8_t* data, size_t length);
+	// 发送数据（最大 64 字节），内部自动添加报告 ID（固定为 1）
+	bool send(const uint8_t* data, size_t length);
 
-    // 注册接收数据回调，并启动内部接收线程
-    void setReceiveCallback(ReceiveCallback cb);
+	// 注册接收数据回调，并启动内部接收线程
+	void setReceiveCallback(ReceiveCallback cb);
 
-    // 获取底层设备句柄（仅供测试使用）
-    void* getNativeHandle() const { return handle; }
+	// 获取底层设备句柄（仅供测试使用）
+	void *getNativeHandle() const
+	{
+		return handle;
+	}
 
-    int receive(const uint8_t* data, size_t length);
+	int receive(const uint8_t* data, size_t length);
 
 private:
-    uint16_t vid_;
-    uint16_t pid_;
-    void* handle;                 // hid_device*，使用 void* 避免暴露 hidapi 头
-    std::atomic<bool> running_;
-    std::thread receive_thread_;
-    ReceiveCallback callback_;
+	uint16_t vid_;
+	uint16_t pid_;
+	void *handle;                 // hid_device*，使用 void* 避免暴露 hidapi 头
+	std::atomic<bool> running_;
+	std::thread receive_thread_;
+	ReceiveCallback callback_;
 
-    void receiveLoop();
+	void receiveLoop();
 };
 
 #endif // USB_DRIVER_H

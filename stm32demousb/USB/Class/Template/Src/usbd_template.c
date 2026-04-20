@@ -104,43 +104,41 @@ static uint8_t *USBD_TEMPLATE_GetDeviceQualifierDesc(uint16_t *length);
   * @{
   */
 
-USBD_ClassTypeDef USBD_TEMPLATE_ClassDriver =
-{
-  USBD_TEMPLATE_Init,
-  USBD_TEMPLATE_DeInit,
-  USBD_TEMPLATE_Setup,
-  USBD_TEMPLATE_EP0_TxReady,
-  USBD_TEMPLATE_EP0_RxReady,
-  USBD_TEMPLATE_DataIn,
-  USBD_TEMPLATE_DataOut,
-  USBD_TEMPLATE_SOF,
-  USBD_TEMPLATE_IsoINIncomplete,
-  USBD_TEMPLATE_IsoOutIncomplete,
-  USBD_TEMPLATE_GetCfgDesc,
-  USBD_TEMPLATE_GetCfgDesc,
-  USBD_TEMPLATE_GetCfgDesc,
-  USBD_TEMPLATE_GetDeviceQualifierDesc,
+USBD_ClassTypeDef USBD_TEMPLATE_ClassDriver = {
+	USBD_TEMPLATE_Init,
+	USBD_TEMPLATE_DeInit,
+	USBD_TEMPLATE_Setup,
+	USBD_TEMPLATE_EP0_TxReady,
+	USBD_TEMPLATE_EP0_RxReady,
+	USBD_TEMPLATE_DataIn,
+	USBD_TEMPLATE_DataOut,
+	USBD_TEMPLATE_SOF,
+	USBD_TEMPLATE_IsoINIncomplete,
+	USBD_TEMPLATE_IsoOutIncomplete,
+	USBD_TEMPLATE_GetCfgDesc,
+	USBD_TEMPLATE_GetCfgDesc,
+	USBD_TEMPLATE_GetCfgDesc,
+	USBD_TEMPLATE_GetDeviceQualifierDesc,
 };
 
 #if defined ( __ICCARM__ ) /*!< IAR Compiler */
 #pragma data_alignment=4
 #endif /* __ICCARM__ */
 /* USB TEMPLATE device Configuration Descriptor */
-__ALIGN_BEGIN static uint8_t USBD_TEMPLATE_CfgDesc[USB_TEMPLATE_CONFIG_DESC_SIZ] __ALIGN_END =
-{
-  0x09, /* bLength: Configuration Descriptor size */
-  USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION, /* bDescriptorType: Configuration */
-  USB_TEMPLATE_CONFIG_DESC_SIZ,
-  /* wTotalLength: Bytes returned */
-  0x00,
-  0x01,         /*bNumInterfaces: 1 interface*/
-  0x01,         /*bConfigurationValue: Configuration value*/
-  0x02,         /*iConfiguration: Index of string descriptor describing the configuration*/
-  0xC0,         /*bmAttributes: bus powered and Supports Remote Wakeup */
-  0x32,         /*MaxPower 100 mA: this current is used for detecting Vbus*/
-  /* 09 */
+__ALIGN_BEGIN static uint8_t USBD_TEMPLATE_CfgDesc[USB_TEMPLATE_CONFIG_DESC_SIZ] __ALIGN_END = {
+	0x09, /* bLength: Configuration Descriptor size */
+	USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION, /* bDescriptorType: Configuration */
+	USB_TEMPLATE_CONFIG_DESC_SIZ,
+	/* wTotalLength: Bytes returned */
+	0x00,
+	0x01,         /*bNumInterfaces: 1 interface*/
+	0x01,         /*bConfigurationValue: Configuration value*/
+	0x02,         /*iConfiguration: Index of string descriptor describing the configuration*/
+	0xC0,         /*bmAttributes: bus powered and Supports Remote Wakeup */
+	0x32,         /*MaxPower 100 mA: this current is used for detecting Vbus*/
+	/* 09 */
 
-  /**********  Descriptor of TEMPLATE interface 0 Alternate setting 0 **************/
+	/**********  Descriptor of TEMPLATE interface 0 Alternate setting 0 **************/
 
 };
 
@@ -148,18 +146,17 @@ __ALIGN_BEGIN static uint8_t USBD_TEMPLATE_CfgDesc[USB_TEMPLATE_CONFIG_DESC_SIZ]
 #pragma data_alignment=4
 #endif /* __ICCARM__ */
 /* USB Standard Device Descriptor */
-__ALIGN_BEGIN static uint8_t USBD_TEMPLATE_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC] __ALIGN_END =
-{
-  USB_LEN_DEV_QUALIFIER_DESC,
-  USB_DESC_TYPE_DEVICE_QUALIFIER,
-  0x00,
-  0x02,
-  0x00,
-  0x00,
-  0x00,
-  0x40,
-  0x01,
-  0x00,
+__ALIGN_BEGIN static uint8_t USBD_TEMPLATE_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC] __ALIGN_END = {
+	USB_LEN_DEV_QUALIFIER_DESC,
+	USB_DESC_TYPE_DEVICE_QUALIFIER,
+	0x00,
+	0x02,
+	0x00,
+	0x00,
+	0x00,
+	0x40,
+	0x01,
+	0x00,
 };
 
 /**
@@ -180,7 +177,7 @@ __ALIGN_BEGIN static uint8_t USBD_TEMPLATE_DeviceQualifierDesc[USB_LEN_DEV_QUALI
 static uint8_t USBD_TEMPLATE_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
 {
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 
 /**
@@ -193,7 +190,7 @@ static uint8_t USBD_TEMPLATE_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
 static uint8_t USBD_TEMPLATE_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
 {
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 
 /**
@@ -204,39 +201,38 @@ static uint8_t USBD_TEMPLATE_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
   * @retval status
   */
 static uint8_t USBD_TEMPLATE_Setup(USBD_HandleTypeDef *pdev,
-                                   USBD_SetupReqTypedef *req)
+				   USBD_SetupReqTypedef *req)
 {
-  USBD_StatusTypeDef ret = USBD_OK;
+	USBD_StatusTypeDef ret = USBD_OK;
 
-  switch (req->bmRequest & USB_REQ_TYPE_MASK)
-  {
-    case USB_REQ_TYPE_CLASS :
-      switch (req->bRequest)
-      {
-        default:
-          USBD_CtlError(pdev, req);
-          ret = USBD_FAIL;
-          break;
-      }
-      break;
+	switch (req->bmRequest & USB_REQ_TYPE_MASK) {
+		case USB_REQ_TYPE_CLASS :
+			switch (req->bRequest) {
+				default:
+					USBD_CtlError(pdev, req);
+					ret = USBD_FAIL;
+					break;
+			}
 
-    case USB_REQ_TYPE_STANDARD:
-      switch (req->bRequest)
-      {
-        default:
-          USBD_CtlError(pdev, req);
-          ret = USBD_FAIL;
-          break;
-      }
-      break;
+			break;
 
-    default:
-      USBD_CtlError(pdev, req);
-      ret = USBD_FAIL;
-      break;
-  }
+		case USB_REQ_TYPE_STANDARD:
+			switch (req->bRequest) {
+				default:
+					USBD_CtlError(pdev, req);
+					ret = USBD_FAIL;
+					break;
+			}
 
-  return (uint8_t)ret;
+			break;
+
+		default:
+			USBD_CtlError(pdev, req);
+			ret = USBD_FAIL;
+			break;
+	}
+
+	return (uint8_t)ret;
 }
 
 /**
@@ -247,8 +243,8 @@ static uint8_t USBD_TEMPLATE_Setup(USBD_HandleTypeDef *pdev,
   */
 static uint8_t *USBD_TEMPLATE_GetCfgDesc(uint16_t *length)
 {
-  *length = (uint16_t)sizeof(USBD_TEMPLATE_CfgDesc);
-  return USBD_TEMPLATE_CfgDesc;
+	*length = (uint16_t)sizeof(USBD_TEMPLATE_CfgDesc);
+	return USBD_TEMPLATE_CfgDesc;
 }
 
 /**
@@ -259,8 +255,8 @@ static uint8_t *USBD_TEMPLATE_GetCfgDesc(uint16_t *length)
   */
 uint8_t *USBD_TEMPLATE_GetDeviceQualifierDesc(uint16_t *length)
 {
-  *length = (uint16_t)sizeof(USBD_TEMPLATE_DeviceQualifierDesc);
-  return USBD_TEMPLATE_DeviceQualifierDesc;
+	*length = (uint16_t)sizeof(USBD_TEMPLATE_DeviceQualifierDesc);
+	return USBD_TEMPLATE_DeviceQualifierDesc;
 }
 
 /**
@@ -273,7 +269,7 @@ uint8_t *USBD_TEMPLATE_GetDeviceQualifierDesc(uint16_t *length)
 static uint8_t USBD_TEMPLATE_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 
 /**
@@ -285,7 +281,7 @@ static uint8_t USBD_TEMPLATE_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum)
 static uint8_t USBD_TEMPLATE_EP0_RxReady(USBD_HandleTypeDef *pdev)
 {
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 
 /**
@@ -297,7 +293,7 @@ static uint8_t USBD_TEMPLATE_EP0_RxReady(USBD_HandleTypeDef *pdev)
 static uint8_t USBD_TEMPLATE_EP0_TxReady(USBD_HandleTypeDef *pdev)
 {
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 
 /**
@@ -309,7 +305,7 @@ static uint8_t USBD_TEMPLATE_EP0_TxReady(USBD_HandleTypeDef *pdev)
 static uint8_t USBD_TEMPLATE_SOF(USBD_HandleTypeDef *pdev)
 {
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 
 /**
@@ -322,7 +318,7 @@ static uint8_t USBD_TEMPLATE_SOF(USBD_HandleTypeDef *pdev)
 static uint8_t USBD_TEMPLATE_IsoINIncomplete(USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 
 /**
@@ -335,7 +331,7 @@ static uint8_t USBD_TEMPLATE_IsoINIncomplete(USBD_HandleTypeDef *pdev, uint8_t e
 static uint8_t USBD_TEMPLATE_IsoOutIncomplete(USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 /**
   * @brief  USBD_TEMPLATE_DataOut
@@ -347,7 +343,7 @@ static uint8_t USBD_TEMPLATE_IsoOutIncomplete(USBD_HandleTypeDef *pdev, uint8_t 
 static uint8_t USBD_TEMPLATE_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
 
-  return (uint8_t)USBD_OK;
+	return (uint8_t)USBD_OK;
 }
 
 /**

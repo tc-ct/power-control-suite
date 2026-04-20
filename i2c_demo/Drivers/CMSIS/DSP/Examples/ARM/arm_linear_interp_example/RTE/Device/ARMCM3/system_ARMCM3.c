@@ -48,7 +48,7 @@ uint32_t SystemCoreClock = SYSTEM_CLOCK;  /* System Core Clock Frequency */
  *----------------------------------------------------------------------------*/
 void SystemCoreClockUpdate (void)
 {
-  SystemCoreClock = SYSTEM_CLOCK;
+	SystemCoreClock = SYSTEM_CLOCK;
 }
 
 /*----------------------------------------------------------------------------
@@ -58,8 +58,8 @@ void SystemInit (void)
 {
 
 #if defined (__VTOR_PRESENT) && (__VTOR_PRESENT == 1U)
-  SCB->VTOR = (uint32_t) &(__VECTOR_TABLE[0]);
+	SCB->VTOR = (uint32_t) & (__VECTOR_TABLE[0]);
 #endif
 
-  SystemCoreClock = SYSTEM_CLOCK;
+	SystemCoreClock = SYSTEM_CLOCK;
 }

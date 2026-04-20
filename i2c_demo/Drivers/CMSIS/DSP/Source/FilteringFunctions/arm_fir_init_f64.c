@@ -56,7 +56,7 @@
                    <code>pState</code> is of length <code>numTaps+blockSize-1</code> samples (except for Helium - see below), where <code>blockSize</code> is the number of input samples processed by each call to <code>arm_fir_f32()</code>.
   @par          Initialization of Helium version
                  For Helium version the array of coefficients must be a multiple of 4 (4a) even if less
-                 then 4a coefficients are defined in the FIR. The additional coefficients 
+                 then 4a coefficients are defined in the FIR. The additional coefficients
                  (4a - numTaps) must be set to 0.
                  numTaps is still set to its right value in the init function. It means that
                  the implementation may require to read more coefficients due to the vectorization and
@@ -72,22 +72,22 @@
  */
 
 void arm_fir_init_f64(
-        arm_fir_instance_f64 * S,
-        uint16_t numTaps,
-  const float64_t * pCoeffs,
-        float64_t * pState,
-        uint32_t blockSize)
+	arm_fir_instance_f64 * S,
+	uint16_t numTaps,
+	const float64_t *pCoeffs,
+	float64_t *pState,
+	uint32_t blockSize)
 {
-  /* Assign filter taps */
-  S->numTaps = numTaps;
+	/* Assign filter taps */
+	S->numTaps = numTaps;
 
-  /* Assign coefficient pointer */
-  S->pCoeffs = pCoeffs;
+	/* Assign coefficient pointer */
+	S->pCoeffs = pCoeffs;
 
-  /* Clear state buffer. The size is always (blockSize + numTaps - 1) */
-  memset(pState, 0, (numTaps + (blockSize - 1U)) * sizeof(float64_t));
-  /* Assign state pointer */
-  S->pState = pState;
+	/* Clear state buffer. The size is always (blockSize + numTaps - 1) */
+	memset(pState, 0, (numTaps + (blockSize - 1U)) * sizeof(float64_t));
+	/* Assign state pointer */
+	S->pState = pState;
 }
 
 /**

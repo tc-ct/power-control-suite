@@ -27,10 +27,10 @@
 
 /* 回调函数结构体（带参数） */
 typedef struct {
-    void (*TxCpltCallback)(void*);   // 传输完成回调，参数为设备句柄
-    void* TxCpltArg;                  // 传输完成回调参数
-    void (*ErrorCallback)(void*);     // 错误回调，参数为设备句柄
-    void* ErrorArg;                    // 错误回调参数
+	void (*TxCpltCallback)(void*);   // 传输完成回调，参数为设备句柄
+	void *TxCpltArg;                  // 传输完成回调参数
+	void (*ErrorCallback)(void*);     // 错误回调，参数为设备句柄
+	void *ErrorArg;                    // 错误回调参数
 } DAC_SPI_Callbacks_t;
 
 /* 注册回调函数（由驱动调用） */
@@ -40,4 +40,4 @@ void DAC_SPI_Callback_Register(DAC_SPI_Callbacks_t* cb);
 void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi);
 void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi);
 
-#endif 
+#endif

@@ -47,21 +47,21 @@
 
 /* 数据结构体 */
 typedef struct {
-    float current_a;        /* 电流 (A) */
-    float bus_v;            /* 总线电压 (V) */
-    float power_w;          /* 功率 (W) */
-    uint16_t mfr_id;        /* 厂商ID (应为0x5449) */
-    uint16_t die_id;        /* 设备ID (应为0x2270) */
-    HAL_StatusTypeDef status;
+	float current_a;        /* 电流 (A) */
+	float bus_v;            /* 总线电压 (V) */
+	float power_w;          /* 功率 (W) */
+	uint16_t mfr_id;        /* 厂商ID (应为0x5449) */
+	uint16_t die_id;        /* 设备ID (应为0x2270) */
+	HAL_StatusTypeDef status;
 } INA260_DataTypeDef;
 
 /* 公共函数声明 */
 HAL_StatusTypeDef INA260_Init(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr);
 HAL_StatusTypeDef INA260_ReadAllData(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
-                                     INA260_DataTypeDef *data);
+				     INA260_DataTypeDef *data);
 HAL_StatusTypeDef INA260_ReadManufacturerID(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
-                                            uint16_t *mfr_id);
+		uint16_t *mfr_id);
 HAL_StatusTypeDef INA260_ReadDieID(SMBUS_HandleTypeDef *hsmbus, uint8_t dev_addr,
-                                   uint16_t *die_id);
+				   uint16_t *die_id);
 
 #endif

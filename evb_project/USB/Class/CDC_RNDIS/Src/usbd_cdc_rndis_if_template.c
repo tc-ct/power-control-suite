@@ -62,15 +62,14 @@ static int8_t CDC_RNDIS_Itf_Receive(uint8_t *pbuf, uint32_t *Len);
 static int8_t CDC_RNDIS_Itf_TransmitCplt(uint8_t *pbuf, uint32_t *Len, uint8_t epnum);
 static int8_t CDC_RNDIS_Itf_Process(USBD_HandleTypeDef *pdev);
 
-USBD_CDC_RNDIS_ItfTypeDef USBD_CDC_RNDIS_fops =
-{
-  CDC_RNDIS_Itf_Init,
-  CDC_RNDIS_Itf_DeInit,
-  CDC_RNDIS_Itf_Control,
-  CDC_RNDIS_Itf_Receive,
-  CDC_RNDIS_Itf_TransmitCplt,
-  CDC_RNDIS_Itf_Process,
-  (uint8_t *)CDC_RNDIS_MAC_STR_DESC,
+USBD_CDC_RNDIS_ItfTypeDef USBD_CDC_RNDIS_fops = {
+	CDC_RNDIS_Itf_Init,
+	CDC_RNDIS_Itf_DeInit,
+	CDC_RNDIS_Itf_Control,
+	CDC_RNDIS_Itf_Receive,
+	CDC_RNDIS_Itf_TransmitCplt,
+	CDC_RNDIS_Itf_Process,
+	(uint8_t *)CDC_RNDIS_MAC_STR_DESC,
 };
 
 /* Private functions ---------------------------------------------------------*/
@@ -83,26 +82,25 @@ USBD_CDC_RNDIS_ItfTypeDef USBD_CDC_RNDIS_fops =
   */
 static int8_t CDC_RNDIS_Itf_Init(void)
 {
-  if (CDC_RNDISInitialized == 0U)
-  {
-    /*
-      Initialize the LwIP stack
-      Add your code here
+	if (CDC_RNDISInitialized == 0U) {
+		/*
+		  Initialize the LwIP stack
+		  Add your code here
 
-    */
+		*/
 
-    CDC_RNDISInitialized = 1U;
-  }
+		CDC_RNDISInitialized = 1U;
+	}
 
-  /* Set Application Buffers */
+	/* Set Application Buffers */
 #ifdef USE_USBD_COMPOSITE
-  (void)USBD_CDC_RNDIS_SetTxBuffer(&USBD_Device, UserTxBuffer, 0U, 0U);
+	(void)USBD_CDC_RNDIS_SetTxBuffer(&USBD_Device, UserTxBuffer, 0U, 0U);
 #else
-  (void)USBD_CDC_RNDIS_SetTxBuffer(&USBD_Device, UserTxBuffer, 0U);
+	(void)USBD_CDC_RNDIS_SetTxBuffer(&USBD_Device, UserTxBuffer, 0U);
 #endif /* USE_USBD_COMPOSITE */
-  (void)USBD_CDC_RNDIS_SetRxBuffer(&USBD_Device, UserRxBuffer);
+	(void)USBD_CDC_RNDIS_SetRxBuffer(&USBD_Device, UserRxBuffer);
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -114,20 +112,20 @@ static int8_t CDC_RNDIS_Itf_Init(void)
 static int8_t CDC_RNDIS_Itf_DeInit(void)
 {
 #ifdef USE_USBD_COMPOSITE
-  USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *) \
-                                                 (USBD_Device.pClassDataCmsit[USBD_Device.classId]);
+	USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *) \
+		(USBD_Device.pClassDataCmsit[USBD_Device.classId]);
 #else
-  USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *)(USBD_Device.pClassData);
+	USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *)(USBD_Device.pClassData);
 #endif /* USE_USBD_COMPOSITE */
 
-  /*
-     Add your code here
-  */
+	/*
+	   Add your code here
+	*/
 
-  /* Notify application layer that link is down */
-  hcdc_cdc_rndis->LinkStatus = 0U;
+	/* Notify application layer that link is down */
+	hcdc_cdc_rndis->LinkStatus = 0U;
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -141,40 +139,40 @@ static int8_t CDC_RNDIS_Itf_DeInit(void)
 static int8_t CDC_RNDIS_Itf_Control(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 {
 #ifdef USE_USBD_COMPOSITE
-  USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *) \
-                                                 (USBD_Device.pClassDataCmsit[USBD_Device.classId]);
+	USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *) \
+		(USBD_Device.pClassDataCmsit[USBD_Device.classId]);
 #else
-  USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *)(USBD_Device.pClassData);
+	USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *)(USBD_Device.pClassData);
 #endif /* USE_USBD_COMPOSITE */
 
-  switch (cmd)
-  {
-    case CDC_RNDIS_SEND_ENCAPSULATED_COMMAND:
-      /* Add your code here */
-      break;
+	switch (cmd) {
+		case CDC_RNDIS_SEND_ENCAPSULATED_COMMAND:
+			/* Add your code here */
+			break;
 
-    case CDC_RNDIS_GET_ENCAPSULATED_RESPONSE:
-      /* Check if this is the first time we enter */
-      if (hcdc_cdc_rndis->LinkStatus == 0U)
-      {
-        /* Setup the Link up at TCP/IP stack level */
-        hcdc_cdc_rndis->LinkStatus = 1U;
-        /*
-          Add your code here
-        */
-      }
-      /* Add your code here */
-      break;
+		case CDC_RNDIS_GET_ENCAPSULATED_RESPONSE:
 
-    default:
-      /* Add your code here */
-      break;
-  }
+			/* Check if this is the first time we enter */
+			if (hcdc_cdc_rndis->LinkStatus == 0U) {
+				/* Setup the Link up at TCP/IP stack level */
+				hcdc_cdc_rndis->LinkStatus = 1U;
+				/*
+				  Add your code here
+				*/
+			}
 
-  UNUSED(length);
-  UNUSED(pbuf);
+			/* Add your code here */
+			break;
 
-  return (0);
+		default:
+			/* Add your code here */
+			break;
+	}
+
+	UNUSED(length);
+	UNUSED(pbuf);
+
+	return (0);
 }
 
 /**
@@ -187,21 +185,21 @@ static int8_t CDC_RNDIS_Itf_Control(uint8_t cmd, uint8_t *pbuf, uint16_t length)
   */
 static int8_t CDC_RNDIS_Itf_Receive(uint8_t *Buf, uint32_t *Len)
 {
-  /* Get the CDC_RNDIS handler pointer */
+	/* Get the CDC_RNDIS handler pointer */
 #ifdef USE_USBD_COMPOSITE
-  USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *) \
-                                                 (USBD_Device.pClassDataCmsit[USBD_Device.classId]);
+	USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *) \
+		(USBD_Device.pClassDataCmsit[USBD_Device.classId]);
 #else
-  USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *)(USBD_Device.pClassData);
+	USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *)(USBD_Device.pClassData);
 #endif /* USE_USBD_COMPOSITE */
 
-  /* Call Eth buffer processing */
-  hcdc_cdc_rndis->RxState = 1U;
+	/* Call Eth buffer processing */
+	hcdc_cdc_rndis->RxState = 1U;
 
-  UNUSED(Buf);
-  UNUSED(Len);
+	UNUSED(Buf);
+	UNUSED(Len);
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -219,11 +217,11 @@ static int8_t CDC_RNDIS_Itf_Receive(uint8_t *Buf, uint32_t *Len)
   */
 static int8_t CDC_RNDIS_Itf_TransmitCplt(uint8_t *Buf, uint32_t *Len, uint8_t epnum)
 {
-  UNUSED(Buf);
-  UNUSED(Len);
-  UNUSED(epnum);
+	UNUSED(Buf);
+	UNUSED(Len);
+	UNUSED(epnum);
 
-  return (0);
+	return (0);
 }
 
 /**
@@ -235,27 +233,24 @@ static int8_t CDC_RNDIS_Itf_TransmitCplt(uint8_t *Buf, uint32_t *Len, uint8_t ep
   */
 static int8_t CDC_RNDIS_Itf_Process(USBD_HandleTypeDef *pdev)
 {
-  /* Get the CDC_RNDIS handler pointer */
+	/* Get the CDC_RNDIS handler pointer */
 #ifdef USE_USBD_COMPOSITE
-  USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *)(pdev->pClassDataCmsit[pdev->classId]);
+	USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *)(pdev->pClassDataCmsit[pdev->classId]);
 #else
-  USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *)(pdev->pClassData);
+	USBD_CDC_RNDIS_HandleTypeDef *hcdc_cdc_rndis = (USBD_CDC_RNDIS_HandleTypeDef *)(pdev->pClassData);
 #endif /* USE_USBD_COMPOSITE */
 
-  if (hcdc_cdc_rndis == NULL)
-  {
-    return (-1);
-  }
+	if (hcdc_cdc_rndis == NULL)
+		return (-1);
 
-  if (hcdc_cdc_rndis->LinkStatus != 0U)
-  {
-    /*
-       Add your code here
-       Read a received packet from the Ethernet buffers and send it
-       to the lwIP for handling
-    */
-  }
+	if (hcdc_cdc_rndis->LinkStatus != 0U) {
+		/*
+		   Add your code here
+		   Read a received packet from the Ethernet buffers and send it
+		   to the lwIP for handling
+		*/
+	}
 
-  return (0);
+	return (0);
 }
 

@@ -79,106 +79,89 @@ static void SC_SendData(SC_ADPU_CommandsTypeDef *SCADPU, SC_ADPU_ResponseTypeDef
   */
 void SC_Handler(SC_State *SCState, SC_ADPU_CommandsTypeDef *SC_ADPU, SC_ADPU_ResponseTypeDef *SC_Response)
 {
-  uint32_t i;
-  uint32_t j;
+	uint32_t i;
+	uint32_t j;
 
-  switch (*SCState)
-  {
-    case SC_POWER_ON:
-      if (SC_ADPU->Header.INS == SC_GET_A2R)
-      {
-        /* Smartcard initialization */
-        SC_Init();
+	switch (*SCState) {
+		case SC_POWER_ON:
+			if (SC_ADPU->Header.INS == SC_GET_A2R) {
+				/* Smartcard initialization */
+				SC_Init();
 
-        /* Reset Data from SC buffer */
-        for (i = 0U; i < 40U; i++)
-        {
-          SC_ATR_Table[i] = 0;
-        }
+				/* Reset Data from SC buffer */
+				for (i = 0U; i < 40U; i++)
+					SC_ATR_Table[i] = 0;
 
-        /* Reset SC_A2R Structure */
-        SC_A2R.TS = 0U;
-        SC_A2R.T0 = 0U;
+				/* Reset SC_A2R Structure */
+				SC_A2R.TS = 0U;
+				SC_A2R.T0 = 0U;
 
-        for (i = 0U; i < MAX_PROTOCOLLEVEL; i++)
-        {
-          for (j = 0U; j < MAX_INTERFACEBYTE; j++)
-          {
-            SC_A2R.T[i].InterfaceByte[j].Status = 0U;
-            SC_A2R.T[i].InterfaceByte[j].Value = 0U;
-          }
-        }
+				for (i = 0U; i < MAX_PROTOCOLLEVEL; i++) {
+					for (j = 0U; j < MAX_INTERFACEBYTE; j++) {
+						SC_A2R.T[i].InterfaceByte[j].Status = 0U;
+						SC_A2R.T[i].InterfaceByte[j].Value = 0U;
+					}
+				}
 
-        for (i = 0U; i < HIST_LENGTH; i++)
-        {
-          SC_A2R.Historical[i] = 0U;
-        }
+				for (i = 0U; i < HIST_LENGTH; i++)
+					SC_A2R.Historical[i] = 0U;
 
-        SC_A2R.Tlength = 0U;
-        SC_A2R.Hlength = 0U;
+				SC_A2R.Tlength = 0U;
+				SC_A2R.Hlength = 0U;
 
-        /* Next State */
-        *SCState = SC_RESET_LOW;
-      }
-      break;
+				/* Next State */
+				*SCState = SC_RESET_LOW;
+			}
 
-    case SC_RESET_LOW:
-      if (SC_ADPU->Header.INS == SC_GET_A2R)
-      {
-        /* If card is detected then Power ON, Card Reset and wait for an answer) */
-        if (SC_Detect() != 0U)
-        {
-          while (((*SCState) != SC_POWER_OFF) && ((*SCState) != SC_ACTIVE))
-          {
-            SC_AnswerReq(SCState, &SC_ATR_Table[0], 40U); /* Check for answer to reset */
-          }
-        }
-        else
-        {
-          (*SCState) = SC_POWER_OFF;
-        }
-      }
-      break;
+			break;
 
-    case SC_ACTIVE:
-      if (SC_ADPU->Header.INS == SC_GET_A2R)
-      {
-        uint8_t protocol = SC_decode_Answer2reset(&SC_ATR_Table[0]);
-        if (protocol == T0_PROTOCOL)
-        {
-          (*SCState) = SC_ACTIVE_ON_T0;
-          ProtocolNUM_OUT = T0_PROTOCOL;
-        }
-        else if (protocol == T1_PROTOCOL)
-        {
-          (*SCState) = SC_ACTIVE_ON_T1;
-          ProtocolNUM_OUT = T1_PROTOCOL;
-        }
-        else
-        {
-          (*SCState) = SC_POWER_OFF;
-        }
-      }
-      break;
+		case SC_RESET_LOW:
+			if (SC_ADPU->Header.INS == SC_GET_A2R) {
+				/* If card is detected then Power ON, Card Reset and wait for an answer) */
+				if (SC_Detect() != 0U) {
+					while (((*SCState) != SC_POWER_OFF) && ((*SCState) != SC_ACTIVE)) {
+						SC_AnswerReq(SCState, &SC_ATR_Table[0], 40U); /* Check for answer to reset */
+					}
+				} else
+					(*SCState) = SC_POWER_OFF;
+			}
 
-    case SC_ACTIVE_ON_T0:
-      /* process commands other than ATR */
-      SC_SendData(SC_ADPU, SC_Response);
-      break;
+			break;
 
-    case SC_ACTIVE_ON_T1:
-      /* process commands other than ATR */
-      SC_SendData(SC_ADPU, SC_Response);
-      break;
+		case SC_ACTIVE:
+			if (SC_ADPU->Header.INS == SC_GET_A2R) {
+				uint8_t protocol = SC_decode_Answer2reset(&SC_ATR_Table[0]);
 
-    case SC_POWER_OFF:
-      SC_DeInit(); /* Disable Smartcard interface */
-      break;
+				if (protocol == T0_PROTOCOL) {
+					(*SCState) = SC_ACTIVE_ON_T0;
+					ProtocolNUM_OUT = T0_PROTOCOL;
+				} else if (protocol == T1_PROTOCOL) {
+					(*SCState) = SC_ACTIVE_ON_T1;
+					ProtocolNUM_OUT = T1_PROTOCOL;
+				} else
+					(*SCState) = SC_POWER_OFF;
+			}
 
-    default:
-      (*SCState) = SC_POWER_OFF;
-      break;
-  }
+			break;
+
+		case SC_ACTIVE_ON_T0:
+			/* process commands other than ATR */
+			SC_SendData(SC_ADPU, SC_Response);
+			break;
+
+		case SC_ACTIVE_ON_T1:
+			/* process commands other than ATR */
+			SC_SendData(SC_ADPU, SC_Response);
+			break;
+
+		case SC_POWER_OFF:
+			SC_DeInit(); /* Disable Smartcard interface */
+			break;
+
+		default:
+			(*SCState) = SC_POWER_OFF;
+			break;
+	}
 }
 
 /**
@@ -189,10 +172,10 @@ void SC_Handler(SC_State *SCState, SC_ADPU_CommandsTypeDef *SC_ADPU, SC_ADPU_Res
   */
 void SC_PowerCmd(SCPowerState NewState)
 {
-  UNUSED(NewState);
-  /* enable or disable smartcard pin */
+	UNUSED(NewState);
+	/* enable or disable smartcard pin */
 
-  return;
+	return;
 }
 
 /**
@@ -220,9 +203,9 @@ void SC_PowerCmd(SCPowerState NewState)
 
 void SC_ParityErrorHandler(void)
 {
-  /* Add your code here */
+	/* Add your code here */
 
-  return;
+	return;
 }
 
 /**
@@ -233,9 +216,9 @@ void SC_ParityErrorHandler(void)
 
 void SC_PTSConfig(void)
 {
-  /* Add your code here */
+	/* Add your code here */
 
-  return;
+	return;
 }
 
 
@@ -248,23 +231,22 @@ void SC_PTSConfig(void)
   */
 static void SC_SendData(SC_ADPU_CommandsTypeDef *SCADPU, SC_ADPU_ResponseTypeDef *SC_ResponseStatus)
 {
-  uint8_t i;
-  uint8_t SC_Command[5];
-  uint8_t SC_DATA[LC_MAX];
+	uint8_t i;
+	uint8_t SC_Command[5];
+	uint8_t SC_DATA[LC_MAX];
 
-  UNUSED(SCADPU);
+	UNUSED(SCADPU);
 
-  /* Reset response buffer */
-  for (i = 0U; i < LC_MAX; i++)
-  {
-    SC_ResponseStatus->Data[i] = 0U;
-    SC_DATA[i] = 0U;
-  }
+	/* Reset response buffer */
+	for (i = 0U; i < LC_MAX; i++) {
+		SC_ResponseStatus->Data[i] = 0U;
+		SC_DATA[i] = 0U;
+	}
 
-  /* User to add code here */
+	/* User to add code here */
 
-  /* send command to ICC and get response status */
-  USBD_CCID_If_fops.Send_Process((uint8_t *)&SC_Command, (uint8_t *)&SC_DATA);
+	/* send command to ICC and get response status */
+	USBD_CCID_If_fops.Send_Process((uint8_t *)&SC_Command, (uint8_t *)&SC_DATA);
 
 }
 
@@ -278,35 +260,35 @@ static void SC_SendData(SC_ADPU_CommandsTypeDef *SCADPU, SC_ADPU_ResponseTypeDef
   */
 static void SC_AnswerReq(SC_State *SC_state, uint8_t *atr_buffer, uint8_t length)
 {
-  UNUSED(length);
-  UNUSED(atr_buffer);
+	UNUSED(length);
+	UNUSED(atr_buffer);
 
-  /* to be implemented by USER */
-  switch (*SC_state)
-  {
-    case SC_RESET_LOW:
-      /* Check response with reset low */
-      (*SC_state) = SC_ACTIVE;
-      break;
+	/* to be implemented by USER */
+	switch (*SC_state) {
+		case SC_RESET_LOW:
+			/* Check response with reset low */
+			(*SC_state) = SC_ACTIVE;
+			break;
 
-    case SC_ACTIVE:
-      break;
-    case SC_RESET_HIGH:
-      /* Check response with reset high */
+		case SC_ACTIVE:
+			break;
 
-      break;
+		case SC_RESET_HIGH:
+			/* Check response with reset high */
 
-    case SC_POWER_OFF:
-      /* Close Connection if no answer received */
+			break;
 
-      break;
+		case SC_POWER_OFF:
+			/* Close Connection if no answer received */
 
-    default:
-      (*SC_state) = SC_RESET_LOW;
-      break;
-  }
+			break;
 
-  return;
+		default:
+			(*SC_state) = SC_RESET_LOW;
+			break;
+	}
+
+	return;
 }
 
 /**
@@ -317,90 +299,76 @@ static void SC_AnswerReq(SC_State *SC_state, uint8_t *atr_buffer, uint8_t length
   */
 static uint8_t SC_decode_Answer2reset(uint8_t *card)
 {
-  uint32_t i = 0U;
-  uint32_t flag = 0U;
-  uint32_t protocol;
-  uint8_t index = 0U;
-  uint8_t level = 0U;
+	uint32_t i = 0U;
+	uint32_t flag = 0U;
+	uint32_t protocol;
+	uint8_t index = 0U;
+	uint8_t level = 0U;
 
-  /******************************TS/T0 Decode************************************/
-  index++;
-  SC_A2R.TS = card[index];  /* Initial character */
+	/******************************TS/T0 Decode************************************/
+	index++;
+	SC_A2R.TS = card[index];  /* Initial character */
 
-  index++;
-  SC_A2R.T0 = card[index];  /* Format character */
+	index++;
+	SC_A2R.T0 = card[index];  /* Format character */
 
-  /*************************Historical Table Length Decode***********************/
-  SC_A2R.Hlength = SC_A2R.T0 & 0x0FU;
+	/*************************Historical Table Length Decode***********************/
+	SC_A2R.Hlength = SC_A2R.T0 & 0x0FU;
 
-  /******************************Protocol Level(1) Decode************************/
-  /* Check TD(1) if present */
-  if ((SC_A2R.T0 & 0x80U) == 0x80U)
-  {
-    flag = 1U;
-  }
+	/******************************Protocol Level(1) Decode************************/
+	/* Check TD(1) if present */
+	if ((SC_A2R.T0 & 0x80U) == 0x80U)
+		flag = 1U;
 
-  /* Each bits in the T0 high nibble(b8 to b5) equal to 1 indicates the presence
-  of a further interface byte */
-  for (i = 0U; i < 4U; i++)
-  {
-    if ((((SC_A2R.T0 & 0xF0U) >> (4U + i)) & 0x1U) != 0U)
-    {
-      SC_A2R.T[level].InterfaceByte[i].Status = 1U;
-      index++;
-      SC_A2R.T[level].InterfaceByte[i].Value = card[index];
-      SC_A2R.Tlength++;
-    }
-  }
+	/* Each bits in the T0 high nibble(b8 to b5) equal to 1 indicates the presence
+	of a further interface byte */
+	for (i = 0U; i < 4U; i++) {
+		if ((((SC_A2R.T0 & 0xF0U) >> (4U + i)) & 0x1U) != 0U) {
+			SC_A2R.T[level].InterfaceByte[i].Status = 1U;
+			index++;
+			SC_A2R.T[level].InterfaceByte[i].Value = card[index];
+			SC_A2R.Tlength++;
+		}
+	}
 
-  /*****************************T Decode*****************************************/
-  if (SC_A2R.T[level].InterfaceByte[3].Status == 1U)
-  {
-    /* Only the protocol(parameter T) present in TD(1) is detected
-    if two or more values of parameter T are present in TD(1), TD(2)..., so the
-    firmware should be updated to support them */
-    protocol = (uint8_t)(SC_A2R.T[level].InterfaceByte[SC_INTERFACEBYTE_TD].Value  & 0x0FU);
-  }
-  else
-  {
-    protocol = 0U;
-  }
+	/*****************************T Decode*****************************************/
+	if (SC_A2R.T[level].InterfaceByte[3].Status == 1U) {
+		/* Only the protocol(parameter T) present in TD(1) is detected
+		if two or more values of parameter T are present in TD(1), TD(2)..., so the
+		firmware should be updated to support them */
+		protocol = (uint8_t)(SC_A2R.T[level].InterfaceByte[SC_INTERFACEBYTE_TD].Value  & 0x0FU);
+	} else
+		protocol = 0U;
 
-  /* Protocol Level Increment */
-  /******************************Protocol Level(n>1) Decode**********************/
-  while (flag != 0U)
-  {
-    if ((SC_A2R.T[level].InterfaceByte[SC_INTERFACEBYTE_TD].Value & 0x80U) == 0x80U)
-    {
-      flag = 1U;
-    }
-    else
-    {
-      flag = 0U;
-    }
-    /* Each bits in the high nibble(b8 to b5) for the TD(i) equal to 1 indicates
-    the presence of a further interface byte */
-    for (i = 0U; i < 4U; i++)
-    {
-      if ((((SC_A2R.T[level].InterfaceByte[SC_INTERFACEBYTE_TD].Value & 0xF0U) >> (4U + i)) & 0x1U) != 0U)
-      {
-        SC_A2R.T[level + 1U].InterfaceByte[i].Status = 1U;
-        index++;
-        SC_A2R.T[level + 1U].InterfaceByte[i].Value = card[index];
-        SC_A2R.Tlength++;
-      }
-    }
-    level++;
-  }
+	/* Protocol Level Increment */
+	/******************************Protocol Level(n>1) Decode**********************/
+	while (flag != 0U) {
+		if ((SC_A2R.T[level].InterfaceByte[SC_INTERFACEBYTE_TD].Value & 0x80U) == 0x80U)
+			flag = 1U;
+		else
+			flag = 0U;
 
-  for (i = 0U; i < SC_A2R.Hlength; i++)
-  {
-    SC_A2R.Historical[i] = card[i + 2U + SC_A2R.Tlength];
-  }
-  /*************************************TCK Decode*******************************/
-  SC_A2R.TCK = card[SC_A2R.Hlength + 2U + SC_A2R.Tlength];
+		/* Each bits in the high nibble(b8 to b5) for the TD(i) equal to 1 indicates
+		the presence of a further interface byte */
+		for (i = 0U; i < 4U; i++) {
+			if ((((SC_A2R.T[level].InterfaceByte[SC_INTERFACEBYTE_TD].Value & 0xF0U) >> (4U + i)) & 0x1U) != 0U) {
+				SC_A2R.T[level + 1U].InterfaceByte[i].Status = 1U;
+				index++;
+				SC_A2R.T[level + 1U].InterfaceByte[i].Value = card[index];
+				SC_A2R.Tlength++;
+			}
+		}
 
-  return (uint8_t)protocol;
+		level++;
+	}
+
+	for (i = 0U; i < SC_A2R.Hlength; i++)
+		SC_A2R.Historical[i] = card[i + 2U + SC_A2R.Tlength];
+
+	/*************************************TCK Decode*******************************/
+	SC_A2R.TCK = card[SC_A2R.Hlength + 2U + SC_A2R.Tlength];
+
+	return (uint8_t)protocol;
 }
 
 /**
@@ -410,11 +378,11 @@ static uint8_t SC_decode_Answer2reset(uint8_t *card)
   */
 static void SC_Init(void)
 {
-  /*
-     Add your initialization code here
-  */
+	/*
+	   Add your initialization code here
+	*/
 
-  return;
+	return;
 }
 
 
@@ -425,11 +393,11 @@ static void SC_Init(void)
   */
 static void SC_DeInit(void)
 {
-  /*
-     Add your deinitialization code here
-  */
+	/*
+	   Add your deinitialization code here
+	*/
 
-  return;
+	return;
 }
 
 /**
@@ -442,10 +410,10 @@ static void SC_DeInit(void)
   */
 void SC_VoltageConfig(uint32_t SC_Voltage)
 {
-  UNUSED(SC_Voltage);
-  /* Add your code here */
+	UNUSED(SC_Voltage);
+	/* Add your code here */
 
-  return;
+	return;
 }
 
 /**
@@ -455,9 +423,9 @@ void SC_VoltageConfig(uint32_t SC_Voltage)
   */
 void SC_IOConfig(void)
 {
-  /* Add your code here */
+	/* Add your code here */
 
-  return;
+	return;
 }
 
 /**
@@ -468,11 +436,11 @@ void SC_IOConfig(void)
   */
 uint8_t SC_Detect(void)
 {
-  uint8_t PIN_State = 0U;
+	uint8_t PIN_State = 0U;
 
-  /* Add your code here */
+	/* Add your code here */
 
-  return PIN_State;
+	return PIN_State;
 }
 
 /**
@@ -482,5 +450,5 @@ uint8_t SC_Detect(void)
   */
 uint32_t SC_GetDTableValue(uint32_t idx)
 {
-  return D_Table[idx];
+	return D_Table[idx];
 }

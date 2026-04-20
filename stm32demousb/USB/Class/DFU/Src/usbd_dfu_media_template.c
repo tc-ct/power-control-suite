@@ -39,15 +39,14 @@ uint8_t *MEM_If_Read(uint8_t *src, uint8_t *dest, uint32_t Len);
 uint16_t MEM_If_DeInit(void);
 uint16_t MEM_If_GetStatus(uint32_t Add, uint8_t Cmd, uint8_t *buffer);
 
-USBD_DFU_MediaTypeDef USBD_DFU_MEDIA_Template_fops =
-{
-  (uint8_t *)"DFU MEDIA",
-  MEM_If_Init,
-  MEM_If_DeInit,
-  MEM_If_Erase,
-  MEM_If_Write,
-  MEM_If_Read,
-  MEM_If_GetStatus,
+USBD_DFU_MediaTypeDef USBD_DFU_MEDIA_Template_fops = {
+	(uint8_t *)"DFU MEDIA",
+	MEM_If_Init,
+	MEM_If_DeInit,
+	MEM_If_Erase,
+	MEM_If_Write,
+	MEM_If_Read,
+	MEM_If_GetStatus,
 
 };
 /**
@@ -58,7 +57,7 @@ USBD_DFU_MediaTypeDef USBD_DFU_MEDIA_Template_fops =
   */
 uint16_t MEM_If_Init(void)
 {
-  return 0;
+	return 0;
 }
 
 /**
@@ -69,7 +68,7 @@ uint16_t MEM_If_Init(void)
   */
 uint16_t MEM_If_DeInit(void)
 {
-  return 0;
+	return 0;
 }
 
 /**
@@ -80,9 +79,9 @@ uint16_t MEM_If_DeInit(void)
   */
 uint16_t MEM_If_Erase(uint32_t Add)
 {
-  UNUSED(Add);
+	UNUSED(Add);
 
-  return 0;
+	return 0;
 }
 
 /**
@@ -94,11 +93,11 @@ uint16_t MEM_If_Erase(uint32_t Add)
   */
 uint16_t MEM_If_Write(uint8_t *src, uint8_t *dest, uint32_t Len)
 {
-  UNUSED(src);
-  UNUSED(dest);
-  UNUSED(Len);
+	UNUSED(src);
+	UNUSED(dest);
+	UNUSED(Len);
 
-  return 0;
+	return 0;
 }
 
 /**
@@ -110,12 +109,12 @@ uint16_t MEM_If_Write(uint8_t *src, uint8_t *dest, uint32_t Len)
   */
 uint8_t *MEM_If_Read(uint8_t *src, uint8_t *dest, uint32_t Len)
 {
-  UNUSED(src);
-  UNUSED(dest);
-  UNUSED(Len);
+	UNUSED(src);
+	UNUSED(dest);
+	UNUSED(Len);
 
-  /* Return a valid address to avoid HardFault */
-  return (uint8_t *)(0);
+	/* Return a valid address to avoid HardFault */
+	return (uint8_t *)(0);
 }
 
 /**
@@ -127,20 +126,20 @@ uint8_t *MEM_If_Read(uint8_t *src, uint8_t *dest, uint32_t Len)
   */
 uint16_t MEM_If_GetStatus(uint32_t Add, uint8_t Cmd, uint8_t *buffer)
 {
-  UNUSED(Add);
-  UNUSED(buffer);
+	UNUSED(Add);
+	UNUSED(buffer);
 
-  switch (Cmd)
-  {
-    case DFU_MEDIA_PROGRAM:
+	switch (Cmd) {
+		case DFU_MEDIA_PROGRAM:
 
-      break;
+			break;
 
-    case DFU_MEDIA_ERASE:
-    default:
+		case DFU_MEDIA_ERASE:
+		default:
 
-      break;
-  }
-  return (0);
+			break;
+	}
+
+	return (0);
 }
 

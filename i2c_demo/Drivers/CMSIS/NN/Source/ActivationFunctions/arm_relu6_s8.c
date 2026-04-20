@@ -49,15 +49,14 @@
 
 void arm_relu6_s8(q7_t *data, uint16_t size)
 {
-    int32_t i;
+	int32_t i;
 
-    for (i = 0; i < size; i++)
-    {
-        int32_t ip = data[i];
+	for (i = 0; i < size; i++) {
+		int32_t ip = data[i];
 
-        ip = MAX(ip, 0);
-        data[i] = MIN(ip, 6);
-    }
+		ip = MAX(ip, 0);
+		data[i] = MIN(ip, 6);
+	}
 }
 
 /**

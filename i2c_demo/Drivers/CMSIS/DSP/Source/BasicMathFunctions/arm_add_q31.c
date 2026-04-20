@@ -55,101 +55,100 @@
 #include "arm_helium_utils.h"
 
 void arm_add_q31(
-  const q31_t * pSrcA,
-  const q31_t * pSrcB,
-        q31_t * pDst,
-        uint32_t blockSize)
+	const q31_t * pSrcA,
+	const q31_t * pSrcB,
+	q31_t * pDst,
+	uint32_t blockSize)
 {
-    uint32_t blkCnt;   
-    q31x4_t vecA;
-    q31x4_t vecB;
+	uint32_t blkCnt;
+	q31x4_t vecA;
+	q31x4_t vecB;
 
-    /* Compute 4 outputs at a time */
-    blkCnt = blockSize >> 2;
-    while (blkCnt > 0U)
-    {
-        /*
-         * C = A + B
-         * Add and then store the results in the destination buffer.
-         */
-        vecA = vld1q(pSrcA);
-        vecB = vld1q(pSrcB);
-        vst1q(pDst, vqaddq(vecA, vecB));
-        /*
-         * Decrement the blockSize loop counter
-         */
-        blkCnt--;
-        /*
-         * advance vector source and destination pointers
-         */
-        pSrcA  += 4;
-        pSrcB  += 4;
-        pDst   += 4;
-    }
-    /*
-     * tail
-     */
-    blkCnt = blockSize & 3;
-    if (blkCnt > 0U)
-    {
-        mve_pred16_t p0 = vctp32q(blkCnt);
-        vecA = vld1q(pSrcA);
-        vecB = vld1q(pSrcB);
-        vstrwq_p(pDst, vqaddq(vecA, vecB), p0);
-    }
+	/* Compute 4 outputs at a time */
+	blkCnt = blockSize >> 2;
+
+	while (blkCnt > 0U) {
+		/*
+		 * C = A + B
+		 * Add and then store the results in the destination buffer.
+		 */
+		vecA = vld1q(pSrcA);
+		vecB = vld1q(pSrcB);
+		vst1q(pDst, vqaddq(vecA, vecB));
+		/*
+		 * Decrement the blockSize loop counter
+		 */
+		blkCnt--;
+		/*
+		 * advance vector source and destination pointers
+		 */
+		pSrcA  += 4;
+		pSrcB  += 4;
+		pDst   += 4;
+	}
+
+	/*
+	 * tail
+	 */
+	blkCnt = blockSize & 3;
+
+	if (blkCnt > 0U) {
+		mve_pred16_t p0 = vctp32q(blkCnt);
+		vecA = vld1q(pSrcA);
+		vecB = vld1q(pSrcB);
+		vstrwq_p(pDst, vqaddq(vecA, vecB), p0);
+	}
 }
 
 #else
 void arm_add_q31(
-  const q31_t * pSrcA,
-  const q31_t * pSrcB,
-        q31_t * pDst,
-        uint32_t blockSize)
+	const q31_t * pSrcA,
+	const q31_t * pSrcB,
+	q31_t * pDst,
+	uint32_t blockSize)
 {
-        uint32_t blkCnt;                               /* Loop counter */
+	uint32_t blkCnt;                               /* Loop counter */
 
 #if defined (ARM_MATH_LOOPUNROLL)
 
-  /* Loop unrolling: Compute 4 outputs at a time */
-  blkCnt = blockSize >> 2U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = blockSize >> 2U;
 
-  while (blkCnt > 0U)
-  {
-    /* C = A + B */
+	while (blkCnt > 0U) {
+		/* C = A + B */
 
-    /* Add and store result in destination buffer. */
-    *pDst++ = __QADD(*pSrcA++, *pSrcB++);
+		/* Add and store result in destination buffer. */
+		*pDst++ = __QADD(*pSrcA++, *pSrcB++);
 
-    *pDst++ = __QADD(*pSrcA++, *pSrcB++);
+		*pDst++ = __QADD(*pSrcA++, *pSrcB++);
 
-    *pDst++ = __QADD(*pSrcA++, *pSrcB++);
+		*pDst++ = __QADD(*pSrcA++, *pSrcB++);
 
-    *pDst++ = __QADD(*pSrcA++, *pSrcB++);
+		*pDst++ = __QADD(*pSrcA++, *pSrcB++);
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* Loop unrolling: Compute remaining outputs */
-  blkCnt = blockSize % 0x4U;
+	/* Loop unrolling: Compute remaining outputs */
+	blkCnt = blockSize % 0x4U;
 
 #else
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = blockSize;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = blockSize;
 
 #endif /* #if defined (ARM_MATH_LOOPUNROLL) */
 
-  while (blkCnt > 0U)
-  {
-    /* C = A + B */
+	while (blkCnt > 0U) {
+		/* C = A + B */
 
-    /* Add and store result in destination buffer. */
-    *pDst++ = __QADD(*pSrcA++, *pSrcB++);
+		/* Add and store result in destination buffer. */
+		*pDst++ = __QADD(*pSrcA++, *pSrcB++);
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
 }
 

@@ -82,9 +82,9 @@
 HAL_StatusTypeDef HAL_SDEx_DMALinkedList_BuildNode(SD_DMALinkNodeTypeDef *pNode, SD_DMALinkNodeConfTypeDef *pNodeConf)
 {
 
-  (void)SDMMC_DMALinkedList_BuildNode(pNode, pNodeConf);
+	(void)SDMMC_DMALinkedList_BuildNode(pNode, pNodeConf);
 
-  return (HAL_OK);
+	return (HAL_OK);
 
 }
 
@@ -96,12 +96,12 @@ HAL_StatusTypeDef HAL_SDEx_DMALinkedList_BuildNode(SD_DMALinkNodeTypeDef *pNode,
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_SDEx_DMALinkedList_InsertNode(SD_DMALinkedListTypeDef *pLinkedList,
-                                                    SD_DMALinkNodeTypeDef *pPrevNode, SD_DMALinkNodeTypeDef *pNewNode)
+		SD_DMALinkNodeTypeDef *pPrevNode, SD_DMALinkNodeTypeDef *pNewNode)
 {
 
-  (void)SDMMC_DMALinkedList_InsertNode(pLinkedList, pPrevNode, pNewNode);
+	(void)SDMMC_DMALinkedList_InsertNode(pLinkedList, pPrevNode, pNewNode);
 
-  return (HAL_OK);
+	return (HAL_OK);
 
 }
 /**
@@ -113,14 +113,10 @@ HAL_StatusTypeDef HAL_SDEx_DMALinkedList_InsertNode(SD_DMALinkedListTypeDef *pLi
 HAL_StatusTypeDef HAL_SDEx_DMALinkedList_RemoveNode(SD_DMALinkedListTypeDef *pLinkedList, SD_DMALinkNodeTypeDef *pNode)
 {
 
-  if (SDMMC_DMALinkedList_RemoveNode(pLinkedList, pNode) != SDMMC_ERROR_NONE)
-  {
-    return HAL_ERROR;
-  }
-  else
-  {
-    return HAL_OK;
-  }
+	if (SDMMC_DMALinkedList_RemoveNode(pLinkedList, pNode) != SDMMC_ERROR_NONE)
+		return HAL_ERROR;
+	else
+		return HAL_OK;
 }
 
 /**
@@ -131,14 +127,10 @@ HAL_StatusTypeDef HAL_SDEx_DMALinkedList_RemoveNode(SD_DMALinkedListTypeDef *pLi
 HAL_StatusTypeDef HAL_SDEx_DMALinkedList_LockNode(SD_DMALinkNodeTypeDef *pNode)
 {
 
-  if (SDMMC_DMALinkedList_LockNode(pNode) != SDMMC_ERROR_NONE)
-  {
-    return HAL_ERROR;
-  }
-  else
-  {
-    return HAL_OK;
-  }
+	if (SDMMC_DMALinkedList_LockNode(pNode) != SDMMC_ERROR_NONE)
+		return HAL_ERROR;
+	else
+		return HAL_OK;
 }
 
 /**
@@ -149,14 +141,10 @@ HAL_StatusTypeDef HAL_SDEx_DMALinkedList_LockNode(SD_DMALinkNodeTypeDef *pNode)
 HAL_StatusTypeDef HAL_SDEx_DMALinkedList_UnlockNode(SD_DMALinkNodeTypeDef *pNode)
 {
 
-  if (SDMMC_DMALinkedList_UnlockNode(pNode) != SDMMC_ERROR_NONE)
-  {
-    return HAL_ERROR;
-  }
-  else
-  {
-    return HAL_OK;
-  }
+	if (SDMMC_DMALinkedList_UnlockNode(pNode) != SDMMC_ERROR_NONE)
+		return HAL_ERROR;
+	else
+		return HAL_OK;
 }
 
 /**
@@ -167,9 +155,9 @@ HAL_StatusTypeDef HAL_SDEx_DMALinkedList_UnlockNode(SD_DMALinkNodeTypeDef *pNode
 HAL_StatusTypeDef HAL_SDEx_DMALinkedList_EnableCircularMode(SD_DMALinkedListTypeDef *pLinkedList)
 {
 
-  (void)SDMMC_DMALinkedList_EnableCircularMode(pLinkedList);
+	(void)SDMMC_DMALinkedList_EnableCircularMode(pLinkedList);
 
-  return HAL_OK;
+	return HAL_OK;
 
 }
 /**
@@ -180,9 +168,9 @@ HAL_StatusTypeDef HAL_SDEx_DMALinkedList_EnableCircularMode(SD_DMALinkedListType
 HAL_StatusTypeDef HAL_SDEx_DMALinkedList_DisableCircularMode(SD_DMALinkedListTypeDef *pLinkedList)
 {
 
-  (void)SDMMC_DMALinkedList_DisableCircularMode(pLinkedList);
+	(void)SDMMC_DMALinkedList_DisableCircularMode(pLinkedList);
 
-  return HAL_OK;
+	return HAL_OK;
 
 }
 
@@ -197,88 +185,80 @@ HAL_StatusTypeDef HAL_SDEx_DMALinkedList_DisableCircularMode(SD_DMALinkedListTyp
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_SDEx_DMALinkedList_ReadBlocks(SD_HandleTypeDef *hsd,
-                                                    const SDMMC_DMALinkedListTypeDef *pLinkedList,
-                                                    uint32_t BlockAdd, uint32_t NumberOfBlocks)
+		const SDMMC_DMALinkedListTypeDef *pLinkedList,
+		uint32_t BlockAdd, uint32_t NumberOfBlocks)
 {
-  SDMMC_DataInitTypeDef config;
-  uint32_t errorstate;
-  uint32_t DmaBase0_reg;
-  uint32_t DmaBase1_reg;
-  uint32_t add = BlockAdd;
+	SDMMC_DataInitTypeDef config;
+	uint32_t errorstate;
+	uint32_t DmaBase0_reg;
+	uint32_t DmaBase1_reg;
+	uint32_t add = BlockAdd;
 
-  if (hsd->State == HAL_SD_STATE_READY)
-  {
-    if ((add + NumberOfBlocks) > (hsd->SdCard.LogBlockNbr))
-    {
-      hsd->ErrorCode |= HAL_SD_ERROR_ADDR_OUT_OF_RANGE;
-      return HAL_ERROR;
-    }
+	if (hsd->State == HAL_SD_STATE_READY) {
+		if ((add + NumberOfBlocks) > (hsd->SdCard.LogBlockNbr)) {
+			hsd->ErrorCode |= HAL_SD_ERROR_ADDR_OUT_OF_RANGE;
+			return HAL_ERROR;
+		}
 
-    hsd->Instance->IDMABASER = (uint32_t) pLinkedList->pHeadNode->IDMABASER;
-    hsd->Instance->IDMABSIZE = (uint32_t) pLinkedList->pHeadNode->IDMABSIZE;
+		hsd->Instance->IDMABASER = (uint32_t) pLinkedList->pHeadNode->IDMABASER;
+		hsd->Instance->IDMABSIZE = (uint32_t) pLinkedList->pHeadNode->IDMABSIZE;
 
-    hsd->Instance->IDMABAR   = (uint32_t) pLinkedList->pHeadNode;
-    hsd->Instance->IDMALAR   = (uint32_t) SDMMC_IDMALAR_ABR | SDMMC_IDMALAR_ULS | SDMMC_IDMALAR_ULA |
-                               sizeof(SDMMC_DMALinkNodeTypeDef) ; /* Initial configuration */
+		hsd->Instance->IDMABAR   = (uint32_t) pLinkedList->pHeadNode;
+		hsd->Instance->IDMALAR   = (uint32_t) SDMMC_IDMALAR_ABR | SDMMC_IDMALAR_ULS | SDMMC_IDMALAR_ULA |
+					   sizeof(SDMMC_DMALinkNodeTypeDef) ; /* Initial configuration */
 
-    DmaBase0_reg = hsd->Instance->IDMABASER;
-    DmaBase1_reg = hsd->Instance->IDMABAR;
+		DmaBase0_reg = hsd->Instance->IDMABASER;
+		DmaBase1_reg = hsd->Instance->IDMABAR;
 
-    if ((hsd->Instance->IDMABSIZE == 0U) || (DmaBase0_reg == 0U) || (DmaBase1_reg == 0U))
-    {
-      hsd->ErrorCode = HAL_SD_ERROR_ADDR_OUT_OF_RANGE;
-      return HAL_ERROR;
-    }
+		if ((hsd->Instance->IDMABSIZE == 0U) || (DmaBase0_reg == 0U) || (DmaBase1_reg == 0U)) {
+			hsd->ErrorCode = HAL_SD_ERROR_ADDR_OUT_OF_RANGE;
+			return HAL_ERROR;
+		}
 
-    /* Initialize data control register */
-    hsd->Instance->DCTRL = 0;
-    /* Clear old Flags*/
-    __HAL_SD_CLEAR_FLAG(hsd, SDMMC_STATIC_DATA_FLAGS);
+		/* Initialize data control register */
+		hsd->Instance->DCTRL = 0;
+		/* Clear old Flags*/
+		__HAL_SD_CLEAR_FLAG(hsd, SDMMC_STATIC_DATA_FLAGS);
 
-    hsd->ErrorCode = HAL_SD_ERROR_NONE;
-    hsd->State = HAL_SD_STATE_BUSY;
+		hsd->ErrorCode = HAL_SD_ERROR_NONE;
+		hsd->State = HAL_SD_STATE_BUSY;
 
-    if (hsd->SdCard.CardType != CARD_SDHC_SDXC)
-    {
-      add *= 512U;
-    }
+		if (hsd->SdCard.CardType != CARD_SDHC_SDXC)
+			add *= 512U;
 
-    /* Configure the SD DPSM (Data Path State Machine) */
-    config.DataTimeOut   = SDMMC_DATATIMEOUT;
-    config.DataLength    = BLOCKSIZE * NumberOfBlocks;
-    config.DataBlockSize = SDMMC_DATABLOCK_SIZE_512B;
-    config.TransferDir   = SDMMC_TRANSFER_DIR_TO_SDMMC;
-    config.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
-    config.DPSM          = SDMMC_DPSM_DISABLE;
-    (void)SDMMC_ConfigData(hsd->Instance, &config);
+		/* Configure the SD DPSM (Data Path State Machine) */
+		config.DataTimeOut   = SDMMC_DATATIMEOUT;
+		config.DataLength    = BLOCKSIZE * NumberOfBlocks;
+		config.DataBlockSize = SDMMC_DATABLOCK_SIZE_512B;
+		config.TransferDir   = SDMMC_TRANSFER_DIR_TO_SDMMC;
+		config.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
+		config.DPSM          = SDMMC_DPSM_DISABLE;
+		(void)SDMMC_ConfigData(hsd->Instance, &config);
 
-    hsd->Instance->DCTRL |= SDMMC_DCTRL_FIFORST;
+		hsd->Instance->DCTRL |= SDMMC_DCTRL_FIFORST;
 
-    __SDMMC_CMDTRANS_ENABLE(hsd->Instance);
+		__SDMMC_CMDTRANS_ENABLE(hsd->Instance);
 
-    hsd->Instance->IDMACTRL = SDMMC_ENABLE_IDMA_DOUBLE_BUFF0;
+		hsd->Instance->IDMACTRL = SDMMC_ENABLE_IDMA_DOUBLE_BUFF0;
 
-    /* Read Blocks in DMA mode */
-    hsd->Context = (SD_CONTEXT_READ_MULTIPLE_BLOCK | SD_CONTEXT_DMA);
+		/* Read Blocks in DMA mode */
+		hsd->Context = (SD_CONTEXT_READ_MULTIPLE_BLOCK | SD_CONTEXT_DMA);
 
-    /* Read Multi Block command */
-    errorstate = SDMMC_CmdReadMultiBlock(hsd->Instance, add);
-    if (errorstate != HAL_SD_ERROR_NONE)
-    {
-      hsd->State = HAL_SD_STATE_READY;
-      hsd->ErrorCode |= errorstate;
-      return HAL_ERROR;
-    }
+		/* Read Multi Block command */
+		errorstate = SDMMC_CmdReadMultiBlock(hsd->Instance, add);
 
-    __HAL_SD_ENABLE_IT(hsd, (SDMMC_IT_DCRCFAIL | SDMMC_IT_DTIMEOUT | SDMMC_IT_RXOVERR | SDMMC_IT_DATAEND |
-                             SDMMC_IT_IDMABTC));
+		if (errorstate != HAL_SD_ERROR_NONE) {
+			hsd->State = HAL_SD_STATE_READY;
+			hsd->ErrorCode |= errorstate;
+			return HAL_ERROR;
+		}
 
-    return HAL_OK;
-  }
-  else
-  {
-    return HAL_BUSY;
-  }
+		__HAL_SD_ENABLE_IT(hsd, (SDMMC_IT_DCRCFAIL | SDMMC_IT_DTIMEOUT | SDMMC_IT_RXOVERR | SDMMC_IT_DATAEND |
+					 SDMMC_IT_IDMABTC));
+
+		return HAL_OK;
+	} else
+		return HAL_BUSY;
 
 }
 
@@ -292,86 +272,78 @@ HAL_StatusTypeDef HAL_SDEx_DMALinkedList_ReadBlocks(SD_HandleTypeDef *hsd,
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_SDEx_DMALinkedList_WriteBlocks(SD_HandleTypeDef *hsd,
-                                                     const SDMMC_DMALinkedListTypeDef *pLinkedList,
-                                                     uint32_t BlockAdd, uint32_t NumberOfBlocks)
+		const SDMMC_DMALinkedListTypeDef *pLinkedList,
+		uint32_t BlockAdd, uint32_t NumberOfBlocks)
 
 {
-  SDMMC_DataInitTypeDef config;
-  uint32_t errorstate;
-  uint32_t DmaBase0_reg;
-  uint32_t DmaBase1_reg;
-  uint32_t add = BlockAdd;
+	SDMMC_DataInitTypeDef config;
+	uint32_t errorstate;
+	uint32_t DmaBase0_reg;
+	uint32_t DmaBase1_reg;
+	uint32_t add = BlockAdd;
 
-  if (hsd->State == HAL_SD_STATE_READY)
-  {
-    if ((add + NumberOfBlocks) > (hsd->SdCard.LogBlockNbr))
-    {
-      hsd->ErrorCode |= HAL_SD_ERROR_ADDR_OUT_OF_RANGE;
-      return HAL_ERROR;
-    }
+	if (hsd->State == HAL_SD_STATE_READY) {
+		if ((add + NumberOfBlocks) > (hsd->SdCard.LogBlockNbr)) {
+			hsd->ErrorCode |= HAL_SD_ERROR_ADDR_OUT_OF_RANGE;
+			return HAL_ERROR;
+		}
 
-    hsd->Instance->IDMABASER = (uint32_t) pLinkedList->pHeadNode->IDMABASER;
-    hsd->Instance->IDMABSIZE = (uint32_t) pLinkedList->pHeadNode->IDMABSIZE;
+		hsd->Instance->IDMABASER = (uint32_t) pLinkedList->pHeadNode->IDMABASER;
+		hsd->Instance->IDMABSIZE = (uint32_t) pLinkedList->pHeadNode->IDMABSIZE;
 
-    hsd->Instance->IDMABAR = (uint32_t)  pLinkedList->pHeadNode;
-    hsd->Instance->IDMALAR = (uint32_t)  SDMMC_IDMALAR_ABR | SDMMC_IDMALAR_ULS | SDMMC_IDMALAR_ULA |
-                             sizeof(SDMMC_DMALinkNodeTypeDef) ; /* Initial configuration */
+		hsd->Instance->IDMABAR = (uint32_t)  pLinkedList->pHeadNode;
+		hsd->Instance->IDMALAR = (uint32_t)  SDMMC_IDMALAR_ABR | SDMMC_IDMALAR_ULS | SDMMC_IDMALAR_ULA |
+					 sizeof(SDMMC_DMALinkNodeTypeDef) ; /* Initial configuration */
 
-    DmaBase0_reg = hsd->Instance->IDMABASER;
-    DmaBase1_reg = hsd->Instance->IDMABAR;
+		DmaBase0_reg = hsd->Instance->IDMABASER;
+		DmaBase1_reg = hsd->Instance->IDMABAR;
 
-    if ((hsd->Instance->IDMABSIZE == 0U) || (DmaBase0_reg == 0U) || (DmaBase1_reg == 0U))
-    {
-      hsd->ErrorCode = HAL_SD_ERROR_ADDR_OUT_OF_RANGE;
-      return HAL_ERROR;
-    }
+		if ((hsd->Instance->IDMABSIZE == 0U) || (DmaBase0_reg == 0U) || (DmaBase1_reg == 0U)) {
+			hsd->ErrorCode = HAL_SD_ERROR_ADDR_OUT_OF_RANGE;
+			return HAL_ERROR;
+		}
 
-    /* Initialize data control register */
-    hsd->Instance->DCTRL = 0;
+		/* Initialize data control register */
+		hsd->Instance->DCTRL = 0;
 
-    hsd->ErrorCode = HAL_SD_ERROR_NONE;
+		hsd->ErrorCode = HAL_SD_ERROR_NONE;
 
-    hsd->State = HAL_SD_STATE_BUSY;
+		hsd->State = HAL_SD_STATE_BUSY;
 
-    if (hsd->SdCard.CardType != CARD_SDHC_SDXC)
-    {
-      add *= 512U;
-    }
+		if (hsd->SdCard.CardType != CARD_SDHC_SDXC)
+			add *= 512U;
 
-    /* Configure the SD DPSM (Data Path State Machine) */
-    config.DataTimeOut   = SDMMC_DATATIMEOUT;
-    config.DataLength    = BLOCKSIZE * NumberOfBlocks;
-    config.DataBlockSize = SDMMC_DATABLOCK_SIZE_512B;
-    config.TransferDir   = SDMMC_TRANSFER_DIR_TO_CARD;
-    config.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
-    config.DPSM          = SDMMC_DPSM_DISABLE;
-    (void)SDMMC_ConfigData(hsd->Instance, &config);
+		/* Configure the SD DPSM (Data Path State Machine) */
+		config.DataTimeOut   = SDMMC_DATATIMEOUT;
+		config.DataLength    = BLOCKSIZE * NumberOfBlocks;
+		config.DataBlockSize = SDMMC_DATABLOCK_SIZE_512B;
+		config.TransferDir   = SDMMC_TRANSFER_DIR_TO_CARD;
+		config.TransferMode  = SDMMC_TRANSFER_MODE_BLOCK;
+		config.DPSM          = SDMMC_DPSM_DISABLE;
+		(void)SDMMC_ConfigData(hsd->Instance, &config);
 
-    __SDMMC_CMDTRANS_ENABLE(hsd->Instance);
+		__SDMMC_CMDTRANS_ENABLE(hsd->Instance);
 
-    hsd->Instance->IDMACTRL = SDMMC_ENABLE_IDMA_DOUBLE_BUFF0;
+		hsd->Instance->IDMACTRL = SDMMC_ENABLE_IDMA_DOUBLE_BUFF0;
 
-    /* Write Blocks in DMA mode */
-    hsd->Context = (SD_CONTEXT_WRITE_MULTIPLE_BLOCK | SD_CONTEXT_DMA);
+		/* Write Blocks in DMA mode */
+		hsd->Context = (SD_CONTEXT_WRITE_MULTIPLE_BLOCK | SD_CONTEXT_DMA);
 
-    /* Write Multi Block command */
-    errorstate = SDMMC_CmdWriteMultiBlock(hsd->Instance, add);
-    if (errorstate != HAL_SD_ERROR_NONE)
-    {
-      hsd->State = HAL_SD_STATE_READY;
-      hsd->ErrorCode |= errorstate;
-      return HAL_ERROR;
-    }
+		/* Write Multi Block command */
+		errorstate = SDMMC_CmdWriteMultiBlock(hsd->Instance, add);
 
-    __HAL_SD_ENABLE_IT(hsd, (SDMMC_IT_DCRCFAIL | SDMMC_IT_DTIMEOUT | SDMMC_IT_TXUNDERR | SDMMC_IT_DATAEND |
-                             SDMMC_IT_IDMABTC));
+		if (errorstate != HAL_SD_ERROR_NONE) {
+			hsd->State = HAL_SD_STATE_READY;
+			hsd->ErrorCode |= errorstate;
+			return HAL_ERROR;
+		}
 
-    return HAL_OK;
-  }
-  else
-  {
-    return HAL_BUSY;
-  }
+		__HAL_SD_ENABLE_IT(hsd, (SDMMC_IT_DCRCFAIL | SDMMC_IT_DTIMEOUT | SDMMC_IT_TXUNDERR | SDMMC_IT_DATAEND |
+					 SDMMC_IT_IDMABTC));
+
+		return HAL_OK;
+	} else
+		return HAL_BUSY;
 }
 
 

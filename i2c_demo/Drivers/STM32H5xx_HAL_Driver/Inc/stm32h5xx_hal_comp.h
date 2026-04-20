@@ -45,32 +45,31 @@ extern "C" {
 /**
   * @brief  COMP Init structure definition
   */
-typedef struct
-{
-  uint32_t Mode;               /*!< Set comparator operating mode to adjust power and speed.
+typedef struct {
+	uint32_t Mode;               /*!< Set comparator operating mode to adjust power and speed.
                                     Note: For the characteristics of comparator power modes
                                           (propagation delay and power consumption), refer to device datasheet.
                                     This parameter can be a value of @ref COMP_PowerMode */
 
-  uint32_t InputPlus;          /*!< Set comparator input plus (non-inverting input).
+	uint32_t InputPlus;          /*!< Set comparator input plus (non-inverting input).
                                     This parameter can be a value of @ref COMP_InputPlus */
 
-  uint32_t InputMinus;         /*!< Set comparator input minus (inverting input).
+	uint32_t InputMinus;         /*!< Set comparator input minus (inverting input).
                                     This parameter can be a value of @ref COMP_InputMinus */
 
-  uint32_t Hysteresis;         /*!< Set comparator hysteresis mode of the input minus.
+	uint32_t Hysteresis;         /*!< Set comparator hysteresis mode of the input minus.
                                     This parameter can be a value of @ref COMP_Hysteresis */
 
-  uint32_t OutputPol;          /*!< Set comparator output polarity.
+	uint32_t OutputPol;          /*!< Set comparator output polarity.
                                     This parameter can be a value of @ref COMP_OutputPolarity
                                     Note: Specific to comparator of this STM32 series: comparator output
                                           triggers interruption on high level. HAL_COMP_Start_x functions
                                           can change output polarity depending on initial output level. */
 
-  uint32_t BlankingSrce;       /*!< Set comparator blanking source.
+	uint32_t BlankingSrce;       /*!< Set comparator blanking source.
                                     This parameter can be a value of @ref COMP_BlankingSrce */
 
-  uint32_t TriggerMode;        /*!< Set the comparator output triggering External Interrupt Line (EXTI).
+	uint32_t TriggerMode;        /*!< Set the comparator output triggering External Interrupt Line (EXTI).
                                     This parameter can be a value of @ref COMP_EXTI_TriggerMode */
 
 } COMP_InitTypeDef;
@@ -79,17 +78,16 @@ typedef struct
   * @brief  HAL COMP state machine: HAL COMP states definition
   */
 #define COMP_STATE_BITFIELD_LOCK  (0x10U)
-typedef enum
-{
-  HAL_COMP_STATE_RESET        = 0x00,                       /*!< COMP not yet initialized                             */
-  HAL_COMP_STATE_RESET_LOCKED = (HAL_COMP_STATE_RESET | \
-                                 COMP_STATE_BITFIELD_LOCK), /*!< COMP not yet initialized and configuration is locked */
-  HAL_COMP_STATE_READY        = 0x01,                       /*!< COMP initialized and ready for use                   */
-  HAL_COMP_STATE_READY_LOCKED = (HAL_COMP_STATE_READY | \
-                                 COMP_STATE_BITFIELD_LOCK), /*!< COMP initialized but configuration is locked         */
-  HAL_COMP_STATE_BUSY         = 0x02,                       /*!< COMP is running                                      */
-  HAL_COMP_STATE_BUSY_LOCKED  = (HAL_COMP_STATE_BUSY | \
-                                 COMP_STATE_BITFIELD_LOCK)  /*!< COMP is running and configuration is locked          */
+typedef enum {
+	HAL_COMP_STATE_RESET        = 0x00,                       /*!< COMP not yet initialized                             */
+	HAL_COMP_STATE_RESET_LOCKED = (HAL_COMP_STATE_RESET | \
+				       COMP_STATE_BITFIELD_LOCK), /*!< COMP not yet initialized and configuration is locked */
+	HAL_COMP_STATE_READY        = 0x01,                       /*!< COMP initialized and ready for use                   */
+	HAL_COMP_STATE_READY_LOCKED = (HAL_COMP_STATE_READY | \
+				       COMP_STATE_BITFIELD_LOCK), /*!< COMP initialized but configuration is locked         */
+	HAL_COMP_STATE_BUSY         = 0x02,                       /*!< COMP is running                                      */
+	HAL_COMP_STATE_BUSY_LOCKED  = (HAL_COMP_STATE_BUSY | \
+				       COMP_STATE_BITFIELD_LOCK)  /*!< COMP is running and configuration is locked          */
 
 } HAL_COMP_StateTypeDef;
 
@@ -102,28 +100,27 @@ typedef struct __COMP_HandleTypeDef
 typedef struct
 #endif /* USE_HAL_COMP_REGISTER_CALLBACKS */
 {
-  COMP_TypeDef       *Instance;                                   /*!< Register base address    */
-  COMP_InitTypeDef   Init;                                        /*!< COMP required parameters */
-  HAL_LockTypeDef    Lock;                                        /*!< Locking object           */
-  __IO HAL_COMP_StateTypeDef  State;                              /*!< COMP communication state */
-  __IO uint32_t      ErrorCode;                                   /*!< COMP error code          */
+	COMP_TypeDef       *Instance;                                   /*!< Register base address    */
+	COMP_InitTypeDef   Init;                                        /*!< COMP required parameters */
+	HAL_LockTypeDef    Lock;                                        /*!< Locking object           */
+	__IO HAL_COMP_StateTypeDef  State;                              /*!< COMP communication state */
+	__IO uint32_t      ErrorCode;                                   /*!< COMP error code          */
 #if (USE_HAL_COMP_REGISTER_CALLBACKS == 1U)
-  void (* TriggerCallback)(struct __COMP_HandleTypeDef *hcomp);   /*!< COMP trigger callback    */
-  void (* MspInitCallback)(struct __COMP_HandleTypeDef *hcomp);   /*!< COMP Msp Init callback   */
-  void (* MspDeInitCallback)(struct __COMP_HandleTypeDef *hcomp); /*!< COMP Msp DeInit callback */
+	void (* TriggerCallback)(struct __COMP_HandleTypeDef *hcomp);   /*!< COMP trigger callback    */
+	void (* MspInitCallback)(struct __COMP_HandleTypeDef *hcomp);   /*!< COMP Msp Init callback   */
+	void (* MspDeInitCallback)(struct __COMP_HandleTypeDef *hcomp); /*!< COMP Msp DeInit callback */
 #endif /* USE_HAL_COMP_REGISTER_CALLBACKS */
-  uint8_t            InterruptAutoRearm;                          /*!< COMP interrupt auto rearm setting */
+	uint8_t            InterruptAutoRearm;                          /*!< COMP interrupt auto rearm setting */
 } COMP_HandleTypeDef;
 
 #if (USE_HAL_COMP_REGISTER_CALLBACKS == 1U)
 /**
   * @brief  HAL COMP Callback ID enumeration definition
   */
-typedef enum
-{
-  HAL_COMP_TRIGGER_CB_ID   = 0x00U,  /*!< COMP trigger callback ID */
-  HAL_COMP_MSPINIT_CB_ID   = 0x01U,  /*!< COMP Msp Init callback ID */
-  HAL_COMP_MSPDEINIT_CB_ID = 0x02U   /*!< COMP Msp DeInit callback ID */
+typedef enum {
+	HAL_COMP_TRIGGER_CB_ID   = 0x00U,  /*!< COMP trigger callback ID */
+	HAL_COMP_MSPINIT_CB_ID   = 0x01U,  /*!< COMP Msp Init callback ID */
+	HAL_COMP_MSPDEINIT_CB_ID = 0x02U   /*!< COMP Msp DeInit callback ID */
 
 } HAL_COMP_CallbackIDTypeDef;
 
@@ -559,7 +556,7 @@ void              HAL_COMP_MspDeInit(COMP_HandleTypeDef *hcomp);
 #if (USE_HAL_COMP_REGISTER_CALLBACKS == 1U)
 /* Callbacks Register/UnRegister functions */
 HAL_StatusTypeDef HAL_COMP_RegisterCallback(COMP_HandleTypeDef *hcomp, HAL_COMP_CallbackIDTypeDef CallbackID,
-                                            pCOMP_CallbackTypeDef pCallback);
+		pCOMP_CallbackTypeDef pCallback);
 HAL_StatusTypeDef HAL_COMP_UnRegisterCallback(COMP_HandleTypeDef *hcomp, HAL_COMP_CallbackIDTypeDef CallbackID);
 #endif /* USE_HAL_COMP_REGISTER_CALLBACKS */
 /**

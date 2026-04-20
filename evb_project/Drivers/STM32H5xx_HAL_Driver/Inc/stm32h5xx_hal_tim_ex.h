@@ -44,52 +44,49 @@ extern "C" {
   * @brief  TIM Hall sensor Configuration Structure definition
   */
 
-typedef struct
-{
-  uint32_t IC1Polarity;         /*!< Specifies the active edge of the input signal.
+typedef struct {
+	uint32_t IC1Polarity;         /*!< Specifies the active edge of the input signal.
                                      This parameter can be a value of @ref TIM_Input_Capture_Polarity */
 
-  uint32_t IC1Prescaler;        /*!< Specifies the Input Capture Prescaler.
+	uint32_t IC1Prescaler;        /*!< Specifies the Input Capture Prescaler.
                                      This parameter can be a value of @ref TIM_Input_Capture_Prescaler */
 
-  uint32_t IC1Filter;           /*!< Specifies the input capture filter.
+	uint32_t IC1Filter;           /*!< Specifies the input capture filter.
                                      This parameter can be a number between Min_Data = 0x0 and Max_Data = 0xF */
 
-  uint32_t Commutation_Delay;   /*!< Specifies the pulse value to be loaded into the Capture Compare Register.
+	uint32_t Commutation_Delay;   /*!< Specifies the pulse value to be loaded into the Capture Compare Register.
                                      This parameter can be a number between Min_Data = 0x0000 and Max_Data = 0xFFFF */
 } TIM_HallSensor_InitTypeDef;
 
 /**
   * @brief  TIM Break/Break2 input configuration
   */
-typedef struct
-{
-  uint32_t Source;         /*!< Specifies the source of the timer break input.
+typedef struct {
+	uint32_t Source;         /*!< Specifies the source of the timer break input.
                                 This parameter can be a value of @ref TIMEx_Break_Input_Source */
-  uint32_t Enable;         /*!< Specifies whether or not the break input source is enabled.
+	uint32_t Enable;         /*!< Specifies whether or not the break input source is enabled.
                                 This parameter can be a value of @ref TIMEx_Break_Input_Source_Enable */
-  uint32_t Polarity;       /*!< Specifies the break input source polarity.
+	uint32_t Polarity;       /*!< Specifies the break input source polarity.
                                 This parameter can be a value of @ref TIMEx_Break_Input_Source_Polarity */
 } TIMEx_BreakInputConfigTypeDef;
 
 /**
   * @brief  TIM Encoder index configuration
   */
-typedef struct
-{
-  uint32_t Polarity;                  /*!< TIM Encoder index polarity.This parameter can be a value of @ref TIMEx_Encoder_Index_Polarity */
+typedef struct {
+	uint32_t Polarity;                  /*!< TIM Encoder index polarity.This parameter can be a value of @ref TIMEx_Encoder_Index_Polarity */
 
-  uint32_t Prescaler;                 /*!< TIM Encoder index prescaler.This parameter can be a value of @ref TIMEx_Encoder_Index_Prescaler */
+	uint32_t Prescaler;                 /*!< TIM Encoder index prescaler.This parameter can be a value of @ref TIMEx_Encoder_Index_Prescaler */
 
-  uint32_t Filter;                    /*!< TIM Encoder index filter.This parameter can be a number between Min_Data = 0x0 and Max_Data = 0xF */
+	uint32_t Filter;                    /*!< TIM Encoder index filter.This parameter can be a number between Min_Data = 0x0 and Max_Data = 0xF */
 
-  uint32_t  Blanking;                 /*!< Specifies whether or not the encoder index event is conditioned by TI3 or TI4 input.This parameter can be a value of @ref TIMEx_Encoder_Index_Blanking */
+	uint32_t  Blanking;                 /*!< Specifies whether or not the encoder index event is conditioned by TI3 or TI4 input.This parameter can be a value of @ref TIMEx_Encoder_Index_Blanking */
 
-  FunctionalState  FirstIndexEnable;  /*!< Specifies whether or not the encoder first index is enabled.This parameter value can be ENABLE or DISABLE. */
+	FunctionalState  FirstIndexEnable;  /*!< Specifies whether or not the encoder first index is enabled.This parameter value can be ENABLE or DISABLE. */
 
-  uint32_t Position;                  /*!< Specifies in which AB input configuration the index event resets the counter.This parameter can be a value of @ref TIMEx_Encoder_Index_Position */
+	uint32_t Position;                  /*!< Specifies in which AB input configuration the index event resets the counter.This parameter can be a value of @ref TIMEx_Encoder_Index_Position */
 
-  uint32_t Direction;                 /*!< Specifies in which counter direction the index event resets the counter.This parameter can be a value of @ref TIMEx_Encoder_Index_Direction */
+	uint32_t Direction;                 /*!< Specifies in which counter direction the index event resets the counter.This parameter can be a value of @ref TIMEx_Encoder_Index_Direction */
 
 } TIMEx_EncoderIndexConfigTypeDef;
 
@@ -1265,7 +1262,7 @@ HAL_StatusTypeDef HAL_TIMEx_OCN_Stop_IT(TIM_HandleTypeDef *htim, uint32_t Channe
 
 /* Non-Blocking mode: DMA */
 HAL_StatusTypeDef HAL_TIMEx_OCN_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Channel, const uint32_t *pData,
-                                          uint16_t Length);
+		uint16_t Length);
 HAL_StatusTypeDef HAL_TIMEx_OCN_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Channel);
 /**
   * @}
@@ -1285,7 +1282,7 @@ HAL_StatusTypeDef HAL_TIMEx_PWMN_Start_IT(TIM_HandleTypeDef *htim, uint32_t Chan
 HAL_StatusTypeDef HAL_TIMEx_PWMN_Stop_IT(TIM_HandleTypeDef *htim, uint32_t Channel);
 /* Non-Blocking mode: DMA */
 HAL_StatusTypeDef HAL_TIMEx_PWMN_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Channel, const uint32_t *pData,
-                                           uint16_t Length);
+		uint16_t Length);
 HAL_StatusTypeDef HAL_TIMEx_PWMN_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Channel);
 /**
   * @}
@@ -1313,17 +1310,17 @@ HAL_StatusTypeDef HAL_TIMEx_OnePulseN_Stop_IT(TIM_HandleTypeDef *htim, uint32_t 
   */
 /* Extended Control functions  ************************************************/
 HAL_StatusTypeDef HAL_TIMEx_ConfigCommutEvent(TIM_HandleTypeDef *htim, uint32_t  InputTrigger,
-                                              uint32_t  CommutationSource);
+		uint32_t  CommutationSource);
 HAL_StatusTypeDef HAL_TIMEx_ConfigCommutEvent_IT(TIM_HandleTypeDef *htim, uint32_t  InputTrigger,
-                                                 uint32_t  CommutationSource);
+		uint32_t  CommutationSource);
 HAL_StatusTypeDef HAL_TIMEx_ConfigCommutEvent_DMA(TIM_HandleTypeDef *htim, uint32_t  InputTrigger,
-                                                  uint32_t  CommutationSource);
+		uint32_t  CommutationSource);
 HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
-                                                        const TIM_MasterConfigTypeDef *sMasterConfig);
+		const TIM_MasterConfigTypeDef *sMasterConfig);
 HAL_StatusTypeDef HAL_TIMEx_ConfigBreakDeadTime(TIM_HandleTypeDef *htim,
-                                                const TIM_BreakDeadTimeConfigTypeDef *sBreakDeadTimeConfig);
+		const TIM_BreakDeadTimeConfigTypeDef *sBreakDeadTimeConfig);
 HAL_StatusTypeDef HAL_TIMEx_ConfigBreakInput(TIM_HandleTypeDef *htim, uint32_t BreakInput,
-                                             const TIMEx_BreakInputConfigTypeDef *sBreakInputConfig);
+		const TIMEx_BreakInputConfigTypeDef *sBreakInputConfig);
 HAL_StatusTypeDef HAL_TIMEx_GroupChannel5(TIM_HandleTypeDef *htim, uint32_t Channels);
 HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef *htim, uint32_t Remap);
 HAL_StatusTypeDef  HAL_TIMEx_TISelection(TIM_HandleTypeDef *htim, uint32_t TISelection, uint32_t Channel);
@@ -1333,7 +1330,7 @@ HAL_StatusTypeDef HAL_TIMEx_ReArmBreakInput(const TIM_HandleTypeDef *htim, uint3
 HAL_StatusTypeDef HAL_TIMEx_DitheringEnable(TIM_HandleTypeDef *htim);
 HAL_StatusTypeDef HAL_TIMEx_DitheringDisable(TIM_HandleTypeDef *htim);
 HAL_StatusTypeDef HAL_TIMEx_OC_ConfigPulseOnCompare(TIM_HandleTypeDef *htim, uint32_t PulseWidthPrescaler,
-                                                    uint32_t PulseWidth);
+		uint32_t PulseWidth);
 HAL_StatusTypeDef HAL_TIMEx_ConfigSlaveModePreload(TIM_HandleTypeDef *htim, uint32_t Source);
 HAL_StatusTypeDef HAL_TIMEx_EnableSlaveModePreload(TIM_HandleTypeDef *htim);
 HAL_StatusTypeDef HAL_TIMEx_DisableSlaveModePreload(TIM_HandleTypeDef *htim);
@@ -1344,7 +1341,7 @@ HAL_StatusTypeDef HAL_TIMEx_ConfigAsymmetricalDeadTime(TIM_HandleTypeDef *htim, 
 HAL_StatusTypeDef HAL_TIMEx_EnableAsymmetricalDeadTime(TIM_HandleTypeDef *htim);
 HAL_StatusTypeDef HAL_TIMEx_DisableAsymmetricalDeadTime(TIM_HandleTypeDef *htim);
 HAL_StatusTypeDef HAL_TIMEx_ConfigEncoderIndex(TIM_HandleTypeDef *htim,
-                                               TIMEx_EncoderIndexConfigTypeDef *sEncoderIndexConfig);
+		TIMEx_EncoderIndexConfigTypeDef *sEncoderIndexConfig);
 HAL_StatusTypeDef HAL_TIMEx_EnableEncoderIndex(TIM_HandleTypeDef *htim);
 HAL_StatusTypeDef HAL_TIMEx_DisableEncoderIndex(TIM_HandleTypeDef *htim);
 HAL_StatusTypeDef HAL_TIMEx_EnableEncoderFirstIndex(TIM_HandleTypeDef *htim);

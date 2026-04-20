@@ -55,80 +55,78 @@
  */
 
 void arm_xor_u16(
-    const uint16_t * pSrcA,
-    const uint16_t * pSrcB,
-          uint16_t * pDst,
-          uint32_t blockSize)
+	const uint16_t *pSrcA,
+	const uint16_t *pSrcB,
+	uint16_t *pDst,
+	uint32_t blockSize)
 {
-    uint32_t blkCnt;      /* Loop counter */
+	uint32_t blkCnt;      /* Loop counter */
 
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
-    uint16x8_t vecSrcA, vecSrcB;
+	uint16x8_t vecSrcA, vecSrcB;
 
-    /* Compute 8 outputs at a time */
-    blkCnt = blockSize >> 3;
+	/* Compute 8 outputs at a time */
+	blkCnt = blockSize >> 3;
 
-    while (blkCnt > 0U)
-    {
-        vecSrcA = vld1q(pSrcA);
-        vecSrcB = vld1q(pSrcB);
+	while (blkCnt > 0U) {
+		vecSrcA = vld1q(pSrcA);
+		vecSrcB = vld1q(pSrcB);
 
-        vst1q(pDst, veorq_u16(vecSrcA, vecSrcB) );
+		vst1q(pDst, veorq_u16(vecSrcA, vecSrcB) );
 
-        pSrcA += 8;
-        pSrcB += 8;
-        pDst  += 8;
+		pSrcA += 8;
+		pSrcB += 8;
+		pDst  += 8;
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 
-    /* Tail */
-    blkCnt = blockSize & 7;
+	/* Tail */
+	blkCnt = blockSize & 7;
 
-    if (blkCnt > 0U)
-    {
-        mve_pred16_t p0 = vctp16q(blkCnt);
-        vecSrcA = vld1q(pSrcA);
-        vecSrcB = vld1q(pSrcB);
-        vstrhq_p(pDst, veorq_u16(vecSrcA, vecSrcB), p0);
-    }
+	if (blkCnt > 0U) {
+		mve_pred16_t p0 = vctp16q(blkCnt);
+		vecSrcA = vld1q(pSrcA);
+		vecSrcB = vld1q(pSrcB);
+		vstrhq_p(pDst, veorq_u16(vecSrcA, vecSrcB), p0);
+	}
+
 #else
 #if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
-    uint16x8_t vecA, vecB;
+	uint16x8_t vecA, vecB;
 
-    /* Compute 8 outputs at a time */
-    blkCnt = blockSize >> 3U;
+	/* Compute 8 outputs at a time */
+	blkCnt = blockSize >> 3U;
 
-    while (blkCnt > 0U)
-    {
-        vecA = vld1q_u16(pSrcA);
-        vecB = vld1q_u16(pSrcB);
+	while (blkCnt > 0U) {
+		vecA = vld1q_u16(pSrcA);
+		vecB = vld1q_u16(pSrcB);
 
-        vst1q_u16(pDst, veorq_u16(vecA, vecB) );
+		vst1q_u16(pDst, veorq_u16(vecA, vecB) );
 
-        pSrcA += 8;
-        pSrcB += 8;
-        pDst  += 8;
+		pSrcA += 8;
+		pSrcB += 8;
+		pDst  += 8;
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 
-    /* Tail */
-    blkCnt = blockSize & 7;
+	/* Tail */
+	blkCnt = blockSize & 7;
 #else
-    /* Initialize blkCnt with number of samples */
-    blkCnt = blockSize;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = blockSize;
 #endif
 
-    while (blkCnt > 0U)
-    {
-        *pDst++ = (*pSrcA++)^(*pSrcB++);
+	while (blkCnt > 0U) {
+		*pDst++ = (*pSrcA++) ^ (*pSrcB++);
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
+
 #endif /* if defined(ARM_MATH_MVEI) */
 }
 

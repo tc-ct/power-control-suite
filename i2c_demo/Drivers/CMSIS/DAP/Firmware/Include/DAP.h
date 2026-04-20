@@ -232,34 +232,34 @@
 
 // DAP Data structure
 typedef struct {
-  uint8_t     debug_port;                       // Debug Port
-  uint8_t     fast_clock;                       // Fast Clock Flag
-  uint8_t     padding[2];
-  uint32_t   clock_delay;                       // Clock Delay
-  uint32_t     timestamp;                       // Last captured Timestamp
-  struct {                                      // Transfer Configuration
-    uint8_t   idle_cycles;                      // Idle cycles after transfer
-    uint8_t    padding[3];
-    uint16_t  retry_count;                      // Number of retries after WAIT response
-    uint16_t  match_retry;                      // Number of retries if read value does not match
-    uint32_t  match_mask;                       // Match Mask
-  } transfer;
+	uint8_t     debug_port;                       // Debug Port
+	uint8_t     fast_clock;                       // Fast Clock Flag
+	uint8_t     padding[2];
+	uint32_t   clock_delay;                       // Clock Delay
+	uint32_t     timestamp;                       // Last captured Timestamp
+	struct {                                      // Transfer Configuration
+		uint8_t   idle_cycles;                      // Idle cycles after transfer
+		uint8_t    padding[3];
+		uint16_t  retry_count;                      // Number of retries after WAIT response
+		uint16_t  match_retry;                      // Number of retries if read value does not match
+		uint32_t  match_mask;                       // Match Mask
+	} transfer;
 #if (DAP_SWD != 0)
-  struct {                                      // SWD Configuration
-    uint8_t    turnaround;                      // Turnaround period
-    uint8_t    data_phase;                      // Always generate Data Phase
-  } swd_conf;
+	struct {                                      // SWD Configuration
+		uint8_t    turnaround;                      // Turnaround period
+		uint8_t    data_phase;                      // Always generate Data Phase
+	} swd_conf;
 #endif
 #if (DAP_JTAG != 0)
-  struct {                                      // JTAG Device Chain
-    uint8_t   count;                            // Number of devices
-    uint8_t   index;                            // Device index (device at TDO has index 0)
+	struct {                                      // JTAG Device Chain
+		uint8_t   count;                            // Number of devices
+		uint8_t   index;                            // Device index (device at TDO has index 0)
 #if (DAP_JTAG_DEV_CNT != 0)
-    uint8_t   ir_length[DAP_JTAG_DEV_CNT];      // IR Length in bits
-    uint16_t  ir_before[DAP_JTAG_DEV_CNT];      // Bits before IR
-    uint16_t  ir_after [DAP_JTAG_DEV_CNT];      // Bits after IR
+		uint8_t   ir_length[DAP_JTAG_DEV_CNT];      // IR Length in bits
+		uint16_t  ir_before[DAP_JTAG_DEV_CNT];      // Bits before IR
+		uint16_t  ir_after [DAP_JTAG_DEV_CNT];      // Bits after IR
 #endif
-  } jtag_dev;
+	} jtag_dev;
 #endif
 } DAP_Data_t;
 
@@ -327,19 +327,22 @@ extern void     DAP_Setup (void);
 #define DELAY_SLOW_CYCLES       3U      // Number of cycles for one iteration
 #endif
 #if defined(__CC_ARM)
-__STATIC_FORCEINLINE void PIN_DELAY_SLOW (uint32_t delay) {
-  uint32_t count = delay;
-  while (--count);
+__STATIC_FORCEINLINE void PIN_DELAY_SLOW (uint32_t delay)
+{
+	uint32_t count = delay;
+
+	while (--count);
 }
 #else
-__STATIC_FORCEINLINE void PIN_DELAY_SLOW (uint32_t delay) {
-  __ASM volatile (
-  ".syntax unified\n"
-  "0:\n\t"
-    "subs %0,%0,#1\n\t"
-    "bne  0b\n"
-  : "+l" (delay) : : "cc"
-  );
+__STATIC_FORCEINLINE void PIN_DELAY_SLOW (uint32_t delay)
+{
+	__ASM volatile (
+		".syntax unified\n"
+		"0:\n\t"
+		"subs %0,%0,#1\n\t"
+		"bne  0b\n"
+		: "+l" (delay) : : "cc"
+	);
 }
 #endif
 
@@ -347,15 +350,16 @@ __STATIC_FORCEINLINE void PIN_DELAY_SLOW (uint32_t delay) {
 #ifndef DELAY_FAST_CYCLES
 #define DELAY_FAST_CYCLES       0U      // Number of cycles: 0..3
 #endif
-__STATIC_FORCEINLINE void PIN_DELAY_FAST (void) {
+__STATIC_FORCEINLINE void PIN_DELAY_FAST (void)
+{
 #if (DELAY_FAST_CYCLES >= 1U)
-  __NOP();
+	__NOP();
 #endif
 #if (DELAY_FAST_CYCLES >= 2U)
-  __NOP();
+	__NOP();
 #endif
 #if (DELAY_FAST_CYCLES >= 3U)
-  __NOP();
+	__NOP();
 #endif
 }
 

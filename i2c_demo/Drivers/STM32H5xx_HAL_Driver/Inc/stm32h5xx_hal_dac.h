@@ -46,13 +46,12 @@ extern "C" {
 /**
   * @brief  HAL State structures definition
   */
-typedef enum
-{
-  HAL_DAC_STATE_RESET             = 0x00U,  /*!< DAC not yet initialized or disabled  */
-  HAL_DAC_STATE_READY             = 0x01U,  /*!< DAC initialized and ready for use    */
-  HAL_DAC_STATE_BUSY              = 0x02U,  /*!< DAC internal processing is ongoing   */
-  HAL_DAC_STATE_TIMEOUT           = 0x03U,  /*!< DAC timeout state                    */
-  HAL_DAC_STATE_ERROR             = 0x04U   /*!< DAC error state                      */
+typedef enum {
+	HAL_DAC_STATE_RESET             = 0x00U,  /*!< DAC not yet initialized or disabled  */
+	HAL_DAC_STATE_READY             = 0x01U,  /*!< DAC initialized and ready for use    */
+	HAL_DAC_STATE_BUSY              = 0x02U,  /*!< DAC internal processing is ongoing   */
+	HAL_DAC_STATE_TIMEOUT           = 0x03U,  /*!< DAC timeout state                    */
+	HAL_DAC_STATE_ERROR             = 0x04U   /*!< DAC error state                      */
 
 } HAL_DAC_StateTypeDef;
 
@@ -65,32 +64,32 @@ typedef struct __DAC_HandleTypeDef
 typedef struct
 #endif /* USE_HAL_DAC_REGISTER_CALLBACKS */
 {
-  DAC_TypeDef                 *Instance;     /*!< Register base address             */
+	DAC_TypeDef                 *Instance;     /*!< Register base address             */
 
-  __IO HAL_DAC_StateTypeDef   State;         /*!< DAC communication state           */
+	__IO HAL_DAC_StateTypeDef   State;         /*!< DAC communication state           */
 
-  HAL_LockTypeDef             Lock;          /*!< DAC locking object                */
+	HAL_LockTypeDef             Lock;          /*!< DAC locking object                */
 
-  DMA_HandleTypeDef           *DMA_Handle1;  /*!< Pointer DMA handler for channel 1 */
+	DMA_HandleTypeDef           *DMA_Handle1;  /*!< Pointer DMA handler for channel 1 */
 
-  DMA_HandleTypeDef           *DMA_Handle2;  /*!< Pointer DMA handler for channel 2 */
+	DMA_HandleTypeDef           *DMA_Handle2;  /*!< Pointer DMA handler for channel 2 */
 
-  __IO uint32_t               ErrorCode;     /*!< DAC Error code                    */
+	__IO uint32_t               ErrorCode;     /*!< DAC Error code                    */
 
 #if (USE_HAL_DAC_REGISTER_CALLBACKS == 1)
-  void (* ConvCpltCallbackCh1)(struct __DAC_HandleTypeDef *hdac);
-  void (* ConvHalfCpltCallbackCh1)(struct __DAC_HandleTypeDef *hdac);
-  void (* ErrorCallbackCh1)(struct __DAC_HandleTypeDef *hdac);
-  void (* DMAUnderrunCallbackCh1)(struct __DAC_HandleTypeDef *hdac);
+	void (* ConvCpltCallbackCh1)(struct __DAC_HandleTypeDef *hdac);
+	void (* ConvHalfCpltCallbackCh1)(struct __DAC_HandleTypeDef *hdac);
+	void (* ErrorCallbackCh1)(struct __DAC_HandleTypeDef *hdac);
+	void (* DMAUnderrunCallbackCh1)(struct __DAC_HandleTypeDef *hdac);
 
-  void (* ConvCpltCallbackCh2)(struct __DAC_HandleTypeDef *hdac);
-  void (* ConvHalfCpltCallbackCh2)(struct __DAC_HandleTypeDef *hdac);
-  void (* ErrorCallbackCh2)(struct __DAC_HandleTypeDef *hdac);
-  void (* DMAUnderrunCallbackCh2)(struct __DAC_HandleTypeDef *hdac);
+	void (* ConvCpltCallbackCh2)(struct __DAC_HandleTypeDef *hdac);
+	void (* ConvHalfCpltCallbackCh2)(struct __DAC_HandleTypeDef *hdac);
+	void (* ErrorCallbackCh2)(struct __DAC_HandleTypeDef *hdac);
+	void (* DMAUnderrunCallbackCh2)(struct __DAC_HandleTypeDef *hdac);
 
 
-  void (* MspInitCallback)(struct __DAC_HandleTypeDef *hdac);
-  void (* MspDeInitCallback)(struct __DAC_HandleTypeDef *hdac);
+	void (* MspInitCallback)(struct __DAC_HandleTypeDef *hdac);
+	void (* MspDeInitCallback)(struct __DAC_HandleTypeDef *hdac);
 #endif /* USE_HAL_DAC_REGISTER_CALLBACKS */
 
 } DAC_HandleTypeDef;
@@ -98,17 +97,16 @@ typedef struct
 /**
   * @brief   DAC Configuration sample and hold Channel structure definition
   */
-typedef struct
-{
-  uint32_t DAC_SampleTime ;          /*!< Specifies the Sample time for the selected channel.
+typedef struct {
+	uint32_t DAC_SampleTime ;          /*!< Specifies the Sample time for the selected channel.
                                           This parameter applies when DAC_SampleAndHold is DAC_SAMPLEANDHOLD_ENABLE.
                                           This parameter must be a number between Min_Data = 0 and Max_Data = 1023 */
 
-  uint32_t DAC_HoldTime ;            /*!< Specifies the hold time for the selected channel
+	uint32_t DAC_HoldTime ;            /*!< Specifies the hold time for the selected channel
                                           This parameter applies when DAC_SampleAndHold is DAC_SAMPLEANDHOLD_ENABLE.
                                           This parameter must be a number between Min_Data = 0 and Max_Data = 1023 */
 
-  uint32_t DAC_RefreshTime ;         /*!< Specifies the refresh time for the selected channel
+	uint32_t DAC_RefreshTime ;         /*!< Specifies the refresh time for the selected channel
                                           This parameter applies when DAC_SampleAndHold is DAC_SAMPLEANDHOLD_ENABLE.
                                           This parameter must be a number between Min_Data = 0 and Max_Data = 255 */
 } DAC_SampleAndHoldConfTypeDef;
@@ -116,58 +114,56 @@ typedef struct
 /**
   * @brief   DAC Configuration regular Channel structure definition
   */
-typedef struct
-{
-  uint32_t DAC_HighFrequency;            /*!< Specifies the frequency interface mode
+typedef struct {
+	uint32_t DAC_HighFrequency;            /*!< Specifies the frequency interface mode
                                               This parameter can be a value of @ref DAC_HighFrequency */
 
-  FunctionalState DAC_DMADoubleDataMode; /*!< Specifies if DMA double data mode should be enabled or not for the selected channel.
+	FunctionalState DAC_DMADoubleDataMode; /*!< Specifies if DMA double data mode should be enabled or not for the selected channel.
                                               This parameter can be ENABLE or DISABLE */
 
-  FunctionalState DAC_SignedFormat;      /*!< Specifies if signed format should be used or not for the selected channel.
+	FunctionalState DAC_SignedFormat;      /*!< Specifies if signed format should be used or not for the selected channel.
                                               This parameter can be ENABLE or DISABLE */
 
-  uint32_t DAC_SampleAndHold;            /*!< Specifies whether the DAC mode.
+	uint32_t DAC_SampleAndHold;            /*!< Specifies whether the DAC mode.
                                               This parameter can be a value of @ref DAC_SampleAndHold */
 
-  uint32_t DAC_Trigger;                  /*!< Specifies the external trigger for the selected DAC channel.
+	uint32_t DAC_Trigger;                  /*!< Specifies the external trigger for the selected DAC channel.
                                               This parameter can be a value of @ref DAC_trigger_selection */
 
-  uint32_t DAC_OutputBuffer;             /*!< Specifies whether the DAC channel output buffer is enabled or disabled.
+	uint32_t DAC_OutputBuffer;             /*!< Specifies whether the DAC channel output buffer is enabled or disabled.
                                                This parameter can be a value of @ref DAC_output_buffer */
 
-  uint32_t DAC_ConnectOnChipPeripheral ; /*!< Specifies whether the DAC output is connected or not to on chip peripheral.
+	uint32_t DAC_ConnectOnChipPeripheral ; /*!< Specifies whether the DAC output is connected or not to on chip peripheral.
                                               This parameter can be a value of @ref DAC_ConnectOnChipPeripheral */
 
-  uint32_t DAC_UserTrimming;             /*!< Specifies the trimming mode
+	uint32_t DAC_UserTrimming;             /*!< Specifies the trimming mode
                                               This parameter must be a value of @ref DAC_UserTrimming
                                               DAC_UserTrimming is either factory or user trimming */
 
-  uint32_t DAC_TrimmingValue;             /*!< Specifies the offset trimming value
+	uint32_t DAC_TrimmingValue;             /*!< Specifies the offset trimming value
                                                i.e. when DAC_SampleAndHold is DAC_TRIMMING_USER.
                                                This parameter must be a number between Min_Data = 1 and Max_Data = 31 */
-  DAC_SampleAndHoldConfTypeDef  DAC_SampleAndHoldConfig;  /*!< Sample and Hold settings */
+	DAC_SampleAndHoldConfTypeDef  DAC_SampleAndHoldConfig;  /*!< Sample and Hold settings */
 } DAC_ChannelConfTypeDef;
 
 #if (USE_HAL_DAC_REGISTER_CALLBACKS == 1)
 /**
   * @brief  HAL DAC Callback ID enumeration definition
   */
-typedef enum
-{
-  HAL_DAC_CH1_COMPLETE_CB_ID                 = 0x00U,  /*!< DAC CH1 Complete Callback ID      */
-  HAL_DAC_CH1_HALF_COMPLETE_CB_ID            = 0x01U,  /*!< DAC CH1 half Complete Callback ID */
-  HAL_DAC_CH1_ERROR_ID                       = 0x02U,  /*!< DAC CH1 error Callback ID         */
-  HAL_DAC_CH1_UNDERRUN_CB_ID                 = 0x03U,  /*!< DAC CH1 underrun Callback ID      */
+typedef enum {
+	HAL_DAC_CH1_COMPLETE_CB_ID                 = 0x00U,  /*!< DAC CH1 Complete Callback ID      */
+	HAL_DAC_CH1_HALF_COMPLETE_CB_ID            = 0x01U,  /*!< DAC CH1 half Complete Callback ID */
+	HAL_DAC_CH1_ERROR_ID                       = 0x02U,  /*!< DAC CH1 error Callback ID         */
+	HAL_DAC_CH1_UNDERRUN_CB_ID                 = 0x03U,  /*!< DAC CH1 underrun Callback ID      */
 
-  HAL_DAC_CH2_COMPLETE_CB_ID                 = 0x04U,  /*!< DAC CH2 Complete Callback ID      */
-  HAL_DAC_CH2_HALF_COMPLETE_CB_ID            = 0x05U,  /*!< DAC CH2 half Complete Callback ID */
-  HAL_DAC_CH2_ERROR_ID                       = 0x06U,  /*!< DAC CH2 error Callback ID         */
-  HAL_DAC_CH2_UNDERRUN_CB_ID                 = 0x07U,  /*!< DAC CH2 underrun Callback ID      */
+	HAL_DAC_CH2_COMPLETE_CB_ID                 = 0x04U,  /*!< DAC CH2 Complete Callback ID      */
+	HAL_DAC_CH2_HALF_COMPLETE_CB_ID            = 0x05U,  /*!< DAC CH2 half Complete Callback ID */
+	HAL_DAC_CH2_ERROR_ID                       = 0x06U,  /*!< DAC CH2 error Callback ID         */
+	HAL_DAC_CH2_UNDERRUN_CB_ID                 = 0x07U,  /*!< DAC CH2 underrun Callback ID      */
 
-  HAL_DAC_MSPINIT_CB_ID                      = 0x08U,  /*!< DAC MspInit Callback ID           */
-  HAL_DAC_MSPDEINIT_CB_ID                    = 0x09U,  /*!< DAC MspDeInit Callback ID         */
-  HAL_DAC_ALL_CB_ID                          = 0x0AU   /*!< DAC All ID                        */
+	HAL_DAC_MSPINIT_CB_ID                      = 0x08U,  /*!< DAC MspInit Callback ID           */
+	HAL_DAC_MSPDEINIT_CB_ID                    = 0x09U,  /*!< DAC MspDeInit Callback ID         */
+	HAL_DAC_ALL_CB_ID                          = 0x0AU   /*!< DAC All ID                        */
 } HAL_DAC_CallbackIDTypeDef;
 
 /**
@@ -521,7 +517,7 @@ void HAL_DAC_MspDeInit(DAC_HandleTypeDef *hdac);
 HAL_StatusTypeDef HAL_DAC_Start(DAC_HandleTypeDef *hdac, uint32_t Channel);
 HAL_StatusTypeDef HAL_DAC_Stop(DAC_HandleTypeDef *hdac, uint32_t Channel);
 HAL_StatusTypeDef HAL_DAC_Start_DMA(DAC_HandleTypeDef *hdac, uint32_t Channel, const uint32_t *pData, uint32_t Length,
-                                    uint32_t Alignment);
+				    uint32_t Alignment);
 HAL_StatusTypeDef HAL_DAC_Stop_DMA(DAC_HandleTypeDef *hdac, uint32_t Channel);
 void HAL_DAC_IRQHandler(DAC_HandleTypeDef *hdac);
 HAL_StatusTypeDef HAL_DAC_SetValue(DAC_HandleTypeDef *hdac, uint32_t Channel, uint32_t Alignment, uint32_t Data);
@@ -534,7 +530,7 @@ void HAL_DAC_DMAUnderrunCallbackCh1(DAC_HandleTypeDef *hdac);
 #if (USE_HAL_DAC_REGISTER_CALLBACKS == 1)
 /* DAC callback registering/unregistering */
 HAL_StatusTypeDef     HAL_DAC_RegisterCallback(DAC_HandleTypeDef *hdac, HAL_DAC_CallbackIDTypeDef CallbackID,
-                                               pDAC_CallbackTypeDef pCallback);
+		pDAC_CallbackTypeDef pCallback);
 HAL_StatusTypeDef     HAL_DAC_UnRegisterCallback(DAC_HandleTypeDef *hdac, HAL_DAC_CallbackIDTypeDef CallbackID);
 #endif /* USE_HAL_DAC_REGISTER_CALLBACKS */
 
@@ -548,7 +544,7 @@ HAL_StatusTypeDef     HAL_DAC_UnRegisterCallback(DAC_HandleTypeDef *hdac, HAL_DA
 /* Peripheral Control functions ***********************************************/
 uint32_t HAL_DAC_GetValue(const DAC_HandleTypeDef *hdac, uint32_t Channel);
 HAL_StatusTypeDef HAL_DAC_ConfigChannel(DAC_HandleTypeDef *hdac,
-                                        const DAC_ChannelConfTypeDef *sConfig, uint32_t Channel);
+					const DAC_ChannelConfTypeDef *sConfig, uint32_t Channel);
 /**
   * @}
   */

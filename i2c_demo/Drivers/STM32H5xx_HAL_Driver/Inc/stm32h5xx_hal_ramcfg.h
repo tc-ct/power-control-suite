@@ -46,25 +46,23 @@ extern "C" {
 /**
   * @brief  HAL RAMCFG State Enumeration Definition
   */
-typedef enum
-{
-  HAL_RAMCFG_STATE_RESET             = 0x00U,  /*!< RAMCFG not yet initialized or disabled */
-  HAL_RAMCFG_STATE_READY             = 0x01U,  /*!< RAMCFG initialized and ready for use   */
-  HAL_RAMCFG_STATE_BUSY              = 0x02U,  /*!< RAMCFG process is ongoing              */
-  HAL_RAMCFG_STATE_ERROR             = 0x03U,  /*!< RAMCFG error state                     */
+typedef enum {
+	HAL_RAMCFG_STATE_RESET             = 0x00U,  /*!< RAMCFG not yet initialized or disabled */
+	HAL_RAMCFG_STATE_READY             = 0x01U,  /*!< RAMCFG initialized and ready for use   */
+	HAL_RAMCFG_STATE_BUSY              = 0x02U,  /*!< RAMCFG process is ongoing              */
+	HAL_RAMCFG_STATE_ERROR             = 0x03U,  /*!< RAMCFG error state                     */
 } HAL_RAMCFG_StateTypeDef;
 
 #if (USE_HAL_RAMCFG_REGISTER_CALLBACKS == 1)
 /**
   * @brief  HAL RAMCFG Callbacks IDs Enumeration Definition
   */
-typedef enum
-{
-  HAL_RAMCFG_MSPINIT_CB_ID           = 0x00U,  /*!< RAMCFG MSP Init Callback ID            */
-  HAL_RAMCFG_MSPDEINIT_CB_ID         = 0x01U,  /*!< RAMCFG MSP DeInit Callback ID          */
-  HAL_RAMCFG_SE_DETECT_CB_ID         = 0x02U,  /*!< RAMCFG Single Error Detect Callback ID */
-  HAL_RAMCFG_DE_DETECT_CB_ID         = 0x03U,  /*!< RAMCFG Double Error Detect Callback ID */
-  HAL_RAMCFG_ALL_CB_ID               = 0x04U,  /*!< RAMCFG All callback ID                 */
+typedef enum {
+	HAL_RAMCFG_MSPINIT_CB_ID           = 0x00U,  /*!< RAMCFG MSP Init Callback ID            */
+	HAL_RAMCFG_MSPDEINIT_CB_ID         = 0x01U,  /*!< RAMCFG MSP DeInit Callback ID          */
+	HAL_RAMCFG_SE_DETECT_CB_ID         = 0x02U,  /*!< RAMCFG Single Error Detect Callback ID */
+	HAL_RAMCFG_DE_DETECT_CB_ID         = 0x03U,  /*!< RAMCFG Double Error Detect Callback ID */
+	HAL_RAMCFG_ALL_CB_ID               = 0x04U,  /*!< RAMCFG All callback ID                 */
 } HAL_RAMCFG_CallbackIDTypeDef;
 #endif /* USE_HAL_RAMCFG_REGISTER_CALLBACKS */
 
@@ -77,14 +75,14 @@ typedef struct __RAMCFG_HandleTypeDef
 typedef struct
 #endif /* (USE_HAL_RAMCFG_REGISTER_CALLBACKS) */
 {
-  RAMCFG_TypeDef                  *Instance;                                 /*!< RAMCFG Register Base Address        */
-  __IO HAL_RAMCFG_StateTypeDef    State;                                     /*!< RAMCFG State                        */
-  __IO uint32_t                   ErrorCode;                                 /*!< RAMCFG Error Code                   */
+	RAMCFG_TypeDef                  *Instance;                                 /*!< RAMCFG Register Base Address        */
+	__IO HAL_RAMCFG_StateTypeDef    State;                                     /*!< RAMCFG State                        */
+	__IO uint32_t                   ErrorCode;                                 /*!< RAMCFG Error Code                   */
 #if (USE_HAL_RAMCFG_REGISTER_CALLBACKS == 1)
-  void (* MspInitCallback)(struct __RAMCFG_HandleTypeDef *hramcfg);          /*!< RAMCFG MSP Init Callback            */
-  void (* MspDeInitCallback)(struct __RAMCFG_HandleTypeDef *hramcfg);        /*!< RAMCFG MSP DeInit Callback          */
-  void (* DetectSingleErrorCallback)(struct __RAMCFG_HandleTypeDef *hramcfg);/*!< RAMCFG Single Error Detect Callback */
-  void (* DetectDoubleErrorCallback)(struct __RAMCFG_HandleTypeDef *hramcfg);/*!< RAMCFG Double Error Detect Callback */
+	void (* MspInitCallback)(struct __RAMCFG_HandleTypeDef *hramcfg);          /*!< RAMCFG MSP Init Callback            */
+	void (* MspDeInitCallback)(struct __RAMCFG_HandleTypeDef *hramcfg);        /*!< RAMCFG MSP DeInit Callback          */
+	void (* DetectSingleErrorCallback)(struct __RAMCFG_HandleTypeDef *hramcfg);/*!< RAMCFG Single Error Detect Callback */
+	void (* DetectDoubleErrorCallback)(struct __RAMCFG_HandleTypeDef *hramcfg);/*!< RAMCFG Double Error Detect Callback */
 #endif  /* USE_HAL_RAMCFG_REGISTER_CALLBACKS */
 } RAMCFG_HandleTypeDef;
 
@@ -314,8 +312,8 @@ void              HAL_RAMCFG_DetectSingleErrorCallback(RAMCFG_HandleTypeDef *hra
 void              HAL_RAMCFG_DetectDoubleErrorCallback(RAMCFG_HandleTypeDef *hramcfg);
 #if (USE_HAL_RAMCFG_REGISTER_CALLBACKS == 1)
 HAL_StatusTypeDef HAL_RAMCFG_RegisterCallback(RAMCFG_HandleTypeDef *hramcfg,
-                                              HAL_RAMCFG_CallbackIDTypeDef CallbackID,
-                                              void (* pCallback)(RAMCFG_HandleTypeDef *_hramcfg));
+		HAL_RAMCFG_CallbackIDTypeDef CallbackID,
+		void (* pCallback)(RAMCFG_HandleTypeDef *_hramcfg));
 HAL_StatusTypeDef HAL_RAMCFG_UnRegisterCallback(RAMCFG_HandleTypeDef *hramcfg, HAL_RAMCFG_CallbackIDTypeDef CallbackID);
 #endif /* USE_HAL_RAMCFG_REGISTER_CALLBACKS */
 /**

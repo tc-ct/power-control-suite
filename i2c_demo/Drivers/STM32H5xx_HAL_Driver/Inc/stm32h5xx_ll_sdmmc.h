@@ -43,26 +43,25 @@ extern "C" {
 /**
   * @brief  SDMMC Configuration Structure definition
   */
-typedef struct
-{
-  uint32_t ClockEdge;            /*!< Specifies the SDMMC_CCK clock transition on which Data and Command change.
+typedef struct {
+	uint32_t ClockEdge;            /*!< Specifies the SDMMC_CCK clock transition on which Data and Command change.
                                       This parameter can be a value of @ref SDMMC_LL_Clock_Edge                 */
 
-  uint32_t ClockPowerSave;       /*!< Specifies whether SDMMC Clock output is enabled or
+	uint32_t ClockPowerSave;       /*!< Specifies whether SDMMC Clock output is enabled or
                                       disabled when the bus is idle.
                                       This parameter can be a value of @ref SDMMC_LL_Clock_Power_Save           */
 
-  uint32_t BusWide;              /*!< Specifies the SDMMC bus width.
+	uint32_t BusWide;              /*!< Specifies the SDMMC bus width.
                                       This parameter can be a value of @ref SDMMC_LL_Bus_Wide                   */
 
-  uint32_t HardwareFlowControl;  /*!< Specifies whether the SDMMC hardware flow control is enabled or disabled.
+	uint32_t HardwareFlowControl;  /*!< Specifies whether the SDMMC hardware flow control is enabled or disabled.
                                       This parameter can be a value of @ref SDMMC_LL_Hardware_Flow_Control      */
 
-  uint32_t ClockDiv;             /*!< Specifies the clock frequency of the SDMMC controller.
+	uint32_t ClockDiv;             /*!< Specifies the clock frequency of the SDMMC controller.
                                       This parameter can be a value between Min_Data = 0 and Max_Data = 1023   */
 
 #if (USE_SD_TRANSCEIVER != 0U) || (USE_SDIO_TRANSCEIVER != 0U)
-  uint32_t TranceiverPresent;    /*!< Specifies if there is a 1V8 Transceiver/Switcher.
+	uint32_t TranceiverPresent;    /*!< Specifies if there is a 1V8 Transceiver/Switcher.
                                       This parameter can be a value of @ref SDMMC_LL_TRANSCEIVER_PRESENT       */
 #endif /* USE_SD_TRANSCEIVER || USE_SDIO_TRANSCEIVER */
 } SDMMC_InitTypeDef;
@@ -71,24 +70,23 @@ typedef struct
 /**
   * @brief  SDMMC Command Control structure
   */
-typedef struct
-{
-  uint32_t Argument;            /*!< Specifies the SDMMC command argument which is sent
+typedef struct {
+	uint32_t Argument;            /*!< Specifies the SDMMC command argument which is sent
                                      to a card as part of a command message. If a command
                                      contains an argument, it must be loaded into this register
                                      before writing the command to the command register.              */
 
-  uint32_t CmdIndex;            /*!< Specifies the SDMMC command index. It must be Min_Data = 0 and
+	uint32_t CmdIndex;            /*!< Specifies the SDMMC command index. It must be Min_Data = 0 and
                                      Max_Data = 64                                                    */
 
-  uint32_t Response;            /*!< Specifies the SDMMC response type.
+	uint32_t Response;            /*!< Specifies the SDMMC response type.
                                      This parameter can be a value of @ref SDMMC_LL_Response_Type         */
 
-  uint32_t WaitForInterrupt;    /*!< Specifies whether SDMMC wait for interrupt request is
+	uint32_t WaitForInterrupt;    /*!< Specifies whether SDMMC wait for interrupt request is
                                      enabled or disabled.
                                      This parameter can be a value of @ref SDMMC_LL_Wait_Interrupt_State  */
 
-  uint32_t CPSM;                /*!< Specifies whether SDMMC Command path state machine (CPSM)
+	uint32_t CPSM;                /*!< Specifies whether SDMMC Command path state machine (CPSM)
                                      is enabled or disabled.
                                      This parameter can be a value of @ref SDMMC_LL_CPSM_State            */
 } SDMMC_CmdInitTypeDef;
@@ -97,23 +95,22 @@ typedef struct
 /**
   * @brief  SDMMC Data Control structure
   */
-typedef struct
-{
-  uint32_t DataTimeOut;         /*!< Specifies the data timeout period in card bus clock periods.  */
+typedef struct {
+	uint32_t DataTimeOut;         /*!< Specifies the data timeout period in card bus clock periods.  */
 
-  uint32_t DataLength;          /*!< Specifies the number of data bytes to be transferred.         */
+	uint32_t DataLength;          /*!< Specifies the number of data bytes to be transferred.         */
 
-  uint32_t DataBlockSize;       /*!< Specifies the data block size for block transfer.
+	uint32_t DataBlockSize;       /*!< Specifies the data block size for block transfer.
                                      This parameter can be a value of @ref SDMMC_LL_Data_Block_Size    */
 
-  uint32_t TransferDir;         /*!< Specifies the data transfer direction, whether the transfer
+	uint32_t TransferDir;         /*!< Specifies the data transfer direction, whether the transfer
                                      is a read or write.
                                      This parameter can be a value of @ref SDMMC_LL_Transfer_Direction */
 
-  uint32_t TransferMode;        /*!< Specifies whether data transfer is in stream or block mode.
+	uint32_t TransferMode;        /*!< Specifies whether data transfer is in stream or block mode.
                                      This parameter can be a value of @ref SDMMC_LL_Transfer_Type      */
 
-  uint32_t DPSM;                /*!< Specifies whether SDMMC Data path state machine (DPSM)
+	uint32_t DPSM;                /*!< Specifies whether SDMMC Data path state machine (DPSM)
                                      is enabled or disabled.
                                      This parameter can be a value of @ref SDMMC_LL_DPSM_State         */
 } SDMMC_DataInitTypeDef;
@@ -121,24 +118,21 @@ typedef struct
 /** @defgroup SDEx_Exported_Types_Group1 SD Card Internal DMA Buffer structure
   * @{
   */
-typedef struct
-{
-  __IO uint32_t IDMALAR;              /*!< SDMMC DMA linked list configuration register  */
-  __IO uint32_t IDMABASER;            /*!< SDMMC DMA buffer base address register        */
-  __IO uint32_t IDMABSIZE;            /*!< SDMMC DMA buffer size register                */
+typedef struct {
+	__IO uint32_t IDMALAR;              /*!< SDMMC DMA linked list configuration register  */
+	__IO uint32_t IDMABASER;            /*!< SDMMC DMA buffer base address register        */
+	__IO uint32_t IDMABSIZE;            /*!< SDMMC DMA buffer size register                */
 } SDMMC_DMALinkNodeTypeDef;
 
-typedef struct
-{
-  uint32_t BufferAddress;              /*!<  Node Buffer address                          */
-  uint32_t BufferSize ;                /*!<  Node Buffer size                             */
+typedef struct {
+	uint32_t BufferAddress;              /*!<  Node Buffer address                          */
+	uint32_t BufferSize ;                /*!<  Node Buffer size                             */
 } SDMMC_DMALinkNodeConfTypeDef;
 
-typedef struct
-{
-  SDMMC_DMALinkNodeTypeDef *pHeadNode;  /*!<  Linked List Node Head                        */
-  SDMMC_DMALinkNodeTypeDef *pTailNode;  /*!<  Linked List Node Head                        */
-  uint32_t NodesCounter ;               /*!<  Node is ready for execution                  */
+typedef struct {
+	SDMMC_DMALinkNodeTypeDef *pHeadNode;  /*!<  Linked List Node Head                        */
+	SDMMC_DMALinkNodeTypeDef *pTailNode;  /*!<  Linked List Node Head                        */
+	uint32_t NodesCounter ;               /*!<  Node is ready for execution                  */
 } SDMMC_DMALinkedListTypeDef;
 /**
   * @}
@@ -1285,7 +1279,7 @@ uint32_t SDMMC_GetCmdResp7(SDMMC_TypeDef *SDMMCx);
   */
 uint32_t SDMMC_DMALinkedList_BuildNode(SDMMC_DMALinkNodeTypeDef *pNode, const SDMMC_DMALinkNodeConfTypeDef *pNodeConf);
 uint32_t SDMMC_DMALinkedList_InsertNode(SDMMC_DMALinkedListTypeDef *pLinkedList, SDMMC_DMALinkNodeTypeDef *pPrevNode,
-                                        SDMMC_DMALinkNodeTypeDef *pNode);
+					SDMMC_DMALinkNodeTypeDef *pNode);
 uint32_t SDMMC_DMALinkedList_RemoveNode(SDMMC_DMALinkedListTypeDef *pLinkedList, SDMMC_DMALinkNodeTypeDef *pNode);
 uint32_t SDMMC_DMALinkedList_LockNode(SDMMC_DMALinkNodeTypeDef *pNode);
 uint32_t SDMMC_DMALinkedList_UnlockNode(SDMMC_DMALinkNodeTypeDef *pNode);

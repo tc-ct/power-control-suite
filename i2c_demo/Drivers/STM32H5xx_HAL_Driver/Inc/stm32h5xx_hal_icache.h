@@ -45,19 +45,18 @@ extern "C" {
 /**
   * @brief  HAL ICACHE region configuration structure definition
   */
-typedef struct
-{
-  uint32_t BaseAddress;              /*!< Configures the Base address of Region i to be remapped */
+typedef struct {
+	uint32_t BaseAddress;              /*!< Configures the Base address of Region i to be remapped */
 
-  uint32_t RemapAddress;             /*!< Configures the Remap address of Region i to be remapped */
+	uint32_t RemapAddress;             /*!< Configures the Remap address of Region i to be remapped */
 
-  uint32_t Size;                     /*!< Configures the Region size.
+	uint32_t Size;                     /*!< Configures the Region size.
                                           This parameter can be a value of @ref ICACHE_Region_Size */
 
-  uint32_t TrafficRoute;             /*!< Selects the traffic route.
+	uint32_t TrafficRoute;             /*!< Selects the traffic route.
                                           This parameter can be a value of @ref ICACHE_Traffic_Route */
 
-  uint32_t OutputBurstType;          /*!< Selects the output burst type.
+	uint32_t OutputBurstType;          /*!< Selects the output burst type.
                                           This parameter can be a value of @ref ICACHE_Output_Burst_Type */
 } ICACHE_RegionConfigTypeDef;
 /**

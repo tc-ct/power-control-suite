@@ -108,30 +108,26 @@
   */
 HAL_StatusTypeDef HAL_PWREx_ConfigSupply(uint32_t SupplySource)
 {
-  uint32_t tickstart;
+	uint32_t tickstart;
 
-  /* Check the parameters */
-  assert_param(IS_PWR_SUPPLY(SupplySource));
+	/* Check the parameters */
+	assert_param(IS_PWR_SUPPLY(SupplySource));
 
-  if ((PWR->SCCR & PWR_SCCR_BYPASS) != (PWR_SCCR_BYPASS))
-  {
-    /* Set the power supply configuration */
-    MODIFY_REG(PWR->SCCR, PWR_SUPPLY_CONFIG_MASK, SupplySource);
+	if ((PWR->SCCR & PWR_SCCR_BYPASS) != (PWR_SCCR_BYPASS)) {
+		/* Set the power supply configuration */
+		MODIFY_REG(PWR->SCCR, PWR_SUPPLY_CONFIG_MASK, SupplySource);
 
-    /* Get tick */
-    tickstart = HAL_GetTick();
+		/* Get tick */
+		tickstart = HAL_GetTick();
 
-    /* Wait till voltage level flag is set */
-    while (__HAL_PWR_GET_FLAG(PWR_FLAG_ACTVOSRDY) == 0U)
-    {
-      if ((HAL_GetTick() - tickstart) > PWR_FLAG_SETTING_DELAY)
-      {
-        return HAL_ERROR;
-      }
-    }
-  }
+		/* Wait till voltage level flag is set */
+		while (__HAL_PWR_GET_FLAG(PWR_FLAG_ACTVOSRDY) == 0U) {
+			if ((HAL_GetTick() - tickstart) > PWR_FLAG_SETTING_DELAY)
+				return HAL_ERROR;
+		}
+	}
 
-  return HAL_OK;
+	return HAL_OK;
 }
 
 /**
@@ -140,7 +136,7 @@ HAL_StatusTypeDef HAL_PWREx_ConfigSupply(uint32_t SupplySource)
   */
 uint32_t HAL_PWREx_GetSupplyConfig(void)
 {
-  return (PWR->SCCR & PWR_SUPPLY_CONFIG_MASK);
+	return (PWR->SCCR & PWR_SUPPLY_CONFIG_MASK);
 }
 
 /**
@@ -161,31 +157,27 @@ uint32_t HAL_PWREx_GetSupplyConfig(void)
   */
 HAL_StatusTypeDef HAL_PWREx_ControlVoltageScaling(uint32_t VoltageScaling)
 {
-  uint32_t tickstart = HAL_GetTick();
+	uint32_t tickstart = HAL_GetTick();
 
-  /* Check the parameters */
-  assert_param(IS_PWR_VOLTAGE_SCALING_RANGE(VoltageScaling));
+	/* Check the parameters */
+	assert_param(IS_PWR_VOLTAGE_SCALING_RANGE(VoltageScaling));
 
-  /* Get the voltage scaling  */
-  if ((PWR->VOSSR & PWR_VOSSR_ACTVOS) == (VoltageScaling << 10U))
-  {
-    /* Old and new voltage scaling configuration match : nothing to do */
-    return HAL_OK;
-  }
+	/* Get the voltage scaling  */
+	if ((PWR->VOSSR & PWR_VOSSR_ACTVOS) == (VoltageScaling << 10U)) {
+		/* Old and new voltage scaling configuration match : nothing to do */
+		return HAL_OK;
+	}
 
-  /* Set the voltage range */
-  MODIFY_REG(PWR->VOSCR, PWR_VOSCR_VOS, VoltageScaling);
+	/* Set the voltage range */
+	MODIFY_REG(PWR->VOSCR, PWR_VOSCR_VOS, VoltageScaling);
 
-  /* Wait till voltage level flag is set */
-  while (__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY) == 0U)
-  {
-    if ((HAL_GetTick() - tickstart) > PWR_FLAG_SETTING_DELAY)
-    {
-      return HAL_ERROR;
-    }
-  }
+	/* Wait till voltage level flag is set */
+	while (__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY) == 0U) {
+		if ((HAL_GetTick() - tickstart) > PWR_FLAG_SETTING_DELAY)
+			return HAL_ERROR;
+	}
 
-  return HAL_OK;
+	return HAL_OK;
 }
 
 /**
@@ -195,8 +187,8 @@ HAL_StatusTypeDef HAL_PWREx_ControlVoltageScaling(uint32_t VoltageScaling)
   */
 uint32_t HAL_PWREx_GetVoltageRange(void)
 {
-  /* Get the active voltage scaling */
-  return (PWR->VOSSR & PWR_VOSSR_ACTVOS);
+	/* Get the active voltage scaling */
+	return (PWR->VOSSR & PWR_VOSSR_ACTVOS);
 }
 
 /**
@@ -221,13 +213,13 @@ uint32_t HAL_PWREx_GetVoltageRange(void)
   */
 HAL_StatusTypeDef HAL_PWREx_ControlStopModeVoltageScaling(uint32_t VoltageScaling)
 {
-  /* Check the parameters */
-  assert_param(IS_PWR_STOP_MODE_REGULATOR_VOLTAGE(VoltageScaling));
+	/* Check the parameters */
+	assert_param(IS_PWR_STOP_MODE_REGULATOR_VOLTAGE(VoltageScaling));
 
-  /* Return the stop mode voltage range */
-  MODIFY_REG(PWR->PMCR, PWR_PMCR_SVOS, VoltageScaling);
+	/* Return the stop mode voltage range */
+	MODIFY_REG(PWR->PMCR, PWR_PMCR_SVOS, VoltageScaling);
 
-  return HAL_OK;
+	return HAL_OK;
 }
 
 /**
@@ -236,8 +228,8 @@ HAL_StatusTypeDef HAL_PWREx_ControlStopModeVoltageScaling(uint32_t VoltageScalin
   */
 uint32_t HAL_PWREx_GetStopModeVoltageRange(void)
 {
-  /* Return the stop voltage scaling */
-  return (PWR->PMCR & PWR_PMCR_SVOS);
+	/* Return the stop voltage scaling */
+	return (PWR->PMCR & PWR_PMCR_SVOS);
 }
 /**
   * @}
@@ -267,42 +259,34 @@ uint32_t HAL_PWREx_GetStopModeVoltageRange(void)
   */
 void HAL_PWREx_ConfigAVD(const PWREx_AVDTypeDef *sConfigAVD)
 {
-  /* Check the parameters */
-  assert_param(IS_PWR_AVD_LEVEL(sConfigAVD->AVDLevel));
-  assert_param(IS_PWR_AVD_MODE(sConfigAVD->Mode));
+	/* Check the parameters */
+	assert_param(IS_PWR_AVD_LEVEL(sConfigAVD->AVDLevel));
+	assert_param(IS_PWR_AVD_MODE(sConfigAVD->Mode));
 
-  /* Set the ALS[10:9] bits according to AVDLevel value */
-  MODIFY_REG(PWR->VMCR, PWR_VMCR_ALS, sConfigAVD->AVDLevel);
+	/* Set the ALS[10:9] bits according to AVDLevel value */
+	MODIFY_REG(PWR->VMCR, PWR_VMCR_ALS, sConfigAVD->AVDLevel);
 
-  /* Clear any previous config */
-  __HAL_PWR_AVD_EXTI_DISABLE_EVENT();
-  __HAL_PWR_AVD_EXTI_DISABLE_IT();
-  __HAL_PWR_AVD_EXTI_DISABLE_RISING_EDGE();
-  __HAL_PWR_AVD_EXTI_DISABLE_FALLING_EDGE();
+	/* Clear any previous config */
+	__HAL_PWR_AVD_EXTI_DISABLE_EVENT();
+	__HAL_PWR_AVD_EXTI_DISABLE_IT();
+	__HAL_PWR_AVD_EXTI_DISABLE_RISING_EDGE();
+	__HAL_PWR_AVD_EXTI_DISABLE_FALLING_EDGE();
 
-  /* Configure the interrupt mode */
-  if ((sConfigAVD->Mode & AVD_MODE_IT) == AVD_MODE_IT)
-  {
-    __HAL_PWR_AVD_EXTI_ENABLE_IT();
-  }
+	/* Configure the interrupt mode */
+	if ((sConfigAVD->Mode & AVD_MODE_IT) == AVD_MODE_IT)
+		__HAL_PWR_AVD_EXTI_ENABLE_IT();
 
-  /* Configure the event mode */
-  if ((sConfigAVD->Mode & AVD_MODE_EVT) == AVD_MODE_EVT)
-  {
-    __HAL_PWR_AVD_EXTI_ENABLE_EVENT();
-  }
+	/* Configure the event mode */
+	if ((sConfigAVD->Mode & AVD_MODE_EVT) == AVD_MODE_EVT)
+		__HAL_PWR_AVD_EXTI_ENABLE_EVENT();
 
-  /* Rising edge configuration */
-  if ((sConfigAVD->Mode & AVD_RISING_EDGE) == AVD_RISING_EDGE)
-  {
-    __HAL_PWR_AVD_EXTI_ENABLE_RISING_EDGE();
-  }
+	/* Rising edge configuration */
+	if ((sConfigAVD->Mode & AVD_RISING_EDGE) == AVD_RISING_EDGE)
+		__HAL_PWR_AVD_EXTI_ENABLE_RISING_EDGE();
 
-  /* Falling edge configuration */
-  if ((sConfigAVD->Mode & AVD_FALLING_EDGE) == AVD_FALLING_EDGE)
-  {
-    __HAL_PWR_AVD_EXTI_ENABLE_FALLING_EDGE();
-  }
+	/* Falling edge configuration */
+	if ((sConfigAVD->Mode & AVD_FALLING_EDGE) == AVD_FALLING_EDGE)
+		__HAL_PWR_AVD_EXTI_ENABLE_FALLING_EDGE();
 }
 
 /**
@@ -311,8 +295,8 @@ void HAL_PWREx_ConfigAVD(const PWREx_AVDTypeDef *sConfigAVD)
   */
 void HAL_PWREx_EnableAVD(void)
 {
-  /* Enable the Analog Voltage Detector */
-  SET_BIT(PWR->VMCR, PWR_VMCR_AVDEN);
+	/* Enable the Analog Voltage Detector */
+	SET_BIT(PWR->VMCR, PWR_VMCR_AVDEN);
 }
 
 /**
@@ -321,8 +305,8 @@ void HAL_PWREx_EnableAVD(void)
   */
 void HAL_PWREx_DisableAVD(void)
 {
-  /* Disable the Analog Voltage Detector */
-  CLEAR_BIT(PWR->VMCR, PWR_VMCR_AVDEN);
+	/* Disable the Analog Voltage Detector */
+	CLEAR_BIT(PWR->VMCR, PWR_VMCR_AVDEN);
 }
 
 #if defined (PWR_USBSCR_USB33DEN)
@@ -332,8 +316,8 @@ void HAL_PWREx_DisableAVD(void)
   */
 void HAL_PWREx_EnableUSBVoltageDetector(void)
 {
-  /* Enable the USB voltage detector */
-  SET_BIT(PWR->USBSCR, PWR_USBSCR_USB33DEN);
+	/* Enable the USB voltage detector */
+	SET_BIT(PWR->USBSCR, PWR_USBSCR_USB33DEN);
 }
 
 /**
@@ -342,8 +326,8 @@ void HAL_PWREx_EnableUSBVoltageDetector(void)
   */
 void HAL_PWREx_DisableUSBVoltageDetector(void)
 {
-  /* Disable the USB voltage detector */
-  CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_USB33DEN);
+	/* Disable the USB voltage detector */
+	CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_USB33DEN);
 }
 
 /**
@@ -354,7 +338,7 @@ void HAL_PWREx_DisableUSBVoltageDetector(void)
   */
 void HAL_PWREx_EnableVddUSB(void)
 {
-  SET_BIT(PWR->USBSCR, PWR_USBSCR_USB33SV);
+	SET_BIT(PWR->USBSCR, PWR_USBSCR_USB33SV);
 }
 
 /**
@@ -363,7 +347,7 @@ void HAL_PWREx_EnableVddUSB(void)
   */
 void HAL_PWREx_DisableVddUSB(void)
 {
-  CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_USB33SV);
+	CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_USB33SV);
 }
 #endif /* PWR_USBSCR_USB33DEN */
 
@@ -374,8 +358,8 @@ void HAL_PWREx_DisableVddUSB(void)
   */
 void HAL_PWREx_EnableUSBOTGHSPhy(void)
 {
-  /* Enable the USB OTGHS PHY */
-  SET_BIT(PWR->USBSCR, PWR_USBSCR_OTGHSEN);
+	/* Enable the USB OTGHS PHY */
+	SET_BIT(PWR->USBSCR, PWR_USBSCR_OTGHSEN);
 }
 
 /**
@@ -384,8 +368,8 @@ void HAL_PWREx_EnableUSBOTGHSPhy(void)
   */
 void HAL_PWREx_DisableUSBOTGHSPhy(void)
 {
-  /* Disable the OTGHS PHY */
-  CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_OTGHSEN);
+	/* Disable the OTGHS PHY */
+	CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_OTGHSEN);
 }
 #endif /* PWR_USBSCR_OTGHSEN */
 
@@ -395,7 +379,7 @@ void HAL_PWREx_DisableUSBOTGHSPhy(void)
   */
 void HAL_PWREx_EnableMonitoring(void)
 {
-  SET_BIT(PWR->BDCR, PWR_BDCR_MONEN);
+	SET_BIT(PWR->BDCR, PWR_BDCR_MONEN);
 }
 
 /**
@@ -404,7 +388,7 @@ void HAL_PWREx_EnableMonitoring(void)
   */
 void HAL_PWREx_DisableMonitoring(void)
 {
-  CLEAR_BIT(PWR->BDCR, PWR_BDCR_MONEN);
+	CLEAR_BIT(PWR->BDCR, PWR_BDCR_MONEN);
 }
 
 #if defined (PWR_UCPDR_UCPD_STBY)
@@ -414,7 +398,7 @@ void HAL_PWREx_DisableMonitoring(void)
   */
 void HAL_PWREx_EnableUCPDStandbyMode(void)
 {
-  SET_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_STBY);
+	SET_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_STBY);
 }
 
 /**
@@ -425,7 +409,7 @@ void HAL_PWREx_EnableUCPDStandbyMode(void)
   */
 void HAL_PWREx_DisableUCPDStandbyMode(void)
 {
-  CLEAR_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_STBY);
+	CLEAR_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_STBY);
 }
 #endif /* PWR_UCPDR_UCPD_STBY */
 
@@ -441,7 +425,7 @@ void HAL_PWREx_DisableUCPDStandbyMode(void)
   */
 void HAL_PWREx_EnableUCPDDeadBattery(void)
 {
-  CLEAR_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_DBDIS);
+	CLEAR_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_DBDIS);
 }
 
 /**
@@ -455,7 +439,7 @@ void HAL_PWREx_EnableUCPDDeadBattery(void)
   */
 void HAL_PWREx_DisableUCPDDeadBattery(void)
 {
-  SET_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_DBDIS);
+	SET_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_DBDIS);
 }
 #endif /* PWR_UCPDR_UCPD_DBDIS */
 
@@ -471,14 +455,14 @@ void HAL_PWREx_DisableUCPDDeadBattery(void)
   */
 void HAL_PWREx_EnableBatteryCharging(uint32_t ResistorValue)
 {
-  /* Check the parameter */
-  assert_param(IS_PWR_BATTERY_RESISTOR_SELECT(ResistorValue));
+	/* Check the parameter */
+	assert_param(IS_PWR_BATTERY_RESISTOR_SELECT(ResistorValue));
 
-  /* Specify the charging resistor */
-  MODIFY_REG(PWR->BDCR, PWR_BDCR_VBRS, ResistorValue);
+	/* Specify the charging resistor */
+	MODIFY_REG(PWR->BDCR, PWR_BDCR_VBRS, ResistorValue);
 
-  /* Enable the Battery charging */
-  SET_BIT(PWR->BDCR, PWR_BDCR_VBE);
+	/* Enable the Battery charging */
+	SET_BIT(PWR->BDCR, PWR_BDCR_VBE);
 }
 
 /**
@@ -487,7 +471,7 @@ void HAL_PWREx_EnableBatteryCharging(uint32_t ResistorValue)
   */
 void HAL_PWREx_DisableBatteryCharging(void)
 {
-  CLEAR_BIT(PWR->BDCR, PWR_BDCR_VBE);
+	CLEAR_BIT(PWR->BDCR, PWR_BDCR_VBE);
 }
 
 /**
@@ -499,11 +483,11 @@ void HAL_PWREx_DisableBatteryCharging(void)
   */
 void HAL_PWREx_EnableAnalogBooster(void)
 {
-  /* Enable the Analog voltage */
-  SET_BIT(PWR->PMCR, PWR_PMCR_AVD_READY);
+	/* Enable the Analog voltage */
+	SET_BIT(PWR->PMCR, PWR_PMCR_AVD_READY);
 
-  /* Enable VDDA booster */
-  SET_BIT(PWR->PMCR, PWR_PMCR_BOOSTE);
+	/* Enable VDDA booster */
+	SET_BIT(PWR->PMCR, PWR_PMCR_BOOSTE);
 }
 
 /**
@@ -512,11 +496,11 @@ void HAL_PWREx_EnableAnalogBooster(void)
   */
 void HAL_PWREx_DisableAnalogBooster(void)
 {
-  /* Disable VDDA booster */
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_BOOSTE);
+	/* Disable VDDA booster */
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_BOOSTE);
 
-  /* Disable the Analog voltage */
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_AVD_READY);
+	/* Disable the Analog voltage */
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_AVD_READY);
 }
 
 /**
@@ -527,25 +511,23 @@ void HAL_PWREx_DisableAnalogBooster(void)
   */
 void HAL_PWREx_PVD_AVD_IRQHandler(void)
 {
-  /* Check PWR PVD AVD EXTI Rising flag */
-  if (__HAL_PWR_PVD_AVD_EXTI_GET_RISING_FLAG() != 0U)
-  {
-    /* Clear PWR PVD AVD EXTI Rising pending bit */
-    WRITE_REG(EXTI->RPR1, PWR_EXTI_LINE_AVD);
+	/* Check PWR PVD AVD EXTI Rising flag */
+	if (__HAL_PWR_PVD_AVD_EXTI_GET_RISING_FLAG() != 0U) {
+		/* Clear PWR PVD AVD EXTI Rising pending bit */
+		WRITE_REG(EXTI->RPR1, PWR_EXTI_LINE_AVD);
 
-    /* PWR PVD AVD Rising interrupt user callback */
-    HAL_PWREx_PVD_AVD_Rising_Callback();
-  }
+		/* PWR PVD AVD Rising interrupt user callback */
+		HAL_PWREx_PVD_AVD_Rising_Callback();
+	}
 
-  /* Check PWR PVD AVD EXTI Falling flag */
-  if (__HAL_PWR_PVD_AVD_EXTI_GET_FALLING_FLAG() != 0U)
-  {
-    /* Clear PWR PVD AVD EXTI Falling pending bit */
-    WRITE_REG(EXTI->FPR1, PWR_EXTI_LINE_AVD);
+	/* Check PWR PVD AVD EXTI Falling flag */
+	if (__HAL_PWR_PVD_AVD_EXTI_GET_FALLING_FLAG() != 0U) {
+		/* Clear PWR PVD AVD EXTI Falling pending bit */
+		WRITE_REG(EXTI->FPR1, PWR_EXTI_LINE_AVD);
 
-    /* PWR PVD AVD Falling interrupt user callback */
-    HAL_PWREx_PVD_AVD_Falling_Callback();
-  }
+		/* PWR PVD AVD Falling interrupt user callback */
+		HAL_PWREx_PVD_AVD_Falling_Callback();
+	}
 }
 
 /**
@@ -554,9 +536,9 @@ void HAL_PWREx_PVD_AVD_IRQHandler(void)
   */
 __weak void HAL_PWREx_PVD_AVD_Rising_Callback(void)
 {
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_PWR_AVDCallback can be implemented in the user file
-  */
+	/* NOTE : This function should not be modified, when the callback is needed,
+	          the HAL_PWR_AVDCallback can be implemented in the user file
+	*/
 }
 
 /**
@@ -565,9 +547,9 @@ __weak void HAL_PWREx_PVD_AVD_Rising_Callback(void)
   */
 __weak void HAL_PWREx_PVD_AVD_Falling_Callback(void)
 {
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_PWR_AVDCallback can be implemented in the user file
-  */
+	/* NOTE : This function should not be modified, when the callback is needed,
+	          the HAL_PWR_AVDCallback can be implemented in the user file
+	*/
 }
 /**
   * @}
@@ -594,27 +576,27 @@ __weak void HAL_PWREx_PVD_AVD_Falling_Callback(void)
   */
 void HAL_PWREx_EnableWakeUpPin(const PWREx_WakeupPinTypeDef *sPinParams)
 {
-  uint32_t pinConfig;
-  uint32_t regMask;
-  const uint32_t pullMask = PWR_WUCR_WUPPUPD1;
+	uint32_t pinConfig;
+	uint32_t regMask;
+	const uint32_t pullMask = PWR_WUCR_WUPPUPD1;
 
-  /* Check the parameters */
-  assert_param(IS_PWR_WAKEUP_PIN(sPinParams->WakeUpPin));
-  assert_param(IS_PWR_WAKEUP_PIN_POLARITY(sPinParams->PinPolarity));
-  assert_param(IS_PWR_WAKEUP_PIN_PULL(sPinParams->PinPull));
+	/* Check the parameters */
+	assert_param(IS_PWR_WAKEUP_PIN(sPinParams->WakeUpPin));
+	assert_param(IS_PWR_WAKEUP_PIN_POLARITY(sPinParams->PinPolarity));
+	assert_param(IS_PWR_WAKEUP_PIN_PULL(sPinParams->PinPull));
 
-  pinConfig = sPinParams->WakeUpPin | \
-              (sPinParams->PinPolarity << ((POSITION_VAL(sPinParams->WakeUpPin) + PWR_WUCR_WUPP1_Pos) & 0x1FU)) | \
-              (sPinParams->PinPull << (((POSITION_VAL(sPinParams->WakeUpPin) * PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET) \
-                                        + PWR_WUCR_WUPPUPD1_Pos) & 0x1FU));
+	pinConfig = sPinParams->WakeUpPin | \
+		    (sPinParams->PinPolarity << ((POSITION_VAL(sPinParams->WakeUpPin) + PWR_WUCR_WUPP1_Pos) & 0x1FU)) | \
+		    (sPinParams->PinPull << (((POSITION_VAL(sPinParams->WakeUpPin) * PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET) \
+					      + PWR_WUCR_WUPPUPD1_Pos) & 0x1FU));
 
-  regMask   = sPinParams->WakeUpPin | \
-              (PWR_WUCR_WUPP1 << (POSITION_VAL(sPinParams->WakeUpPin) & 0x1FU)) | \
-              (pullMask << ((POSITION_VAL(sPinParams->WakeUpPin) * PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET) & 0x1FU));
+	regMask   = sPinParams->WakeUpPin | \
+		    (PWR_WUCR_WUPP1 << (POSITION_VAL(sPinParams->WakeUpPin) & 0x1FU)) | \
+		    (pullMask << ((POSITION_VAL(sPinParams->WakeUpPin) * PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET) & 0x1FU));
 
-  /* Enable and Specify the Wake-Up pin polarity and the pull configuration
-     for the event detection (rising or falling edge) */
-  MODIFY_REG(PWR->WUCR, regMask, pinConfig);
+	/* Enable and Specify the Wake-Up pin polarity and the pull configuration
+	   for the event detection (rising or falling edge) */
+	MODIFY_REG(PWR->WUCR, regMask, pinConfig);
 }
 
 /**
@@ -635,11 +617,11 @@ void HAL_PWREx_EnableWakeUpPin(const PWREx_WakeupPinTypeDef *sPinParams)
   */
 void HAL_PWREx_DisableWakeUpPin(uint32_t WakeUpPinx)
 {
-  /* Check the parameter */
-  assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));
+	/* Check the parameter */
+	assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));
 
-  /* Disable the WakeUpPin */
-  CLEAR_BIT(PWR->WUCR, (PWR_WUCR_WUPEN & WakeUpPinx));
+	/* Disable the WakeUpPin */
+	CLEAR_BIT(PWR->WUCR, (PWR_WUCR_WUPEN & WakeUpPinx));
 }
 
 /**
@@ -668,8 +650,8 @@ void HAL_PWREx_DisableWakeUpPin(uint32_t WakeUpPinx)
   */
 void HAL_PWREx_EnableFlashPowerDown(void)
 {
-  /* Enable the Flash Power Down */
-  SET_BIT(PWR->PMCR, PWR_PMCR_FLPS);
+	/* Enable the Flash Power Down */
+	SET_BIT(PWR->PMCR, PWR_PMCR_FLPS);
 }
 
 /**
@@ -682,8 +664,8 @@ void HAL_PWREx_EnableFlashPowerDown(void)
   */
 void HAL_PWREx_DisableFlashPowerDown(void)
 {
-  /* Disable the Flash Power Down */
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_FLPS);
+	/* Disable the Flash Power Down */
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_FLPS);
 }
 
 /**
@@ -739,11 +721,11 @@ void HAL_PWREx_DisableFlashPowerDown(void)
   */
 void HAL_PWREx_EnableMemoryShutOff(uint32_t MemoryBlock)
 {
-  /* Check the parameter */
-  assert_param(IS_PWR_MEMORY_BLOCK(MemoryBlock));
+	/* Check the parameter */
+	assert_param(IS_PWR_MEMORY_BLOCK(MemoryBlock));
 
-  /* Enable memory block shut-off */
-  SET_BIT(PWR->PMCR, MemoryBlock);
+	/* Enable memory block shut-off */
+	SET_BIT(PWR->PMCR, MemoryBlock);
 }
 
 /**
@@ -795,11 +777,11 @@ void HAL_PWREx_EnableMemoryShutOff(uint32_t MemoryBlock)
   */
 void HAL_PWREx_DisableMemoryShutOff(uint32_t MemoryBlock)
 {
-  /* Check the parameter */
-  assert_param(IS_PWR_MEMORY_BLOCK(MemoryBlock));
+	/* Check the parameter */
+	assert_param(IS_PWR_MEMORY_BLOCK(MemoryBlock));
 
-  /* Disable memory block shut-off */
-  CLEAR_BIT(PWR->PMCR, MemoryBlock);
+	/* Disable memory block shut-off */
+	CLEAR_BIT(PWR->PMCR, MemoryBlock);
 }
 
 /**
@@ -811,9 +793,9 @@ void HAL_PWREx_DisableMemoryShutOff(uint32_t MemoryBlock)
   */
 HAL_StatusTypeDef HAL_PWREx_EnableBkupRAMRetention(void)
 {
-  SET_BIT(PWR->BDCR, PWR_BDCR_BREN);
+	SET_BIT(PWR->BDCR, PWR_BDCR_BREN);
 
-  return HAL_OK;
+	return HAL_OK;
 }
 
 /**
@@ -825,7 +807,7 @@ HAL_StatusTypeDef HAL_PWREx_EnableBkupRAMRetention(void)
   */
 void HAL_PWREx_DisableBkupRAMRetention(void)
 {
-  CLEAR_BIT(PWR->BDCR, PWR_BDCR_BREN);
+	CLEAR_BIT(PWR->BDCR, PWR_BDCR_BREN);
 }
 /**
   * @}
@@ -860,8 +842,8 @@ void HAL_PWREx_DisableBkupRAMRetention(void)
   */
 void HAL_PWREx_EnableStandbyIORetention(void)
 {
-  /* Enable GPIO state retention */
-  SET_BIT(PWR->IORETR, PWR_IORETR_IORETEN);
+	/* Enable GPIO state retention */
+	SET_BIT(PWR->IORETR, PWR_IORETR_IORETEN);
 }
 
 /**
@@ -870,8 +852,8 @@ void HAL_PWREx_EnableStandbyIORetention(void)
   */
 void HAL_PWREx_DisableStandbyIORetention(void)
 {
-  /* Disable GPIO state retention */
-  CLEAR_BIT(PWR->IORETR, PWR_IORETR_IORETEN);
+	/* Disable GPIO state retention */
+	CLEAR_BIT(PWR->IORETR, PWR_IORETR_IORETEN);
 }
 
 /**
@@ -882,8 +864,8 @@ void HAL_PWREx_DisableStandbyIORetention(void)
   */
 void HAL_PWREx_EnableStandbyJTAGIORetention(void)
 {
-  /* Enable JTAG IOs state retention */
-  SET_BIT(PWR->IORETR, PWR_IORETR_JTAGIORETEN);
+	/* Enable JTAG IOs state retention */
+	SET_BIT(PWR->IORETR, PWR_IORETR_JTAGIORETEN);
 }
 
 /**
@@ -892,8 +874,8 @@ void HAL_PWREx_EnableStandbyJTAGIORetention(void)
   */
 void HAL_PWREx_DisableStandbyJTAGIORetention(void)
 {
-  /* Enable JTAG IOs state retention */
-  CLEAR_BIT(PWR->IORETR, PWR_IORETR_JTAGIORETEN);
+	/* Enable JTAG IOs state retention */
+	CLEAR_BIT(PWR->IORETR, PWR_IORETR_JTAGIORETEN);
 }
 
 /**

@@ -50,19 +50,18 @@ extern "C" {
 /**
   * @brief  LL ICACHE region configuration structure definition
   */
-typedef struct
-{
-  uint32_t BaseAddress;              /*!< Configures the C-AHB base address to be remapped */
+typedef struct {
+	uint32_t BaseAddress;              /*!< Configures the C-AHB base address to be remapped */
 
-  uint32_t RemapAddress;             /*!< Configures the remap address to be remapped */
+	uint32_t RemapAddress;             /*!< Configures the remap address to be remapped */
 
-  uint32_t Size;                     /*!< Configures the region size.
+	uint32_t Size;                     /*!< Configures the region size.
                                           This parameter can be a value of @ref ICACHE_LL_EC_Region_Size */
 
-  uint32_t TrafficRoute;             /*!< Selects the traffic route.
+	uint32_t TrafficRoute;             /*!< Selects the traffic route.
                                           This parameter can be a value of @ref ICACHE_LL_EC_Traffic_Route */
 
-  uint32_t OutputBurstType;          /*!< Selects the output burst type.
+	uint32_t OutputBurstType;          /*!< Selects the output burst type.
                                           This parameter can be a value of @ref ICACHE_LL_EC_Output_Burst_Type */
 } LL_ICACHE_RegionTypeDef;
 
@@ -222,7 +221,7 @@ typedef struct
   */
 __STATIC_INLINE void LL_ICACHE_Enable(void)
 {
-  SET_BIT(ICACHE->CR, ICACHE_CR_EN);
+	SET_BIT(ICACHE->CR, ICACHE_CR_EN);
 }
 
 /**
@@ -232,7 +231,7 @@ __STATIC_INLINE void LL_ICACHE_Enable(void)
   */
 __STATIC_INLINE void LL_ICACHE_Disable(void)
 {
-  CLEAR_BIT(ICACHE->CR, ICACHE_CR_EN);
+	CLEAR_BIT(ICACHE->CR, ICACHE_CR_EN);
 }
 
 /**
@@ -242,7 +241,7 @@ __STATIC_INLINE void LL_ICACHE_Disable(void)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_IsEnabled(void)
 {
-  return ((READ_BIT(ICACHE->CR, ICACHE_CR_EN) == (ICACHE_CR_EN)) ? 1UL : 0UL);
+	return ((READ_BIT(ICACHE->CR, ICACHE_CR_EN) == (ICACHE_CR_EN)) ? 1UL : 0UL);
 }
 
 /**
@@ -255,7 +254,7 @@ __STATIC_INLINE uint32_t LL_ICACHE_IsEnabled(void)
   */
 __STATIC_INLINE void LL_ICACHE_SetMode(uint32_t Mode)
 {
-  MODIFY_REG(ICACHE->CR, ICACHE_CR_WAYSEL, Mode);
+	MODIFY_REG(ICACHE->CR, ICACHE_CR_WAYSEL, Mode);
 }
 
 /**
@@ -267,7 +266,7 @@ __STATIC_INLINE void LL_ICACHE_SetMode(uint32_t Mode)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_GetMode(void)
 {
-  return (READ_BIT(ICACHE->CR, ICACHE_CR_WAYSEL));
+	return (READ_BIT(ICACHE->CR, ICACHE_CR_WAYSEL));
 }
 
 /**
@@ -278,7 +277,7 @@ __STATIC_INLINE uint32_t LL_ICACHE_GetMode(void)
   */
 __STATIC_INLINE void LL_ICACHE_Invalidate(void)
 {
-  SET_BIT(ICACHE->CR, ICACHE_CR_CACHEINV);
+	SET_BIT(ICACHE->CR, ICACHE_CR_CACHEINV);
 }
 
 /**
@@ -301,7 +300,7 @@ __STATIC_INLINE void LL_ICACHE_Invalidate(void)
   */
 __STATIC_INLINE void LL_ICACHE_EnableMonitors(uint32_t Monitors)
 {
-  SET_BIT(ICACHE->CR, Monitors);
+	SET_BIT(ICACHE->CR, Monitors);
 }
 
 /**
@@ -316,7 +315,7 @@ __STATIC_INLINE void LL_ICACHE_EnableMonitors(uint32_t Monitors)
   */
 __STATIC_INLINE void LL_ICACHE_DisableMonitors(uint32_t Monitors)
 {
-  CLEAR_BIT(ICACHE->CR, Monitors);
+	CLEAR_BIT(ICACHE->CR, Monitors);
 }
 
 /**
@@ -331,7 +330,7 @@ __STATIC_INLINE void LL_ICACHE_DisableMonitors(uint32_t Monitors)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_IsEnabledMonitors(uint32_t Monitors)
 {
-  return ((READ_BIT(ICACHE->CR, Monitors) == (Monitors)) ? 1UL : 0UL);
+	return ((READ_BIT(ICACHE->CR, Monitors) == (Monitors)) ? 1UL : 0UL);
 }
 
 /**
@@ -346,10 +345,10 @@ __STATIC_INLINE uint32_t LL_ICACHE_IsEnabledMonitors(uint32_t Monitors)
   */
 __STATIC_INLINE void LL_ICACHE_ResetMonitors(uint32_t Monitors)
 {
-  /* Reset */
-  SET_BIT(ICACHE->CR, (Monitors << 2U));
-  /* Release reset */
-  CLEAR_BIT(ICACHE->CR, (Monitors << 2U));
+	/* Reset */
+	SET_BIT(ICACHE->CR, (Monitors << 2U));
+	/* Release reset */
+	CLEAR_BIT(ICACHE->CR, (Monitors << 2U));
 }
 
 /**
@@ -360,7 +359,7 @@ __STATIC_INLINE void LL_ICACHE_ResetMonitors(uint32_t Monitors)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_GetHitMonitor(void)
 {
-  return (ICACHE->HMONR);
+	return (ICACHE->HMONR);
 }
 
 /**
@@ -371,7 +370,7 @@ __STATIC_INLINE uint32_t LL_ICACHE_GetHitMonitor(void)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_GetMissMonitor(void)
 {
-  return (ICACHE->MMONR);
+	return (ICACHE->MMONR);
 }
 
 /**
@@ -389,7 +388,7 @@ __STATIC_INLINE uint32_t LL_ICACHE_GetMissMonitor(void)
   */
 __STATIC_INLINE void LL_ICACHE_EnableIT_BSYEND(void)
 {
-  SET_BIT(ICACHE->IER, ICACHE_IER_BSYENDIE);
+	SET_BIT(ICACHE->IER, ICACHE_IER_BSYENDIE);
 }
 
 /**
@@ -399,7 +398,7 @@ __STATIC_INLINE void LL_ICACHE_EnableIT_BSYEND(void)
   */
 __STATIC_INLINE void LL_ICACHE_DisableIT_BSYEND(void)
 {
-  CLEAR_BIT(ICACHE->IER, ICACHE_IER_BSYENDIE);
+	CLEAR_BIT(ICACHE->IER, ICACHE_IER_BSYENDIE);
 }
 
 /**
@@ -409,7 +408,7 @@ __STATIC_INLINE void LL_ICACHE_DisableIT_BSYEND(void)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_IsEnabledIT_BSYEND(void)
 {
-  return ((READ_BIT(ICACHE->IER, ICACHE_IER_BSYENDIE) == (ICACHE_IER_BSYENDIE)) ? 1UL : 0UL);
+	return ((READ_BIT(ICACHE->IER, ICACHE_IER_BSYENDIE) == (ICACHE_IER_BSYENDIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -419,7 +418,7 @@ __STATIC_INLINE uint32_t LL_ICACHE_IsEnabledIT_BSYEND(void)
   */
 __STATIC_INLINE void LL_ICACHE_EnableIT_ERR(void)
 {
-  SET_BIT(ICACHE->IER, ICACHE_IER_ERRIE);
+	SET_BIT(ICACHE->IER, ICACHE_IER_ERRIE);
 }
 
 /**
@@ -429,7 +428,7 @@ __STATIC_INLINE void LL_ICACHE_EnableIT_ERR(void)
   */
 __STATIC_INLINE void LL_ICACHE_DisableIT_ERR(void)
 {
-  CLEAR_BIT(ICACHE->IER, ICACHE_IER_ERRIE);
+	CLEAR_BIT(ICACHE->IER, ICACHE_IER_ERRIE);
 }
 
 /**
@@ -439,7 +438,7 @@ __STATIC_INLINE void LL_ICACHE_DisableIT_ERR(void)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_IsEnabledIT_ERR(void)
 {
-  return ((READ_BIT(ICACHE->IER, ICACHE_IER_ERRIE) == (ICACHE_IER_ERRIE)) ? 1UL : 0UL);
+	return ((READ_BIT(ICACHE->IER, ICACHE_IER_ERRIE) == (ICACHE_IER_ERRIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -457,7 +456,7 @@ __STATIC_INLINE uint32_t LL_ICACHE_IsEnabledIT_ERR(void)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_IsActiveFlag_BUSY(void)
 {
-  return ((READ_BIT(ICACHE->SR, ICACHE_SR_BUSYF) == (ICACHE_SR_BUSYF)) ? 1UL : 0UL);
+	return ((READ_BIT(ICACHE->SR, ICACHE_SR_BUSYF) == (ICACHE_SR_BUSYF)) ? 1UL : 0UL);
 }
 
 /**
@@ -467,7 +466,7 @@ __STATIC_INLINE uint32_t LL_ICACHE_IsActiveFlag_BUSY(void)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_IsActiveFlag_BSYEND(void)
 {
-  return ((READ_BIT(ICACHE->SR, ICACHE_SR_BSYENDF) == (ICACHE_SR_BSYENDF)) ? 1UL : 0UL);
+	return ((READ_BIT(ICACHE->SR, ICACHE_SR_BSYENDF) == (ICACHE_SR_BSYENDF)) ? 1UL : 0UL);
 }
 
 /**
@@ -477,7 +476,7 @@ __STATIC_INLINE uint32_t LL_ICACHE_IsActiveFlag_BSYEND(void)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_IsActiveFlag_ERR(void)
 {
-  return ((READ_BIT(ICACHE->SR, ICACHE_SR_ERRF) == (ICACHE_SR_ERRF)) ? 1UL : 0UL);
+	return ((READ_BIT(ICACHE->SR, ICACHE_SR_ERRF) == (ICACHE_SR_ERRF)) ? 1UL : 0UL);
 }
 
 /**
@@ -487,7 +486,7 @@ __STATIC_INLINE uint32_t LL_ICACHE_IsActiveFlag_ERR(void)
   */
 __STATIC_INLINE void LL_ICACHE_ClearFlag_BSYEND(void)
 {
-  WRITE_REG(ICACHE->FCR, ICACHE_FCR_CBSYENDF);
+	WRITE_REG(ICACHE->FCR, ICACHE_FCR_CBSYENDF);
 }
 
 /**
@@ -497,7 +496,7 @@ __STATIC_INLINE void LL_ICACHE_ClearFlag_BSYEND(void)
   */
 __STATIC_INLINE void LL_ICACHE_ClearFlag_ERR(void)
 {
-  WRITE_REG(ICACHE->FCR, ICACHE_FCR_CERRF);
+	WRITE_REG(ICACHE->FCR, ICACHE_FCR_CERRF);
 }
 
 /**
@@ -522,8 +521,8 @@ __STATIC_INLINE void LL_ICACHE_ClearFlag_ERR(void)
   */
 __STATIC_INLINE void LL_ICACHE_EnableRegion(uint32_t Region)
 {
-  SET_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-          ICACHE_CRRx_REN);
+	SET_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+		ICACHE_CRRx_REN);
 }
 
 /**
@@ -538,8 +537,8 @@ __STATIC_INLINE void LL_ICACHE_EnableRegion(uint32_t Region)
   */
 __STATIC_INLINE void LL_ICACHE_DisableRegion(uint32_t Region)
 {
-  CLEAR_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-            ICACHE_CRRx_REN);
+	CLEAR_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+		  ICACHE_CRRx_REN);
 }
 
 /**
@@ -554,8 +553,8 @@ __STATIC_INLINE void LL_ICACHE_DisableRegion(uint32_t Region)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_IsEnabledRegion(uint32_t Region)
 {
-  return ((READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-                    ICACHE_CRRx_REN) == (ICACHE_CRRx_REN)) ? 1UL : 0UL);
+	return ((READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+			  ICACHE_CRRx_REN) == (ICACHE_CRRx_REN)) ? 1UL : 0UL);
 }
 
 /**
@@ -572,8 +571,8 @@ __STATIC_INLINE uint32_t LL_ICACHE_IsEnabledRegion(uint32_t Region)
   */
 __STATIC_INLINE void LL_ICACHE_SetRegionBaseAddress(uint32_t Region, uint32_t Address)
 {
-  MODIFY_REG(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-             ICACHE_CRRx_BASEADDR, ((Address & 0x1FFFFFFFU) >> 21U));
+	MODIFY_REG(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+		   ICACHE_CRRx_BASEADDR, ((Address & 0x1FFFFFFFU) >> 21U));
 }
 
 /**
@@ -590,8 +589,8 @@ __STATIC_INLINE void LL_ICACHE_SetRegionBaseAddress(uint32_t Region, uint32_t Ad
   */
 __STATIC_INLINE uint32_t LL_ICACHE_GetRegionBaseAddress(uint32_t Region)
 {
-  return (READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-                   ICACHE_CRRx_BASEADDR) << 21U);
+	return (READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+			 ICACHE_CRRx_BASEADDR) << 21U);
 }
 
 /**
@@ -608,8 +607,8 @@ __STATIC_INLINE uint32_t LL_ICACHE_GetRegionBaseAddress(uint32_t Region)
   */
 __STATIC_INLINE void LL_ICACHE_SetRegionRemapAddress(uint32_t Region, uint32_t Address)
 {
-  MODIFY_REG(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-             ICACHE_CRRx_REMAPADDR, ((Address >> 21U) << ICACHE_CRRx_REMAPADDR_Pos));
+	MODIFY_REG(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+		   ICACHE_CRRx_REMAPADDR, ((Address >> 21U) << ICACHE_CRRx_REMAPADDR_Pos));
 }
 
 /**
@@ -625,8 +624,8 @@ __STATIC_INLINE void LL_ICACHE_SetRegionRemapAddress(uint32_t Region, uint32_t A
   */
 __STATIC_INLINE uint32_t LL_ICACHE_GetRegionRemapAddress(uint32_t Region)
 {
-  return ((READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-                    ICACHE_CRRx_REMAPADDR) >> ICACHE_CRRx_REMAPADDR_Pos) << 21U);
+	return ((READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+			  ICACHE_CRRx_REMAPADDR) >> ICACHE_CRRx_REMAPADDR_Pos) << 21U);
 }
 
 /**
@@ -649,8 +648,8 @@ __STATIC_INLINE uint32_t LL_ICACHE_GetRegionRemapAddress(uint32_t Region)
   */
 __STATIC_INLINE void LL_ICACHE_SetRegionSize(uint32_t Region, uint32_t Size)
 {
-  MODIFY_REG(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-             ICACHE_CRRx_RSIZE, (Size << ICACHE_CRRx_RSIZE_Pos));
+	MODIFY_REG(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+		   ICACHE_CRRx_RSIZE, (Size << ICACHE_CRRx_RSIZE_Pos));
 }
 
 /**
@@ -672,8 +671,8 @@ __STATIC_INLINE void LL_ICACHE_SetRegionSize(uint32_t Region, uint32_t Size)
   */
 __STATIC_INLINE uint32_t LL_ICACHE_GetRegionSize(uint32_t Region)
 {
-  return (READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-                   ICACHE_CRRx_RSIZE) >> ICACHE_CRRx_RSIZE_Pos);
+	return (READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+			 ICACHE_CRRx_RSIZE) >> ICACHE_CRRx_RSIZE_Pos);
 }
 
 /**
@@ -691,8 +690,8 @@ __STATIC_INLINE uint32_t LL_ICACHE_GetRegionSize(uint32_t Region)
   */
 __STATIC_INLINE void LL_ICACHE_SetRegionOutputBurstType(uint32_t Region, uint32_t Type)
 {
-  MODIFY_REG(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-             ICACHE_CRRx_HBURST, Type);
+	MODIFY_REG(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+		   ICACHE_CRRx_HBURST, Type);
 }
 
 /**
@@ -709,8 +708,8 @@ __STATIC_INLINE void LL_ICACHE_SetRegionOutputBurstType(uint32_t Region, uint32_
   */
 __STATIC_INLINE uint32_t LL_ICACHE_GetRegionOutputBurstType(uint32_t Region)
 {
-  return (READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-                   ICACHE_CRRx_HBURST));
+	return (READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+			 ICACHE_CRRx_HBURST));
 }
 
 /**
@@ -728,8 +727,8 @@ __STATIC_INLINE uint32_t LL_ICACHE_GetRegionOutputBurstType(uint32_t Region)
   */
 __STATIC_INLINE void LL_ICACHE_SetRegionMasterPort(uint32_t Region, uint32_t Port)
 {
-  MODIFY_REG(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-             ICACHE_CRRx_MSTSEL, Port);
+	MODIFY_REG(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+		   ICACHE_CRRx_MSTSEL, Port);
 }
 
 /**
@@ -746,8 +745,8 @@ __STATIC_INLINE void LL_ICACHE_SetRegionMasterPort(uint32_t Region, uint32_t Por
   */
 __STATIC_INLINE uint32_t LL_ICACHE_GetRegionMasterPort(uint32_t Region)
 {
-  return (READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
-                   ICACHE_CRRx_MSTSEL));
+	return (READ_BIT(*((__IO uint32_t *)(&(ICACHE->CRR0) + (1U * Region))), \
+			 ICACHE_CRRx_MSTSEL));
 }
 
 /**

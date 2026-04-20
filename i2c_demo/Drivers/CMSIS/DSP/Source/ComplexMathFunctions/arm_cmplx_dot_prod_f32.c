@@ -77,261 +77,259 @@
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 void arm_cmplx_dot_prod_f32(
-    const float32_t * pSrcA,
-    const float32_t * pSrcB,
-    uint32_t numSamples,
-    float32_t * realResult,
-    float32_t * imagResult)
+	const float32_t *pSrcA,
+	const float32_t *pSrcB,
+	uint32_t numSamples,
+	float32_t *realResult,
+	float32_t *imagResult)
 {
-    int32_t         blkCnt;
-    float32_t       real_sum, imag_sum;
-    f32x4_t         vecSrcA, vecSrcB;
-    f32x4_t         vec_acc = vdupq_n_f32(0.0f);
-    f32x4_t         vecSrcC, vecSrcD;
+	int32_t         blkCnt;
+	float32_t       real_sum, imag_sum;
+	f32x4_t         vecSrcA, vecSrcB;
+	f32x4_t         vec_acc = vdupq_n_f32(0.0f);
+	f32x4_t         vecSrcC, vecSrcD;
 
-    blkCnt = numSamples >> 2;
-    blkCnt -= 1;
-    if (blkCnt > 0) {
-        /* should give more freedom to generate stall free code */
-        vecSrcA = vld1q(pSrcA);
-        vecSrcB = vld1q(pSrcB);
-        pSrcA += 4;
-        pSrcB += 4;
+	blkCnt = numSamples >> 2;
+	blkCnt -= 1;
 
-        while (blkCnt > 0) {
-            vec_acc = vcmlaq(vec_acc, vecSrcA, vecSrcB);
-            vecSrcC = vld1q(pSrcA);
-            pSrcA += 4;
+	if (blkCnt > 0) {
+		/* should give more freedom to generate stall free code */
+		vecSrcA = vld1q(pSrcA);
+		vecSrcB = vld1q(pSrcB);
+		pSrcA += 4;
+		pSrcB += 4;
 
-            vec_acc = vcmlaq_rot90(vec_acc, vecSrcA, vecSrcB);
-            vecSrcD = vld1q(pSrcB);
-            pSrcB += 4;
+		while (blkCnt > 0) {
+			vec_acc = vcmlaq(vec_acc, vecSrcA, vecSrcB);
+			vecSrcC = vld1q(pSrcA);
+			pSrcA += 4;
 
-            vec_acc = vcmlaq(vec_acc, vecSrcC, vecSrcD);
-            vecSrcA = vld1q(pSrcA);
-            pSrcA += 4;
+			vec_acc = vcmlaq_rot90(vec_acc, vecSrcA, vecSrcB);
+			vecSrcD = vld1q(pSrcB);
+			pSrcB += 4;
 
-            vec_acc = vcmlaq_rot90(vec_acc, vecSrcC, vecSrcD);
-            vecSrcB = vld1q(pSrcB);
-            pSrcB += 4;
-            /*
-             * Decrement the blockSize loop counter
-             */
-            blkCnt--;
-        }
+			vec_acc = vcmlaq(vec_acc, vecSrcC, vecSrcD);
+			vecSrcA = vld1q(pSrcA);
+			pSrcA += 4;
 
-         /* process last elements out of the loop avoid the armclang breaking the SW pipeline */
-        vec_acc = vcmlaq(vec_acc, vecSrcA, vecSrcB);
-        vecSrcC = vld1q(pSrcA);
+			vec_acc = vcmlaq_rot90(vec_acc, vecSrcC, vecSrcD);
+			vecSrcB = vld1q(pSrcB);
+			pSrcB += 4;
+			/*
+			 * Decrement the blockSize loop counter
+			 */
+			blkCnt--;
+		}
 
-        vec_acc = vcmlaq_rot90(vec_acc, vecSrcA, vecSrcB);
-        vecSrcD = vld1q(pSrcB);
+		/* process last elements out of the loop avoid the armclang breaking the SW pipeline */
+		vec_acc = vcmlaq(vec_acc, vecSrcA, vecSrcB);
+		vecSrcC = vld1q(pSrcA);
 
-        vec_acc = vcmlaq(vec_acc, vecSrcC, vecSrcD);
-        vec_acc = vcmlaq_rot90(vec_acc, vecSrcC, vecSrcD);
+		vec_acc = vcmlaq_rot90(vec_acc, vecSrcA, vecSrcB);
+		vecSrcD = vld1q(pSrcB);
 
-        /*
-         * tail
-         */
-        blkCnt = CMPLX_DIM * (numSamples & 3);
-        while (blkCnt > 0) {
-            mve_pred16_t    p = vctp32q(blkCnt);
-            pSrcA += 4;
-            pSrcB += 4;
-            vecSrcA = vldrwq_z_f32(pSrcA, p);
-            vecSrcB = vldrwq_z_f32(pSrcB, p);
-            vec_acc = vcmlaq_m(vec_acc, vecSrcA, vecSrcB, p);
-            vec_acc = vcmlaq_rot90_m(vec_acc, vecSrcA, vecSrcB, p);
-            blkCnt -= 4;
-        }
-    } else {
-        /* small vector */
-        blkCnt = numSamples * CMPLX_DIM;
-        vec_acc = vdupq_n_f32(0.0f);
+		vec_acc = vcmlaq(vec_acc, vecSrcC, vecSrcD);
+		vec_acc = vcmlaq_rot90(vec_acc, vecSrcC, vecSrcD);
 
-        do {
-            mve_pred16_t    p = vctp32q(blkCnt);
+		/*
+		 * tail
+		 */
+		blkCnt = CMPLX_DIM * (numSamples & 3);
 
-            vecSrcA = vldrwq_z_f32(pSrcA, p);
-            vecSrcB = vldrwq_z_f32(pSrcB, p);
+		while (blkCnt > 0) {
+			mve_pred16_t    p = vctp32q(blkCnt);
+			pSrcA += 4;
+			pSrcB += 4;
+			vecSrcA = vldrwq_z_f32(pSrcA, p);
+			vecSrcB = vldrwq_z_f32(pSrcB, p);
+			vec_acc = vcmlaq_m(vec_acc, vecSrcA, vecSrcB, p);
+			vec_acc = vcmlaq_rot90_m(vec_acc, vecSrcA, vecSrcB, p);
+			blkCnt -= 4;
+		}
+	} else {
+		/* small vector */
+		blkCnt = numSamples * CMPLX_DIM;
+		vec_acc = vdupq_n_f32(0.0f);
 
-            vec_acc = vcmlaq_m(vec_acc, vecSrcA, vecSrcB, p);
-            vec_acc = vcmlaq_rot90_m(vec_acc, vecSrcA, vecSrcB, p);
+		do {
+			mve_pred16_t    p = vctp32q(blkCnt);
 
-            /*
-             * Decrement the blkCnt loop counter
-             * Advance vector source and destination pointers
-             */
-            pSrcA += 4;
-            pSrcB += 4;
-            blkCnt -= 4;
-        }
-        while (blkCnt > 0);
-    }
+			vecSrcA = vldrwq_z_f32(pSrcA, p);
+			vecSrcB = vldrwq_z_f32(pSrcB, p);
 
-    real_sum = vgetq_lane(vec_acc, 0) + vgetq_lane(vec_acc, 2);
-    imag_sum = vgetq_lane(vec_acc, 1) + vgetq_lane(vec_acc, 3);
+			vec_acc = vcmlaq_m(vec_acc, vecSrcA, vecSrcB, p);
+			vec_acc = vcmlaq_rot90_m(vec_acc, vecSrcA, vecSrcB, p);
 
-    /*
-     * Store the real and imaginary results in the destination buffers
-     */
-    *realResult = real_sum;
-    *imagResult = imag_sum;
+			/*
+			 * Decrement the blkCnt loop counter
+			 * Advance vector source and destination pointers
+			 */
+			pSrcA += 4;
+			pSrcB += 4;
+			blkCnt -= 4;
+		} while (blkCnt > 0);
+	}
+
+	real_sum = vgetq_lane(vec_acc, 0) + vgetq_lane(vec_acc, 2);
+	imag_sum = vgetq_lane(vec_acc, 1) + vgetq_lane(vec_acc, 3);
+
+	/*
+	 * Store the real and imaginary results in the destination buffers
+	 */
+	*realResult = real_sum;
+	*imagResult = imag_sum;
 }
 
 #else
 void arm_cmplx_dot_prod_f32(
-  const float32_t * pSrcA,
-  const float32_t * pSrcB,
-        uint32_t numSamples,
-        float32_t * realResult,
-        float32_t * imagResult)
+	const float32_t *pSrcA,
+	const float32_t *pSrcB,
+	uint32_t numSamples,
+	float32_t *realResult,
+	float32_t *imagResult)
 {
-        uint32_t blkCnt;                               /* Loop counter */
-        float32_t real_sum = 0.0f, imag_sum = 0.0f;    /* Temporary result variables */
-        float32_t a0,b0,c0,d0;
+	uint32_t blkCnt;                               /* Loop counter */
+	float32_t real_sum = 0.0f, imag_sum = 0.0f;    /* Temporary result variables */
+	float32_t a0, b0, c0, d0;
 
 #if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
-    float32x4x2_t vec1,vec2,vec3,vec4;
-    float32x4_t accR,accI;
-    float32x2_t accum = vdup_n_f32(0);
+	float32x4x2_t vec1, vec2, vec3, vec4;
+	float32x4_t accR, accI;
+	float32x2_t accum = vdup_n_f32(0);
 
-    accR = vdupq_n_f32(0.0f);
-    accI = vdupq_n_f32(0.0f);
+	accR = vdupq_n_f32(0.0f);
+	accI = vdupq_n_f32(0.0f);
 
-    /* Loop unrolling: Compute 8 outputs at a time */
-    blkCnt = numSamples >> 3U;
+	/* Loop unrolling: Compute 8 outputs at a time */
+	blkCnt = numSamples >> 3U;
 
-    while (blkCnt > 0U)
-    {
-	/* C = (A[0]+jA[1])*(B[0]+jB[1]) + ...  */
-        /* Calculate dot product and then store the result in a temporary buffer. */
+	while (blkCnt > 0U) {
+		/* C = (A[0]+jA[1])*(B[0]+jB[1]) + ...  */
+		/* Calculate dot product and then store the result in a temporary buffer. */
 
-	      vec1 = vld2q_f32(pSrcA);
-        vec2 = vld2q_f32(pSrcB);
+		vec1 = vld2q_f32(pSrcA);
+		vec2 = vld2q_f32(pSrcB);
 
-	/* Increment pointers */
-        pSrcA += 8;
-        pSrcB += 8;
+		/* Increment pointers */
+		pSrcA += 8;
+		pSrcB += 8;
 
-	/* Re{C} = Re{A}*Re{B} - Im{A}*Im{B} */
-        accR = vmlaq_f32(accR,vec1.val[0],vec2.val[0]);
-        accR = vmlsq_f32(accR,vec1.val[1],vec2.val[1]);
+		/* Re{C} = Re{A}*Re{B} - Im{A}*Im{B} */
+		accR = vmlaq_f32(accR, vec1.val[0], vec2.val[0]);
+		accR = vmlsq_f32(accR, vec1.val[1], vec2.val[1]);
 
-	/* Im{C} = Re{A}*Im{B} + Im{A}*Re{B} */
-        accI = vmlaq_f32(accI,vec1.val[1],vec2.val[0]);
-        accI = vmlaq_f32(accI,vec1.val[0],vec2.val[1]);
+		/* Im{C} = Re{A}*Im{B} + Im{A}*Re{B} */
+		accI = vmlaq_f32(accI, vec1.val[1], vec2.val[0]);
+		accI = vmlaq_f32(accI, vec1.val[0], vec2.val[1]);
 
-        vec3 = vld2q_f32(pSrcA);
-        vec4 = vld2q_f32(pSrcB);
-	
-	/* Increment pointers */
-        pSrcA += 8;
-        pSrcB += 8;
+		vec3 = vld2q_f32(pSrcA);
+		vec4 = vld2q_f32(pSrcB);
 
-	/* Re{C} = Re{A}*Re{B} - Im{A}*Im{B} */
-        accR = vmlaq_f32(accR,vec3.val[0],vec4.val[0]);
-        accR = vmlsq_f32(accR,vec3.val[1],vec4.val[1]);
+		/* Increment pointers */
+		pSrcA += 8;
+		pSrcB += 8;
 
-	/* Im{C} = Re{A}*Im{B} + Im{A}*Re{B} */
-        accI = vmlaq_f32(accI,vec3.val[1],vec4.val[0]);
-        accI = vmlaq_f32(accI,vec3.val[0],vec4.val[1]);
+		/* Re{C} = Re{A}*Re{B} - Im{A}*Im{B} */
+		accR = vmlaq_f32(accR, vec3.val[0], vec4.val[0]);
+		accR = vmlsq_f32(accR, vec3.val[1], vec4.val[1]);
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Im{C} = Re{A}*Im{B} + Im{A}*Re{B} */
+		accI = vmlaq_f32(accI, vec3.val[1], vec4.val[0]);
+		accI = vmlaq_f32(accI, vec3.val[0], vec4.val[1]);
 
-    accum = vpadd_f32(vget_low_f32(accR), vget_high_f32(accR));
-    real_sum += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 
-    accum = vpadd_f32(vget_low_f32(accI), vget_high_f32(accI));
-    imag_sum += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+	accum = vpadd_f32(vget_low_f32(accR), vget_high_f32(accR));
+	real_sum += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
-    /* Tail */
-    blkCnt = numSamples & 0x7;
+	accum = vpadd_f32(vget_low_f32(accI), vget_high_f32(accI));
+	imag_sum += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+
+	/* Tail */
+	blkCnt = numSamples & 0x7;
 
 #else
 #if defined (ARM_MATH_LOOPUNROLL) && !defined(ARM_MATH_AUTOVECTORIZE)
 
-  /* Loop unrolling: Compute 4 outputs at a time */
-  blkCnt = numSamples >> 2U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = numSamples >> 2U;
 
-  while (blkCnt > 0U)
-  {
-    a0 = *pSrcA++;
-    b0 = *pSrcA++;
-    c0 = *pSrcB++;
-    d0 = *pSrcB++;
+	while (blkCnt > 0U) {
+		a0 = *pSrcA++;
+		b0 = *pSrcA++;
+		c0 = *pSrcB++;
+		d0 = *pSrcB++;
 
-    real_sum += a0 * c0;
-    imag_sum += a0 * d0;
-    real_sum -= b0 * d0;
-    imag_sum += b0 * c0;
+		real_sum += a0 * c0;
+		imag_sum += a0 * d0;
+		real_sum -= b0 * d0;
+		imag_sum += b0 * c0;
 
-    a0 = *pSrcA++;
-    b0 = *pSrcA++;
-    c0 = *pSrcB++;
-    d0 = *pSrcB++;
+		a0 = *pSrcA++;
+		b0 = *pSrcA++;
+		c0 = *pSrcB++;
+		d0 = *pSrcB++;
 
-    real_sum += a0 * c0;
-    imag_sum += a0 * d0;
-    real_sum -= b0 * d0;
-    imag_sum += b0 * c0;
+		real_sum += a0 * c0;
+		imag_sum += a0 * d0;
+		real_sum -= b0 * d0;
+		imag_sum += b0 * c0;
 
-    a0 = *pSrcA++;
-    b0 = *pSrcA++;
-    c0 = *pSrcB++;
-    d0 = *pSrcB++;
+		a0 = *pSrcA++;
+		b0 = *pSrcA++;
+		c0 = *pSrcB++;
+		d0 = *pSrcB++;
 
-    real_sum += a0 * c0;
-    imag_sum += a0 * d0;
-    real_sum -= b0 * d0;
-    imag_sum += b0 * c0;
+		real_sum += a0 * c0;
+		imag_sum += a0 * d0;
+		real_sum -= b0 * d0;
+		imag_sum += b0 * c0;
 
-    a0 = *pSrcA++;
-    b0 = *pSrcA++;
-    c0 = *pSrcB++;
-    d0 = *pSrcB++;
+		a0 = *pSrcA++;
+		b0 = *pSrcA++;
+		c0 = *pSrcB++;
+		d0 = *pSrcB++;
 
-    real_sum += a0 * c0;
-    imag_sum += a0 * d0;
-    real_sum -= b0 * d0;
-    imag_sum += b0 * c0;
+		real_sum += a0 * c0;
+		imag_sum += a0 * d0;
+		real_sum -= b0 * d0;
+		imag_sum += b0 * c0;
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* Loop unrolling: Compute remaining outputs */
-  blkCnt = numSamples % 0x4U;
+	/* Loop unrolling: Compute remaining outputs */
+	blkCnt = numSamples % 0x4U;
 
 #else
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = numSamples;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = numSamples;
 
 #endif /* #if defined (ARM_MATH_LOOPUNROLL) */
 #endif /* #if defined(ARM_MATH_NEON) */
 
-  while (blkCnt > 0U)
-  {
-    a0 = *pSrcA++;
-    b0 = *pSrcA++;
-    c0 = *pSrcB++;
-    d0 = *pSrcB++;
+	while (blkCnt > 0U) {
+		a0 = *pSrcA++;
+		b0 = *pSrcA++;
+		c0 = *pSrcB++;
+		d0 = *pSrcB++;
 
-    real_sum += a0 * c0;
-    imag_sum += a0 * d0;
-    real_sum -= b0 * d0;
-    imag_sum += b0 * c0;
+		real_sum += a0 * c0;
+		imag_sum += a0 * d0;
+		real_sum -= b0 * d0;
+		imag_sum += b0 * c0;
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* Store real and imaginary result in destination buffer. */
-  *realResult = real_sum;
-  *imagResult = imag_sum;
+	/* Store real and imaginary result in destination buffer. */
+	*realResult = real_sum;
+	*imagResult = imag_sum;
 }
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 

@@ -148,12 +148,11 @@ extern "C" {
  * @brief Struct for specifying activation function types
  *
  */
-typedef enum
-{
-    ARM_SIGMOID = 0,
-    /**< Sigmoid activation function */
-    ARM_TANH = 1,
-    /**< Tanh activation function */
+typedef enum {
+	ARM_SIGMOID = 0,
+	/**< Sigmoid activation function */
+	ARM_TANH = 1,
+	/**< Tanh activation function */
 } arm_nn_activation_type;
 
 /**
@@ -201,16 +200,16 @@ typedef enum
  *
  */
 arm_status arm_convolve_wrapper_s8(const cmsis_nn_context *ctx,
-                                   const cmsis_nn_conv_params *conv_params,
-                                   const cmsis_nn_per_channel_quant_params *quant_params,
-                                   const cmsis_nn_dims *input_dims,
-                                   const q7_t *input_data,
-                                   const cmsis_nn_dims *filter_dims,
-                                   const q7_t *filter_data,
-                                   const cmsis_nn_dims *bias_dims,
-                                   const int32_t *bias_data,
-                                   const cmsis_nn_dims *output_dims,
-                                   q7_t *output_data);
+				   const cmsis_nn_conv_params *conv_params,
+				   const cmsis_nn_per_channel_quant_params *quant_params,
+				   const cmsis_nn_dims *input_dims,
+				   const q7_t *input_data,
+				   const cmsis_nn_dims *filter_dims,
+				   const q7_t *filter_data,
+				   const cmsis_nn_dims *bias_dims,
+				   const int32_t *bias_data,
+				   const cmsis_nn_dims *output_dims,
+				   q7_t *output_data);
 
 /**
  * @brief Get the required buffer size for arm_convolve_wrapper_s8
@@ -227,9 +226,9 @@ arm_status arm_convolve_wrapper_s8(const cmsis_nn_context *ctx,
  *
  */
 int32_t arm_convolve_wrapper_s8_get_buffer_size(const cmsis_nn_conv_params *conv_params,
-                                                const cmsis_nn_dims *input_dims,
-                                                const cmsis_nn_dims *filter_dims,
-                                                const cmsis_nn_dims *output_dims);
+		const cmsis_nn_dims *input_dims,
+		const cmsis_nn_dims *filter_dims,
+		const cmsis_nn_dims *output_dims);
 
 /**
  * @brief s16 convolution layer wrapper function with the main purpose to call the optimal kernel available in
@@ -259,16 +258,16 @@ int32_t arm_convolve_wrapper_s8_get_buffer_size(const cmsis_nn_conv_params *conv
  *
  */
 arm_status arm_convolve_wrapper_s16(const cmsis_nn_context *ctx,
-                                    const cmsis_nn_conv_params *conv_params,
-                                    const cmsis_nn_per_channel_quant_params *quant_params,
-                                    const cmsis_nn_dims *input_dims,
-                                    const q15_t *input_data,
-                                    const cmsis_nn_dims *filter_dims,
-                                    const q7_t *filter_data,
-                                    const cmsis_nn_dims *bias_dims,
-                                    const int64_t *bias_data,
-                                    const cmsis_nn_dims *output_dims,
-                                    q15_t *output_data);
+				    const cmsis_nn_conv_params *conv_params,
+				    const cmsis_nn_per_channel_quant_params *quant_params,
+				    const cmsis_nn_dims *input_dims,
+				    const q15_t *input_data,
+				    const cmsis_nn_dims *filter_dims,
+				    const q7_t *filter_data,
+				    const cmsis_nn_dims *bias_dims,
+				    const int64_t *bias_data,
+				    const cmsis_nn_dims *output_dims,
+				    q15_t *output_data);
 
 /**
  * @brief Get the required buffer size for arm_convolve_wrapper_s16
@@ -285,9 +284,9 @@ arm_status arm_convolve_wrapper_s16(const cmsis_nn_context *ctx,
  *
  */
 int32_t arm_convolve_wrapper_s16_get_buffer_size(const cmsis_nn_conv_params *conv_params,
-                                                 const cmsis_nn_dims *input_dims,
-                                                 const cmsis_nn_dims *filter_dims,
-                                                 const cmsis_nn_dims *output_dims);
+		const cmsis_nn_dims *input_dims,
+		const cmsis_nn_dims *filter_dims,
+		const cmsis_nn_dims *output_dims);
 
 /**
  * @brief Basic s8 convolution function
@@ -317,16 +316,16 @@ int32_t arm_convolve_wrapper_s16_get_buffer_size(const cmsis_nn_conv_params *con
  *
  */
 arm_status arm_convolve_s8(const cmsis_nn_context *ctx,
-                           const cmsis_nn_conv_params *conv_params,
-                           const cmsis_nn_per_channel_quant_params *quant_params,
-                           const cmsis_nn_dims *input_dims,
-                           const q7_t *input_data,
-                           const cmsis_nn_dims *filter_dims,
-                           const q7_t *filter_data,
-                           const cmsis_nn_dims *bias_dims,
-                           const int32_t *bias_data,
-                           const cmsis_nn_dims *output_dims,
-                           q7_t *output_data);
+			   const cmsis_nn_conv_params *conv_params,
+			   const cmsis_nn_per_channel_quant_params *quant_params,
+			   const cmsis_nn_dims *input_dims,
+			   const q7_t *input_data,
+			   const cmsis_nn_dims *filter_dims,
+			   const q7_t *filter_data,
+			   const cmsis_nn_dims *bias_dims,
+			   const int32_t *bias_data,
+			   const cmsis_nn_dims *output_dims,
+			   q7_t *output_data);
 
 /**
  * @brief Get the required buffer size for s8 convolution function
@@ -367,16 +366,16 @@ int32_t arm_convolve_s8_get_buffer_size(const cmsis_nn_dims *input_dims, const c
  *
  */
 arm_status arm_convolve_s16(const cmsis_nn_context *ctx,
-                            const cmsis_nn_conv_params *conv_params,
-                            const cmsis_nn_per_channel_quant_params *quant_params,
-                            const cmsis_nn_dims *input_dims,
-                            const q15_t *input_data,
-                            const cmsis_nn_dims *filter_dims,
-                            const q7_t *filter_data,
-                            const cmsis_nn_dims *bias_dims,
-                            const int64_t *bias_data,
-                            const cmsis_nn_dims *output_dims,
-                            q15_t *output_data);
+			    const cmsis_nn_conv_params *conv_params,
+			    const cmsis_nn_per_channel_quant_params *quant_params,
+			    const cmsis_nn_dims *input_dims,
+			    const q15_t *input_data,
+			    const cmsis_nn_dims *filter_dims,
+			    const q7_t *filter_data,
+			    const cmsis_nn_dims *bias_dims,
+			    const int64_t *bias_data,
+			    const cmsis_nn_dims *output_dims,
+			    q15_t *output_data);
 /**
  * @brief Optimized s16 convolution function
  * @param[in, out] ctx            Function context that contains the additional buffer if required by the function.
@@ -408,16 +407,16 @@ arm_status arm_convolve_s16(const cmsis_nn_context *ctx,
  */
 
 arm_status arm_convolve_fast_s16(const cmsis_nn_context *ctx,
-                                 const cmsis_nn_conv_params *conv_params,
-                                 const cmsis_nn_per_channel_quant_params *quant_params,
-                                 const cmsis_nn_dims *input_dims,
-                                 const q15_t *input_data,
-                                 const cmsis_nn_dims *filter_dims,
-                                 const q7_t *filter_data,
-                                 const cmsis_nn_dims *bias_dims,
-                                 const int64_t *bias_data,
-                                 const cmsis_nn_dims *output_dims,
-                                 q15_t *output_data);
+				 const cmsis_nn_conv_params *conv_params,
+				 const cmsis_nn_per_channel_quant_params *quant_params,
+				 const cmsis_nn_dims *input_dims,
+				 const q15_t *input_data,
+				 const cmsis_nn_dims *filter_dims,
+				 const q7_t *filter_data,
+				 const cmsis_nn_dims *bias_dims,
+				 const int64_t *bias_data,
+				 const cmsis_nn_dims *output_dims,
+				 q15_t *output_data);
 
 /**
  * @brief Get the required buffer size for s16 convolution function
@@ -462,20 +461,20 @@ int32_t arm_convolve_fast_s16_get_buffer_size(const cmsis_nn_dims *input_dims, c
  *
  */
 arm_status arm_convolve_HWC_q7_basic(const q7_t *Im_in,
-                                     const uint16_t dim_im_in,
-                                     const uint16_t ch_im_in,
-                                     const q7_t *wt,
-                                     const uint16_t ch_im_out,
-                                     const uint16_t dim_kernel,
-                                     const uint16_t padding,
-                                     const uint16_t stride,
-                                     const q7_t *bias,
-                                     const uint16_t bias_shift,
-                                     const uint16_t out_shift,
-                                     q7_t *Im_out,
-                                     const uint16_t dim_im_out,
-                                     q15_t *bufferA,
-                                     q7_t *bufferB);
+				     const uint16_t dim_im_in,
+				     const uint16_t ch_im_in,
+				     const q7_t *wt,
+				     const uint16_t ch_im_out,
+				     const uint16_t dim_kernel,
+				     const uint16_t padding,
+				     const uint16_t stride,
+				     const q7_t *bias,
+				     const uint16_t bias_shift,
+				     const uint16_t out_shift,
+				     q7_t *Im_out,
+				     const uint16_t dim_im_out,
+				     q15_t *bufferA,
+				     q7_t *bufferB);
 
 /**
  * @brief Basic Q7 convolution function (non-square shape)
@@ -502,25 +501,25 @@ arm_status arm_convolve_HWC_q7_basic(const q7_t *Im_in,
  * @return     The function returns <code>ARM_MATH_SUCCESS</code>
  */
 arm_status arm_convolve_HWC_q7_basic_nonsquare(const q7_t *Im_in,
-                                               const uint16_t dim_im_in_x,
-                                               const uint16_t dim_im_in_y,
-                                               const uint16_t ch_im_in,
-                                               const q7_t *wt,
-                                               const uint16_t ch_im_out,
-                                               const uint16_t dim_kernel_x,
-                                               const uint16_t dim_kernel_y,
-                                               const uint16_t padding_x,
-                                               const uint16_t padding_y,
-                                               const uint16_t stride_x,
-                                               const uint16_t stride_y,
-                                               const q7_t *bias,
-                                               const uint16_t bias_shift,
-                                               const uint16_t out_shift,
-                                               q7_t *Im_out,
-                                               const uint16_t dim_im_out_x,
-                                               const uint16_t dim_im_out_y,
-                                               q15_t *bufferA,
-                                               q7_t *bufferB);
+		const uint16_t dim_im_in_x,
+		const uint16_t dim_im_in_y,
+		const uint16_t ch_im_in,
+		const q7_t *wt,
+		const uint16_t ch_im_out,
+		const uint16_t dim_kernel_x,
+		const uint16_t dim_kernel_y,
+		const uint16_t padding_x,
+		const uint16_t padding_y,
+		const uint16_t stride_x,
+		const uint16_t stride_y,
+		const q7_t *bias,
+		const uint16_t bias_shift,
+		const uint16_t out_shift,
+		q7_t *Im_out,
+		const uint16_t dim_im_out_x,
+		const uint16_t dim_im_out_y,
+		q15_t *bufferA,
+		q7_t *bufferB);
 
 /**
  * @brief Basic Q15 convolution function
@@ -543,20 +542,20 @@ arm_status arm_convolve_HWC_q7_basic_nonsquare(const q7_t *Im_in,
  *
  */
 arm_status arm_convolve_HWC_q15_basic(const q15_t *Im_in,
-                                      const uint16_t dim_im_in,
-                                      const uint16_t ch_im_in,
-                                      const q15_t *wt,
-                                      const uint16_t ch_im_out,
-                                      const uint16_t dim_kernel,
-                                      const uint16_t padding,
-                                      const uint16_t stride,
-                                      const q15_t *bias,
-                                      const uint16_t bias_shift,
-                                      const uint16_t out_shift,
-                                      q15_t *Im_out,
-                                      const uint16_t dim_im_out,
-                                      q15_t *bufferA,
-                                      q7_t *bufferB);
+				      const uint16_t dim_im_in,
+				      const uint16_t ch_im_in,
+				      const q15_t *wt,
+				      const uint16_t ch_im_out,
+				      const uint16_t dim_kernel,
+				      const uint16_t padding,
+				      const uint16_t stride,
+				      const q15_t *bias,
+				      const uint16_t bias_shift,
+				      const uint16_t out_shift,
+				      q15_t *Im_out,
+				      const uint16_t dim_im_out,
+				      q15_t *bufferA,
+				      q7_t *bufferB);
 
 /**
  * @brief Fast Q7 convolution function
@@ -584,20 +583,20 @@ arm_status arm_convolve_HWC_q15_basic(const q15_t *Im_in,
  *   ch_im_out is multiple of 2
  */
 arm_status arm_convolve_HWC_q7_fast(const q7_t *Im_in,
-                                    const uint16_t dim_im_in,
-                                    const uint16_t ch_im_in,
-                                    const q7_t *wt,
-                                    const uint16_t ch_im_out,
-                                    const uint16_t dim_kernel,
-                                    const uint16_t padding,
-                                    const uint16_t stride,
-                                    const q7_t *bias,
-                                    const uint16_t bias_shift,
-                                    const uint16_t out_shift,
-                                    q7_t *Im_out,
-                                    const uint16_t dim_im_out,
-                                    q15_t *bufferA,
-                                    q7_t *bufferB);
+				    const uint16_t dim_im_in,
+				    const uint16_t ch_im_in,
+				    const q7_t *wt,
+				    const uint16_t ch_im_out,
+				    const uint16_t dim_kernel,
+				    const uint16_t padding,
+				    const uint16_t stride,
+				    const q7_t *bias,
+				    const uint16_t bias_shift,
+				    const uint16_t out_shift,
+				    q7_t *Im_out,
+				    const uint16_t dim_im_out,
+				    q15_t *bufferA,
+				    q7_t *bufferB);
 
 /**
  * @brief Fast Q7 convolution function (non-sqaure shape)
@@ -631,25 +630,25 @@ arm_status arm_convolve_HWC_q7_fast(const q7_t *Im_in,
  */
 
 arm_status arm_convolve_HWC_q7_fast_nonsquare(const q7_t *Im_in,
-                                              const uint16_t dim_im_in_x,
-                                              const uint16_t dim_im_in_y,
-                                              const uint16_t ch_im_in,
-                                              const q7_t *wt,
-                                              const uint16_t ch_im_out,
-                                              const uint16_t dim_kernel_x,
-                                              const uint16_t dim_kernel_y,
-                                              const uint16_t padding_x,
-                                              const uint16_t padding_y,
-                                              const uint16_t stride_x,
-                                              const uint16_t stride_y,
-                                              const q7_t *bias,
-                                              const uint16_t bias_shift,
-                                              const uint16_t out_shift,
-                                              q7_t *Im_out,
-                                              const uint16_t dim_im_out_x,
-                                              const uint16_t dim_im_out_y,
-                                              q15_t *bufferA,
-                                              q7_t *bufferB);
+		const uint16_t dim_im_in_x,
+		const uint16_t dim_im_in_y,
+		const uint16_t ch_im_in,
+		const q7_t *wt,
+		const uint16_t ch_im_out,
+		const uint16_t dim_kernel_x,
+		const uint16_t dim_kernel_y,
+		const uint16_t padding_x,
+		const uint16_t padding_y,
+		const uint16_t stride_x,
+		const uint16_t stride_y,
+		const q7_t *bias,
+		const uint16_t bias_shift,
+		const uint16_t out_shift,
+		q7_t *Im_out,
+		const uint16_t dim_im_out_x,
+		const uint16_t dim_im_out_y,
+		q15_t *bufferA,
+		q7_t *bufferB);
 
 /**
  * @brief Fast Q7 version of 1x1 convolution (non-sqaure shape)
@@ -687,25 +686,25 @@ arm_status arm_convolve_HWC_q7_fast_nonsquare(const q7_t *Im_in,
  *   ch_im_out is multiple of 2
  */
 arm_status arm_convolve_1x1_HWC_q7_fast_nonsquare(const q7_t *Im_in,
-                                                  const uint16_t dim_im_in_x,
-                                                  const uint16_t dim_im_in_y,
-                                                  const uint16_t ch_im_in,
-                                                  const q7_t *wt,
-                                                  const uint16_t ch_im_out,
-                                                  const uint16_t dim_kernel_x,
-                                                  const uint16_t dim_kernel_y,
-                                                  const uint16_t padding_x,
-                                                  const uint16_t padding_y,
-                                                  const uint16_t stride_x,
-                                                  const uint16_t stride_y,
-                                                  const q7_t *bias,
-                                                  const uint16_t bias_shift,
-                                                  const uint16_t out_shift,
-                                                  q7_t *Im_out,
-                                                  const uint16_t dim_im_out_x,
-                                                  const uint16_t dim_im_out_y,
-                                                  q15_t *bufferA,
-                                                  q7_t *bufferB);
+		const uint16_t dim_im_in_x,
+		const uint16_t dim_im_in_y,
+		const uint16_t ch_im_in,
+		const q7_t *wt,
+		const uint16_t ch_im_out,
+		const uint16_t dim_kernel_x,
+		const uint16_t dim_kernel_y,
+		const uint16_t padding_x,
+		const uint16_t padding_y,
+		const uint16_t stride_x,
+		const uint16_t stride_y,
+		const q7_t *bias,
+		const uint16_t bias_shift,
+		const uint16_t out_shift,
+		q7_t *Im_out,
+		const uint16_t dim_im_out_x,
+		const uint16_t dim_im_out_y,
+		q15_t *bufferA,
+		q7_t *bufferB);
 
 /**
  * @brief Fast s8 version for 1x1 convolution (non-square shape)
@@ -739,16 +738,16 @@ arm_status arm_convolve_1x1_HWC_q7_fast_nonsquare(const q7_t *Im_in,
  *
  */
 arm_status arm_convolve_1x1_s8_fast(const cmsis_nn_context *ctx,
-                                    const cmsis_nn_conv_params *conv_params,
-                                    const cmsis_nn_per_channel_quant_params *quant_params,
-                                    const cmsis_nn_dims *input_dims,
-                                    const q7_t *input_data,
-                                    const cmsis_nn_dims *filter_dims,
-                                    const q7_t *filter_data,
-                                    const cmsis_nn_dims *bias_dims,
-                                    const int32_t *bias_data,
-                                    const cmsis_nn_dims *output_dims,
-                                    q7_t *output_data);
+				    const cmsis_nn_conv_params *conv_params,
+				    const cmsis_nn_per_channel_quant_params *quant_params,
+				    const cmsis_nn_dims *input_dims,
+				    const q7_t *input_data,
+				    const cmsis_nn_dims *filter_dims,
+				    const q7_t *filter_data,
+				    const cmsis_nn_dims *bias_dims,
+				    const int32_t *bias_data,
+				    const cmsis_nn_dims *output_dims,
+				    q7_t *output_data);
 
 /**
  * @brief Get the required buffer size for arm_convolve_1x1_s8_fast
@@ -796,16 +795,16 @@ int32_t arm_convolve_1x1_s8_fast_get_buffer_size(const cmsis_nn_dims *input_dims
  *
  */
 arm_status arm_convolve_1_x_n_s8(const cmsis_nn_context *ctx,
-                                 const cmsis_nn_conv_params *conv_params,
-                                 const cmsis_nn_per_channel_quant_params *quant_params,
-                                 const cmsis_nn_dims *input_dims,
-                                 const q7_t *input_data,
-                                 const cmsis_nn_dims *filter_dims,
-                                 const q7_t *filter_data,
-                                 const cmsis_nn_dims *bias_dims,
-                                 const int32_t *bias_data,
-                                 const cmsis_nn_dims *output_dims,
-                                 q7_t *output_data);
+				 const cmsis_nn_conv_params *conv_params,
+				 const cmsis_nn_per_channel_quant_params *quant_params,
+				 const cmsis_nn_dims *input_dims,
+				 const q7_t *input_data,
+				 const cmsis_nn_dims *filter_dims,
+				 const q7_t *filter_data,
+				 const cmsis_nn_dims *bias_dims,
+				 const int32_t *bias_data,
+				 const cmsis_nn_dims *output_dims,
+				 q7_t *output_data);
 
 /**
  * @brief Get the required additional buffer size for 1xn convolution
@@ -844,20 +843,20 @@ int32_t arm_convolve_1_x_n_s8_get_buffer_size(const cmsis_nn_dims *input_dims, c
  */
 
 arm_status arm_convolve_HWC_q7_RGB(const q7_t *Im_in,
-                                   const uint16_t dim_im_in,
-                                   const uint16_t ch_im_in,
-                                   const q7_t *wt,
-                                   const uint16_t ch_im_out,
-                                   const uint16_t dim_kernel,
-                                   const uint16_t padding,
-                                   const uint16_t stride,
-                                   const q7_t *bias,
-                                   const uint16_t bias_shift,
-                                   const uint16_t out_shift,
-                                   q7_t *Im_out,
-                                   const uint16_t dim_im_out,
-                                   q15_t *bufferA,
-                                   q7_t *bufferB);
+				   const uint16_t dim_im_in,
+				   const uint16_t ch_im_in,
+				   const q7_t *wt,
+				   const uint16_t ch_im_out,
+				   const uint16_t dim_kernel,
+				   const uint16_t padding,
+				   const uint16_t stride,
+				   const q7_t *bias,
+				   const uint16_t bias_shift,
+				   const uint16_t out_shift,
+				   q7_t *Im_out,
+				   const uint16_t dim_im_out,
+				   q15_t *bufferA,
+				   q7_t *bufferB);
 
 /**
  * @brief Fast Q15 convolution function
@@ -887,20 +886,20 @@ arm_status arm_convolve_HWC_q7_RGB(const q7_t *Im_in,
  */
 
 arm_status arm_convolve_HWC_q15_fast(const q15_t *Im_in,
-                                     const uint16_t dim_im_in,
-                                     const uint16_t ch_im_in,
-                                     const q15_t *wt,
-                                     const uint16_t ch_im_out,
-                                     const uint16_t dim_kernel,
-                                     const uint16_t padding,
-                                     const uint16_t stride,
-                                     const q15_t *bias,
-                                     const uint16_t bias_shift,
-                                     const uint16_t out_shift,
-                                     q15_t *Im_out,
-                                     const uint16_t dim_im_out,
-                                     q15_t *bufferA,
-                                     q7_t *bufferB);
+				     const uint16_t dim_im_in,
+				     const uint16_t ch_im_in,
+				     const q15_t *wt,
+				     const uint16_t ch_im_out,
+				     const uint16_t dim_kernel,
+				     const uint16_t padding,
+				     const uint16_t stride,
+				     const q15_t *bias,
+				     const uint16_t bias_shift,
+				     const uint16_t out_shift,
+				     q15_t *Im_out,
+				     const uint16_t dim_im_out,
+				     q15_t *bufferA,
+				     q7_t *bufferB);
 
 /**
  * @brief Fast Q15 convolution function (non-sqaure shape)
@@ -944,25 +943,25 @@ arm_status arm_convolve_HWC_q15_fast(const q15_t *Im_in,
  */
 
 arm_status arm_convolve_HWC_q15_fast_nonsquare(const q15_t *Im_in,
-                                               const uint16_t dim_im_in_x,
-                                               const uint16_t dim_im_in_y,
-                                               const uint16_t ch_im_in,
-                                               const q15_t *wt,
-                                               const uint16_t ch_im_out,
-                                               const uint16_t dim_kernel_x,
-                                               const uint16_t dim_kernel_y,
-                                               const uint16_t padding_x,
-                                               const uint16_t padding_y,
-                                               const uint16_t stride_x,
-                                               const uint16_t stride_y,
-                                               const q15_t *bias,
-                                               const uint16_t bias_shift,
-                                               const uint16_t out_shift,
-                                               q15_t *Im_out,
-                                               const uint16_t dim_im_out_x,
-                                               const uint16_t dim_im_out_y,
-                                               q15_t *bufferA,
-                                               q7_t *bufferB);
+		const uint16_t dim_im_in_x,
+		const uint16_t dim_im_in_y,
+		const uint16_t ch_im_in,
+		const q15_t *wt,
+		const uint16_t ch_im_out,
+		const uint16_t dim_kernel_x,
+		const uint16_t dim_kernel_y,
+		const uint16_t padding_x,
+		const uint16_t padding_y,
+		const uint16_t stride_x,
+		const uint16_t stride_y,
+		const q15_t *bias,
+		const uint16_t bias_shift,
+		const uint16_t out_shift,
+		q15_t *Im_out,
+		const uint16_t dim_im_out_x,
+		const uint16_t dim_im_out_y,
+		q15_t *bufferA,
+		q7_t *bufferB);
 
 /**
  * @brief Q7 depthwise separable convolution function
@@ -991,20 +990,20 @@ arm_status arm_convolve_HWC_q15_fast_nonsquare(const q15_t *Im_in,
  */
 
 arm_status arm_depthwise_separable_conv_HWC_q7(const q7_t *Im_in,
-                                               const uint16_t dim_im_in,
-                                               const uint16_t ch_im_in,
-                                               const q7_t *wt,
-                                               const uint16_t ch_im_out,
-                                               const uint16_t dim_kernel,
-                                               const uint16_t padding,
-                                               const uint16_t stride,
-                                               const q7_t *bias,
-                                               const uint16_t bias_shift,
-                                               const uint16_t out_shift,
-                                               q7_t *Im_out,
-                                               const uint16_t dim_im_out,
-                                               q15_t *bufferA,
-                                               q7_t *bufferB);
+		const uint16_t dim_im_in,
+		const uint16_t ch_im_in,
+		const q7_t *wt,
+		const uint16_t ch_im_out,
+		const uint16_t dim_kernel,
+		const uint16_t padding,
+		const uint16_t stride,
+		const q7_t *bias,
+		const uint16_t bias_shift,
+		const uint16_t out_shift,
+		q7_t *Im_out,
+		const uint16_t dim_im_out,
+		q15_t *bufferA,
+		q7_t *bufferB);
 
 /**
  * @brief Q7 depthwise separable convolution function (non-square shape)
@@ -1037,25 +1036,25 @@ arm_status arm_depthwise_separable_conv_HWC_q7(const q7_t *Im_in,
  *   ch_im_out is multiple of 2
  */
 arm_status arm_depthwise_separable_conv_HWC_q7_nonsquare(const q7_t *Im_in,
-                                                         const uint16_t dim_im_in_x,
-                                                         const uint16_t dim_im_in_y,
-                                                         const uint16_t ch_im_in,
-                                                         const q7_t *wt,
-                                                         const uint16_t ch_im_out,
-                                                         const uint16_t dim_kernel_x,
-                                                         const uint16_t dim_kernel_y,
-                                                         const uint16_t padding_x,
-                                                         const uint16_t padding_y,
-                                                         const uint16_t stride_x,
-                                                         const uint16_t stride_y,
-                                                         const q7_t *bias,
-                                                         const uint16_t bias_shift,
-                                                         const uint16_t out_shift,
-                                                         q7_t *Im_out,
-                                                         const uint16_t dim_im_out_x,
-                                                         const uint16_t dim_im_out_y,
-                                                         q15_t *bufferA,
-                                                         q7_t *bufferB);
+		const uint16_t dim_im_in_x,
+		const uint16_t dim_im_in_y,
+		const uint16_t ch_im_in,
+		const q7_t *wt,
+		const uint16_t ch_im_out,
+		const uint16_t dim_kernel_x,
+		const uint16_t dim_kernel_y,
+		const uint16_t padding_x,
+		const uint16_t padding_y,
+		const uint16_t stride_x,
+		const uint16_t stride_y,
+		const q7_t *bias,
+		const uint16_t bias_shift,
+		const uint16_t out_shift,
+		q7_t *Im_out,
+		const uint16_t dim_im_out_x,
+		const uint16_t dim_im_out_y,
+		q15_t *bufferA,
+		q7_t *bufferB);
 
 /**
  * @brief Wrapper function to pick the right optimized s8 depthwise convolution function
@@ -1094,16 +1093,16 @@ arm_status arm_depthwise_separable_conv_HWC_q7_nonsquare(const q7_t *Im_in,
  * boundary.
  */
 arm_status arm_depthwise_conv_wrapper_s8(const cmsis_nn_context *ctx,
-                                         const cmsis_nn_dw_conv_params *dw_conv_params,
-                                         const cmsis_nn_per_channel_quant_params *quant_params,
-                                         const cmsis_nn_dims *input_dims,
-                                         const q7_t *input_data,
-                                         const cmsis_nn_dims *filter_dims,
-                                         const q7_t *filter_data,
-                                         const cmsis_nn_dims *bias_dims,
-                                         const int32_t *bias_data,
-                                         const cmsis_nn_dims *output_dims,
-                                         q7_t *output_data);
+		const cmsis_nn_dw_conv_params *dw_conv_params,
+		const cmsis_nn_per_channel_quant_params *quant_params,
+		const cmsis_nn_dims *input_dims,
+		const q7_t *input_data,
+		const cmsis_nn_dims *filter_dims,
+		const q7_t *filter_data,
+		const cmsis_nn_dims *bias_dims,
+		const int32_t *bias_data,
+		const cmsis_nn_dims *output_dims,
+		q7_t *output_data);
 
 /**
  * @brief Get size of additional buffer required by arm_depthwise_conv_wrapper_s8()
@@ -1120,9 +1119,9 @@ arm_status arm_depthwise_conv_wrapper_s8(const cmsis_nn_context *ctx,
  *
  */
 int32_t arm_depthwise_conv_wrapper_s8_get_buffer_size(const cmsis_nn_dw_conv_params *dw_conv_params,
-                                                      const cmsis_nn_dims *input_dims,
-                                                      const cmsis_nn_dims *filter_dims,
-                                                      const cmsis_nn_dims *output_dims);
+		const cmsis_nn_dims *input_dims,
+		const cmsis_nn_dims *filter_dims,
+		const cmsis_nn_dims *output_dims);
 
 /**
  * @brief Basic s8 depthwise convolution function that doesn't have any constraints on the input dimensions.
@@ -1155,16 +1154,16 @@ int32_t arm_depthwise_conv_wrapper_s8_get_buffer_size(const cmsis_nn_dw_conv_par
  *    - q7 is used as data type eventhough it is s8 data. It is done so to be consistent with existing APIs.
  */
 arm_status arm_depthwise_conv_s8(const cmsis_nn_context *ctx,
-                                 const cmsis_nn_dw_conv_params *dw_conv_params,
-                                 const cmsis_nn_per_channel_quant_params *quant_params,
-                                 const cmsis_nn_dims *input_dims,
-                                 const q7_t *input_data,
-                                 const cmsis_nn_dims *filter_dims,
-                                 const q7_t *filter_data,
-                                 const cmsis_nn_dims *bias_dims,
-                                 const int32_t *bias_data,
-                                 const cmsis_nn_dims *output_dims,
-                                 q7_t *output_data);
+				 const cmsis_nn_dw_conv_params *dw_conv_params,
+				 const cmsis_nn_per_channel_quant_params *quant_params,
+				 const cmsis_nn_dims *input_dims,
+				 const q7_t *input_data,
+				 const cmsis_nn_dims *filter_dims,
+				 const q7_t *filter_data,
+				 const cmsis_nn_dims *bias_dims,
+				 const int32_t *bias_data,
+				 const cmsis_nn_dims *output_dims,
+				 q7_t *output_data);
 
 /**
  * @brief Basic s16 depthwise convolution function that doesn't have any constraints on the input dimensions.
@@ -1196,16 +1195,16 @@ arm_status arm_depthwise_conv_s8(const cmsis_nn_context *ctx,
  *    - q15 is used as data type eventhough it is s16 data. It is done so to be consistent with existing APIs.
  */
 arm_status arm_depthwise_conv_s16(const cmsis_nn_context *ctx,
-                                  const cmsis_nn_dw_conv_params *dw_conv_params,
-                                  const cmsis_nn_per_channel_quant_params *quant_params,
-                                  const cmsis_nn_dims *input_dims,
-                                  const q15_t *input_data,
-                                  const cmsis_nn_dims *filter_dims,
-                                  const q7_t *filter_data,
-                                  const cmsis_nn_dims *bias_dims,
-                                  const int64_t *bias_data,
-                                  const cmsis_nn_dims *output_dims,
-                                  q15_t *output_data);
+				  const cmsis_nn_dw_conv_params *dw_conv_params,
+				  const cmsis_nn_per_channel_quant_params *quant_params,
+				  const cmsis_nn_dims *input_dims,
+				  const q15_t *input_data,
+				  const cmsis_nn_dims *filter_dims,
+				  const q7_t *filter_data,
+				  const cmsis_nn_dims *bias_dims,
+				  const int64_t *bias_data,
+				  const cmsis_nn_dims *output_dims,
+				  q15_t *output_data);
 
 /**
  * @brief Optimized s8 depthwise convolution function for 3x3 kernel size with some constraints on
@@ -1226,16 +1225,16 @@ arm_status arm_depthwise_conv_s16(const cmsis_nn_context *ctx,
  *
  */
 arm_status arm_depthwise_conv_3x3_s8(const cmsis_nn_context *ctx,
-                                     const cmsis_nn_dw_conv_params *dw_conv_params,
-                                     const cmsis_nn_per_channel_quant_params *quant_params,
-                                     const cmsis_nn_dims *input_dims,
-                                     const q7_t *input_data,
-                                     const cmsis_nn_dims *filter_dims,
-                                     const q7_t *filter_data,
-                                     const cmsis_nn_dims *bias_dims,
-                                     const int32_t *bias_data,
-                                     const cmsis_nn_dims *output_dims,
-                                     q7_t *output_data);
+				     const cmsis_nn_dw_conv_params *dw_conv_params,
+				     const cmsis_nn_per_channel_quant_params *quant_params,
+				     const cmsis_nn_dims *input_dims,
+				     const q7_t *input_data,
+				     const cmsis_nn_dims *filter_dims,
+				     const q7_t *filter_data,
+				     const cmsis_nn_dims *bias_dims,
+				     const int32_t *bias_data,
+				     const cmsis_nn_dims *output_dims,
+				     q7_t *output_data);
 
 /**
  * @brief Optimized s8 depthwise convolution function with constraint that in_channel equals out_channel.
@@ -1261,16 +1260,16 @@ arm_status arm_depthwise_conv_3x3_s8(const cmsis_nn_context *ctx,
  *
  */
 arm_status arm_depthwise_conv_s8_opt(const cmsis_nn_context *ctx,
-                                     const cmsis_nn_dw_conv_params *dw_conv_params,
-                                     const cmsis_nn_per_channel_quant_params *quant_params,
-                                     const cmsis_nn_dims *input_dims,
-                                     const q7_t *input_data,
-                                     const cmsis_nn_dims *filter_dims,
-                                     const q7_t *filter_data,
-                                     const cmsis_nn_dims *bias_dims,
-                                     const int32_t *bias_data,
-                                     const cmsis_nn_dims *output_dims,
-                                     q7_t *output_data);
+				     const cmsis_nn_dw_conv_params *dw_conv_params,
+				     const cmsis_nn_per_channel_quant_params *quant_params,
+				     const cmsis_nn_dims *input_dims,
+				     const q7_t *input_data,
+				     const cmsis_nn_dims *filter_dims,
+				     const q7_t *filter_data,
+				     const cmsis_nn_dims *bias_dims,
+				     const int32_t *bias_data,
+				     const cmsis_nn_dims *output_dims,
+				     q7_t *output_data);
 
 /**
  * @brief Get the required buffer size for optimized s8 depthwise convolution
@@ -1315,14 +1314,14 @@ int32_t arm_depthwise_conv_s8_opt_get_buffer_size(const cmsis_nn_dims *input_dim
  */
 
 arm_status arm_fully_connected_q7(const q7_t *pV,
-                                  const q7_t *pM,
-                                  const uint16_t dim_vec,
-                                  const uint16_t num_of_rows,
-                                  const uint16_t bias_shift,
-                                  const uint16_t out_shift,
-                                  const q7_t *bias,
-                                  q7_t *pOut,
-                                  q15_t *vec_buffer);
+				  const q7_t *pM,
+				  const uint16_t dim_vec,
+				  const uint16_t num_of_rows,
+				  const uint16_t bias_shift,
+				  const uint16_t out_shift,
+				  const q7_t *bias,
+				  q7_t *pOut,
+				  q15_t *vec_buffer);
 
 /**
  * @brief Basic s8 Fully Connected function.
@@ -1360,16 +1359,16 @@ arm_status arm_fully_connected_q7(const q7_t *pV,
  *    - q7 is used as data type eventhough it is s8 data. It is done so to be consistent with existing APIs.
  */
 arm_status arm_fully_connected_s8(const cmsis_nn_context *ctx,
-                                  const cmsis_nn_fc_params *fc_params,
-                                  const cmsis_nn_per_tensor_quant_params *quant_params,
-                                  const cmsis_nn_dims *input_dims,
-                                  const q7_t *input_data,
-                                  const cmsis_nn_dims *filter_dims,
-                                  const q7_t *filter_data,
-                                  const cmsis_nn_dims *bias_dims,
-                                  const int32_t *bias_data,
-                                  const cmsis_nn_dims *output_dims,
-                                  q7_t *output_data);
+				  const cmsis_nn_fc_params *fc_params,
+				  const cmsis_nn_per_tensor_quant_params *quant_params,
+				  const cmsis_nn_dims *input_dims,
+				  const q7_t *input_data,
+				  const cmsis_nn_dims *filter_dims,
+				  const q7_t *filter_data,
+				  const cmsis_nn_dims *bias_dims,
+				  const int32_t *bias_data,
+				  const cmsis_nn_dims *output_dims,
+				  q7_t *output_data);
 
 /**
  * @brief Get the required buffer size for S8 basic fully-connected and
@@ -1416,16 +1415,16 @@ int32_t arm_fully_connected_s8_get_buffer_size(const cmsis_nn_dims *filter_dims)
  *    - q15 is used as data type eventhough it is s16 data. It is done so to be consistent with existing APIs.
  */
 arm_status arm_fully_connected_s16(const cmsis_nn_context *ctx,
-                                   const cmsis_nn_fc_params *fc_params,
-                                   const cmsis_nn_per_tensor_quant_params *quant_params,
-                                   const cmsis_nn_dims *input_dims,
-                                   const q15_t *input_data,
-                                   const cmsis_nn_dims *filter_dims,
-                                   const q7_t *filter_data,
-                                   const cmsis_nn_dims *bias_dims,
-                                   const int64_t *bias_data,
-                                   const cmsis_nn_dims *output_dims,
-                                   q15_t *output_data);
+				   const cmsis_nn_fc_params *fc_params,
+				   const cmsis_nn_per_tensor_quant_params *quant_params,
+				   const cmsis_nn_dims *input_dims,
+				   const q15_t *input_data,
+				   const cmsis_nn_dims *filter_dims,
+				   const q7_t *filter_data,
+				   const cmsis_nn_dims *bias_dims,
+				   const int64_t *bias_data,
+				   const cmsis_nn_dims *output_dims,
+				   q15_t *output_data);
 
 /**
  * @brief Get the required buffer size for S16 basic fully-connected and
@@ -1452,14 +1451,14 @@ int32_t arm_fully_connected_s16_get_buffer_size(const cmsis_nn_dims *filter_dims
  */
 
 arm_status arm_fully_connected_q7_opt(const q7_t *pV,
-                                      const q7_t *pM,
-                                      const uint16_t dim_vec,
-                                      const uint16_t num_of_rows,
-                                      const uint16_t bias_shift,
-                                      const uint16_t out_shift,
-                                      const q7_t *bias,
-                                      q7_t *pOut,
-                                      q15_t *vec_buffer);
+				      const q7_t *pM,
+				      const uint16_t dim_vec,
+				      const uint16_t num_of_rows,
+				      const uint16_t bias_shift,
+				      const uint16_t out_shift,
+				      const q7_t *bias,
+				      q7_t *pOut,
+				      q15_t *vec_buffer);
 
 /**
  * @brief Q15 basic fully-connected layer function
@@ -1477,14 +1476,14 @@ arm_status arm_fully_connected_q7_opt(const q7_t *pV,
  */
 
 arm_status arm_fully_connected_q15(const q15_t *pV,
-                                   const q15_t *pM,
-                                   const uint16_t dim_vec,
-                                   const uint16_t num_of_rows,
-                                   const uint16_t bias_shift,
-                                   const uint16_t out_shift,
-                                   const q15_t *bias,
-                                   q15_t *pOut,
-                                   q15_t *vec_buffer);
+				   const q15_t *pM,
+				   const uint16_t dim_vec,
+				   const uint16_t num_of_rows,
+				   const uint16_t bias_shift,
+				   const uint16_t out_shift,
+				   const q15_t *bias,
+				   q15_t *pOut,
+				   q15_t *vec_buffer);
 
 /**
  * @brief Q15 opt fully-connected layer function
@@ -1502,14 +1501,14 @@ arm_status arm_fully_connected_q15(const q15_t *pV,
  */
 
 arm_status arm_fully_connected_q15_opt(const q15_t *pV,
-                                       const q15_t *pM,
-                                       const uint16_t dim_vec,
-                                       const uint16_t num_of_rows,
-                                       const uint16_t bias_shift,
-                                       const uint16_t out_shift,
-                                       const q15_t *bias,
-                                       q15_t *pOut,
-                                       q15_t *vec_buffer);
+				       const q15_t *pM,
+				       const uint16_t dim_vec,
+				       const uint16_t num_of_rows,
+				       const uint16_t bias_shift,
+				       const uint16_t out_shift,
+				       const q15_t *bias,
+				       q15_t *pOut,
+				       q15_t *vec_buffer);
 
 /**
  * @brief Mixed Q15-Q7 fully-connected layer function
@@ -1527,14 +1526,14 @@ arm_status arm_fully_connected_q15_opt(const q15_t *pV,
  */
 
 arm_status arm_fully_connected_mat_q7_vec_q15(const q15_t *pV,
-                                              const q7_t *pM,
-                                              const uint16_t dim_vec,
-                                              const uint16_t num_of_rows,
-                                              const uint16_t bias_shift,
-                                              const uint16_t out_shift,
-                                              const q7_t *bias,
-                                              q15_t *pOut,
-                                              q15_t *vec_buffer);
+		const q7_t *pM,
+		const uint16_t dim_vec,
+		const uint16_t num_of_rows,
+		const uint16_t bias_shift,
+		const uint16_t out_shift,
+		const q7_t *bias,
+		q15_t *pOut,
+		q15_t *vec_buffer);
 
 /**
  * @brief Mixed Q15-Q7 opt fully-connected layer function
@@ -1552,14 +1551,14 @@ arm_status arm_fully_connected_mat_q7_vec_q15(const q15_t *pV,
  */
 
 arm_status arm_fully_connected_mat_q7_vec_q15_opt(const q15_t *pV,
-                                                  const q7_t *pM,
-                                                  const uint16_t dim_vec,
-                                                  const uint16_t num_of_rows,
-                                                  const uint16_t bias_shift,
-                                                  const uint16_t out_shift,
-                                                  const q7_t *bias,
-                                                  q15_t *pOut,
-                                                  q15_t *vec_buffer);
+		const q7_t *pM,
+		const uint16_t dim_vec,
+		const uint16_t num_of_rows,
+		const uint16_t bias_shift,
+		const uint16_t out_shift,
+		const q7_t *bias,
+		q15_t *pOut,
+		q15_t *vec_buffer);
 
 /**
  * @brief Matrix-Multiplication Kernels for Convolution
@@ -1587,13 +1586,13 @@ arm_status arm_fully_connected_mat_q7_vec_q15_opt(const q15_t *pV,
  */
 
 q7_t *arm_nn_mat_mult_kernel_q7_q15(const q7_t *pA,
-                                    const q15_t *pInBuffer,
-                                    const uint16_t ch_im_out,
-                                    const uint16_t numCol_A,
-                                    const uint16_t bias_shift,
-                                    const uint16_t out_shift,
-                                    const q7_t *bias,
-                                    q7_t *pOut);
+				    const q15_t *pInBuffer,
+				    const uint16_t ch_im_out,
+				    const uint16_t numCol_A,
+				    const uint16_t bias_shift,
+				    const uint16_t out_shift,
+				    const q7_t *bias,
+				    q7_t *pOut);
 
 #ifdef __cplusplus
 }
@@ -1637,21 +1636,21 @@ extern "C" {
  * @return          The function returns    ARM_MATH_SUCCESS
  */
 arm_status arm_elementwise_add_s8(const int8_t *input_1_vect,
-                                  const int8_t *input_2_vect,
-                                  const int32_t input_1_offset,
-                                  const int32_t input_1_mult,
-                                  const int32_t input_1_shift,
-                                  const int32_t input_2_offset,
-                                  const int32_t input_2_mult,
-                                  const int32_t input_2_shift,
-                                  const int32_t left_shift,
-                                  int8_t *output,
-                                  const int32_t out_offset,
-                                  const int32_t out_mult,
-                                  const int32_t out_shift,
-                                  const int32_t out_activation_min,
-                                  const int32_t out_activation_max,
-                                  const int32_t block_size);
+				  const int8_t *input_2_vect,
+				  const int32_t input_1_offset,
+				  const int32_t input_1_mult,
+				  const int32_t input_1_shift,
+				  const int32_t input_2_offset,
+				  const int32_t input_2_mult,
+				  const int32_t input_2_shift,
+				  const int32_t left_shift,
+				  int8_t *output,
+				  const int32_t out_offset,
+				  const int32_t out_mult,
+				  const int32_t out_shift,
+				  const int32_t out_activation_min,
+				  const int32_t out_activation_max,
+				  const int32_t block_size);
 
 /**
  * @brief s16 elementwise add of two vectors
@@ -1674,21 +1673,21 @@ arm_status arm_elementwise_add_s8(const int8_t *input_1_vect,
  * @return          The function returns    ARM_MATH_SUCCESS
  */
 arm_status arm_elementwise_add_s16(const int16_t *input_1_vect,
-                                   const int16_t *input_2_vect,
-                                   const int32_t input_1_offset,
-                                   const int32_t input_1_mult,
-                                   const int32_t input_1_shift,
-                                   const int32_t input_2_offset,
-                                   const int32_t input_2_mult,
-                                   const int32_t input_2_shift,
-                                   const int32_t left_shift,
-                                   int16_t *output,
-                                   const int32_t out_offset,
-                                   const int32_t out_mult,
-                                   const int32_t out_shift,
-                                   const int32_t out_activation_min,
-                                   const int32_t out_activation_max,
-                                   const int32_t block_size);
+				   const int16_t *input_2_vect,
+				   const int32_t input_1_offset,
+				   const int32_t input_1_mult,
+				   const int32_t input_1_shift,
+				   const int32_t input_2_offset,
+				   const int32_t input_2_mult,
+				   const int32_t input_2_shift,
+				   const int32_t left_shift,
+				   int16_t *output,
+				   const int32_t out_offset,
+				   const int32_t out_mult,
+				   const int32_t out_shift,
+				   const int32_t out_activation_min,
+				   const int32_t out_activation_max,
+				   const int32_t block_size);
 
 /**
  * @brief s8 elementwise multiplication
@@ -1708,16 +1707,16 @@ arm_status arm_elementwise_add_s16(const int16_t *input_1_vect,
  * @details   Supported framework: TensorFlow Lite micro
  */
 arm_status arm_elementwise_mul_s8(const int8_t *input_1_vect,
-                                  const int8_t *input_2_vect,
-                                  const int32_t input_1_offset,
-                                  const int32_t input_2_offset,
-                                  int8_t *output,
-                                  const int32_t out_offset,
-                                  const int32_t out_mult,
-                                  const int32_t out_shift,
-                                  const int32_t out_activation_min,
-                                  const int32_t out_activation_max,
-                                  const int32_t block_size);
+				  const int8_t *input_2_vect,
+				  const int32_t input_1_offset,
+				  const int32_t input_2_offset,
+				  int8_t *output,
+				  const int32_t out_offset,
+				  const int32_t out_mult,
+				  const int32_t out_shift,
+				  const int32_t out_activation_min,
+				  const int32_t out_activation_max,
+				  const int32_t block_size);
 
 /**
  * @brief s16 elementwise multiplication
@@ -1737,16 +1736,16 @@ arm_status arm_elementwise_mul_s8(const int8_t *input_1_vect,
  * @details   Supported framework: TensorFlow Lite micro
  */
 arm_status arm_elementwise_mul_s16(const int16_t *input_1_vect,
-                                   const int16_t *input_2_vect,
-                                   const int32_t input_1_offset,
-                                   const int32_t input_2_offset,
-                                   int16_t *output,
-                                   const int32_t out_offset,
-                                   const int32_t out_mult,
-                                   const int32_t out_shift,
-                                   const int32_t out_activation_min,
-                                   const int32_t out_activation_max,
-                                   const int32_t block_size);
+				   const int16_t *input_2_vect,
+				   const int32_t input_1_offset,
+				   const int32_t input_2_offset,
+				   int16_t *output,
+				   const int32_t out_offset,
+				   const int32_t out_mult,
+				   const int32_t out_shift,
+				   const int32_t out_activation_min,
+				   const int32_t out_activation_max,
+				   const int32_t block_size);
 
 /**
  * @defgroup Acti Activation Functions
@@ -1835,14 +1834,14 @@ void arm_nn_activations_direct_q15(q15_t *data, uint16_t size, uint16_t int_widt
  */
 
 void arm_maxpool_q7_HWC(q7_t *Im_in,
-                        const uint16_t dim_im_in,
-                        const uint16_t ch_im_in,
-                        const uint16_t dim_kernel,
-                        const uint16_t padding,
-                        const uint16_t stride,
-                        const uint16_t dim_im_out,
-                        q7_t *bufferA,
-                        q7_t *Im_out);
+			const uint16_t dim_im_in,
+			const uint16_t ch_im_in,
+			const uint16_t dim_kernel,
+			const uint16_t padding,
+			const uint16_t stride,
+			const uint16_t dim_im_out,
+			q7_t *bufferA,
+			q7_t *Im_out);
 
 /**
  * @brief Q7 average pooling function
@@ -1860,14 +1859,14 @@ void arm_maxpool_q7_HWC(q7_t *Im_in,
  */
 
 void arm_avepool_q7_HWC(q7_t *Im_in,
-                        const uint16_t dim_im_in,
-                        const uint16_t ch_im_in,
-                        const uint16_t dim_kernel,
-                        const uint16_t padding,
-                        const uint16_t stride,
-                        const uint16_t dim_im_out,
-                        q7_t *bufferA,
-                        q7_t *Im_out);
+			const uint16_t dim_im_in,
+			const uint16_t ch_im_in,
+			const uint16_t dim_kernel,
+			const uint16_t padding,
+			const uint16_t stride,
+			const uint16_t dim_im_out,
+			q7_t *bufferA,
+			q7_t *Im_out);
 
 /**
  * @brief s8 average pooling function.
@@ -1894,12 +1893,12 @@ void arm_avepool_q7_HWC(q7_t *Im_in,
  *
  */
 arm_status arm_avgpool_s8(const cmsis_nn_context *ctx,
-                          const cmsis_nn_pool_params *pool_params,
-                          const cmsis_nn_dims *input_dims,
-                          const q7_t *input_data,
-                          const cmsis_nn_dims *filter_dims,
-                          const cmsis_nn_dims *output_dims,
-                          q7_t *output_data);
+			  const cmsis_nn_pool_params *pool_params,
+			  const cmsis_nn_dims *input_dims,
+			  const q7_t *input_data,
+			  const cmsis_nn_dims *filter_dims,
+			  const cmsis_nn_dims *output_dims,
+			  q7_t *output_data);
 
 /**
  * @brief Get the required buffer size for S8 average pooling function
@@ -1935,12 +1934,12 @@ int32_t arm_avgpool_s8_get_buffer_size(const int dim_dst_width, const int ch_src
  *
  */
 arm_status arm_avgpool_s16(const cmsis_nn_context *ctx,
-                           const cmsis_nn_pool_params *pool_params,
-                           const cmsis_nn_dims *input_dims,
-                           const int16_t *input_data,
-                           const cmsis_nn_dims *filter_dims,
-                           const cmsis_nn_dims *output_dims,
-                           int16_t *output_data);
+			   const cmsis_nn_pool_params *pool_params,
+			   const cmsis_nn_dims *input_dims,
+			   const int16_t *input_data,
+			   const cmsis_nn_dims *filter_dims,
+			   const cmsis_nn_dims *output_dims,
+			   int16_t *output_data);
 
 /**
  * @brief Get the required buffer size for S16 average pooling function
@@ -1977,12 +1976,12 @@ int32_t arm_avgpool_s16_get_buffer_size(const int dim_dst_width, const int ch_sr
  *
  */
 arm_status arm_max_pool_s8(const cmsis_nn_context *ctx,
-                           const cmsis_nn_pool_params *pool_params,
-                           const cmsis_nn_dims *input_dims,
-                           const q7_t *input_data,
-                           const cmsis_nn_dims *filter_dims,
-                           const cmsis_nn_dims *output_dims,
-                           q7_t *output_data);
+			   const cmsis_nn_pool_params *pool_params,
+			   const cmsis_nn_dims *input_dims,
+			   const q7_t *input_data,
+			   const cmsis_nn_dims *filter_dims,
+			   const cmsis_nn_dims *output_dims,
+			   q7_t *output_data);
 
 /**
  * @brief s16 max pooling function.
@@ -2010,12 +2009,12 @@ arm_status arm_max_pool_s8(const cmsis_nn_context *ctx,
  *
  */
 arm_status arm_max_pool_s16(const cmsis_nn_context *ctx,
-                            const cmsis_nn_pool_params *pool_params,
-                            const cmsis_nn_dims *input_dims,
-                            const int16_t *src,
-                            const cmsis_nn_dims *filter_dims,
-                            const cmsis_nn_dims *output_dims,
-                            int16_t *dst);
+			    const cmsis_nn_pool_params *pool_params,
+			    const cmsis_nn_dims *input_dims,
+			    const int16_t *src,
+			    const cmsis_nn_dims *filter_dims,
+			    const cmsis_nn_dims *output_dims,
+			    int16_t *dst);
 
 /**
  * @defgroup Softmax Softmax Functions
@@ -2080,12 +2079,12 @@ void arm_softmax_q15(const q15_t *vec_in, const uint16_t dim_vec, q15_t *p_out);
  *
  */
 void arm_softmax_s8(const int8_t *input,
-                    const int32_t num_rows,
-                    const int32_t row_size,
-                    const int32_t mult,
-                    const int32_t shift,
-                    const int32_t diff_min,
-                    int8_t *output);
+		    const int32_t num_rows,
+		    const int32_t row_size,
+		    const int32_t mult,
+		    const int32_t shift,
+		    const int32_t diff_min,
+		    int8_t *output);
 
 /**
  * @brief S8 to s16 softmax function
@@ -2102,12 +2101,12 @@ void arm_softmax_s8(const int8_t *input,
  *
  */
 void arm_softmax_s8_s16(const int8_t *input,
-                        const int32_t num_rows,
-                        const int32_t row_size,
-                        const int32_t mult,
-                        const int32_t shift,
-                        const int32_t diff_min,
-                        int16_t *output);
+			const int32_t num_rows,
+			const int32_t row_size,
+			const int32_t mult,
+			const int32_t shift,
+			const int32_t diff_min,
+			int16_t *output);
 
 /**
  * @brief S16 softmax function
@@ -2131,12 +2130,12 @@ void arm_softmax_s8_s16(const int8_t *input,
  *
  */
 arm_status arm_softmax_s16(const int16_t *input,
-                           const int32_t num_rows,
-                           const int32_t row_size,
-                           const int32_t mult,
-                           const int32_t shift,
-                           const cmsis_nn_softmax_lut_s16 *softmax_params,
-                           int16_t *output);
+			   const int32_t num_rows,
+			   const int32_t row_size,
+			   const int32_t mult,
+			   const int32_t shift,
+			   const cmsis_nn_softmax_lut_s16 *softmax_params,
+			   int16_t *output);
 
 /**
  * @brief U8 softmax function
@@ -2154,12 +2153,12 @@ arm_status arm_softmax_s16(const int16_t *input,
  */
 
 void arm_softmax_u8(const uint8_t *input,
-                    const int32_t num_rows,
-                    const int32_t row_size,
-                    const int32_t mult,
-                    const int32_t shift,
-                    const int32_t diff_min,
-                    uint8_t *output);
+		    const int32_t num_rows,
+		    const int32_t row_size,
+		    const int32_t mult,
+		    const int32_t shift,
+		    const int32_t diff_min,
+		    uint8_t *output);
 
 /**
  * @brief uint8 depthwise convolution function with asymmetric quantization
@@ -2196,30 +2195,30 @@ void arm_softmax_u8(const uint8_t *input,
  *
  */
 arm_status arm_depthwise_conv_u8_basic_ver1(const uint8_t *input,
-                                            const uint16_t input_x,
-                                            const uint16_t input_y,
-                                            const uint16_t input_ch,
-                                            const uint8_t *kernel,
-                                            const uint16_t kernel_x,
-                                            const uint16_t kernel_y,
-                                            const int16_t ch_mult,
-                                            const int16_t pad_x,
-                                            const int16_t pad_y,
-                                            const int16_t stride_x,
-                                            const int16_t stride_y,
-                                            const int16_t dilation_x,
-                                            const int16_t dilation_y,
-                                            const int32_t *bias,
-                                            const int32_t input_offset,
-                                            const int32_t filter_offset,
-                                            const int32_t output_offset,
-                                            uint8_t *output,
-                                            const uint16_t output_x,
-                                            const uint16_t output_y,
-                                            const int32_t output_activation_min,
-                                            const int32_t output_activation_max,
-                                            const int32_t out_shift,
-                                            const int32_t out_mult);
+		const uint16_t input_x,
+		const uint16_t input_y,
+		const uint16_t input_ch,
+		const uint8_t *kernel,
+		const uint16_t kernel_x,
+		const uint16_t kernel_y,
+		const int16_t ch_mult,
+		const int16_t pad_x,
+		const int16_t pad_y,
+		const int16_t stride_x,
+		const int16_t stride_y,
+		const int16_t dilation_x,
+		const int16_t dilation_y,
+		const int32_t *bias,
+		const int32_t input_offset,
+		const int32_t filter_offset,
+		const int32_t output_offset,
+		uint8_t *output,
+		const uint16_t output_x,
+		const uint16_t output_y,
+		const int32_t output_activation_min,
+		const int32_t output_activation_max,
+		const int32_t out_shift,
+		const int32_t out_mult);
 
 /**
  * @defgroup Reshape Reshape Functions
@@ -2281,13 +2280,13 @@ void arm_reshape_s8(const int8_t *input, int8_t *output, const uint32_t total_si
  *
  */
 void arm_concatenation_s8_x(const int8_t *input,
-                            const uint16_t input_x,
-                            const uint16_t input_y,
-                            const uint16_t input_z,
-                            const uint16_t input_w,
-                            int8_t *output,
-                            const uint16_t output_x,
-                            const uint32_t offset_x);
+			    const uint16_t input_x,
+			    const uint16_t input_y,
+			    const uint16_t input_z,
+			    const uint16_t input_w,
+			    int8_t *output,
+			    const uint16_t output_x,
+			    const uint32_t offset_x);
 
 /**
  * @brief int8/uint8 concatenation function to be used for concatenating N-tensors along the Y axis
@@ -2328,13 +2327,13 @@ void arm_concatenation_s8_x(const int8_t *input,
  *
  */
 void arm_concatenation_s8_y(const int8_t *input,
-                            const uint16_t input_x,
-                            const uint16_t input_y,
-                            const uint16_t input_z,
-                            const uint16_t input_w,
-                            int8_t *output,
-                            const uint16_t output_y,
-                            const uint32_t offset_y);
+			    const uint16_t input_x,
+			    const uint16_t input_y,
+			    const uint16_t input_z,
+			    const uint16_t input_w,
+			    int8_t *output,
+			    const uint16_t output_y,
+			    const uint32_t offset_y);
 
 /**
  * @brief int8/uint8 concatenation function to be used for concatenating N-tensors along the Z axis
@@ -2375,13 +2374,13 @@ void arm_concatenation_s8_y(const int8_t *input,
  *
  */
 void arm_concatenation_s8_z(const int8_t *input,
-                            const uint16_t input_x,
-                            const uint16_t input_y,
-                            const uint16_t input_z,
-                            const uint16_t input_w,
-                            int8_t *output,
-                            const uint16_t output_z,
-                            const uint32_t offset_z);
+			    const uint16_t input_x,
+			    const uint16_t input_y,
+			    const uint16_t input_z,
+			    const uint16_t input_w,
+			    int8_t *output,
+			    const uint16_t output_z,
+			    const uint32_t offset_z);
 
 /**
  * @brief int8/uint8 concatenation function to be used for concatenating N-tensors along the W axis (Batch size)
@@ -2418,12 +2417,12 @@ void arm_concatenation_s8_z(const int8_t *input,
  *
  */
 void arm_concatenation_s8_w(const int8_t *input,
-                            const uint16_t input_x,
-                            const uint16_t input_y,
-                            const uint16_t input_z,
-                            const uint16_t input_w,
-                            int8_t *output,
-                            const uint32_t offset_w);
+			    const uint16_t input_x,
+			    const uint16_t input_y,
+			    const uint16_t input_z,
+			    const uint16_t input_w,
+			    int8_t *output,
+			    const uint32_t offset_w);
 /**
  * @defgroup SVDF SVDF Layer Functions
  *
@@ -2460,22 +2459,22 @@ void arm_concatenation_s8_w(const int8_t *input,
  *
  */
 arm_status arm_svdf_s8(const cmsis_nn_context *input_ctx,
-                       const cmsis_nn_context *output_ctx,
-                       const cmsis_nn_svdf_params *svdf_params,
-                       const cmsis_nn_per_tensor_quant_params *input_quant_params,
-                       const cmsis_nn_per_tensor_quant_params *output_quant_params,
-                       const cmsis_nn_dims *input_dims,
-                       const q7_t *input_data,
-                       const cmsis_nn_dims *state_dims,
-                       q7_t *state_data,
-                       const cmsis_nn_dims *weights_feature_dims,
-                       const q7_t *weights_feature_data,
-                       const cmsis_nn_dims *weights_time_dims,
-                       const q7_t *weights_time_data,
-                       const cmsis_nn_dims *bias_dims,
-                       const q31_t *bias_data,
-                       const cmsis_nn_dims *output_dims,
-                       q7_t *output_data);
+		       const cmsis_nn_context *output_ctx,
+		       const cmsis_nn_svdf_params *svdf_params,
+		       const cmsis_nn_per_tensor_quant_params *input_quant_params,
+		       const cmsis_nn_per_tensor_quant_params *output_quant_params,
+		       const cmsis_nn_dims *input_dims,
+		       const q7_t *input_data,
+		       const cmsis_nn_dims *state_dims,
+		       q7_t *state_data,
+		       const cmsis_nn_dims *weights_feature_dims,
+		       const q7_t *weights_feature_data,
+		       const cmsis_nn_dims *weights_time_dims,
+		       const q7_t *weights_time_data,
+		       const cmsis_nn_dims *bias_dims,
+		       const q31_t *bias_data,
+		       const cmsis_nn_dims *output_dims,
+		       q7_t *output_data);
 
 /**
  * @brief s8 SVDF function with 16 bit state tensor and 16 bit time weights
@@ -2508,22 +2507,22 @@ arm_status arm_svdf_s8(const cmsis_nn_context *input_ctx,
  *
  */
 arm_status arm_svdf_state_s16_s8(const cmsis_nn_context *input_ctx,
-                                 const cmsis_nn_context *output_ctx,
-                                 const cmsis_nn_svdf_params *svdf_params,
-                                 const cmsis_nn_per_tensor_quant_params *input_quant_params,
-                                 const cmsis_nn_per_tensor_quant_params *output_quant_params,
-                                 const cmsis_nn_dims *input_dims,
-                                 const q7_t *input_data,
-                                 const cmsis_nn_dims *state_dims,
-                                 q15_t *state_data,
-                                 const cmsis_nn_dims *weights_feature_dims,
-                                 const q7_t *weights_feature_data,
-                                 const cmsis_nn_dims *weights_time_dims,
-                                 const q15_t *weights_time_data,
-                                 const cmsis_nn_dims *bias_dims,
-                                 const q31_t *bias_data,
-                                 const cmsis_nn_dims *output_dims,
-                                 q7_t *output_data);
+				 const cmsis_nn_context *output_ctx,
+				 const cmsis_nn_svdf_params *svdf_params,
+				 const cmsis_nn_per_tensor_quant_params *input_quant_params,
+				 const cmsis_nn_per_tensor_quant_params *output_quant_params,
+				 const cmsis_nn_dims *input_dims,
+				 const q7_t *input_data,
+				 const cmsis_nn_dims *state_dims,
+				 q15_t *state_data,
+				 const cmsis_nn_dims *weights_feature_dims,
+				 const q7_t *weights_feature_data,
+				 const cmsis_nn_dims *weights_time_dims,
+				 const q15_t *weights_time_data,
+				 const cmsis_nn_dims *bias_dims,
+				 const q31_t *bias_data,
+				 const cmsis_nn_dims *output_dims,
+				 q7_t *output_data);
 
 #ifdef __cplusplus
 }

@@ -23,7 +23,7 @@
  * limitations under the License.
  */
 
- 
+
 #ifndef _SUPPORT_FUNCTIONS_F16_H_
 #define _SUPPORT_FUNCTIONS_F16_H_
 
@@ -40,20 +40,20 @@ extern "C"
 
 #if defined(ARM_FLOAT16_SUPPORTED)
 
-  /**
-   * @brief  Copies the elements of a floating-point vector.
-   * @param[in]  pSrc       input pointer
-   * @param[out] pDst       output pointer
-   * @param[in]  blockSize  number of samples to process
-   */
+/**
+ * @brief  Copies the elements of a floating-point vector.
+ * @param[in]  pSrc       input pointer
+ * @param[out] pDst       output pointer
+ * @param[in]  blockSize  number of samples to process
+ */
 void arm_copy_f16(const float16_t * pSrc, float16_t * pDst, uint32_t blockSize);
 
-  /**
-   * @brief  Fills a constant value into a floating-point vector.
-   * @param[in]  value      input value to be filled
-   * @param[out] pDst       output pointer
-   * @param[in]  blockSize  number of samples to process
-   */
+/**
+ * @brief  Fills a constant value into a floating-point vector.
+ * @param[in]  value      input value to be filled
+ * @param[out] pDst       output pointer
+ * @param[in]  blockSize  number of samples to process
+ */
 void arm_fill_f16(float16_t value, float16_t * pDst, uint32_t blockSize);
 
 /**
@@ -100,8 +100,8 @@ void arm_f16_to_float(const float16_t * pSrc, float32_t * pDst, uint32_t blockSi
  *
  */
 float16_t arm_weighted_sum_f16(const float16_t *in
-  , const float16_t *weigths
-  , uint32_t blockSize);
+			       , const float16_t *weigths
+			       , uint32_t blockSize);
 
 /**
  * @brief Barycenter
@@ -116,10 +116,10 @@ float16_t arm_weighted_sum_f16(const float16_t *in
  *
  */
 void arm_barycenter_f16(const float16_t *in
-  , const float16_t *weights
-  , float16_t *out
-  , uint32_t nbVectors
-  , uint32_t vecDim);
+			, const float16_t *weights
+			, float16_t *out
+			, uint32_t nbVectors
+			, uint32_t vecDim);
 
 
 /**
@@ -139,7 +139,7 @@ void arm_barycenter_f16(const float16_t *in
    * @brief  Interpret a f16 as an s16 value
    * @param[in] x  input value.
    * @return  return value.
-   * 
+   *
    * @par    Description
    *            It is a typecast. No conversion of the float to int is done.
    *            The memcpy will be optimized out by the compiler.
@@ -149,16 +149,16 @@ void arm_barycenter_f16(const float16_t *in
    */
 __STATIC_INLINE int16_t arm_typecast_s16_f16(float16_t x)
 {
-   int16_t res;
-   res=*(int16_t*)memcpy((char*)&res,(char*)&x,sizeof(float16_t));
-   return(res);
+	int16_t res;
+	res = *(int16_t*)memcpy((char*)&res, (char*)&x, sizeof(float16_t));
+	return (res);
 }
 
 /**
    * @brief  Interpret an s16 as an f16 value
    * @param[in] x  input value.
    * @return  return value.
-   * 
+   *
    * @par    Description
    *            It is a typecast. No conversion of the int to float is done.
    *            The memcpy will be optimized out by the compiler.
@@ -168,9 +168,9 @@ __STATIC_INLINE int16_t arm_typecast_s16_f16(float16_t x)
    */
 __STATIC_INLINE float16_t arm_typecast_f16_s16(int16_t x)
 {
-   float16_t res;
-   res=*(float16_t*)memcpy((char*)&res,(char*)&x,sizeof(int16_t));
-   return(res);
+	float16_t res;
+	res = *(float16_t*)memcpy((char*)&res, (char*)&x, sizeof(int16_t));
+	return (res);
 }
 
 

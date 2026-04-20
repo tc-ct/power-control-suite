@@ -50,18 +50,17 @@ extern "C" {
   * @brief    I3C Controller Timing Structure definition
   * @{
   */
-typedef struct
-{
-  uint32_t clockSrcFreq; /*!< Specifies the I3C clock source (in Hz).                                                 */
+typedef struct {
+	uint32_t clockSrcFreq; /*!< Specifies the I3C clock source (in Hz).                                                 */
 
-  uint32_t i3cPPFreq;   /*!< Specifies the I3C required bus clock for Push-Pull phase (in Hz).                        */
+	uint32_t i3cPPFreq;   /*!< Specifies the I3C required bus clock for Push-Pull phase (in Hz).                        */
 
-  uint32_t i2cODFreq;   /*!< Specifies I2C required bus clock for Open-Drain phase (in Hz).                           */
+	uint32_t i2cODFreq;   /*!< Specifies I2C required bus clock for Open-Drain phase (in Hz).                           */
 
-  uint32_t dutyCycle;   /*!< Specifies the I3C duty cycle for Pure I3C bus or I2C duty cycle for Mixed bus in percent
+	uint32_t dutyCycle;   /*!< Specifies the I3C duty cycle for Pure I3C bus or I2C duty cycle for Mixed bus in percent
                              This parameter must be a value less than or equal to 50 percent.                         */
 
-  uint32_t busType;     /*!< Specifies the Bus configuration type.
+	uint32_t busType;     /*!< Specifies the Bus configuration type.
                              This parameter must be a value of @ref I3C_UTIL_EC_BUS_TYPE                              */
 } I3C_CtrlTimingTypeDef;
 /**
@@ -72,9 +71,8 @@ typedef struct
   * @brief    I3C Target Timing Structure definition
   * @{
   */
-typedef struct
-{
-  uint32_t clockSrcFreq; /*!< Specifies the I3C clock source (in Hz).                                                 */
+typedef struct {
+	uint32_t clockSrcFreq; /*!< Specifies the I3C clock source (in Hz).                                                 */
 } I3C_TgtTimingTypeDef;
 /**
   * @}
@@ -111,9 +109,9 @@ typedef struct
   * @{
   */
 ErrorStatus I3C_CtrlTimingComputation(const I3C_CtrlTimingTypeDef *pInputTiming,
-                                      LL_I3C_CtrlBusConfTypeDef *pOutputConfig);
+				      LL_I3C_CtrlBusConfTypeDef *pOutputConfig);
 ErrorStatus I3C_TgtTimingComputation(const I3C_TgtTimingTypeDef *pInputTiming,
-                                     LL_I3C_TgtBusConfTypeDef *pOutputConfig);
+				     LL_I3C_TgtBusConfTypeDef *pOutputConfig);
 /**
   * @}
   */

@@ -126,15 +126,14 @@ extern "C" {
 #define DFU_MANIFEST_MASK              (1U << 2)
 #define DFU_STATUS_DEPTH               6U
 
-typedef enum
-{
-  DFU_DETACH = 0U,
-  DFU_DNLOAD,
-  DFU_UPLOAD,
-  DFU_GETSTATUS,
-  DFU_CLRSTATUS,
-  DFU_GETSTATE,
-  DFU_ABORT
+typedef enum {
+	DFU_DETACH = 0U,
+	DFU_DNLOAD,
+	DFU_UPLOAD,
+	DFU_GETSTATUS,
+	DFU_CLRSTATUS,
+	DFU_GETSTATE,
+	DFU_ABORT
 } DFU_RequestTypeDef;
 
 typedef  void (*pFunction)(void);
@@ -165,44 +164,40 @@ typedef  void (*pFunction)(void);
   * @{
   */
 
-typedef struct
-{
-  union
-  {
-    uint32_t d32[USBD_DFU_XFER_SIZE / 4U];
-    uint8_t d8[USBD_DFU_XFER_SIZE];
-  } buffer;
+typedef struct {
+	union {
+		uint32_t d32[USBD_DFU_XFER_SIZE / 4U];
+		uint8_t d8[USBD_DFU_XFER_SIZE];
+	} buffer;
 
-  uint32_t wblock_num;
-  uint32_t wlength;
-  uint32_t data_ptr;
-  uint32_t alt_setting;
+	uint32_t wblock_num;
+	uint32_t wlength;
+	uint32_t data_ptr;
+	uint32_t alt_setting;
 
-  uint8_t dev_status[DFU_STATUS_DEPTH];
-  uint8_t ReservedForAlign[2];
-  uint8_t dev_state;
-  uint8_t manif_state;
+	uint8_t dev_status[DFU_STATUS_DEPTH];
+	uint8_t ReservedForAlign[2];
+	uint8_t dev_state;
+	uint8_t manif_state;
 } USBD_DFU_HandleTypeDef;
 
-typedef struct
-{
-  const uint8_t *pStrDesc;
-  uint16_t (* Init)(void);
-  uint16_t (* DeInit)(void);
-  uint16_t (* Erase)(uint32_t Add);
-  uint16_t (* Write)(uint8_t *src, uint8_t *dest, uint32_t Len);
-  uint8_t *(* Read)(uint8_t *src, uint8_t *dest, uint32_t Len);
-  uint16_t (* GetStatus)(uint32_t Add, uint8_t cmd, uint8_t *buff);
+typedef struct {
+	const uint8_t *pStrDesc;
+	uint16_t (* Init)(void);
+	uint16_t (* DeInit)(void);
+	uint16_t (* Erase)(uint32_t Add);
+	uint16_t (* Write)(uint8_t *src, uint8_t *dest, uint32_t Len);
+	uint8_t *(* Read)(uint8_t *src, uint8_t *dest, uint32_t Len);
+	uint16_t (* GetStatus)(uint32_t Add, uint8_t cmd, uint8_t *buff);
 } USBD_DFU_MediaTypeDef;
 
-typedef struct
-{
-  uint8_t           bLength;
-  uint8_t           bDescriptorType;
-  uint8_t           bmAttributes;
-  uint16_t          wDetachTimeout;
-  uint16_t          wTransferSze;
-  uint16_t          bcdDFUVersion;
+typedef struct {
+	uint8_t           bLength;
+	uint8_t           bDescriptorType;
+	uint8_t           bmAttributes;
+	uint16_t          wDetachTimeout;
+	uint16_t          wTransferSze;
+	uint16_t          bcdDFUVersion;
 } __PACKED USBD_DFUFuncDescTypeDef;
 
 /**
@@ -233,7 +228,7 @@ extern USBD_ClassTypeDef USBD_DFU;
   * @{
   */
 uint8_t USBD_DFU_RegisterMedia(USBD_HandleTypeDef *pdev,
-                               USBD_DFU_MediaTypeDef *fops);
+			       USBD_DFU_MediaTypeDef *fops);
 /**
   * @}
   */

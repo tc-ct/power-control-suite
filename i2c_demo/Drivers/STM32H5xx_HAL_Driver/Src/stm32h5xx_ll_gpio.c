@@ -103,75 +103,69 @@
   */
 ErrorStatus LL_GPIO_DeInit(const GPIO_TypeDef *GPIOx)
 {
-  ErrorStatus status = SUCCESS;
+	ErrorStatus status = SUCCESS;
 
-  /* Check the parameters */
-  assert_param(IS_GPIO_ALL_INSTANCE(GPIOx));
+	/* Check the parameters */
+	assert_param(IS_GPIO_ALL_INSTANCE(GPIOx));
 
-  /* Force and Release reset on clock of GPIOx Port */
-  if (GPIOx == GPIOA)
-  {
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOA);
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOA);
-  }
-  else if (GPIOx == GPIOB)
-  {
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOB);
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOB);
-  }
-  else if (GPIOx == GPIOC)
-  {
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOC);
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOC);
-  }
+	/* Force and Release reset on clock of GPIOx Port */
+	if (GPIOx == GPIOA) {
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOA);
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOA);
+	} else if (GPIOx == GPIOB) {
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOB);
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOB);
+	} else if (GPIOx == GPIOC) {
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOC);
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOC);
+	}
+
 #if defined(GPIOD)
-  else if (GPIOx == GPIOD)
-  {
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOD);
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOD);
-  }
+	else if (GPIOx == GPIOD) {
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOD);
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOD);
+	}
+
 #endif /* GPIOD */
 #if defined(GPIOE)
-  else if (GPIOx == GPIOE)
-  {
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOE);
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOE);
-  }
+	else if (GPIOx == GPIOE) {
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOE);
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOE);
+	}
+
 #endif /* GPIOE */
 #if defined(GPIOF)
-  else if (GPIOx == GPIOF)
-  {
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOF);
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOF);
-  }
+	else if (GPIOx == GPIOF) {
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOF);
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOF);
+	}
+
 #endif /* GPIOF */
 #if defined(GPIOG)
-  else if (GPIOx == GPIOG)
-  {
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOG);
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOG);
-  }
+	else if (GPIOx == GPIOG) {
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOG);
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOG);
+	}
+
 #endif /* GPIOG */
 #if defined(GPIOH)
-  else if (GPIOx == GPIOH)
-  {
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOH);
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOH);
-  }
+	else if (GPIOx == GPIOH) {
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOH);
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOH);
+	}
+
 #endif /* GPIOH */
 #if defined(GPIOI)
-  else if (GPIOx == GPIOI)
-  {
-    LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOI);
-    LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOI);
-  }
-#endif /* GPIOI */
-  else
-  {
-    status = ERROR;
-  }
+	else if (GPIOx == GPIOI) {
+		LL_AHB2_GRP1_ForceReset(LL_AHB2_GRP1_PERIPH_GPIOI);
+		LL_AHB2_GRP1_ReleaseReset(LL_AHB2_GRP1_PERIPH_GPIOI);
+	}
 
-  return (status);
+#endif /* GPIOI */
+	else
+		status = ERROR;
+
+	return (status);
 }
 
 /**
@@ -185,67 +179,61 @@ ErrorStatus LL_GPIO_DeInit(const GPIO_TypeDef *GPIOx)
   */
 ErrorStatus LL_GPIO_Init(GPIO_TypeDef *GPIOx, LL_GPIO_InitTypeDef *GPIO_InitStruct)
 {
-  uint32_t pinpos;
-  uint32_t currentpin;
+	uint32_t pinpos;
+	uint32_t currentpin;
 
-  /* Check the parameters */
-  assert_param(IS_GPIO_ALL_INSTANCE(GPIOx));
-  assert_param(IS_LL_GPIO_PIN(GPIO_InitStruct->Pin));
-  assert_param(IS_LL_GPIO_MODE(GPIO_InitStruct->Mode));
-  assert_param(IS_LL_GPIO_PULL(GPIO_InitStruct->Pull));
+	/* Check the parameters */
+	assert_param(IS_GPIO_ALL_INSTANCE(GPIOx));
+	assert_param(IS_LL_GPIO_PIN(GPIO_InitStruct->Pin));
+	assert_param(IS_LL_GPIO_MODE(GPIO_InitStruct->Mode));
+	assert_param(IS_LL_GPIO_PULL(GPIO_InitStruct->Pull));
 
-  /* ------------------------- Configure the port pins ---------------- */
-  /* Initialize  pinpos on first pin set */
-  pinpos = POSITION_VAL(GPIO_InitStruct->Pin);
+	/* ------------------------- Configure the port pins ---------------- */
+	/* Initialize  pinpos on first pin set */
+	pinpos = POSITION_VAL(GPIO_InitStruct->Pin);
 
-  /* Configure the port pins */
-  while (((GPIO_InitStruct->Pin) >> pinpos) != 0U)
-  {
-    /* Get current io position */
-    currentpin = (GPIO_InitStruct->Pin) & (1UL << pinpos);
+	/* Configure the port pins */
+	while (((GPIO_InitStruct->Pin) >> pinpos) != 0U) {
+		/* Get current io position */
+		currentpin = (GPIO_InitStruct->Pin) & (1UL << pinpos);
 
-    if (currentpin != 0U)
-    {
-      if ((GPIO_InitStruct->Mode == LL_GPIO_MODE_OUTPUT) || (GPIO_InitStruct->Mode == LL_GPIO_MODE_ALTERNATE))
-      {
-        /* Check Speed mode parameters */
-        assert_param(IS_LL_GPIO_SPEED(GPIO_InitStruct->Speed));
+		if (currentpin != 0U) {
+			if ((GPIO_InitStruct->Mode == LL_GPIO_MODE_OUTPUT) || (GPIO_InitStruct->Mode == LL_GPIO_MODE_ALTERNATE)) {
+				/* Check Speed mode parameters */
+				assert_param(IS_LL_GPIO_SPEED(GPIO_InitStruct->Speed));
 
-        /* Speed mode configuration */
-        LL_GPIO_SetPinSpeed(GPIOx, currentpin, GPIO_InitStruct->Speed);
+				/* Speed mode configuration */
+				LL_GPIO_SetPinSpeed(GPIOx, currentpin, GPIO_InitStruct->Speed);
 
-        /* Check Output mode parameters */
-        assert_param(IS_LL_GPIO_OUTPUT_TYPE(GPIO_InitStruct->OutputType));
+				/* Check Output mode parameters */
+				assert_param(IS_LL_GPIO_OUTPUT_TYPE(GPIO_InitStruct->OutputType));
 
-        /* Output mode configuration*/
-        LL_GPIO_SetPinOutputType(GPIOx, GPIO_InitStruct->Pin, GPIO_InitStruct->OutputType);
-      }
+				/* Output mode configuration*/
+				LL_GPIO_SetPinOutputType(GPIOx, GPIO_InitStruct->Pin, GPIO_InitStruct->OutputType);
+			}
 
-      /* Pull-up Pull down resistor configuration*/
-      LL_GPIO_SetPinPull(GPIOx, currentpin, GPIO_InitStruct->Pull);
+			/* Pull-up Pull down resistor configuration*/
+			LL_GPIO_SetPinPull(GPIOx, currentpin, GPIO_InitStruct->Pull);
 
-      if (GPIO_InitStruct->Mode == LL_GPIO_MODE_ALTERNATE)
-      {
-        /* Check Alternate parameter */
-        assert_param(IS_LL_GPIO_ALTERNATE(GPIO_InitStruct->Alternate));
+			if (GPIO_InitStruct->Mode == LL_GPIO_MODE_ALTERNATE) {
+				/* Check Alternate parameter */
+				assert_param(IS_LL_GPIO_ALTERNATE(GPIO_InitStruct->Alternate));
 
-        /* Speed mode configuration */
-        if (POSITION_VAL(currentpin) < 8U)
-        {
-          LL_GPIO_SetAFPin_0_7(GPIOx, currentpin, GPIO_InitStruct->Alternate);
-        }
-        else
-        {
-          LL_GPIO_SetAFPin_8_15(GPIOx, currentpin, GPIO_InitStruct->Alternate);
-        }
-      }
-      /* Pin Mode configuration */
-      LL_GPIO_SetPinMode(GPIOx, currentpin, GPIO_InitStruct->Mode);
-    }
-    pinpos++;
-  }
+				/* Speed mode configuration */
+				if (POSITION_VAL(currentpin) < 8U)
+					LL_GPIO_SetAFPin_0_7(GPIOx, currentpin, GPIO_InitStruct->Alternate);
+				else
+					LL_GPIO_SetAFPin_8_15(GPIOx, currentpin, GPIO_InitStruct->Alternate);
+			}
 
-  return (SUCCESS);
+			/* Pin Mode configuration */
+			LL_GPIO_SetPinMode(GPIOx, currentpin, GPIO_InitStruct->Mode);
+		}
+
+		pinpos++;
+	}
+
+	return (SUCCESS);
 }
 
 /**
@@ -257,13 +245,13 @@ ErrorStatus LL_GPIO_Init(GPIO_TypeDef *GPIOx, LL_GPIO_InitTypeDef *GPIO_InitStru
 
 void LL_GPIO_StructInit(LL_GPIO_InitTypeDef *GPIO_InitStruct)
 {
-  /* Reset GPIO init structure parameters values */
-  GPIO_InitStruct->Pin        = LL_GPIO_PIN_ALL;
-  GPIO_InitStruct->Mode       = LL_GPIO_MODE_ANALOG;
-  GPIO_InitStruct->Speed      = LL_GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct->OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-  GPIO_InitStruct->Pull       = LL_GPIO_PULL_NO;
-  GPIO_InitStruct->Alternate  = LL_GPIO_AF_0;
+	/* Reset GPIO init structure parameters values */
+	GPIO_InitStruct->Pin        = LL_GPIO_PIN_ALL;
+	GPIO_InitStruct->Mode       = LL_GPIO_MODE_ANALOG;
+	GPIO_InitStruct->Speed      = LL_GPIO_SPEED_FREQ_LOW;
+	GPIO_InitStruct->OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+	GPIO_InitStruct->Pull       = LL_GPIO_PULL_NO;
+	GPIO_InitStruct->Alternate  = LL_GPIO_AF_0;
 }
 
 /**

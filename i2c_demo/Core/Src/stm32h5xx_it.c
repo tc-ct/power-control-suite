@@ -69,14 +69,14 @@ extern SMBUS_HandleTypeDef hsmbus2;
   */
 void NMI_Handler(void)
 {
-  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+	/* USER CODE BEGIN NonMaskableInt_IRQn 0 */
 
-  /* USER CODE END NonMaskableInt_IRQn 0 */
-  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
-   while (1)
-  {
-  }
-  /* USER CODE END NonMaskableInt_IRQn 1 */
+	/* USER CODE END NonMaskableInt_IRQn 0 */
+	/* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+	while (1) {
+	}
+
+	/* USER CODE END NonMaskableInt_IRQn 1 */
 }
 
 /**
@@ -84,14 +84,13 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-  /* USER CODE BEGIN HardFault_IRQn 0 */
+	/* USER CODE BEGIN HardFault_IRQn 0 */
 
-  /* USER CODE END HardFault_IRQn 0 */
-  while (1)
-  {
-    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
-    /* USER CODE END W1_HardFault_IRQn 0 */
-  }
+	/* USER CODE END HardFault_IRQn 0 */
+	while (1) {
+		/* USER CODE BEGIN W1_HardFault_IRQn 0 */
+		/* USER CODE END W1_HardFault_IRQn 0 */
+	}
 }
 
 /**
@@ -99,14 +98,13 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+	/* USER CODE BEGIN MemoryManagement_IRQn 0 */
 
-  /* USER CODE END MemoryManagement_IRQn 0 */
-  while (1)
-  {
-    /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
-    /* USER CODE END W1_MemoryManagement_IRQn 0 */
-  }
+	/* USER CODE END MemoryManagement_IRQn 0 */
+	while (1) {
+		/* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
+		/* USER CODE END W1_MemoryManagement_IRQn 0 */
+	}
 }
 
 /**
@@ -114,14 +112,13 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-  /* USER CODE BEGIN BusFault_IRQn 0 */
+	/* USER CODE BEGIN BusFault_IRQn 0 */
 
-  /* USER CODE END BusFault_IRQn 0 */
-  while (1)
-  {
-    /* USER CODE BEGIN W1_BusFault_IRQn 0 */
-    /* USER CODE END W1_BusFault_IRQn 0 */
-  }
+	/* USER CODE END BusFault_IRQn 0 */
+	while (1) {
+		/* USER CODE BEGIN W1_BusFault_IRQn 0 */
+		/* USER CODE END W1_BusFault_IRQn 0 */
+	}
 }
 
 /**
@@ -129,14 +126,13 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-  /* USER CODE BEGIN UsageFault_IRQn 0 */
+	/* USER CODE BEGIN UsageFault_IRQn 0 */
 
-  /* USER CODE END UsageFault_IRQn 0 */
-  while (1)
-  {
-    /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
-    /* USER CODE END W1_UsageFault_IRQn 0 */
-  }
+	/* USER CODE END UsageFault_IRQn 0 */
+	while (1) {
+		/* USER CODE BEGIN W1_UsageFault_IRQn 0 */
+		/* USER CODE END W1_UsageFault_IRQn 0 */
+	}
 }
 
 /**
@@ -144,12 +140,12 @@ void UsageFault_Handler(void)
   */
 void SVC_Handler(void)
 {
-  /* USER CODE BEGIN SVCall_IRQn 0 */
+	/* USER CODE BEGIN SVCall_IRQn 0 */
 
-  /* USER CODE END SVCall_IRQn 0 */
-  /* USER CODE BEGIN SVCall_IRQn 1 */
+	/* USER CODE END SVCall_IRQn 0 */
+	/* USER CODE BEGIN SVCall_IRQn 1 */
 
-  /* USER CODE END SVCall_IRQn 1 */
+	/* USER CODE END SVCall_IRQn 1 */
 }
 
 /**
@@ -157,12 +153,12 @@ void SVC_Handler(void)
   */
 void DebugMon_Handler(void)
 {
-  /* USER CODE BEGIN DebugMonitor_IRQn 0 */
+	/* USER CODE BEGIN DebugMonitor_IRQn 0 */
 
-  /* USER CODE END DebugMonitor_IRQn 0 */
-  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
+	/* USER CODE END DebugMonitor_IRQn 0 */
+	/* USER CODE BEGIN DebugMonitor_IRQn 1 */
 
-  /* USER CODE END DebugMonitor_IRQn 1 */
+	/* USER CODE END DebugMonitor_IRQn 1 */
 }
 
 /**
@@ -170,12 +166,12 @@ void DebugMon_Handler(void)
   */
 void PendSV_Handler(void)
 {
-  /* USER CODE BEGIN PendSV_IRQn 0 */
+	/* USER CODE BEGIN PendSV_IRQn 0 */
 
-  /* USER CODE END PendSV_IRQn 0 */
-  /* USER CODE BEGIN PendSV_IRQn 1 */
+	/* USER CODE END PendSV_IRQn 0 */
+	/* USER CODE BEGIN PendSV_IRQn 1 */
 
-  /* USER CODE END PendSV_IRQn 1 */
+	/* USER CODE END PendSV_IRQn 1 */
 }
 
 /**
@@ -183,13 +179,13 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  /* USER CODE BEGIN SysTick_IRQn 0 */
+	/* USER CODE BEGIN SysTick_IRQn 0 */
 
-  /* USER CODE END SysTick_IRQn 0 */
-  HAL_IncTick();
-  /* USER CODE BEGIN SysTick_IRQn 1 */
+	/* USER CODE END SysTick_IRQn 0 */
+	HAL_IncTick();
+	/* USER CODE BEGIN SysTick_IRQn 1 */
 
-  /* USER CODE END SysTick_IRQn 1 */
+	/* USER CODE END SysTick_IRQn 1 */
 }
 
 /******************************************************************************/
@@ -204,13 +200,13 @@ void SysTick_Handler(void)
   */
 void I2C1_EV_IRQHandler(void)
 {
-  /* USER CODE BEGIN I2C1_EV_IRQn 0 */
+	/* USER CODE BEGIN I2C1_EV_IRQn 0 */
 
-  /* USER CODE END I2C1_EV_IRQn 0 */
-  HAL_SMBUS_EV_IRQHandler(&hsmbus1);
-  /* USER CODE BEGIN I2C1_EV_IRQn 1 */
+	/* USER CODE END I2C1_EV_IRQn 0 */
+	HAL_SMBUS_EV_IRQHandler(&hsmbus1);
+	/* USER CODE BEGIN I2C1_EV_IRQn 1 */
 
-  /* USER CODE END I2C1_EV_IRQn 1 */
+	/* USER CODE END I2C1_EV_IRQn 1 */
 }
 
 /**
@@ -218,13 +214,13 @@ void I2C1_EV_IRQHandler(void)
   */
 void I2C1_ER_IRQHandler(void)
 {
-  /* USER CODE BEGIN I2C1_ER_IRQn 0 */
+	/* USER CODE BEGIN I2C1_ER_IRQn 0 */
 
-  /* USER CODE END I2C1_ER_IRQn 0 */
-  HAL_SMBUS_ER_IRQHandler(&hsmbus1);
-  /* USER CODE BEGIN I2C1_ER_IRQn 1 */
+	/* USER CODE END I2C1_ER_IRQn 0 */
+	HAL_SMBUS_ER_IRQHandler(&hsmbus1);
+	/* USER CODE BEGIN I2C1_ER_IRQn 1 */
 
-  /* USER CODE END I2C1_ER_IRQn 1 */
+	/* USER CODE END I2C1_ER_IRQn 1 */
 }
 
 /**
@@ -232,13 +228,13 @@ void I2C1_ER_IRQHandler(void)
   */
 void I2C2_EV_IRQHandler(void)
 {
-  /* USER CODE BEGIN I2C2_EV_IRQn 0 */
+	/* USER CODE BEGIN I2C2_EV_IRQn 0 */
 
-  /* USER CODE END I2C2_EV_IRQn 0 */
-  HAL_SMBUS_EV_IRQHandler(&hsmbus2);
-  /* USER CODE BEGIN I2C2_EV_IRQn 1 */
+	/* USER CODE END I2C2_EV_IRQn 0 */
+	HAL_SMBUS_EV_IRQHandler(&hsmbus2);
+	/* USER CODE BEGIN I2C2_EV_IRQn 1 */
 
-  /* USER CODE END I2C2_EV_IRQn 1 */
+	/* USER CODE END I2C2_EV_IRQn 1 */
 }
 
 /**
@@ -246,13 +242,13 @@ void I2C2_EV_IRQHandler(void)
   */
 void I2C2_ER_IRQHandler(void)
 {
-  /* USER CODE BEGIN I2C2_ER_IRQn 0 */
+	/* USER CODE BEGIN I2C2_ER_IRQn 0 */
 
-  /* USER CODE END I2C2_ER_IRQn 0 */
-  HAL_SMBUS_ER_IRQHandler(&hsmbus2);
-  /* USER CODE BEGIN I2C2_ER_IRQn 1 */
+	/* USER CODE END I2C2_ER_IRQn 0 */
+	HAL_SMBUS_ER_IRQHandler(&hsmbus2);
+	/* USER CODE BEGIN I2C2_ER_IRQn 1 */
 
-  /* USER CODE END I2C2_ER_IRQn 1 */
+	/* USER CODE END I2C2_ER_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

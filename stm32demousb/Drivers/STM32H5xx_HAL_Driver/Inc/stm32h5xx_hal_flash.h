@@ -43,23 +43,22 @@ extern "C" {
 /**
   * @brief  FLASH handle Structure definition
   */
-typedef struct
-{
-  HAL_LockTypeDef        Lock;               /*!< FLASH locking object                                                */
+typedef struct {
+	HAL_LockTypeDef        Lock;               /*!< FLASH locking object                                                */
 
-  uint32_t               ErrorCode;          /*!< FLASH error code                                                    */
+	uint32_t               ErrorCode;          /*!< FLASH error code                                                    */
 
-  uint32_t               ProcedureOnGoing;   /*!< Internal variable to indicate which procedure is ongoing or not
+	uint32_t               ProcedureOnGoing;   /*!< Internal variable to indicate which procedure is ongoing or not
                                                   in IT context */
 
-  uint32_t               Address;            /*!< Internal variable to save address selected for program              */
+	uint32_t               Address;            /*!< Internal variable to save address selected for program              */
 
-  uint32_t               Bank;               /*!< Internal variable to save current bank selected during erase in
+	uint32_t               Bank;               /*!< Internal variable to save current bank selected during erase in
                                                   IT context */
 
-  uint32_t               Sector;             /*!< Internal variable to define the current sector which is erasing     */
+	uint32_t               Sector;             /*!< Internal variable to define the current sector which is erasing     */
 
-  uint32_t               NbSectorsToErase;   /*!< Internal variable to save the remaining sectors to erase in
+	uint32_t               NbSectorsToErase;   /*!< Internal variable to save the remaining sectors to erase in
                                                   IT context  */
 
 } FLASH_ProcessTypeDef;

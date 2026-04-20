@@ -55,99 +55,96 @@
 
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 void arm_mean_q15(
-  const q15_t * pSrc,
-        uint32_t blockSize,
-        q15_t * pResult)
+	const q15_t * pSrc,
+	uint32_t blockSize,
+	q15_t * pResult)
 {
-    uint32_t  blkCnt;           /* loop counters */
-    q15x8_t  vecSrc;
-    q31_t     sum = 0L;
+	uint32_t  blkCnt;           /* loop counters */
+	q15x8_t  vecSrc;
+	q31_t     sum = 0L;
 
-    /* Compute 8 outputs at a time */
-    blkCnt = blockSize >> 3U;
-    while (blkCnt > 0U)
-    {
-        vecSrc = vldrhq_s16(pSrc);
-        /*
-         * sum lanes
-         */
-        sum = vaddvaq(sum, vecSrc);
+	/* Compute 8 outputs at a time */
+	blkCnt = blockSize >> 3U;
 
-        blkCnt--;
-        pSrc += 8;
-    }
+	while (blkCnt > 0U) {
+		vecSrc = vldrhq_s16(pSrc);
+		/*
+		 * sum lanes
+		 */
+		sum = vaddvaq(sum, vecSrc);
 
-    /* Tail */
-    blkCnt = blockSize & 0x7;
+		blkCnt--;
+		pSrc += 8;
+	}
 
-    while (blkCnt > 0U)
-    {
-       /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
-       sum += *pSrc++;
+	/* Tail */
+	blkCnt = blockSize & 0x7;
 
-       /* Decrement loop counter */
-       blkCnt--;
-    }
+	while (blkCnt > 0U) {
+		/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
+		sum += *pSrc++;
 
-    /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) / blockSize  */
-    /* Store the result to the destination */
-    *pResult = (q15_t) (sum / (int32_t) blockSize);
+		/* Decrement loop counter */
+		blkCnt--;
+	}
+
+	/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) / blockSize  */
+	/* Store the result to the destination */
+	*pResult = (q15_t) (sum / (int32_t) blockSize);
 }
 #else
 void arm_mean_q15(
-  const q15_t * pSrc,
-        uint32_t blockSize,
-        q15_t * pResult)
+	const q15_t * pSrc,
+	uint32_t blockSize,
+	q15_t * pResult)
 {
-        uint32_t blkCnt;                               /* Loop counter */
-        q31_t sum = 0;                                 /* Temporary result storage */
+	uint32_t blkCnt;                               /* Loop counter */
+	q31_t sum = 0;                                 /* Temporary result storage */
 
 #if defined (ARM_MATH_LOOPUNROLL)
-        q31_t in;
+	q31_t in;
 #endif
 
 #if defined (ARM_MATH_LOOPUNROLL)
 
-  /* Loop unrolling: Compute 4 outputs at a time */
-  blkCnt = blockSize >> 2U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = blockSize >> 2U;
 
-  while (blkCnt > 0U)
-  {
-    /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
-    in = read_q15x2_ia (&pSrc);
-    sum += ((in << 16U) >> 16U);
-    sum +=  (in >> 16U);
+	while (blkCnt > 0U) {
+		/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
+		in = read_q15x2_ia (&pSrc);
+		sum += ((in << 16U) >> 16U);
+		sum +=  (in >> 16U);
 
-    in = read_q15x2_ia (&pSrc);
-    sum += ((in << 16U) >> 16U);
-    sum +=  (in >> 16U);
+		in = read_q15x2_ia (&pSrc);
+		sum += ((in << 16U) >> 16U);
+		sum +=  (in >> 16U);
 
-    /* Decrement the loop counter */
-    blkCnt--;
-  }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 
-  /* Loop unrolling: Compute remaining outputs */
-  blkCnt = blockSize % 0x4U;
+	/* Loop unrolling: Compute remaining outputs */
+	blkCnt = blockSize % 0x4U;
 
 #else
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = blockSize;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = blockSize;
 
 #endif /* #if defined (ARM_MATH_LOOPUNROLL) */
 
-  while (blkCnt > 0U)
-  {
-    /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
-    sum += *pSrc++;
+	while (blkCnt > 0U) {
+		/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
+		sum += *pSrc++;
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) / blockSize  */
-  /* Store result to destination */
-  *pResult = (q15_t) (sum / (int32_t) blockSize);
+	/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) / blockSize  */
+	/* Store result to destination */
+	*pResult = (q15_t) (sum / (int32_t) blockSize);
 }
 #endif /* defined(ARM_MATH_MVEI) */
 

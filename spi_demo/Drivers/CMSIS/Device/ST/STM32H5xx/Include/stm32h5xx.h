@@ -39,7 +39,7 @@
 #include "math.h"
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif /* __cplusplus */
 
 /** @addtogroup Library_configuration_section
@@ -62,18 +62,18 @@
     && !defined (STM32H573xx) && !defined (STM32H563xx) \
     && !defined (STM32H562xx) && !defined (STM32H503xx) \
     && !defined (STM32H533xx) && !defined (STM32H523xx)
-  /* #define STM32H543xx  */   /*!< STM32H543xx Devices   */
-  /* #define STM32H553xx  */   /*!< STM32H553xx Devices   */
-  /* #define STM32H5F5xx  */   /*!< STM32H5F5xx Devices   */
-  /* #define STM32H5F4xx  */   /*!< STM32H5F4xx Devices   */
-  /* #define STM32H5E5xx  */   /*!< STM32H5E5xx Devices   */
-  /* #define STM32H5E4xx  */   /*!< STM32H5E4xx Devices   */
-  /* #define STM32H573xx  */   /*!< STM32H573xx Devices   */
-  /* #define STM32H563xx  */   /*!< STM32H563xx Devices   */
-  /* #define STM32H562xx  */   /*!< STM32H562xx Devices   */
-  /* #define STM32H503xx  */   /*!< STM32H503xx Devices   */
-  /* #define STM32H533xx  */   /*!< STM32H533xx Devices   */
-  /* #define STM32H523xx  */   /*!< STM32H523xx Devices   */
+/* #define STM32H543xx  */   /*!< STM32H543xx Devices   */
+/* #define STM32H553xx  */   /*!< STM32H553xx Devices   */
+/* #define STM32H5F5xx  */   /*!< STM32H5F5xx Devices   */
+/* #define STM32H5F4xx  */   /*!< STM32H5F4xx Devices   */
+/* #define STM32H5E5xx  */   /*!< STM32H5E5xx Devices   */
+/* #define STM32H5E4xx  */   /*!< STM32H5E4xx Devices   */
+/* #define STM32H573xx  */   /*!< STM32H573xx Devices   */
+/* #define STM32H563xx  */   /*!< STM32H563xx Devices   */
+/* #define STM32H562xx  */   /*!< STM32H562xx Devices   */
+/* #define STM32H503xx  */   /*!< STM32H503xx Devices   */
+/* #define STM32H533xx  */   /*!< STM32H533xx Devices   */
+/* #define STM32H523xx  */   /*!< STM32H523xx Devices   */
 #endif
 
 /*  Tip: To avoid modifying this file each time you need to switch between these
@@ -85,7 +85,7 @@
    In this case, these drivers will not be included and the application code will
    be based on direct access to peripherals registers
    */
-  /*#define USE_HAL_DRIVER */
+/*#define USE_HAL_DRIVER */
 #endif /* USE_HAL_DRIVER */
 
 /**
@@ -109,27 +109,27 @@
   */
 
 #if defined(STM32H5F5xx)
-  #include "stm32h5f5xx.h"
+#include "stm32h5f5xx.h"
 #elif defined(STM32H5F4xx)
-  #include "stm32h5f4xx.h"
+#include "stm32h5f4xx.h"
 #elif defined(STM32H5E5xx)
-  #include "stm32h5e5xx.h"
+#include "stm32h5e5xx.h"
 #elif defined(STM32H5E4xx)
-  #include "stm32h5e4xx.h"
+#include "stm32h5e4xx.h"
 #elif defined(STM32H573xx)
-  #include "stm32h573xx.h"
+#include "stm32h573xx.h"
 #elif defined(STM32H563xx)
-  #include "stm32h563xx.h"
+#include "stm32h563xx.h"
 #elif defined(STM32H562xx)
-  #include "stm32h562xx.h"
+#include "stm32h562xx.h"
 #elif defined(STM32H503xx)
-  #include "stm32h503xx.h"
+#include "stm32h503xx.h"
 #elif defined(STM32H523xx)
-  #include "stm32h523xx.h"
+#include "stm32h523xx.h"
 #elif defined(STM32H533xx)
-  #include "stm32h533xx.h"
+#include "stm32h533xx.h"
 #else
-  #error "Please select first the target STM32H5xx device used in your application (in stm32h5xx.h file)"
+#error "Please select first the target STM32H5xx device used in your application (in stm32h5xx.h file)"
 #endif
 
 
@@ -140,23 +140,20 @@
 /** @addtogroup Exported_types
   * @{
   */
-typedef enum
-{
-  RESET = 0,
-  SET = !RESET
+typedef enum {
+	RESET = 0,
+	SET = !RESET
 } FlagStatus, ITStatus;
 
-typedef enum
-{
-  DISABLE = 0,
-  ENABLE = !DISABLE
+typedef enum {
+	DISABLE = 0,
+	ENABLE = !DISABLE
 } FunctionalState;
 #define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))
 
-typedef enum
-{
-  SUCCESS = 0,
-  ERROR = !SUCCESS
+typedef enum {
+	SUCCESS = 0,
+	ERROR = !SUCCESS
 } ErrorStatus;
 
 /**
@@ -244,7 +241,7 @@ typedef enum
   */
 
 #if defined (USE_HAL_DRIVER)
- #include "stm32h5xx_hal.h"
+#include "stm32h5xx_hal.h"
 #endif /* USE_HAL_DRIVER */
 
 #ifdef __cplusplus

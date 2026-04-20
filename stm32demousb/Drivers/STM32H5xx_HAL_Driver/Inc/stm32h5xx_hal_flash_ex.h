@@ -43,19 +43,18 @@ extern "C" {
 /**
   * @brief  FLASH Erase structure definition
   */
-typedef struct
-{
-  uint32_t TypeErase;   /*!< Mass erase or sector Erase.
+typedef struct {
+	uint32_t TypeErase;   /*!< Mass erase or sector Erase.
                              This parameter can be a value of @ref FLASH_Type_Erase */
 
-  uint32_t Banks;       /*!< Select banks to erase when Mass erase is enabled.
+	uint32_t Banks;       /*!< Select banks to erase when Mass erase is enabled.
                              This parameter can be a value of @ref FLASH_Banks
                              (FLASH_BANK_BOTH should be used only for mass erase) */
 
-  uint32_t Sector;      /*!< Initial FLASH sector to erase when Mass erase is disabled
+	uint32_t Sector;      /*!< Initial FLASH sector to erase when Mass erase is disabled
                              This parameter can be a value of @ref FLASH_Sectors */
 
-  uint32_t NbSectors;   /*!< Number of sectors to be erased.
+	uint32_t NbSectors;   /*!< Number of sectors to be erased.
                              This parameter can be a value between 1 and (max number of sectors in the bank -
                              value of initial sector)*/
 } FLASH_EraseInitTypeDef;
@@ -64,18 +63,17 @@ typedef struct
 /**
   * @brief  FLASH Option Bytes Program structure definition
   */
-typedef struct
-{
-  uint32_t OptionType;     /*!< Option byte to be configured.
+typedef struct {
+	uint32_t OptionType;     /*!< Option byte to be configured.
                                 This parameter can be a value of @ref FLASH_Option_Type */
 
-  uint32_t ProductState;   /*!< Set the product state.
+	uint32_t ProductState;   /*!< Set the product state.
                                 This parameter can be a value of @ref FLASH_OB_Product_State */
 
-  uint32_t USERType;       /*!< Select the User Option Byte(s) to be configured (used for OPTIONBYTE_USER).
+	uint32_t USERType;       /*!< Select the User Option Byte(s) to be configured (used for OPTIONBYTE_USER).
                                 This parameter can be a combination of @ref FLASH_OB_USER_Type */
 
-  uint32_t USERConfig;     /*!< Value of the User Option Byte (used for OPTIONBYTE_USER).
+	uint32_t USERConfig;     /*!< Value of the User Option Byte (used for OPTIONBYTE_USER).
                                 This parameter can be a combination of @ref FLASH_OB_USER_BOR_LEVEL,
                                 @ref FLASH_OB_USER_BORH_EN, @ref FLASH_OB_USER_IWDG_SW,
                                 @ref FLASH_OB_USER_WWDG_SW, @ref FLASH_OB_USER_nRST_STOP,
@@ -84,47 +82,47 @@ typedef struct
                                 @ref FLASH_OB_USER_IWDG_STANDBY, @ref FLASH_OB_USER_BOOT_UBE,
                                 @ref FLASH_OB_USER_SWAP_BANK */
 
-  uint32_t USERConfig2;    /*!< Value of the User Option Byte (used for OPTIONBYTE_USER).
+	uint32_t USERConfig2;    /*!< Value of the User Option Byte (used for OPTIONBYTE_USER).
                                 This parameter can be a combination of @ref FLASH_OB_USER_SRAM1_3_RST,
                                 @ref FLASH_OB_USER_SRAM2_RST, @ref FLASH_OB_USER_BKPRAM_ECC,
                                 @ref FLASH_OB_USER_SRAM3_ECC, @ref FLASH_OB_USER_SRAM2_ECC,
                                 @ref FLASH_OB_USER_SRAM1_RST, @ref FLASH_OB_USER_SRAM1_ECC,
                                 @ref FLASH_OB_USER_USBPD_DIS, @ref FLASH_OB_USER_TZEN */
 
-  uint32_t Banks;          /*!< Select banks for WRP , HDP and secure area configuration.
+	uint32_t Banks;          /*!< Select banks for WRP , HDP and secure area configuration.
                                 This parameter must be a value of @ref FLASH_Banks */
 
-  uint32_t WRPState;       /*!< Write protection activation or deactivation.
+	uint32_t WRPState;       /*!< Write protection activation or deactivation.
                                 This parameter can be a value of @ref FLASH_WRP_State */
 
-  uint32_t WRPSector;      /*!< Specifies the sector(s) to be write protected.
+	uint32_t WRPSector;      /*!< Specifies the sector(s) to be write protected.
                                 The value of this parameter depend on device used within the same series */
 
-  uint32_t BootConfig;     /*!< Specifies if the Boot Address to be configured: secure or non-secure.
+	uint32_t BootConfig;     /*!< Specifies if the Boot Address to be configured: secure or non-secure.
                                 This parameter must be a value of @ref FLASH_OB_BOOT_CONFIG enumeration */
 
-  uint32_t BootAddr;       /*!< Boot address (used for OPTIONBYTE_BOOTADDR).
+	uint32_t BootAddr;       /*!< Boot address (used for OPTIONBYTE_BOOTADDR).
                                 This parameter must be a value between 0x0 and 0xFFFFFF00 */
 
-  uint32_t BootLock;       /*!< Configuration of the boot lock (used for OPTIONBYTE_BOOT_LOCK).
+	uint32_t BootLock;       /*!< Configuration of the boot lock (used for OPTIONBYTE_BOOT_LOCK).
                                 This parameter must be a value of @ref FLASH_OB_BOOT_LOCK */
 
-  uint32_t OTPBlockLock;   /*!< Specifies the OTP block(s) to be locked.
+	uint32_t OTPBlockLock;   /*!< Specifies the OTP block(s) to be locked.
                                 This parameter must be a value of @ref FLASH_OTP_Blocks */
 
-  uint32_t HDPStartSector; /*!< Start sector of HDP area (used for OPTIONBYTE_HDP).
+	uint32_t HDPStartSector; /*!< Start sector of HDP area (used for OPTIONBYTE_HDP).
                                 This parameter must be a value between 0 and (max number of sectors in the bank - 1) */
 
-  uint32_t HDPEndSector;   /*!< End sector of HDP area (used for OPTIONBYTE_HDP).
+	uint32_t HDPEndSector;   /*!< End sector of HDP area (used for OPTIONBYTE_HDP).
                                 This parameter must be a value between 0 and (max number of sectors in the bank - 1) */
 
-  uint32_t EDATASize;      /*!< Specifies the number of Flash high-cycle sectors.
+	uint32_t EDATASize;      /*!< Specifies the number of Flash high-cycle sectors.
                                 This parameter must be a value between 0 and 8 (sectors) */
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  uint32_t WMSecStartSector; /*!< Start sector of secure area (used for OPTIONBYTE_WMSEC).
+	uint32_t WMSecStartSector; /*!< Start sector of secure area (used for OPTIONBYTE_WMSEC).
                                   This parameter must be a value between 0 and (max number of sectors in the bank - 1)*/
-  uint32_t WMSecEndSector;   /*!< End sector of secure area (used for OPTIONBYTE_WMSEC).
+	uint32_t WMSecEndSector;   /*!< End sector of secure area (used for OPTIONBYTE_WMSEC).
                                   This parameter must be a value between 0 and (max number of sectors in the bank - 1)*/
 #endif /* __ARM_FEATURE_CMSE */
 
@@ -133,14 +131,13 @@ typedef struct
 /**
   * @brief  FLASHEx Block-based attributes structure definition
   */
-typedef struct
-{
-  uint32_t Bank;                                        /*!< Selection of the associated bank of Block-based Area.
+typedef struct {
+	uint32_t Bank;                                        /*!< Selection of the associated bank of Block-based Area.
                                                              This parameter must be a value of @ref FLASH_Banks */
-  uint32_t BBAttributesType;                            /*!< Block-Based Attributes type.
+	uint32_t BBAttributesType;                            /*!< Block-Based Attributes type.
                                                              This parameter must be a value of @ref FLASH_BB_Attributes
                                                              */
-  uint32_t BBAttributes_array[FLASH_BLOCKBASED_NB_REG]; /*!< Each bit specifies the block-based attribute configuration
+	uint32_t BBAttributes_array[FLASH_BLOCKBASED_NB_REG]; /*!< Each bit specifies the block-based attribute configuration
                                                              of a sector:
                                                              0 means sector non-protected, 1 means sector protected.
                                                              Protection (secure or privilege) depends on
@@ -150,38 +147,35 @@ typedef struct
 /**
   * @brief  FLASHEx Operation structure definition
   */
-typedef struct
-{
-  uint32_t OperationType;    /*!< Flash operation Type.
+typedef struct {
+	uint32_t OperationType;    /*!< Flash operation Type.
                                   This parameter must be a value of @ref FLASH_Operation_Type */
-  uint32_t FlashArea;        /*!< Flash operation memory area.
+	uint32_t FlashArea;        /*!< Flash operation memory area.
                                   This parameter must be a value of @ref FLASH_Operation_Area */
-  uint32_t Address;          /*!< Flash operation Address offset.
+	uint32_t Address;          /*!< Flash operation Address offset.
                                   This parameter is given by bank, and must be a value between 0x0 and 0xFFFF0 */
 } FLASH_OperationTypeDef;
 
 /**
   * @brief  FLASH HDP Extension structure definition
   */
-typedef struct
-{
-  uint32_t Banks;       /*!< Selection of the associated bank of HDP Area.
+typedef struct {
+	uint32_t Banks;       /*!< Selection of the associated bank of HDP Area.
                              This parameter must be a value of @ref FLASH_Banks */
-  uint32_t NbSectors;   /*!< Number of sectors to be HDP extended.
+	uint32_t NbSectors;   /*!< Number of sectors to be HDP extended.
                              This parameter can be a value between 1 and max number of sectors in the bank */
 } FLASH_HDPExtensionTypeDef;
 
 /**
   * @brief  ECC Info Structure definition
   */
-typedef struct
-{
-  uint32_t               Area;             /*!< Area from which an ECC was detected.
+typedef struct {
+	uint32_t               Area;             /*!< Area from which an ECC was detected.
                                                 This parameter can be a value of @ref FLASHEx_ECC_Area  */
 
-  uint32_t               Address;          /*!< ECC error address */
+	uint32_t               Address;          /*!< ECC error address */
 
-  uint32_t               Data;             /*!< ECC failing data */
+	uint32_t               Data;             /*!< ECC failing data */
 } FLASH_EccInfoTypeDef;
 
 /**

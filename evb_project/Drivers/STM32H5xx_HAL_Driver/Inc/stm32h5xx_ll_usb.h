@@ -49,43 +49,40 @@ extern "C" {
   * @brief  USB Mode definition
   */
 
-typedef enum
-{
-  USB_DEVICE_MODE = 0,
-  USB_HOST_MODE   = 1,
-  USB_DRD_MODE    = 2
+typedef enum {
+	USB_DEVICE_MODE = 0,
+	USB_HOST_MODE   = 1,
+	USB_DRD_MODE    = 2
 } USB_ModeTypeDef;
 
 #if defined (HAL_HCD_MODULE_ENABLED)
 /**
   * @brief  URB States definition
   */
-typedef enum
-{
-  URB_IDLE = 0,
-  URB_DONE,
-  URB_NOTREADY,
-  URB_NYET,
-  URB_ERROR,
-  URB_STALL,
-  URB_NAK_WAIT
+typedef enum {
+	URB_IDLE = 0,
+	URB_DONE,
+	URB_NOTREADY,
+	URB_NYET,
+	URB_ERROR,
+	URB_STALL,
+	URB_NAK_WAIT
 } USB_URBStateTypeDef;
 
 /**
   * @brief  Host channel States  definition
   */
-typedef enum
-{
-  HC_IDLE = 0,
-  HC_XFRC,
-  HC_HALTED,
-  HC_ACK,
-  HC_NAK,
-  HC_NYET,
-  HC_STALL,
-  HC_XACTERR,
-  HC_BBLERR,
-  HC_DATATGLERR
+typedef enum {
+	HC_IDLE = 0,
+	HC_XFRC,
+	HC_HALTED,
+	HC_ACK,
+	HC_NAK,
+	HC_NYET,
+	HC_STALL,
+	HC_XACTERR,
+	HC_BBLERR,
+	HC_DATATGLERR
 } USB_HCStateTypeDef;
 #endif /* defined (HAL_HCD_MODULE_ENABLED) */
 
@@ -93,207 +90,204 @@ typedef enum
 /**
   * @brief  USB Instance Initialization Structure definition
   */
-typedef struct
-{
-  uint8_t dev_endpoints;            /*!< Device Endpoints number.
+typedef struct {
+	uint8_t dev_endpoints;            /*!< Device Endpoints number.
                                          This parameter depends on the used USB core.
                                          This parameter must be a number between Min_Data = 1 and Max_Data = 15 */
 
-  uint8_t Host_channels;            /*!< Host Channels number.
+	uint8_t Host_channels;            /*!< Host Channels number.
                                          This parameter Depends on the used USB core.
                                          This parameter must be a number between Min_Data = 1 and Max_Data = 15 */
 
-  uint8_t dma_enable;              /*!< USB DMA state.
+	uint8_t dma_enable;              /*!< USB DMA state.
                                          If DMA is not supported this parameter shall be set by default to zero */
 
-  uint8_t speed;                   /*!< USB Core speed.
+	uint8_t speed;                   /*!< USB Core speed.
                                         This parameter can be any value of @ref PCD_Speed/HCD_Speed
                                                                                 (HCD_SPEED_xxx, HCD_SPEED_xxx) */
 
-  uint8_t ep0_mps;                 /*!< Set the Endpoint 0 Max Packet size.                                    */
+	uint8_t ep0_mps;                 /*!< Set the Endpoint 0 Max Packet size.                                    */
 
-  uint8_t phy_itface;              /*!< Select the used PHY interface.
+	uint8_t phy_itface;              /*!< Select the used PHY interface.
                                         This parameter can be any value of @ref PCD_PHY_Module/HCD_PHY_Module  */
 
-  uint8_t Sof_enable;              /*!< Enable or disable the output of the SOF signal.                        */
+	uint8_t Sof_enable;              /*!< Enable or disable the output of the SOF signal.                        */
 
-  uint8_t low_power_enable;        /*!< Enable or disable the low Power Mode.                                  */
+	uint8_t low_power_enable;        /*!< Enable or disable the low Power Mode.                                  */
 
-  uint8_t lpm_enable;              /*!< Enable or disable Link Power Management.                               */
+	uint8_t lpm_enable;              /*!< Enable or disable Link Power Management.                               */
 
-  uint8_t battery_charging_enable; /*!< Enable or disable Battery charging.                                    */
+	uint8_t battery_charging_enable; /*!< Enable or disable Battery charging.                                    */
 
-  uint8_t vbus_sensing_enable;     /*!< Enable or disable the VBUS Sensing feature.                            */
+	uint8_t vbus_sensing_enable;     /*!< Enable or disable the VBUS Sensing feature.                            */
 
 #if defined (USB_OTG_FS) || defined (USB_OTG_HS)
-  uint8_t use_dedicated_ep1;       /*!< Enable or disable the use of the dedicated EP1 interrupt.              */
+	uint8_t use_dedicated_ep1;       /*!< Enable or disable the use of the dedicated EP1 interrupt.              */
 
-  uint8_t use_external_vbus;       /*!< Enable or disable the use of the external VBUS.                        */
+	uint8_t use_external_vbus;       /*!< Enable or disable the use of the external VBUS.                        */
 #endif /* defined (USB_OTG_FS) || defined (USB_OTG_HS) */
 #if defined (USB_DRD_FS)
-  uint8_t bulk_doublebuffer_enable;  /*!< Enable or disable the double buffer mode on bulk EP                  */
+	uint8_t bulk_doublebuffer_enable;  /*!< Enable or disable the double buffer mode on bulk EP                  */
 
-  uint8_t iso_singlebuffer_enable;   /*!< Enable or disable the Single buffer mode on Isochronous  EP          */
+	uint8_t iso_singlebuffer_enable;   /*!< Enable or disable the Single buffer mode on Isochronous  EP          */
 #endif /* defined (USB_DRD_FS) */
 } USB_CfgTypeDef;
 
 #if defined (HAL_PCD_MODULE_ENABLED)
-typedef struct
-{
-  uint8_t   num;                  /*!< Endpoint number
+typedef struct {
+	uint8_t   num;                  /*!< Endpoint number
                                        This parameter must be a number between Min_Data = 1 and Max_Data = 15   */
 
-  uint8_t   is_in;                /*!< Endpoint direction
+	uint8_t   is_in;                /*!< Endpoint direction
                                        This parameter must be a number between Min_Data = 0 and Max_Data = 1    */
 
-  uint8_t   is_stall;             /*!< Endpoint stall condition
+	uint8_t   is_stall;             /*!< Endpoint stall condition
                                        This parameter must be a number between Min_Data = 0 and Max_Data = 1    */
 
 #if defined (USB_OTG_FS) || defined (USB_OTG_HS)
-  uint8_t   is_iso_incomplete;    /*!< Endpoint isoc condition
+	uint8_t   is_iso_incomplete;    /*!< Endpoint isoc condition
                                        This parameter must be a number between Min_Data = 0 and Max_Data = 1    */
 #endif /* defined (USB_OTG_FS) || defined (USB_OTG_HS) */
 
-  uint8_t   type;                 /*!< Endpoint type
+	uint8_t   type;                 /*!< Endpoint type
                                        This parameter can be any value of @ref USB_LL_EP_Type                   */
 
-  uint8_t   data_pid_start;       /*!< Initial data PID
+	uint8_t   data_pid_start;       /*!< Initial data PID
                                        This parameter must be a number between Min_Data = 0 and Max_Data = 1    */
 
 #if defined (USB_DRD_FS)
-  uint16_t  pmaadress;            /*!< PMA Address
+	uint16_t  pmaadress;            /*!< PMA Address
                                        This parameter can be any value between Min_addr = 0 and Max_addr = 1K   */
 
-  uint16_t  pmaaddr0;             /*!< PMA Address0
+	uint16_t  pmaaddr0;             /*!< PMA Address0
                                        This parameter can be any value between Min_addr = 0 and Max_addr = 1K   */
 
-  uint16_t  pmaaddr1;             /*!< PMA Address1
+	uint16_t  pmaaddr1;             /*!< PMA Address1
                                        This parameter can be any value between Min_addr = 0 and Max_addr = 1K   */
 
-  uint8_t   doublebuffer;         /*!< Double buffer enable
+	uint8_t   doublebuffer;         /*!< Double buffer enable
                                        This parameter can be 0 or 1                                             */
 #endif /* defined (USB_DRD_FS) */
 
-  uint32_t  maxpacket;            /*!< Endpoint Max packet size
+	uint32_t  maxpacket;            /*!< Endpoint Max packet size
                                        This parameter must be a number between Min_Data = 0 and Max_Data = 64KB */
 
-  uint8_t   *xfer_buff;           /*!< Pointer to transfer buffer                                               */
+	uint8_t   *xfer_buff;           /*!< Pointer to transfer buffer                                               */
 
-  uint32_t  xfer_len;             /*!< Current transfer length                                                  */
+	uint32_t  xfer_len;             /*!< Current transfer length                                                  */
 
-  uint32_t  xfer_count;           /*!< Partial transfer length in case of multi packet transfer                 */
+	uint32_t  xfer_count;           /*!< Partial transfer length in case of multi packet transfer                 */
 
 #if defined (USB_OTG_FS) || defined (USB_OTG_HS)
-  uint8_t   even_odd_frame;       /*!< IFrame parity
+	uint8_t   even_odd_frame;       /*!< IFrame parity
                                        This parameter must be a number between Min_Data = 0 and Max_Data = 1    */
 
-  uint16_t  tx_fifo_num;          /*!< Transmission FIFO number
+	uint16_t  tx_fifo_num;          /*!< Transmission FIFO number
                                        This parameter must be a number between Min_Data = 1 and Max_Data = 15   */
 
-  uint32_t  dma_addr;             /*!< 32 bits aligned transfer buffer address                                  */
+	uint32_t  dma_addr;             /*!< 32 bits aligned transfer buffer address                                  */
 
-  uint32_t  xfer_size;            /*!< requested transfer size                                                  */
+	uint32_t  xfer_size;            /*!< requested transfer size                                                  */
 #endif /* defined (USB_OTG_FS) || defined (USB_OTG_HS) */
 
 #if defined (USB_DRD_FS)
-  uint32_t  xfer_len_db;          /*!< double buffer transfer length used with bulk double buffer in            */
+	uint32_t  xfer_len_db;          /*!< double buffer transfer length used with bulk double buffer in            */
 
-  uint8_t   xfer_fill_db;         /*!< double buffer Need to Fill new buffer  used with bulk_in                 */
+	uint8_t   xfer_fill_db;         /*!< double buffer Need to Fill new buffer  used with bulk_in                 */
 #endif /* defined (USB_DRD_FS) */
 } USB_EPTypeDef;
 #endif /* defined (HAL_PCD_MODULE_ENABLED) */
 
 #if defined (HAL_HCD_MODULE_ENABLED)
-typedef struct
-{
-  uint8_t   dev_addr;           /*!< USB device address.
+typedef struct {
+	uint8_t   dev_addr;           /*!< USB device address.
                                      This parameter must be a number between Min_Data = 1 and Max_Data = 255    */
 #if defined (USB_DRD_FS)
-  uint8_t   phy_ch_num;         /*!< Host channel number.
+	uint8_t   phy_ch_num;         /*!< Host channel number.
                                      This parameter must be a number between Min_Data = 1 and Max_Data = 15     */
 
 #else
-  uint8_t   ch_num;             /*!< Host channel number.
+	uint8_t   ch_num;             /*!< Host channel number.
                                      This parameter must be a number between Min_Data = 1 and Max_Data = 15     */
 
-  uint8_t   ep_is_in;           /*!< Endpoint direction
+	uint8_t   ep_is_in;           /*!< Endpoint direction
                                      This parameter must be a number between Min_Data = 0 and Max_Data = 1      */
 #endif /* defined (USB_DRD_FS) */
 
-  uint8_t   ep_num;             /*!< Endpoint number.
+	uint8_t   ep_num;             /*!< Endpoint number.
                                      This parameter must be a number between Min_Data = 1 and Max_Data = 15     */
-  uint8_t   ch_dir;             /*!< channel direction
+	uint8_t   ch_dir;             /*!< channel direction
                                      This parameter store the physical channel direction IN/OUT/BIDIR           */
 
-  uint8_t   speed;              /*!< USB Host Channel speed.
+	uint8_t   speed;              /*!< USB Host Channel speed.
                                      This parameter can be any value of @ref HCD_Device_Speed:
                                                                              (HCD_DEVICE_SPEED_xxx)             */
 
 #if defined (USB_OTG_FS) || defined (USB_OTG_HS)
-  uint8_t   do_ping;            /*!< Enable or disable the use of the PING protocol for HS mode.                */
-  uint8_t   do_ssplit;          /*!< Enable start split transaction in HS mode.                                 */
-  uint8_t   do_csplit;          /*!< Enable complete split transaction in HS mode.                              */
-  uint8_t   ep_ss_schedule;     /*!< Enable periodic endpoint start split schedule .                            */
-  uint32_t  iso_splt_xactPos;   /*!< iso split transfer transaction position.                                   */
+	uint8_t   do_ping;            /*!< Enable or disable the use of the PING protocol for HS mode.                */
+	uint8_t   do_ssplit;          /*!< Enable start split transaction in HS mode.                                 */
+	uint8_t   do_csplit;          /*!< Enable complete split transaction in HS mode.                              */
+	uint8_t   ep_ss_schedule;     /*!< Enable periodic endpoint start split schedule .                            */
+	uint32_t  iso_splt_xactPos;   /*!< iso split transfer transaction position.                                   */
 #endif /* defined (USB_OTG_FS) || defined (USB_OTG_HS) */
 
-  uint8_t   hub_port_nbr;       /*!< USB HUB port number                                                        */
-  uint8_t   hub_addr;           /*!< USB HUB address                                                            */
+	uint8_t   hub_port_nbr;       /*!< USB HUB port number                                                        */
+	uint8_t   hub_addr;           /*!< USB HUB address                                                            */
 
-  uint8_t   ep_type;            /*!< Endpoint Type.
+	uint8_t   ep_type;            /*!< Endpoint Type.
                                      This parameter can be any value of @ref USB_LL_EP_Type                     */
 
-  uint16_t  max_packet;         /*!< Endpoint Max packet size.
+	uint16_t  max_packet;         /*!< Endpoint Max packet size.
                                      This parameter must be a number between Min_Data = 0 and Max_Data = 64KB   */
 
-  uint8_t   data_pid;           /*!< Initial data PID.
+	uint8_t   data_pid;           /*!< Initial data PID.
                                      This parameter must be a number between Min_Data = 0 and Max_Data = 1      */
 
-  uint8_t   *xfer_buff;         /*!< Pointer to transfer buffer.                                                */
+	uint8_t   *xfer_buff;         /*!< Pointer to transfer buffer.                                                */
 
 #if defined (USB_OTG_FS) || defined (USB_OTG_HS)
-  uint32_t  XferSize;           /*!< OTG Channel transfer size.                                                 */
+	uint32_t  XferSize;           /*!< OTG Channel transfer size.                                                 */
 #endif /* defined (USB_OTG_FS) || defined (USB_OTG_HS) */
 
-  uint32_t  xfer_len;           /*!< Current transfer length.                                                   */
+	uint32_t  xfer_len;           /*!< Current transfer length.                                                   */
 #if defined (USB_DRD_FS)
-  uint32_t  xfer_len_db;        /*!< Current transfer length used in double buffer mode.                        */
+	uint32_t  xfer_len_db;        /*!< Current transfer length used in double buffer mode.                        */
 #endif /* defined (USB_DRD_FS) */
 
-  uint32_t  xfer_count;         /*!< Partial transfer length in case of multi packet transfer.                  */
+	uint32_t  xfer_count;         /*!< Partial transfer length in case of multi packet transfer.                  */
 
-  uint8_t   toggle_in;          /*!< IN transfer current toggle flag.
+	uint8_t   toggle_in;          /*!< IN transfer current toggle flag.
                                      This parameter must be a number between Min_Data = 0 and Max_Data = 1      */
 
-  uint8_t   toggle_out;         /*!< OUT transfer current toggle flag
+	uint8_t   toggle_out;         /*!< OUT transfer current toggle flag
                                      This parameter must be a number between Min_Data = 0 and Max_Data = 1      */
 #if defined (USB_OTG_FS) || defined (USB_OTG_HS)
-  uint32_t  dma_addr;           /*!< 32 bits aligned transfer buffer address.                                   */
-  uint32_t  NyetErrCnt;         /*!< Complete Split NYET Host channel error count.                              */
+	uint32_t  dma_addr;           /*!< 32 bits aligned transfer buffer address.                                   */
+	uint32_t  NyetErrCnt;         /*!< Complete Split NYET Host channel error count.                              */
 
-  uint32_t  NakCnt;             /*!< Host channel NAK count.                                                    */
+	uint32_t  NakCnt;             /*!< Host channel NAK count.                                                    */
 #endif /* defined (USB_OTG_FS) || defined (USB_OTG_HS) */
 
-  uint32_t  ErrCnt;             /*!< Host channel error count.                                                  */
+	uint32_t  ErrCnt;             /*!< Host channel error count.                                                  */
 
 #if defined (USB_DRD_FS)
-  uint16_t  pmaadress;          /*!< PMA Address
+	uint16_t  pmaadress;          /*!< PMA Address
                                      This parameter can be any value between Min_addr = 0 and Max_addr = 1K     */
 
-  uint16_t  pmaaddr0;           /*!< PMA Address0
+	uint16_t  pmaaddr0;           /*!< PMA Address0
                                      This parameter can be any value between Min_addr = 0 and Max_addr = 1K     */
 
-  uint16_t  pmaaddr1;           /*!< PMA Address1
+	uint16_t  pmaaddr1;           /*!< PMA Address1
                                      This parameter can be any value between Min_addr = 0 and Max_addr = 1K     */
 
-  uint8_t   doublebuffer;       /*!< Double buffer enable
+	uint8_t   doublebuffer;       /*!< Double buffer enable
                                      This parameter can be 0 or 1                                               */
 #endif /* defined (USB_DRD_FS) */
 
-  USB_URBStateTypeDef urb_state;  /*!< URB state.
+	USB_URBStateTypeDef urb_state;  /*!< URB state.
                                        This parameter can be any value of @ref USB_URBStateTypeDef              */
 
-  USB_HCStateTypeDef state;       /*!< Host Channel state.
+	USB_HCStateTypeDef state;       /*!< Host Channel state.
                                        This parameter can be any value of @ref USB_HCStateTypeDef               */
 } USB_HCTypeDef;
 #endif /* defined (HAL_HCD_MODULE_ENABLED) */
@@ -1143,7 +1137,7 @@ HAL_StatusTypeDef USB_EPStopXfer(USB_OTG_GlobalTypeDef *USBx, USB_OTG_EPTypeDef 
 #endif /* defined (HAL_PCD_MODULE_ENABLED) */
 
 HAL_StatusTypeDef USB_WritePacket(const USB_OTG_GlobalTypeDef *USBx, uint8_t *src,
-                                  uint8_t ch_ep_num, uint16_t len, uint8_t dma);
+				  uint8_t ch_ep_num, uint16_t len, uint8_t dma);
 
 void             *USB_ReadPacket(const USB_OTG_GlobalTypeDef *USBx, uint8_t *dest, uint16_t len);
 
@@ -1174,10 +1168,10 @@ HAL_StatusTypeDef USB_StopHost(USB_OTG_GlobalTypeDef *USBx);
 
 #if defined (HAL_HCD_MODULE_ENABLED)
 HAL_StatusTypeDef USB_HC_Init(USB_OTG_GlobalTypeDef *USBx, uint8_t ch_num,
-                              uint8_t epnum, uint8_t dev_address, uint8_t speed,
-                              uint8_t ep_type, uint16_t mps);
+			      uint8_t epnum, uint8_t dev_address, uint8_t speed,
+			      uint8_t ep_type, uint16_t mps);
 HAL_StatusTypeDef USB_HC_StartXfer(USB_OTG_GlobalTypeDef *USBx,
-                                   USB_OTG_HCTypeDef *hc, uint8_t dma);
+				   USB_OTG_HCTypeDef *hc, uint8_t dma);
 
 uint32_t          USB_HC_ReadInterrupt(const USB_OTG_GlobalTypeDef *USBx);
 HAL_StatusTypeDef USB_HC_Halt(const USB_OTG_GlobalTypeDef *USBx, uint8_t hc_num);
@@ -1222,7 +1216,7 @@ HAL_StatusTypeDef USB_HC_OUT_Halt(USB_DRD_TypeDef *USBx, uint8_t phy_ch_num);
 HAL_StatusTypeDef USB_HC_StartXfer(USB_DRD_TypeDef *USBx, USB_DRD_HCTypeDef *hc);
 HAL_StatusTypeDef USB_HC_DoubleBuffer(USB_DRD_TypeDef *USBx, uint8_t phy_ch_num, uint8_t db_state);
 HAL_StatusTypeDef USB_HC_Init(USB_DRD_TypeDef *USBx, uint8_t phy_ch_num, uint8_t epnum,
-                              uint8_t dev_address, uint8_t speed, uint8_t ep_type, uint16_t mps);
+			      uint8_t dev_address, uint8_t speed, uint8_t ep_type, uint16_t mps);
 
 HAL_StatusTypeDef USB_HC_Activate(USB_DRD_TypeDef *USBx, uint8_t phy_ch_num, uint8_t ch_dir);
 #endif /* defined (HAL_HCD_MODULE_ENABLED) */
@@ -1235,10 +1229,10 @@ HAL_StatusTypeDef USB_ActivateRemoteWakeup(USB_DRD_TypeDef *USBx);
 HAL_StatusTypeDef USB_DeActivateRemoteWakeup(USB_DRD_TypeDef *USBx);
 
 void              USB_WritePMA(USB_DRD_TypeDef const *USBx, uint8_t *pbUsrBuf,
-                               uint16_t wPMABufAddr, uint16_t wNBytes);
+			       uint16_t wPMABufAddr, uint16_t wNBytes);
 
 void              USB_ReadPMA(USB_DRD_TypeDef const *USBx, uint8_t *pbUsrBuf,
-                              uint16_t wPMABufAddr, uint16_t wNBytes);
+			      uint16_t wPMABufAddr, uint16_t wNBytes);
 #endif /* defined (USB_DRD_FS) */
 /**
   * @}

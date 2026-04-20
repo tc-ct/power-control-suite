@@ -65,49 +65,49 @@
 
 #include "arm_helium_utils.h"
 
-float16_t arm_weighted_sum_f16(const float16_t *in,const float16_t *weigths, uint32_t blockSize)
+float16_t arm_weighted_sum_f16(const float16_t *in, const float16_t *weigths, uint32_t blockSize)
 {
-    _Float16       accum1, accum2;
-    float16x8_t    accum1V, accum2V;
-    float16x8_t    inV, wV;
-    const float16_t *pIn, *pW;
-    uint32_t        blkCnt;
+	_Float16       accum1, accum2;
+	float16x8_t    accum1V, accum2V;
+	float16x8_t    inV, wV;
+	const float16_t *pIn, *pW;
+	uint32_t        blkCnt;
 
 
-    pIn = in;
-    pW = weigths;
+	pIn = in;
+	pW = weigths;
 
 
-    accum1V = vdupq_n_f16(0.0f16);
-    accum2V = vdupq_n_f16(0.0f16);
+	accum1V = vdupq_n_f16(0.0f16);
+	accum2V = vdupq_n_f16(0.0f16);
 
-    blkCnt = blockSize >> 3;
-    while (blkCnt > 0) 
-    {
-        inV = vld1q(pIn);
-        wV = vld1q(pW);
+	blkCnt = blockSize >> 3;
 
-        pIn += 4;
-        pW += 4;
+	while (blkCnt > 0) {
+		inV = vld1q(pIn);
+		wV = vld1q(pW);
 
-        accum1V = vfmaq(accum1V, inV, wV);
-        accum2V = vaddq(accum2V, wV);
-        blkCnt--;
-    }
+		pIn += 4;
+		pW += 4;
 
-    accum1 = vecAddAcrossF16Mve(accum1V);
-    accum2 = vecAddAcrossF16Mve(accum2V);
+		accum1V = vfmaq(accum1V, inV, wV);
+		accum2V = vaddq(accum2V, wV);
+		blkCnt--;
+	}
 
-    blkCnt = blockSize & 7;
-    while(blkCnt > 0)
-    {
-        accum1 += (_Float16)*pIn++ * (_Float16)*pW;
-        accum2 += (_Float16)*pW++;
-        blkCnt--;
-    }
+	accum1 = vecAddAcrossF16Mve(accum1V);
+	accum2 = vecAddAcrossF16Mve(accum2V);
+
+	blkCnt = blockSize & 7;
+
+	while (blkCnt > 0) {
+		accum1 += (_Float16) * pIn++ * (_Float16) * pW;
+		accum2 += (_Float16) * pW++;
+		blkCnt--;
+	}
 
 
-    return (accum1 / accum2);
+	return (accum1 / accum2);
 }
 
 #else
@@ -115,26 +115,26 @@ float16_t arm_weighted_sum_f16(const float16_t *in,const float16_t *weigths, uin
 float16_t arm_weighted_sum_f16(const float16_t *in, const float16_t *weigths, uint32_t blockSize)
 {
 
-    _Float16 accum1, accum2;
-    const float16_t *pIn, *pW;
-    uint32_t blkCnt;
+	_Float16 accum1, accum2;
+	const float16_t *pIn, *pW;
+	uint32_t blkCnt;
 
 
-    pIn = in;
-    pW = weigths;
+	pIn = in;
+	pW = weigths;
 
-    accum1=0.0f16;
-    accum2=0.0f16;
+	accum1 = 0.0f16;
+	accum2 = 0.0f16;
 
-    blkCnt = blockSize;
-    while(blkCnt > 0)
-    {
-        accum1 += (_Float16)*pIn++ * (_Float16)*pW;
-        accum2 += (_Float16)*pW++;
-        blkCnt--;
-    }
+	blkCnt = blockSize;
 
-    return(accum1 / accum2);
+	while (blkCnt > 0) {
+		accum1 += (_Float16) * pIn++ * (_Float16) * pW;
+		accum2 += (_Float16) * pW++;
+		blkCnt--;
+	}
+
+	return (accum1 / accum2);
 }
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
@@ -142,5 +142,5 @@ float16_t arm_weighted_sum_f16(const float16_t *in, const float16_t *weigths, ui
  * @} end of weightedsum group
  */
 
-#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
 

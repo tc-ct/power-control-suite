@@ -146,110 +146,98 @@ extern "C" {
 
 
 /* Exported types ------------------------------------------------------------*/
-typedef enum
-{
-  SC_POWER_ON =     0x00,
-  SC_RESET_LOW =    0x01,
-  SC_RESET_HIGH =   0x02,
-  SC_ACTIVE =       0x03,
-  SC_ACTIVE_ON_T0 = 0x04,
-  SC_ACTIVE_ON_T1 = 0x05,
-  SC_POWER_OFF =    0x06,
-  SC_NO_INIT =      0x07
+typedef enum {
+	SC_POWER_ON =     0x00,
+	SC_RESET_LOW =    0x01,
+	SC_RESET_HIGH =   0x02,
+	SC_ACTIVE =       0x03,
+	SC_ACTIVE_ON_T0 = 0x04,
+	SC_ACTIVE_ON_T1 = 0x05,
+	SC_POWER_OFF =    0x06,
+	SC_NO_INIT =      0x07
 
 } SC_State;
 
 /* Interface Byte structure - TA(i), TB(i), TC(i) and TD(i) ------------------*/
-typedef struct
-{
-  uint8_t Status;               /* The Presence of the Interface byte */
-  uint8_t Value;                /* The Value of the Interface byte */
+typedef struct {
+	uint8_t Status;               /* The Presence of the Interface byte */
+	uint8_t Value;                /* The Value of the Interface byte */
 } SC_InterfaceByteTypeDef;
 
 /* Protocol Level structure - ------------------------------------------------*/
-typedef struct
-{
-  SC_InterfaceByteTypeDef InterfaceByte[MAX_INTERFACEBYTE];     /* The Values of the Interface byte
+typedef struct {
+	SC_InterfaceByteTypeDef InterfaceByte[MAX_INTERFACEBYTE];     /* The Values of the Interface byte
                                                                    TA(i), TB(i), TC(i)and TD(i) */
 } SC_ProtocolLevelTypeDef;
 
 /* ATR structure - Answer To Reset -------------------------------------------*/
-typedef struct
-{
-  uint8_t TS;                                   /* Bit Convention Direct/Indirect */
-  uint8_t T0;                                   /* Each bit in the high nibble = Presence of the further interface byte;
+typedef struct {
+	uint8_t TS;                                   /* Bit Convention Direct/Indirect */
+	uint8_t T0;                                   /* Each bit in the high nibble = Presence of the further interface byte;
                                                    Low nibble = Number of historical byte */
-  SC_ProtocolLevelTypeDef T[MAX_PROTOCOLLEVEL]; /* Setup array */
-  uint8_t Historical[HIST_LENGTH];              /* Historical array */
-  uint8_t Tlength;                              /* Setup array dimension */
-  uint8_t Hlength;                              /* Historical array dimension */
-  uint8_t TCK;
+	SC_ProtocolLevelTypeDef T[MAX_PROTOCOLLEVEL]; /* Setup array */
+	uint8_t Historical[HIST_LENGTH];              /* Historical array */
+	uint8_t Tlength;                              /* Setup array dimension */
+	uint8_t Hlength;                              /* Historical array dimension */
+	uint8_t TCK;
 } SC_ATRTypeDef;
 
 /* ADPU-Header command structure ---------------------------------------------*/
-typedef struct
-{
-  uint8_t CLA;  /* Command class */
-  uint8_t INS;  /* Operation code */
-  uint8_t P1;   /* Selection Mode */
-  uint8_t P2;   /* Selection Option */
+typedef struct {
+	uint8_t CLA;  /* Command class */
+	uint8_t INS;  /* Operation code */
+	uint8_t P1;   /* Selection Mode */
+	uint8_t P2;   /* Selection Option */
 } SC_HeaderTypeDef;
 
 /* ADPU-Body command structure -----------------------------------------------*/
-typedef struct
-{
-  uint8_t LC;           /* Data field length */
-  uint8_t Data[LC_MAX]; /* Command parameters */
-  uint8_t LE;           /* Expected length of data to be returned */
+typedef struct {
+	uint8_t LC;           /* Data field length */
+	uint8_t Data[LC_MAX]; /* Command parameters */
+	uint8_t LE;           /* Expected length of data to be returned */
 } SC_BodyTypeDef;
 
 /* ADPU Command structure ----------------------------------------------------*/
-typedef struct
-{
-  SC_HeaderTypeDef Header;
-  SC_BodyTypeDef Body;
+typedef struct {
+	SC_HeaderTypeDef Header;
+	SC_BodyTypeDef Body;
 } SC_ADPU_CommandsTypeDef;
 
 /* SC response structure -----------------------------------------------------*/
-typedef struct
-{
-  uint8_t Data[LC_MAX];  /* Data returned from the card */
-  uint8_t SW1;           /* Command Processing status */
-  uint8_t SW2;           /* Command Processing qualification */
+typedef struct {
+	uint8_t Data[LC_MAX];  /* Data returned from the card */
+	uint8_t SW1;           /* Command Processing status */
+	uint8_t SW2;           /* Command Processing qualification */
 } SC_ADPU_ResponseTypeDef;
 
 /* SC Command Status -----------------------------------------------------*/
-typedef enum
-{
-  SC_CS_FAILED          = 0x00,
-  SC_CS_PIN_ENABLED     = 0x01,
-  SC_CS_PIN_VERIFIED    = 0x02,
-  SC_CS_READ            = 0x03,
-  SC_CS_PIN_CHANGED     = 0x04
+typedef enum {
+	SC_CS_FAILED          = 0x00,
+	SC_CS_PIN_ENABLED     = 0x01,
+	SC_CS_PIN_VERIFIED    = 0x02,
+	SC_CS_READ            = 0x03,
+	SC_CS_PIN_CHANGED     = 0x04
 
 } SC_Command_State;
 /* SC Response Status -----------------------------------------------------*/
-typedef enum
-{
-  REP_OK          = 0x00,
-  REP_NOT_OK      = 0x01,
-  REP_NOT_SUPP    = 0x02,
-  REP_ENABLED     = 0x03,
-  REP_CHANGE      = 0x04
+typedef enum {
+	REP_OK          = 0x00,
+	REP_NOT_OK      = 0x01,
+	REP_NOT_SUPP    = 0x02,
+	REP_ENABLED     = 0x03,
+	REP_CHANGE      = 0x04
 
 } REP_Command_t;
 /* Conforming of Command with ICC APP -----------------------------------------------------*/
-typedef enum
-{
-  Command_OK          = 0x00,
-  Command_NOT_OK      = 0x01,
+typedef enum {
+	Command_OK          = 0x00,
+	Command_NOT_OK      = 0x01,
 
 } Command_State_t;
 
-typedef enum
-{
-  SC_DISABLED = 0U,
-  SC_ENABLED =  !SC_DISABLED
+typedef enum {
+	SC_DISABLED = 0U,
+	SC_ENABLED =  !SC_DISABLED
 } SCPowerState;
 
 /* Exported macro ------------------------------------------------------------*/

@@ -47,18 +47,18 @@
  * @return distance
  *
  */
-float64_t arm_euclidean_distance_f64(const float64_t *pA,const float64_t *pB, uint32_t blockSize)
+float64_t arm_euclidean_distance_f64(const float64_t *pA, const float64_t *pB, uint32_t blockSize)
 {
-   float64_t accum=0.,tmp;
+	float64_t accum = 0., tmp;
 
-   while(blockSize > 0)
-   {
-      tmp = *pA++ - *pB++;
-      accum += SQ(tmp);
-      blockSize --;
-   }
-   tmp = sqrt(accum);
-   return(tmp);
+	while (blockSize > 0) {
+		tmp = *pA++ - *pB++;
+		accum += SQ(tmp);
+		blockSize --;
+	}
+
+	tmp = sqrt(accum);
+	return (tmp);
 }
 
 /**

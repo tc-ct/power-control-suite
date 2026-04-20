@@ -239,91 +239,97 @@
   */
 ErrorStatus LL_SPI_DeInit(const SPI_TypeDef *SPIx)
 {
-  ErrorStatus status = ERROR;
+	ErrorStatus status = ERROR;
 
-  /* Check the parameters */
-  assert_param(IS_SPI_ALL_INSTANCE(SPIx));
+	/* Check the parameters */
+	assert_param(IS_SPI_ALL_INSTANCE(SPIx));
 
 #if defined(SPI1)
-  if (SPIx == SPI1)
-  {
-    /* Force reset of SPI clock */
-    LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_SPI1);
 
-    /* Release reset of SPI clock */
-    LL_APB2_GRP1_ReleaseReset(LL_APB2_GRP1_PERIPH_SPI1);
+	if (SPIx == SPI1) {
+		/* Force reset of SPI clock */
+		LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_SPI1);
 
-    /* Update the return status */
-    status = SUCCESS;
-  }
+		/* Release reset of SPI clock */
+		LL_APB2_GRP1_ReleaseReset(LL_APB2_GRP1_PERIPH_SPI1);
+
+		/* Update the return status */
+		status = SUCCESS;
+	}
+
 #endif /* SPI1 */
 #if defined(SPI2)
-  if (SPIx == SPI2)
-  {
-    /* Force reset of SPI clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_SPI2);
 
-    /* Release reset of SPI clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_SPI2);
+	if (SPIx == SPI2) {
+		/* Force reset of SPI clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_SPI2);
 
-    /* Update the return status */
-    status = SUCCESS;
-  }
+		/* Release reset of SPI clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_SPI2);
+
+		/* Update the return status */
+		status = SUCCESS;
+	}
+
 #endif /* SPI2 */
 #if defined(SPI3)
-  if (SPIx == SPI3)
-  {
-    /* Force reset of SPI clock */
-    LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_SPI3);
 
-    /* Release reset of SPI clock */
-    LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_SPI3);
+	if (SPIx == SPI3) {
+		/* Force reset of SPI clock */
+		LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_SPI3);
 
-    /* Update the return status */
-    status = SUCCESS;
-  }
+		/* Release reset of SPI clock */
+		LL_APB1_GRP1_ReleaseReset(LL_APB1_GRP1_PERIPH_SPI3);
+
+		/* Update the return status */
+		status = SUCCESS;
+	}
+
 #endif /* SPI3 */
 #if defined(SPI4)
-  if (SPIx == SPI4)
-  {
-    /* Force reset of SPI clock */
-    LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_SPI4);
 
-    /* Release reset of SPI clock */
-    LL_APB2_GRP1_ReleaseReset(LL_APB2_GRP1_PERIPH_SPI4);
+	if (SPIx == SPI4) {
+		/* Force reset of SPI clock */
+		LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_SPI4);
 
-    /* Update the return status */
-    status = SUCCESS;
-  }
+		/* Release reset of SPI clock */
+		LL_APB2_GRP1_ReleaseReset(LL_APB2_GRP1_PERIPH_SPI4);
+
+		/* Update the return status */
+		status = SUCCESS;
+	}
+
 #endif /* SPI4 */
 #if defined(SPI5)
-  if (SPIx == SPI5)
-  {
-    /* Force reset of SPI clock */
-    LL_APB3_GRP1_ForceReset(LL_APB3_GRP1_PERIPH_SPI5);
 
-    /* Release reset of SPI clock */
-    LL_APB3_GRP1_ReleaseReset(LL_APB3_GRP1_PERIPH_SPI5);
+	if (SPIx == SPI5) {
+		/* Force reset of SPI clock */
+		LL_APB3_GRP1_ForceReset(LL_APB3_GRP1_PERIPH_SPI5);
 
-    /* Update the return status */
-    status = SUCCESS;
-  }
+		/* Release reset of SPI clock */
+		LL_APB3_GRP1_ReleaseReset(LL_APB3_GRP1_PERIPH_SPI5);
+
+		/* Update the return status */
+		status = SUCCESS;
+	}
+
 #endif /* SPI5 */
 #if defined(SPI6)
-  if (SPIx == SPI6)
-  {
-    /* Force reset of SPI clock */
-    LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_SPI6);
 
-    /* Release reset of SPI clock */
-    LL_APB2_GRP1_ReleaseReset(LL_APB2_GRP1_PERIPH_SPI6);
+	if (SPIx == SPI6) {
+		/* Force reset of SPI clock */
+		LL_APB2_GRP1_ForceReset(LL_APB2_GRP1_PERIPH_SPI6);
 
-    /* Update the return status */
-    status = SUCCESS;
-  }
+		/* Release reset of SPI clock */
+		LL_APB2_GRP1_ReleaseReset(LL_APB2_GRP1_PERIPH_SPI6);
+
+		/* Update the return status */
+		status = SUCCESS;
+	}
+
 #endif /* SPI6 */
 
-  return status;
+	return status;
 }
 
 /**
@@ -337,89 +343,85 @@ ErrorStatus LL_SPI_DeInit(const SPI_TypeDef *SPIx)
   */
 ErrorStatus LL_SPI_Init(SPI_TypeDef *SPIx, LL_SPI_InitTypeDef *SPI_InitStruct)
 {
-  ErrorStatus status = ERROR;
-  uint32_t tmp_nss;
-  uint32_t tmp_mode;
-  uint32_t tmp_nss_polarity;
+	ErrorStatus status = ERROR;
+	uint32_t tmp_nss;
+	uint32_t tmp_mode;
+	uint32_t tmp_nss_polarity;
 
-  /* Check the SPI Instance SPIx*/
-  assert_param(IS_SPI_ALL_INSTANCE(SPIx));
+	/* Check the SPI Instance SPIx*/
+	assert_param(IS_SPI_ALL_INSTANCE(SPIx));
 
-  /* Check the SPI parameters from SPI_InitStruct*/
-  assert_param(IS_LL_SPI_TRANSFER_DIRECTION(SPI_InitStruct->TransferDirection));
-  assert_param(IS_LL_SPI_MODE(SPI_InitStruct->Mode));
-  assert_param(IS_LL_SPI_DATAWIDTH(SPI_InitStruct->DataWidth));
-  assert_param(IS_LL_SPI_POLARITY(SPI_InitStruct->ClockPolarity));
-  assert_param(IS_LL_SPI_PHASE(SPI_InitStruct->ClockPhase));
-  assert_param(IS_LL_SPI_NSS(SPI_InitStruct->NSS));
-  assert_param(IS_LL_SPI_BAUDRATEPRESCALER(SPI_InitStruct->BaudRate));
-  assert_param(IS_LL_SPI_BITORDER(SPI_InitStruct->BitOrder));
-  assert_param(IS_LL_SPI_CRCCALCULATION(SPI_InitStruct->CRCCalculation));
+	/* Check the SPI parameters from SPI_InitStruct*/
+	assert_param(IS_LL_SPI_TRANSFER_DIRECTION(SPI_InitStruct->TransferDirection));
+	assert_param(IS_LL_SPI_MODE(SPI_InitStruct->Mode));
+	assert_param(IS_LL_SPI_DATAWIDTH(SPI_InitStruct->DataWidth));
+	assert_param(IS_LL_SPI_POLARITY(SPI_InitStruct->ClockPolarity));
+	assert_param(IS_LL_SPI_PHASE(SPI_InitStruct->ClockPhase));
+	assert_param(IS_LL_SPI_NSS(SPI_InitStruct->NSS));
+	assert_param(IS_LL_SPI_BAUDRATEPRESCALER(SPI_InitStruct->BaudRate));
+	assert_param(IS_LL_SPI_BITORDER(SPI_InitStruct->BitOrder));
+	assert_param(IS_LL_SPI_CRCCALCULATION(SPI_InitStruct->CRCCalculation));
 
-  /* Check the SPI instance is not enabled */
-  if (LL_SPI_IsEnabled(SPIx) == 0x00000000UL)
-  {
-    /*---------------------------- SPIx CFG1 Configuration ------------------------
-       * Configure SPIx CFG1 with parameters:
-       * - Master Baud Rate       : SPI_CFG1_MBR[2:0] bits & SPI_CFG1_BPASS bit
-       * - CRC Computation Enable : SPI_CFG1_CRCEN bit
-       * - Length of data frame   : SPI_CFG1_DSIZE[4:0] bits
-       */
-    MODIFY_REG(SPIx->CFG1, SPI_CFG1_BPASS | SPI_CFG1_MBR | SPI_CFG1_CRCEN | SPI_CFG1_DSIZE,
-               SPI_InitStruct->BaudRate  | SPI_InitStruct->CRCCalculation | SPI_InitStruct->DataWidth);
+	/* Check the SPI instance is not enabled */
+	if (LL_SPI_IsEnabled(SPIx) == 0x00000000UL) {
+		/*---------------------------- SPIx CFG1 Configuration ------------------------
+		   * Configure SPIx CFG1 with parameters:
+		   * - Master Baud Rate       : SPI_CFG1_MBR[2:0] bits & SPI_CFG1_BPASS bit
+		   * - CRC Computation Enable : SPI_CFG1_CRCEN bit
+		   * - Length of data frame   : SPI_CFG1_DSIZE[4:0] bits
+		   */
+		MODIFY_REG(SPIx->CFG1, SPI_CFG1_BPASS | SPI_CFG1_MBR | SPI_CFG1_CRCEN | SPI_CFG1_DSIZE,
+			   SPI_InitStruct->BaudRate  | SPI_InitStruct->CRCCalculation | SPI_InitStruct->DataWidth);
 
-    tmp_nss  = SPI_InitStruct->NSS;
-    tmp_mode = SPI_InitStruct->Mode;
-    tmp_nss_polarity = LL_SPI_GetNSSPolarity(SPIx);
+		tmp_nss  = SPI_InitStruct->NSS;
+		tmp_mode = SPI_InitStruct->Mode;
+		tmp_nss_polarity = LL_SPI_GetNSSPolarity(SPIx);
 
-    /* Checks to setup Internal SS signal level and avoid a MODF Error */
-    if ((tmp_nss == LL_SPI_NSS_SOFT) && (((tmp_nss_polarity == LL_SPI_NSS_POLARITY_LOW)  && \
-                                          (tmp_mode == LL_SPI_MODE_MASTER))              || \
-                                         ((tmp_nss_polarity == LL_SPI_NSS_POLARITY_HIGH) && \
-                                          (tmp_mode == LL_SPI_MODE_SLAVE))))
-    {
-      LL_SPI_SetInternalSSLevel(SPIx, LL_SPI_SS_LEVEL_HIGH);
-    }
+		/* Checks to setup Internal SS signal level and avoid a MODF Error */
+		if ((tmp_nss == LL_SPI_NSS_SOFT) && (((tmp_nss_polarity == LL_SPI_NSS_POLARITY_LOW)  && \
+						      (tmp_mode == LL_SPI_MODE_MASTER))              || \
+						     ((tmp_nss_polarity == LL_SPI_NSS_POLARITY_HIGH) && \
+						      (tmp_mode == LL_SPI_MODE_SLAVE))))
+			LL_SPI_SetInternalSSLevel(SPIx, LL_SPI_SS_LEVEL_HIGH);
 
-    /*---------------------------- SPIx CFG2 Configuration ------------------------
-       * Configure SPIx CFG2 with parameters:
-       * - NSS management         : SPI_CFG2_SSM, SPI_CFG2_SSOE bits
-       * - ClockPolarity          : SPI_CFG2_CPOL bit
-       * - ClockPhase             : SPI_CFG2_CPHA bit
-       * - BitOrder               : SPI_CFG2_LSBFRST bit
-       * - Master/Slave Mode      : SPI_CFG2_MASTER bit
-       * - SPI Mode               : SPI_CFG2_COMM[1:0] bits
-       */
-    MODIFY_REG(SPIx->CFG2, SPI_CFG2_SSM   | SPI_CFG2_SSOE    |
-               SPI_CFG2_CPOL              | SPI_CFG2_CPHA    |
-               SPI_CFG2_LSBFRST           | SPI_CFG2_MASTER  | SPI_CFG2_COMM,
-               SPI_InitStruct->NSS        | SPI_InitStruct->ClockPolarity                    |
-               SPI_InitStruct->ClockPhase | SPI_InitStruct->BitOrder                         |
-               SPI_InitStruct->Mode       | (SPI_InitStruct->TransferDirection & SPI_CFG2_COMM));
+		/*---------------------------- SPIx CFG2 Configuration ------------------------
+		   * Configure SPIx CFG2 with parameters:
+		   * - NSS management         : SPI_CFG2_SSM, SPI_CFG2_SSOE bits
+		   * - ClockPolarity          : SPI_CFG2_CPOL bit
+		   * - ClockPhase             : SPI_CFG2_CPHA bit
+		   * - BitOrder               : SPI_CFG2_LSBFRST bit
+		   * - Master/Slave Mode      : SPI_CFG2_MASTER bit
+		   * - SPI Mode               : SPI_CFG2_COMM[1:0] bits
+		   */
+		MODIFY_REG(SPIx->CFG2, SPI_CFG2_SSM   | SPI_CFG2_SSOE    |
+			   SPI_CFG2_CPOL              | SPI_CFG2_CPHA    |
+			   SPI_CFG2_LSBFRST           | SPI_CFG2_MASTER  | SPI_CFG2_COMM,
+			   SPI_InitStruct->NSS        | SPI_InitStruct->ClockPolarity                    |
+			   SPI_InitStruct->ClockPhase | SPI_InitStruct->BitOrder                         |
+			   SPI_InitStruct->Mode       | (SPI_InitStruct->TransferDirection & SPI_CFG2_COMM));
 
-    /*---------------------------- SPIx CR1 Configuration ------------------------
-       * Configure SPIx CR1 with parameter:
-       * - Half Duplex Direction  : SPI_CR1_HDDIR bit
-       */
-    MODIFY_REG(SPIx->CR1, SPI_CR1_HDDIR, SPI_InitStruct->TransferDirection & SPI_CR1_HDDIR);
+		/*---------------------------- SPIx CR1 Configuration ------------------------
+		   * Configure SPIx CR1 with parameter:
+		   * - Half Duplex Direction  : SPI_CR1_HDDIR bit
+		   */
+		MODIFY_REG(SPIx->CR1, SPI_CR1_HDDIR, SPI_InitStruct->TransferDirection & SPI_CR1_HDDIR);
 
-    /*---------------------------- SPIx CRCPOLY Configuration ----------------------
-       * Configure SPIx CRCPOLY with parameter:
-       * - CRCPoly                : CRCPOLY[31:0] bits
-       */
-    if (SPI_InitStruct->CRCCalculation == LL_SPI_CRCCALCULATION_ENABLE)
-    {
-      assert_param(IS_LL_SPI_CRC_POLYNOMIAL(SPI_InitStruct->CRCPoly));
-      LL_SPI_SetCRCPolynomial(SPIx, SPI_InitStruct->CRCPoly);
-    }
+		/*---------------------------- SPIx CRCPOLY Configuration ----------------------
+		   * Configure SPIx CRCPOLY with parameter:
+		   * - CRCPoly                : CRCPOLY[31:0] bits
+		   */
+		if (SPI_InitStruct->CRCCalculation == LL_SPI_CRCCALCULATION_ENABLE) {
+			assert_param(IS_LL_SPI_CRC_POLYNOMIAL(SPI_InitStruct->CRCPoly));
+			LL_SPI_SetCRCPolynomial(SPIx, SPI_InitStruct->CRCPoly);
+		}
 
-    /* Activate the SPI mode (Reset I2SMOD bit in I2SCFGR register) */
-    CLEAR_BIT(SPIx->I2SCFGR, SPI_I2SCFGR_I2SMOD);
+		/* Activate the SPI mode (Reset I2SMOD bit in I2SCFGR register) */
+		CLEAR_BIT(SPIx->I2SCFGR, SPI_I2SCFGR_I2SMOD);
 
-    status = SUCCESS;
-  }
+		status = SUCCESS;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -430,17 +432,17 @@ ErrorStatus LL_SPI_Init(SPI_TypeDef *SPIx, LL_SPI_InitTypeDef *SPI_InitStruct)
   */
 void LL_SPI_StructInit(LL_SPI_InitTypeDef *SPI_InitStruct)
 {
-  /* Set SPI_InitStruct fields to default values */
-  SPI_InitStruct->TransferDirection = LL_SPI_FULL_DUPLEX;
-  SPI_InitStruct->Mode              = LL_SPI_MODE_SLAVE;
-  SPI_InitStruct->DataWidth         = LL_SPI_DATAWIDTH_8BIT;
-  SPI_InitStruct->ClockPolarity     = LL_SPI_POLARITY_LOW;
-  SPI_InitStruct->ClockPhase        = LL_SPI_PHASE_1EDGE;
-  SPI_InitStruct->NSS               = LL_SPI_NSS_HARD_INPUT;
-  SPI_InitStruct->BaudRate          = LL_SPI_BAUDRATEPRESCALER_DIV2;
-  SPI_InitStruct->BitOrder          = LL_SPI_MSB_FIRST;
-  SPI_InitStruct->CRCCalculation    = LL_SPI_CRCCALCULATION_DISABLE;
-  SPI_InitStruct->CRCPoly           = 7UL;
+	/* Set SPI_InitStruct fields to default values */
+	SPI_InitStruct->TransferDirection = LL_SPI_FULL_DUPLEX;
+	SPI_InitStruct->Mode              = LL_SPI_MODE_SLAVE;
+	SPI_InitStruct->DataWidth         = LL_SPI_DATAWIDTH_8BIT;
+	SPI_InitStruct->ClockPolarity     = LL_SPI_POLARITY_LOW;
+	SPI_InitStruct->ClockPhase        = LL_SPI_PHASE_1EDGE;
+	SPI_InitStruct->NSS               = LL_SPI_NSS_HARD_INPUT;
+	SPI_InitStruct->BaudRate          = LL_SPI_BAUDRATEPRESCALER_DIV2;
+	SPI_InitStruct->BitOrder          = LL_SPI_MSB_FIRST;
+	SPI_InitStruct->CRCCalculation    = LL_SPI_CRCCALCULATION_DISABLE;
+	SPI_InitStruct->CRCPoly           = 7UL;
 }
 
 /**
@@ -550,7 +552,7 @@ void LL_SPI_StructInit(LL_SPI_InitTypeDef *SPI_InitStruct)
   */
 ErrorStatus LL_I2S_DeInit(const SPI_TypeDef *SPIx)
 {
-  return LL_SPI_DeInit(SPIx);
+	return LL_SPI_DeInit(SPIx);
 }
 
 /**
@@ -568,129 +570,114 @@ ErrorStatus LL_I2S_DeInit(const SPI_TypeDef *SPIx)
   */
 ErrorStatus LL_I2S_Init(SPI_TypeDef *SPIx, const LL_I2S_InitTypeDef *I2S_InitStruct)
 {
-  uint32_t i2sdiv = 0UL;
-  uint32_t i2sodd = 0UL;
-  uint32_t packetlength = 1UL;
-  uint32_t ispcm = 0UL;
-  uint32_t tmp;
-  uint32_t sourceclock = 0UL;
+	uint32_t i2sdiv = 0UL;
+	uint32_t i2sodd = 0UL;
+	uint32_t packetlength = 1UL;
+	uint32_t ispcm = 0UL;
+	uint32_t tmp;
+	uint32_t sourceclock = 0UL;
 
-  ErrorStatus status = ERROR;
+	ErrorStatus status = ERROR;
 
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(sourceclock);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(sourceclock);
 
-  /* Check the I2S parameters */
-  assert_param(IS_I2S_ALL_INSTANCE(SPIx));
-  assert_param(IS_LL_I2S_MODE(I2S_InitStruct->Mode));
-  assert_param(IS_LL_I2S_STANDARD(I2S_InitStruct->Standard));
-  assert_param(IS_LL_I2S_DATAFORMAT(I2S_InitStruct->DataFormat));
-  assert_param(IS_LL_I2S_MCLK_OUTPUT(I2S_InitStruct->MCLKOutput));
-  assert_param(IS_LL_I2S_AUDIO_FREQ(I2S_InitStruct->AudioFreq));
-  assert_param(IS_LL_I2S_CKPOL(I2S_InitStruct->ClockPolarity));
+	/* Check the I2S parameters */
+	assert_param(IS_I2S_ALL_INSTANCE(SPIx));
+	assert_param(IS_LL_I2S_MODE(I2S_InitStruct->Mode));
+	assert_param(IS_LL_I2S_STANDARD(I2S_InitStruct->Standard));
+	assert_param(IS_LL_I2S_DATAFORMAT(I2S_InitStruct->DataFormat));
+	assert_param(IS_LL_I2S_MCLK_OUTPUT(I2S_InitStruct->MCLKOutput));
+	assert_param(IS_LL_I2S_AUDIO_FREQ(I2S_InitStruct->AudioFreq));
+	assert_param(IS_LL_I2S_CKPOL(I2S_InitStruct->ClockPolarity));
 
-  /* Check that SPE bit is set to 0 in order to be sure that SPI/I2S block is disabled.
-   * In this case, it is useless to check if the I2SMOD bit is set to 0 because
-   * this bit I2SMOD only serves to select the desired mode.
-   */
-  if (LL_SPI_IsEnabled(SPIx) == 0x00000000UL)
-  {
-    /*---------------------------- SPIx I2SCFGR Configuration --------------------
-     * Configure SPIx I2SCFGR with parameters:
-     * - Mode           : SPI_I2SCFGR_I2SCFG[2:0] bits
-     * - Standard       : SPI_I2SCFGR_I2SSTD[1:0] and SPI_I2SCFGR_PCMSYNC bits
-     * - DataFormat     : SPI_I2SCFGR_CHLEN, SPI_I2SCFGR_DATFMT and SPI_I2SCFGR_DATLEN[1:0] bits
-     * - ClockPolarity  : SPI_I2SCFGR_CKPOL bit
-     * - MCLKOutput     : SPI_I2SPR_MCKOE bit
-     * - I2S mode       : SPI_I2SCFGR_I2SMOD bit
-     */
+	/* Check that SPE bit is set to 0 in order to be sure that SPI/I2S block is disabled.
+	 * In this case, it is useless to check if the I2SMOD bit is set to 0 because
+	 * this bit I2SMOD only serves to select the desired mode.
+	 */
+	if (LL_SPI_IsEnabled(SPIx) == 0x00000000UL) {
+		/*---------------------------- SPIx I2SCFGR Configuration --------------------
+		 * Configure SPIx I2SCFGR with parameters:
+		 * - Mode           : SPI_I2SCFGR_I2SCFG[2:0] bits
+		 * - Standard       : SPI_I2SCFGR_I2SSTD[1:0] and SPI_I2SCFGR_PCMSYNC bits
+		 * - DataFormat     : SPI_I2SCFGR_CHLEN, SPI_I2SCFGR_DATFMT and SPI_I2SCFGR_DATLEN[1:0] bits
+		 * - ClockPolarity  : SPI_I2SCFGR_CKPOL bit
+		 * - MCLKOutput     : SPI_I2SPR_MCKOE bit
+		 * - I2S mode       : SPI_I2SCFGR_I2SMOD bit
+		 */
 
-    /* Write to SPIx I2SCFGR */
-    MODIFY_REG(SPIx->I2SCFGR,
-               I2S_I2SCFGR_CLEAR_MASK,
-               I2S_InitStruct->Mode       | I2S_InitStruct->Standard      |
-               I2S_InitStruct->DataFormat | I2S_InitStruct->ClockPolarity |
-               I2S_InitStruct->MCLKOutput | SPI_I2SCFGR_I2SMOD);
+		/* Write to SPIx I2SCFGR */
+		MODIFY_REG(SPIx->I2SCFGR,
+			   I2S_I2SCFGR_CLEAR_MASK,
+			   I2S_InitStruct->Mode       | I2S_InitStruct->Standard      |
+			   I2S_InitStruct->DataFormat | I2S_InitStruct->ClockPolarity |
+			   I2S_InitStruct->MCLKOutput | SPI_I2SCFGR_I2SMOD);
 
-    /*---------------------------- SPIx I2SCFGR Configuration ----------------------
-     * Configure SPIx I2SCFGR with parameters:
-     * - AudioFreq      : SPI_I2SCFGR_I2SDIV[7:0] and SPI_I2SCFGR_ODD bits
-     */
+		/*---------------------------- SPIx I2SCFGR Configuration ----------------------
+		 * Configure SPIx I2SCFGR with parameters:
+		 * - AudioFreq      : SPI_I2SCFGR_I2SDIV[7:0] and SPI_I2SCFGR_ODD bits
+		 */
 
-    /* If the requested audio frequency is not the default, compute the prescaler (i2sodd, i2sdiv)
-     * else, default values are used:  i2sodd = 0U, i2sdiv = 0U.
-     */
-    if (I2S_InitStruct->AudioFreq != LL_I2S_AUDIOFREQ_DEFAULT)
-    {
-      /* Check the frame length (For the Prescaler computing)
-       * Default value: LL_I2S_DATAFORMAT_16B (packetlength = 1U).
-       */
-      if (I2S_InitStruct->DataFormat != LL_I2S_DATAFORMAT_16B)
-      {
-        /* Packet length is 32 bits */
-        packetlength = 2UL;
-      }
+		/* If the requested audio frequency is not the default, compute the prescaler (i2sodd, i2sdiv)
+		 * else, default values are used:  i2sodd = 0U, i2sdiv = 0U.
+		 */
+		if (I2S_InitStruct->AudioFreq != LL_I2S_AUDIOFREQ_DEFAULT) {
+			/* Check the frame length (For the Prescaler computing)
+			 * Default value: LL_I2S_DATAFORMAT_16B (packetlength = 1U).
+			 */
+			if (I2S_InitStruct->DataFormat != LL_I2S_DATAFORMAT_16B) {
+				/* Packet length is 32 bits */
+				packetlength = 2UL;
+			}
 
-      /* Check if PCM standard is used */
-      if ((I2S_InitStruct->Standard == LL_I2S_STANDARD_PCM_SHORT) ||
-          (I2S_InitStruct->Standard == LL_I2S_STANDARD_PCM_LONG))
-      {
-        ispcm = 1UL;
-      }
+			/* Check if PCM standard is used */
+			if ((I2S_InitStruct->Standard == LL_I2S_STANDARD_PCM_SHORT) ||
+			    (I2S_InitStruct->Standard == LL_I2S_STANDARD_PCM_LONG))
+				ispcm = 1UL;
 
-      /* Get the I2S (SPI) source clock value */
-      if (SPIx == SPI1)
-      {
-        sourceclock = LL_RCC_GetSPIClockFreq(LL_RCC_SPI1_CLKSOURCE);
-      }
-      else if (SPIx == SPI2)
-      {
-        sourceclock = LL_RCC_GetSPIClockFreq(LL_RCC_SPI2_CLKSOURCE);
-      }
-      else /* SPI3 */
-      {
-        sourceclock = LL_RCC_GetSPIClockFreq(LL_RCC_SPI3_CLKSOURCE);
-      }
+			/* Get the I2S (SPI) source clock value */
+			if (SPIx == SPI1)
+				sourceclock = LL_RCC_GetSPIClockFreq(LL_RCC_SPI1_CLKSOURCE);
+			else if (SPIx == SPI2)
+				sourceclock = LL_RCC_GetSPIClockFreq(LL_RCC_SPI2_CLKSOURCE);
+			else /* SPI3 */
+				sourceclock = LL_RCC_GetSPIClockFreq(LL_RCC_SPI3_CLKSOURCE);
 
-      /* Compute the Real divider depending on the MCLK output state with a fixed point */
-      if (I2S_InitStruct->MCLKOutput == LL_I2S_MCLK_OUTPUT_ENABLE)
-      {
-        /* MCLK output is enabled */
-        tmp = (((sourceclock / (256UL >> ispcm)) * 16UL) / I2S_InitStruct->AudioFreq) + 8UL;
-      }
-      else
-      {
-        /* MCLK output is disabled */
-        tmp = (((sourceclock / ((32UL >> ispcm) * packetlength)) * 16UL) / I2S_InitStruct->AudioFreq) + 8UL;
-      }
+			/* Compute the Real divider depending on the MCLK output state with a fixed point */
+			if (I2S_InitStruct->MCLKOutput == LL_I2S_MCLK_OUTPUT_ENABLE) {
+				/* MCLK output is enabled */
+				tmp = (((sourceclock / (256UL >> ispcm)) * 16UL) / I2S_InitStruct->AudioFreq) + 8UL;
+			} else {
+				/* MCLK output is disabled */
+				tmp = (((sourceclock / ((32UL >> ispcm) * packetlength)) * 16UL) / I2S_InitStruct->AudioFreq) + 8UL;
+			}
 
-      /* Remove the fixed point */
-      tmp = tmp / 16UL;
+			/* Remove the fixed point */
+			tmp = tmp / 16UL;
 
-      /* Check the parity of the divider */
-      i2sodd = tmp & 0x1UL;
+			/* Check the parity of the divider */
+			i2sodd = tmp & 0x1UL;
 
-      /* Compute the i2sdiv prescaler */
-      i2sdiv = tmp / 2UL;
-    }
+			/* Compute the i2sdiv prescaler */
+			i2sdiv = tmp / 2UL;
+		}
 
-    /* Test if the obtain values are forbidden or out of range */
-    if (((i2sodd == 1UL) && (i2sdiv == 1UL)) || (i2sdiv > 0xFFUL))
-    {
-      /* Set the default values */
-      i2sdiv = 0UL;
-      i2sodd = 0UL;
-    }
+		/* Test if the obtain values are forbidden or out of range */
+		if (((i2sodd == 1UL) && (i2sdiv == 1UL)) || (i2sdiv > 0xFFUL)) {
+			/* Set the default values */
+			i2sdiv = 0UL;
+			i2sodd = 0UL;
+		}
 
-    /* Write to SPIx I2SCFGR register the computed value */
-    MODIFY_REG(SPIx->I2SCFGR,
-               SPI_I2SCFGR_ODD                 | SPI_I2SCFGR_I2SDIV,
-               (i2sodd << SPI_I2SCFGR_ODD_Pos) | (i2sdiv << SPI_I2SCFGR_I2SDIV_Pos));
+		/* Write to SPIx I2SCFGR register the computed value */
+		MODIFY_REG(SPIx->I2SCFGR,
+			   SPI_I2SCFGR_ODD                 | SPI_I2SCFGR_I2SDIV,
+			   (i2sodd << SPI_I2SCFGR_ODD_Pos) | (i2sdiv << SPI_I2SCFGR_I2SDIV_Pos));
 
-    status = SUCCESS;
-  }
+		status = SUCCESS;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -701,13 +688,13 @@ ErrorStatus LL_I2S_Init(SPI_TypeDef *SPIx, const LL_I2S_InitTypeDef *I2S_InitStr
   */
 void LL_I2S_StructInit(LL_I2S_InitTypeDef *I2S_InitStruct)
 {
-  /*--------------- Reset I2S init structure parameters values -----------------*/
-  I2S_InitStruct->Mode              = LL_I2S_MODE_SLAVE_TX;
-  I2S_InitStruct->Standard          = LL_I2S_STANDARD_PHILIPS;
-  I2S_InitStruct->DataFormat        = LL_I2S_DATAFORMAT_16B;
-  I2S_InitStruct->MCLKOutput        = LL_I2S_MCLK_OUTPUT_DISABLE;
-  I2S_InitStruct->AudioFreq         = LL_I2S_AUDIOFREQ_DEFAULT;
-  I2S_InitStruct->ClockPolarity     = LL_I2S_POLARITY_LOW;
+	/*--------------- Reset I2S init structure parameters values -----------------*/
+	I2S_InitStruct->Mode              = LL_I2S_MODE_SLAVE_TX;
+	I2S_InitStruct->Standard          = LL_I2S_STANDARD_PHILIPS;
+	I2S_InitStruct->DataFormat        = LL_I2S_DATAFORMAT_16B;
+	I2S_InitStruct->MCLKOutput        = LL_I2S_MCLK_OUTPUT_DISABLE;
+	I2S_InitStruct->AudioFreq         = LL_I2S_AUDIOFREQ_DEFAULT;
+	I2S_InitStruct->ClockPolarity     = LL_I2S_POLARITY_LOW;
 }
 
 /**
@@ -724,14 +711,14 @@ void LL_I2S_StructInit(LL_I2S_InitTypeDef *I2S_InitStruct)
   */
 void LL_I2S_ConfigPrescaler(SPI_TypeDef *SPIx, uint32_t PrescalerLinear, uint32_t PrescalerParity)
 {
-  /* Check the I2S parameters */
-  assert_param(IS_I2S_ALL_INSTANCE(SPIx));
-  assert_param(IS_LL_I2S_PRESCALER_LINEAR(PrescalerLinear));
-  assert_param(IS_LL_I2S_PRESCALER_PARITY(PrescalerParity));
+	/* Check the I2S parameters */
+	assert_param(IS_I2S_ALL_INSTANCE(SPIx));
+	assert_param(IS_LL_I2S_PRESCALER_LINEAR(PrescalerLinear));
+	assert_param(IS_LL_I2S_PRESCALER_PARITY(PrescalerParity));
 
-  /* Write to SPIx I2SPR */
-  MODIFY_REG(SPIx->I2SCFGR, SPI_I2SCFGR_I2SDIV | SPI_I2SCFGR_ODD, (PrescalerLinear << SPI_I2SCFGR_I2SDIV_Pos) |
-             (PrescalerParity << SPI_I2SCFGR_ODD_Pos));
+	/* Write to SPIx I2SPR */
+	MODIFY_REG(SPIx->I2SCFGR, SPI_I2SCFGR_I2SDIV | SPI_I2SCFGR_ODD, (PrescalerLinear << SPI_I2SCFGR_I2SDIV_Pos) |
+		   (PrescalerParity << SPI_I2SCFGR_ODD_Pos));
 }
 
 /**

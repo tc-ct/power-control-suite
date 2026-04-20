@@ -306,7 +306,7 @@ extern "C" {
   */
 __STATIC_INLINE void LL_PWR_SetPowerMode(uint32_t Mode)
 {
-  MODIFY_REG(PWR->PMCR, PWR_PMCR_LPMS, Mode);
+	MODIFY_REG(PWR->PMCR, PWR_PMCR_LPMS, Mode);
 }
 
 /**
@@ -318,7 +318,7 @@ __STATIC_INLINE void LL_PWR_SetPowerMode(uint32_t Mode)
   */
 __STATIC_INLINE uint32_t LL_PWR_GetPowerMode(void)
 {
-  return (READ_BIT(PWR->PMCR, PWR_PMCR_LPMS));
+	return (READ_BIT(PWR->PMCR, PWR_PMCR_LPMS));
 }
 
 /**
@@ -332,7 +332,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetPowerMode(void)
   */
 __STATIC_INLINE void LL_PWR_SetStopModeRegulVoltageScaling(uint32_t VoltageScaling)
 {
-  MODIFY_REG(PWR->PMCR, PWR_PMCR_SVOS, VoltageScaling);
+	MODIFY_REG(PWR->PMCR, PWR_PMCR_SVOS, VoltageScaling);
 }
 
 /**
@@ -345,7 +345,7 @@ __STATIC_INLINE void LL_PWR_SetStopModeRegulVoltageScaling(uint32_t VoltageScali
   */
 __STATIC_INLINE uint32_t LL_PWR_GetStopModeRegulVoltageScaling(void)
 {
-  return (uint32_t)(READ_BIT(PWR->PMCR, PWR_PMCR_SVOS));
+	return (uint32_t)(READ_BIT(PWR->PMCR, PWR_PMCR_SVOS));
 }
 
 /**
@@ -355,7 +355,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetStopModeRegulVoltageScaling(void)
   */
 __STATIC_INLINE void LL_PWR_EnableFlashPowerDown(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_FLPS);
+	SET_BIT(PWR->PMCR, PWR_PMCR_FLPS);
 }
 
 /**
@@ -365,7 +365,7 @@ __STATIC_INLINE void LL_PWR_EnableFlashPowerDown(void)
   */
 __STATIC_INLINE void LL_PWR_DisableFlashPowerDown(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_FLPS);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_FLPS);
 }
 
 /**
@@ -375,7 +375,7 @@ __STATIC_INLINE void LL_PWR_DisableFlashPowerDown(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledFlashPowerDown(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_FLPS) == (PWR_PMCR_FLPS)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_FLPS) == (PWR_PMCR_FLPS)) ? 1UL : 0UL);
 }
 
 /**
@@ -385,7 +385,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledFlashPowerDown(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAnalogBooster(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_BOOSTE);
+	SET_BIT(PWR->PMCR, PWR_PMCR_BOOSTE);
 }
 
 /**
@@ -395,7 +395,7 @@ __STATIC_INLINE void LL_PWR_EnableAnalogBooster(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAnalogBooster(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_BOOSTE);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_BOOSTE);
 }
 
 /**
@@ -405,7 +405,7 @@ __STATIC_INLINE void LL_PWR_DisableAnalogBooster(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAnalogBooster(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_BOOSTE) == (PWR_PMCR_BOOSTE)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_BOOSTE) == (PWR_PMCR_BOOSTE)) ? 1UL : 0UL);
 }
 
 /**
@@ -415,7 +415,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAnalogBooster(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAnalogVoltageReady(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_AVD_READY);
+	SET_BIT(PWR->PMCR, PWR_PMCR_AVD_READY);
 }
 
 /**
@@ -425,7 +425,7 @@ __STATIC_INLINE void LL_PWR_EnableAnalogVoltageReady(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAnalogVoltageReady(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_AVD_READY);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_AVD_READY);
 }
 
 /**
@@ -435,7 +435,7 @@ __STATIC_INLINE void LL_PWR_DisableAnalogVoltageReady(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAnalogVoltageReady(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_AVD_READY) == (PWR_PMCR_AVD_READY)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_AVD_READY) == (PWR_PMCR_AVD_READY)) ? 1UL : 0UL);
 }
 
 /**
@@ -445,7 +445,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAnalogVoltageReady(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM1ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM1SO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM1SO);
 }
 
 /**
@@ -455,7 +455,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM1ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM1ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM1SO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM1SO);
 }
 
 /**
@@ -465,7 +465,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM1ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM1ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM1SO) == (PWR_PMCR_SRAM1SO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM1SO) == (PWR_PMCR_SRAM1SO)) ? 1UL : 0UL);
 }
 #if defined (PWR_PMCR_SRAM2_48SO)
 /**
@@ -475,7 +475,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM1ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM2_48K_ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48SO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48SO);
 }
 
 /**
@@ -485,7 +485,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM2_48K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM2_48K_ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48SO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48SO);
 }
 
 /**
@@ -495,7 +495,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM2_48K_ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_48K_ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48SO) == (PWR_PMCR_SRAM2_48SO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48SO) == (PWR_PMCR_SRAM2_48SO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_SRAM2_48SO */
 
@@ -507,7 +507,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_48K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM2_16K_ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16SO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16SO);
 }
 
 /**
@@ -517,7 +517,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM2_16K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM2_16K_ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16SO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16SO);
 }
 
 /**
@@ -527,7 +527,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM2_16K_ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_16K_ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16SO) == (PWR_PMCR_SRAM2_16SO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16SO) == (PWR_PMCR_SRAM2_16SO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_SRAM2_16SO */
 
@@ -539,7 +539,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_16K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM2_High_16K_ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16HSO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16HSO);
 }
 
 /**
@@ -549,7 +549,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM2_High_16K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM2_High_16K_ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16HSO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16HSO);
 }
 
 /**
@@ -559,7 +559,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM2_High_16K_ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_High_16K_ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16HSO) == (PWR_PMCR_SRAM2_16HSO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16HSO) == (PWR_PMCR_SRAM2_16HSO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_SRAM2_16HSO */
 
@@ -571,7 +571,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_High_16K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM2_Low_16K_ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16LSO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16LSO);
 }
 
 /**
@@ -581,7 +581,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM2_Low_16K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM2_Low_16K_ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16LSO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16LSO);
 }
 
 /**
@@ -591,7 +591,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM2_Low_16K_ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_Low_16K_ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16LSO) == (PWR_PMCR_SRAM2_16LSO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_16LSO) == (PWR_PMCR_SRAM2_16LSO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_SRAM2_16LSO */
 
@@ -603,7 +603,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_Low_16K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM2_High_48K_ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48HSO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48HSO);
 }
 
 /**
@@ -613,7 +613,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM2_High_48K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM2_High_48K_ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48HSO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48HSO);
 }
 
 /**
@@ -623,7 +623,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM2_High_48K_ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_High_48K_ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48HSO) == (PWR_PMCR_SRAM2_48HSO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48HSO) == (PWR_PMCR_SRAM2_48HSO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_SRAM2_48HSO */
 
@@ -635,7 +635,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_High_48K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM2_Low_48K_ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48LSO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48LSO);
 }
 
 /**
@@ -645,7 +645,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM2_Low_48K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM2_Low_48K_ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48LSO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48LSO);
 }
 
 /**
@@ -655,7 +655,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM2_Low_48K_ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_Low_48K_ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48LSO) == (PWR_PMCR_SRAM2_48LSO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2_48LSO) == (PWR_PMCR_SRAM2_48LSO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_SRAM2_48LSO */
 
@@ -667,7 +667,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2_Low_48K_ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM2ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2SO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM2SO);
 }
 
 /**
@@ -677,7 +677,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM2ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM2ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2SO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM2SO);
 }
 
 /**
@@ -687,7 +687,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM2ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2SO) == (PWR_PMCR_SRAM2SO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM2SO) == (PWR_PMCR_SRAM2SO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_SRAM2SO */
 
@@ -699,7 +699,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM2ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM3ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM3SO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM3SO);
 }
 
 /**
@@ -709,7 +709,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM3ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM3ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM3SO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM3SO);
 }
 
 /**
@@ -719,7 +719,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM3ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM3ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM3SO) == (PWR_PMCR_SRAM3SO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM3SO) == (PWR_PMCR_SRAM3SO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_SRAM3SO */
 
@@ -731,7 +731,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM3ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM4ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM4SO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM4SO);
 }
 
 /**
@@ -741,7 +741,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM4ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM4ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM4SO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM4SO);
 }
 
 /**
@@ -751,7 +751,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM4ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM4ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM4SO) == (PWR_PMCR_SRAM4SO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM4SO) == (PWR_PMCR_SRAM4SO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_SRAM4SO */
 
@@ -763,7 +763,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM4ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAHBRAM5ShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_SRAM5SO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_SRAM5SO);
 }
 
 /**
@@ -773,7 +773,7 @@ __STATIC_INLINE void LL_PWR_EnableAHBRAM5ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAHBRAM5ShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM5SO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_SRAM5SO);
 }
 
 /**
@@ -783,7 +783,7 @@ __STATIC_INLINE void LL_PWR_DisableAHBRAM5ShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM5ShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM5SO) == (PWR_PMCR_SRAM5SO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_SRAM5SO) == (PWR_PMCR_SRAM5SO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_SRAM5SO */
 
@@ -795,7 +795,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAHBRAM5ShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableETHERNETRAMShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_ETHERNETSO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_ETHERNETSO);
 }
 
 /**
@@ -805,7 +805,7 @@ __STATIC_INLINE void LL_PWR_EnableETHERNETRAMShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableETHERNETRAMShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_ETHERNETSO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_ETHERNETSO);
 }
 
 /**
@@ -815,7 +815,7 @@ __STATIC_INLINE void LL_PWR_DisableETHERNETRAMShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledETHERNETRAMShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_ETHERNETSO) == (PWR_PMCR_ETHERNETSO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_ETHERNETSO) == (PWR_PMCR_ETHERNETSO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_ETHERNETSO */
 
@@ -827,7 +827,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledETHERNETRAMShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_EnableLTDCRAMShutOff(void)
 {
-  SET_BIT(PWR->PMCR, PWR_PMCR_LTDCSO);
+	SET_BIT(PWR->PMCR, PWR_PMCR_LTDCSO);
 }
 
 /**
@@ -837,7 +837,7 @@ __STATIC_INLINE void LL_PWR_EnableLTDCRAMShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_DisableLTDCRAMShutOff(void)
 {
-  CLEAR_BIT(PWR->PMCR, PWR_PMCR_LTDCSO);
+	CLEAR_BIT(PWR->PMCR, PWR_PMCR_LTDCSO);
 }
 
 /**
@@ -847,7 +847,7 @@ __STATIC_INLINE void LL_PWR_DisableLTDCRAMShutOff(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledLTDCRAMShutOff(void)
 {
-  return ((READ_BIT(PWR->PMCR, PWR_PMCR_LTDCSO) == (PWR_PMCR_LTDCSO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMCR, PWR_PMCR_LTDCSO) == (PWR_PMCR_LTDCSO)) ? 1UL : 0UL);
 }
 #endif /* PWR_PMCR_LTDCSO */
 
@@ -863,7 +863,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledLTDCRAMShutOff(void)
   */
 __STATIC_INLINE void LL_PWR_SetRegulVoltageScaling(uint32_t VoltageScaling)
 {
-  MODIFY_REG(PWR->VOSCR, PWR_VOSCR_VOS, VoltageScaling);
+	MODIFY_REG(PWR->VOSCR, PWR_VOSCR_VOS, VoltageScaling);
 }
 
 /**
@@ -877,7 +877,7 @@ __STATIC_INLINE void LL_PWR_SetRegulVoltageScaling(uint32_t VoltageScaling)
   */
 __STATIC_INLINE uint32_t LL_PWR_GetRegulVoltageScaling(void)
 {
-  return (uint32_t)(READ_BIT(PWR->VOSCR, PWR_VOSCR_VOS));
+	return (uint32_t)(READ_BIT(PWR->VOSCR, PWR_VOSCR_VOS));
 }
 
 /**
@@ -891,7 +891,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetRegulVoltageScaling(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_GetCurrentVOS(void)
 {
-  return (READ_BIT(PWR->VOSSR, PWR_VOSSR_ACTVOS));
+	return (READ_BIT(PWR->VOSSR, PWR_VOSSR_ACTVOS));
 }
 
 /**
@@ -906,7 +906,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetCurrentVOS(void)
   */
 __STATIC_INLINE void LL_PWR_EnableBkUpRegulator(void)
 {
-  SET_BIT(PWR->BDCR, PWR_BDCR_BREN);
+	SET_BIT(PWR->BDCR, PWR_BDCR_BREN);
 }
 
 /**
@@ -916,7 +916,7 @@ __STATIC_INLINE void LL_PWR_EnableBkUpRegulator(void)
   */
 __STATIC_INLINE void LL_PWR_DisableBkUpRegulator(void)
 {
-  CLEAR_BIT(PWR->BDCR, PWR_BDCR_BREN);
+	CLEAR_BIT(PWR->BDCR, PWR_BDCR_BREN);
 }
 
 /**
@@ -926,7 +926,7 @@ __STATIC_INLINE void LL_PWR_DisableBkUpRegulator(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledBkUpRegulator(void)
 {
-  return ((READ_BIT(PWR->BDCR, PWR_BDCR_BREN) == (PWR_BDCR_BREN)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->BDCR, PWR_BDCR_BREN) == (PWR_BDCR_BREN)) ? 1UL : 0UL);
 }
 
 /**
@@ -936,7 +936,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledBkUpRegulator(void)
   */
 __STATIC_INLINE void LL_PWR_EnableMonitoring(void)
 {
-  SET_BIT(PWR->BDCR, PWR_BDCR_MONEN);
+	SET_BIT(PWR->BDCR, PWR_BDCR_MONEN);
 }
 
 /**
@@ -946,7 +946,7 @@ __STATIC_INLINE void LL_PWR_EnableMonitoring(void)
   */
 __STATIC_INLINE void LL_PWR_DisableMonitoring(void)
 {
-  CLEAR_BIT(PWR->BDCR, PWR_BDCR_MONEN);
+	CLEAR_BIT(PWR->BDCR, PWR_BDCR_MONEN);
 }
 
 /**
@@ -956,7 +956,7 @@ __STATIC_INLINE void LL_PWR_DisableMonitoring(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledMonitoring(void)
 {
-  return ((READ_BIT(PWR->BDCR, PWR_BDCR_MONEN) == (PWR_BDCR_MONEN)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->BDCR, PWR_BDCR_MONEN) == (PWR_BDCR_MONEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -966,7 +966,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledMonitoring(void)
   */
 __STATIC_INLINE void LL_PWR_EnableBatteryCharging(void)
 {
-  SET_BIT(PWR->BDCR, PWR_BDCR_VBE);
+	SET_BIT(PWR->BDCR, PWR_BDCR_VBE);
 }
 
 /**
@@ -976,7 +976,7 @@ __STATIC_INLINE void LL_PWR_EnableBatteryCharging(void)
   */
 __STATIC_INLINE void LL_PWR_DisableBatteryCharging(void)
 {
-  CLEAR_BIT(PWR->BDCR, PWR_BDCR_VBE);
+	CLEAR_BIT(PWR->BDCR, PWR_BDCR_VBE);
 }
 
 /**
@@ -986,7 +986,7 @@ __STATIC_INLINE void LL_PWR_DisableBatteryCharging(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledBatteryCharging(void)
 {
-  return ((READ_BIT(PWR->BDCR, PWR_BDCR_VBE) == (PWR_BDCR_VBE)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->BDCR, PWR_BDCR_VBE) == (PWR_BDCR_VBE)) ? 1UL : 0UL);
 }
 
 /**
@@ -999,7 +999,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledBatteryCharging(void)
   */
 __STATIC_INLINE void LL_PWR_SetBattChargResistor(uint32_t Resistor)
 {
-  MODIFY_REG(PWR->BDCR, PWR_BDCR_VBRS, Resistor);
+	MODIFY_REG(PWR->BDCR, PWR_BDCR_VBRS, Resistor);
 }
 
 /**
@@ -1011,7 +1011,7 @@ __STATIC_INLINE void LL_PWR_SetBattChargResistor(uint32_t Resistor)
   */
 __STATIC_INLINE uint32_t LL_PWR_GetBattChargResistor(void)
 {
-  return (uint32_t)(READ_BIT(PWR->BDCR, PWR_BDCR_VBRS));
+	return (uint32_t)(READ_BIT(PWR->BDCR, PWR_BDCR_VBRS));
 }
 
 /**
@@ -1021,7 +1021,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetBattChargResistor(void)
   */
 __STATIC_INLINE void LL_PWR_EnableBkUpAccess(void)
 {
-  SET_BIT(PWR->DBPCR, PWR_DBPCR_DBP);
+	SET_BIT(PWR->DBPCR, PWR_DBPCR_DBP);
 }
 
 /**
@@ -1031,7 +1031,7 @@ __STATIC_INLINE void LL_PWR_EnableBkUpAccess(void)
   */
 __STATIC_INLINE void LL_PWR_DisableBkUpAccess(void)
 {
-  CLEAR_BIT(PWR->DBPCR, PWR_DBPCR_DBP);
+	CLEAR_BIT(PWR->DBPCR, PWR_DBPCR_DBP);
 }
 
 /**
@@ -1041,7 +1041,7 @@ __STATIC_INLINE void LL_PWR_DisableBkUpAccess(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledBkUpAccess(void)
 {
-  return ((READ_BIT(PWR->DBPCR, PWR_DBPCR_DBP) == (PWR_DBPCR_DBP)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->DBPCR, PWR_DBPCR_DBP) == (PWR_DBPCR_DBP)) ? 1UL : 0UL);
 }
 
 #if defined (PWR_UCPDR_UCPD_STBY)
@@ -1054,7 +1054,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledBkUpAccess(void)
   */
 __STATIC_INLINE void LL_PWR_EnableUCPDStandbyMode(void)
 {
-  SET_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_STBY);
+	SET_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_STBY);
 }
 
 /**
@@ -1067,7 +1067,7 @@ __STATIC_INLINE void LL_PWR_EnableUCPDStandbyMode(void)
   */
 __STATIC_INLINE void LL_PWR_DisableUCPDStandbyMode(void)
 {
-  CLEAR_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_STBY);
+	CLEAR_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_STBY);
 }
 
 /**
@@ -1078,7 +1078,7 @@ __STATIC_INLINE void LL_PWR_DisableUCPDStandbyMode(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledUCPDStandbyMode(void)
 {
-  return ((READ_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_STBY) == (PWR_UCPDR_UCPD_STBY)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_STBY) == (PWR_UCPDR_UCPD_STBY)) ? 1UL : 0UL);
 }
 #endif /* PWR_UCPDR_UCPD_STBY */
 
@@ -1095,7 +1095,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledUCPDStandbyMode(void)
   */
 __STATIC_INLINE void LL_PWR_EnableUCPDDeadBattery(void)
 {
-  CLEAR_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_DBDIS);
+	CLEAR_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_DBDIS);
 }
 
 /**
@@ -1110,7 +1110,7 @@ __STATIC_INLINE void LL_PWR_EnableUCPDDeadBattery(void)
   */
 __STATIC_INLINE void LL_PWR_DisableUCPDDeadBattery(void)
 {
-  SET_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_DBDIS);
+	SET_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_DBDIS);
 }
 
 /**
@@ -1125,7 +1125,7 @@ __STATIC_INLINE void LL_PWR_DisableUCPDDeadBattery(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledUCPDDeadBattery(void)
 {
-  return ((READ_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_DBDIS) == (PWR_UCPDR_UCPD_DBDIS)) ? 0UL : 1UL);
+	return ((READ_BIT(PWR->UCPDR, PWR_UCPDR_UCPD_DBDIS) == (PWR_UCPDR_UCPD_DBDIS)) ? 0UL : 1UL);
 }
 #endif /* PWR_UCPDR_UCPD_DBDIS */
 
@@ -1138,8 +1138,8 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledUCPDDeadBattery(void)
   */
 __STATIC_INLINE void LL_PWR_ConfigSupply(uint32_t SupplySource)
 {
-  /* Set the power supply configuration */
-  MODIFY_REG(PWR->SCCR, (PWR_SCCR_BYPASS), SupplySource);
+	/* Set the power supply configuration */
+	MODIFY_REG(PWR->SCCR, (PWR_SCCR_BYPASS), SupplySource);
 }
 
 /**
@@ -1150,11 +1150,11 @@ __STATIC_INLINE void LL_PWR_ConfigSupply(uint32_t SupplySource)
 __STATIC_INLINE uint32_t LL_PWR_GetSupply(void)
 {
 #if defined (PWR_SCCR_SMPSEN)
-  /* Get the power supply configuration */
-  return (uint32_t)(READ_BIT(PWR->SCCR, (PWR_SCCR_SMPSEN | PWR_SCCR_LDOEN | PWR_SCCR_BYPASS)));
+	/* Get the power supply configuration */
+	return (uint32_t)(READ_BIT(PWR->SCCR, (PWR_SCCR_SMPSEN | PWR_SCCR_LDOEN | PWR_SCCR_BYPASS)));
 #else
-  /* Get the power supply configuration */
-  return (uint32_t)(READ_BIT(PWR->SCCR, (PWR_SCCR_LDOEN | PWR_SCCR_BYPASS)));
+	/* Get the power supply configuration */
+	return (uint32_t)(READ_BIT(PWR->SCCR, (PWR_SCCR_LDOEN | PWR_SCCR_BYPASS)));
 #endif /* PWR_SCCR_SMPSEN */
 }
 
@@ -1165,7 +1165,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetSupply(void)
   */
 __STATIC_INLINE void LL_PWR_EnablePVD(void)
 {
-  SET_BIT(PWR->VMCR, PWR_VMCR_PVDEN);
+	SET_BIT(PWR->VMCR, PWR_VMCR_PVDEN);
 }
 
 /**
@@ -1175,7 +1175,7 @@ __STATIC_INLINE void LL_PWR_EnablePVD(void)
   */
 __STATIC_INLINE void LL_PWR_DisablePVD(void)
 {
-  CLEAR_BIT(PWR->VMCR, PWR_VMCR_PVDEN);
+	CLEAR_BIT(PWR->VMCR, PWR_VMCR_PVDEN);
 }
 
 /**
@@ -1185,7 +1185,7 @@ __STATIC_INLINE void LL_PWR_DisablePVD(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledPVD(void)
 {
-  return ((READ_BIT(PWR->VMCR, PWR_VMCR_PVDEN) == (PWR_VMCR_PVDEN)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->VMCR, PWR_VMCR_PVDEN) == (PWR_VMCR_PVDEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -1204,7 +1204,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledPVD(void)
   */
 __STATIC_INLINE void LL_PWR_SetPVDLevel(uint32_t PVDLevel)
 {
-  MODIFY_REG(PWR->VMCR, PWR_VMCR_PLS, PVDLevel);
+	MODIFY_REG(PWR->VMCR, PWR_VMCR_PLS, PVDLevel);
 }
 
 /**
@@ -1222,7 +1222,7 @@ __STATIC_INLINE void LL_PWR_SetPVDLevel(uint32_t PVDLevel)
   */
 __STATIC_INLINE uint32_t LL_PWR_GetPVDLevel(void)
 {
-  return (uint32_t)(READ_BIT(PWR->VMCR, PWR_VMCR_PLS));
+	return (uint32_t)(READ_BIT(PWR->VMCR, PWR_VMCR_PLS));
 }
 
 
@@ -1233,7 +1233,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetPVDLevel(void)
   */
 __STATIC_INLINE void LL_PWR_EnableAVD(void)
 {
-  SET_BIT(PWR->VMCR, PWR_VMCR_AVDEN);
+	SET_BIT(PWR->VMCR, PWR_VMCR_AVDEN);
 }
 
 /**
@@ -1243,7 +1243,7 @@ __STATIC_INLINE void LL_PWR_EnableAVD(void)
   */
 __STATIC_INLINE void LL_PWR_DisableAVD(void)
 {
-  CLEAR_BIT(PWR->VMCR, PWR_VMCR_AVDEN);
+	CLEAR_BIT(PWR->VMCR, PWR_VMCR_AVDEN);
 }
 
 /**
@@ -1253,7 +1253,7 @@ __STATIC_INLINE void LL_PWR_DisableAVD(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledAVD(void)
 {
-  return ((READ_BIT(PWR->VMCR, PWR_VMCR_AVDEN) == (PWR_VMCR_AVDEN)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->VMCR, PWR_VMCR_AVDEN) == (PWR_VMCR_AVDEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -1268,7 +1268,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledAVD(void)
   */
 __STATIC_INLINE void LL_PWR_SetAVDLevel(uint32_t AVDLevel)
 {
-  MODIFY_REG(PWR->VMCR, PWR_VMCR_ALS, AVDLevel);
+	MODIFY_REG(PWR->VMCR, PWR_VMCR_ALS, AVDLevel);
 }
 
 /**
@@ -1282,7 +1282,7 @@ __STATIC_INLINE void LL_PWR_SetAVDLevel(uint32_t AVDLevel)
   */
 __STATIC_INLINE uint32_t LL_PWR_GetAVDLevel(void)
 {
-  return (uint32_t)(READ_BIT(PWR->VMCR, PWR_VMCR_ALS));
+	return (uint32_t)(READ_BIT(PWR->VMCR, PWR_VMCR_ALS));
 }
 
 #if defined (PWR_USBSCR_USB33DEN)
@@ -1293,7 +1293,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetAVDLevel(void)
   */
 __STATIC_INLINE void LL_PWR_EnableUSBVoltageDetector(void)
 {
-  SET_BIT(PWR->USBSCR, PWR_USBSCR_USB33DEN);
+	SET_BIT(PWR->USBSCR, PWR_USBSCR_USB33DEN);
 }
 
 /**
@@ -1303,7 +1303,7 @@ __STATIC_INLINE void LL_PWR_EnableUSBVoltageDetector(void)
   */
 __STATIC_INLINE void LL_PWR_DisableUSBVoltageDetector(void)
 {
-  CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_USB33DEN);
+	CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_USB33DEN);
 }
 
 /**
@@ -1313,7 +1313,7 @@ __STATIC_INLINE void LL_PWR_DisableUSBVoltageDetector(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledUSBVoltageDetector(void)
 {
-  return ((READ_BIT(PWR->USBSCR, PWR_USBSCR_USB33DEN) == (PWR_USBSCR_USB33DEN)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->USBSCR, PWR_USBSCR_USB33DEN) == (PWR_USBSCR_USB33DEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -1323,7 +1323,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledUSBVoltageDetector(void)
   */
 __STATIC_INLINE void LL_PWR_EnableVddUSB(void)
 {
-  SET_BIT(PWR->USBSCR, PWR_USBSCR_USB33SV);
+	SET_BIT(PWR->USBSCR, PWR_USBSCR_USB33SV);
 }
 #define LL_PWR_EnableVDDUSB  LL_PWR_EnableVddUSB /* for API backward compatibility */
 
@@ -1334,7 +1334,7 @@ __STATIC_INLINE void LL_PWR_EnableVddUSB(void)
   */
 __STATIC_INLINE void LL_PWR_DisableVddUSB(void)
 {
-  CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_USB33SV);
+	CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_USB33SV);
 }
 #define LL_PWR_DisableVDDUSB  LL_PWR_DisableVddUSB /* for API backward compatibility */
 
@@ -1345,7 +1345,7 @@ __STATIC_INLINE void LL_PWR_DisableVddUSB(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledVddUSB(void)
 {
-  return ((READ_BIT(PWR->USBSCR, PWR_USBSCR_USB33SV) == (PWR_USBSCR_USB33SV)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->USBSCR, PWR_USBSCR_USB33SV) == (PWR_USBSCR_USB33SV)) ? 1UL : 0UL);
 }
 #define LL_PWR_IsEnabledVDDUSB  LL_PWR_IsEnabledVddUSB /* for API backward compatibility */
 #endif /* PWR_USBSCR_USB33DEN */
@@ -1358,7 +1358,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledVddUSB(void)
   */
 __STATIC_INLINE void LL_PWR_EnableUSBOTGHSPhy(void)
 {
-  SET_BIT(PWR->USBSCR, PWR_USBSCR_OTGHSEN);
+	SET_BIT(PWR->USBSCR, PWR_USBSCR_OTGHSEN);
 }
 
 /**
@@ -1368,7 +1368,7 @@ __STATIC_INLINE void LL_PWR_EnableUSBOTGHSPhy(void)
   */
 __STATIC_INLINE void LL_PWR_DisableUSBOTGHSPhy(void)
 {
-  CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_OTGHSEN);
+	CLEAR_BIT(PWR->USBSCR, PWR_USBSCR_OTGHSEN);
 }
 
 /**
@@ -1378,7 +1378,7 @@ __STATIC_INLINE void LL_PWR_DisableUSBOTGHSPhy(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledUSBOTGHSPhy(void)
 {
-  return ((READ_BIT(PWR->USBSCR, PWR_USBSCR_OTGHSEN) == (PWR_USBSCR_OTGHSEN)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->USBSCR, PWR_USBSCR_OTGHSEN) == (PWR_USBSCR_OTGHSEN)) ? 1UL : 0UL);
 }
 #endif /* PWR_USBSCR_OTGHSEN */
 
@@ -1398,7 +1398,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledUSBOTGHSPhy(void)
   */
 __STATIC_INLINE void LL_PWR_EnableWakeUpPin(uint32_t WakeUpPin)
 {
-  SET_BIT(PWR->WUCR, WakeUpPin);
+	SET_BIT(PWR->WUCR, WakeUpPin);
 }
 
 /**
@@ -1417,7 +1417,7 @@ __STATIC_INLINE void LL_PWR_EnableWakeUpPin(uint32_t WakeUpPin)
   */
 __STATIC_INLINE void LL_PWR_DisableWakeUpPin(uint32_t WakeUpPin)
 {
-  CLEAR_BIT(PWR->WUCR, WakeUpPin);
+	CLEAR_BIT(PWR->WUCR, WakeUpPin);
 }
 
 /**
@@ -1436,7 +1436,7 @@ __STATIC_INLINE void LL_PWR_DisableWakeUpPin(uint32_t WakeUpPin)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledWakeUpPin(uint32_t WakeUpPin)
 {
-  return ((READ_BIT(PWR->WUCR, WakeUpPin) == (WakeUpPin)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->WUCR, WakeUpPin) == (WakeUpPin)) ? 1UL : 0UL);
 }
 
 /**
@@ -1462,7 +1462,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledWakeUpPin(uint32_t WakeUpPin)
   */
 __STATIC_INLINE void LL_PWR_SetWakeUpPinPolarityLow(uint32_t WakeUpPin)
 {
-  SET_BIT(PWR->WUCR, (WakeUpPin << PWR_WUCR_WUPP1_Pos));
+	SET_BIT(PWR->WUCR, (WakeUpPin << PWR_WUCR_WUPP1_Pos));
 }
 
 /**
@@ -1488,7 +1488,7 @@ __STATIC_INLINE void LL_PWR_SetWakeUpPinPolarityLow(uint32_t WakeUpPin)
   */
 __STATIC_INLINE void LL_PWR_SetWakeUpPinPolarityHigh(uint32_t WakeUpPin)
 {
-  CLEAR_BIT(PWR->WUCR, (WakeUpPin << PWR_WUCR_WUPP1_Pos));
+	CLEAR_BIT(PWR->WUCR, (WakeUpPin << PWR_WUCR_WUPP1_Pos));
 }
 
 /**
@@ -1514,7 +1514,7 @@ __STATIC_INLINE void LL_PWR_SetWakeUpPinPolarityHigh(uint32_t WakeUpPin)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsWakeUpPinPolarityLow(uint32_t WakeUpPin)
 {
-  return ((READ_BIT(PWR->WUCR, (WakeUpPin << PWR_WUCR_WUPP1_Pos)) == (WakeUpPin << PWR_WUCR_WUPP1_Pos)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->WUCR, (WakeUpPin << PWR_WUCR_WUPP1_Pos)) == (WakeUpPin << PWR_WUCR_WUPP1_Pos)) ? 1UL : 0UL);
 }
 
 /**
@@ -1541,12 +1541,12 @@ __STATIC_INLINE uint32_t LL_PWR_IsWakeUpPinPolarityLow(uint32_t WakeUpPin)
   */
 __STATIC_INLINE void LL_PWR_SetWakeUpPinPullNone(uint32_t WakeUpPin)
 {
-  MODIFY_REG(PWR->WUCR,
-             (PWR_WUCR_WUPPUPD1 << ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * (POSITION_VAL(WakeUpPin) & 0xFU)) & \
-                                    LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)),
-             (LL_PWR_WAKEUP_PIN_NOPULL << ((PWR_WUCR_WUPPUPD1_Pos + ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * \
-                                                                      POSITION_VAL(WakeUpPin)) & 0xFU)) & \
-                                           LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)));
+	MODIFY_REG(PWR->WUCR,
+		   (PWR_WUCR_WUPPUPD1 << ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * (POSITION_VAL(WakeUpPin) & 0xFU)) & \
+					  LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)),
+		   (LL_PWR_WAKEUP_PIN_NOPULL << ((PWR_WUCR_WUPPUPD1_Pos + ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * \
+				   POSITION_VAL(WakeUpPin)) & 0xFU)) & \
+				   LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)));
 }
 
 /**
@@ -1574,12 +1574,12 @@ __STATIC_INLINE void LL_PWR_SetWakeUpPinPullNone(uint32_t WakeUpPin)
   */
 __STATIC_INLINE void LL_PWR_SetWakeUpPinPullUp(uint32_t WakeUpPin)
 {
-  MODIFY_REG(PWR->WUCR,
-             (PWR_WUCR_WUPPUPD1 << ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * (POSITION_VAL(WakeUpPin) & 0xFU)) & \
-                                    LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)),
-             (LL_PWR_WAKEUP_PIN_PULLUP << ((PWR_WUCR_WUPPUPD1_Pos + ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * \
-                                                                      POSITION_VAL(WakeUpPin)) & 0xFU)) & \
-                                           LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)));
+	MODIFY_REG(PWR->WUCR,
+		   (PWR_WUCR_WUPPUPD1 << ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * (POSITION_VAL(WakeUpPin) & 0xFU)) & \
+					  LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)),
+		   (LL_PWR_WAKEUP_PIN_PULLUP << ((PWR_WUCR_WUPPUPD1_Pos + ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * \
+				   POSITION_VAL(WakeUpPin)) & 0xFU)) & \
+				   LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)));
 }
 
 /**
@@ -1606,12 +1606,12 @@ __STATIC_INLINE void LL_PWR_SetWakeUpPinPullUp(uint32_t WakeUpPin)
   */
 __STATIC_INLINE void LL_PWR_SetWakeUpPinPullDown(uint32_t WakeUpPin)
 {
-  MODIFY_REG(PWR->WUCR,
-             (PWR_WUCR_WUPPUPD1 << ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * (POSITION_VAL(WakeUpPin) & 0xFU)) & \
-                                    LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)),
-             (LL_PWR_WAKEUP_PIN_PULLDOWN << ((PWR_WUCR_WUPPUPD1_Pos + ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * \
-                                                                        POSITION_VAL(WakeUpPin)) & 0xFU)) & \
-                                             LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)));
+	MODIFY_REG(PWR->WUCR,
+		   (PWR_WUCR_WUPPUPD1 << ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * (POSITION_VAL(WakeUpPin) & 0xFU)) & \
+					  LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)),
+		   (LL_PWR_WAKEUP_PIN_PULLDOWN << ((PWR_WUCR_WUPPUPD1_Pos + ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * \
+				   POSITION_VAL(WakeUpPin)) & 0xFU)) & \
+				   LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)));
 }
 
 /**
@@ -1641,13 +1641,13 @@ __STATIC_INLINE void LL_PWR_SetWakeUpPinPullDown(uint32_t WakeUpPin)
   */
 __STATIC_INLINE uint32_t LL_PWR_GetWakeUpPinPull(uint32_t WakeUpPin)
 {
-  uint32_t regValue = READ_BIT(PWR->WUCR, (PWR_WUCR_WUPPUPD1 << ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * \
-                                                                  (POSITION_VAL(WakeUpPin) & 0xFU)) & \
-                                                                 LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)));
+	uint32_t regValue = READ_BIT(PWR->WUCR, (PWR_WUCR_WUPPUPD1 << ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * \
+				     (POSITION_VAL(WakeUpPin) & 0xFU)) & \
+				     LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK)));
 
-  return (uint32_t)(regValue >> ((PWR_WUCR_WUPPUPD1_Pos + ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * \
-                                                            POSITION_VAL(WakeUpPin)) & 0xFU)) & \
-                                 LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK));
+	return (uint32_t)(regValue >> ((PWR_WUCR_WUPPUPD1_Pos + ((LL_PWR_WAKEUP_PINS_PULL_SHIFT_OFFSET * \
+					POSITION_VAL(WakeUpPin)) & 0xFU)) & \
+				       LL_PWR_WAKEUP_PINS_MAX_SHIFT_MASK));
 }
 
 /**
@@ -1657,7 +1657,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetWakeUpPinPull(uint32_t WakeUpPin)
   */
 __STATIC_INLINE void LL_PWR_EnableIORetention(void)
 {
-  SET_BIT(PWR->IORETR, PWR_IORETR_IORETEN);
+	SET_BIT(PWR->IORETR, PWR_IORETR_IORETEN);
 }
 
 /**
@@ -1667,7 +1667,7 @@ __STATIC_INLINE void LL_PWR_EnableIORetention(void)
   */
 __STATIC_INLINE void LL_PWR_DisableIORetention(void)
 {
-  CLEAR_BIT(PWR->IORETR, PWR_IORETR_IORETEN);
+	CLEAR_BIT(PWR->IORETR, PWR_IORETR_IORETEN);
 }
 
 /**
@@ -1677,7 +1677,7 @@ __STATIC_INLINE void LL_PWR_DisableIORetention(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledIORetention(void)
 {
-  return ((READ_BIT(PWR->IORETR, PWR_IORETR_IORETEN) == (PWR_IORETR_IORETEN)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->IORETR, PWR_IORETR_IORETEN) == (PWR_IORETR_IORETEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -1687,7 +1687,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledIORetention(void)
   */
 __STATIC_INLINE void LL_PWR_EnableJTAGIORetention(void)
 {
-  SET_BIT(PWR->IORETR, PWR_IORETR_JTAGIORETEN);
+	SET_BIT(PWR->IORETR, PWR_IORETR_JTAGIORETEN);
 }
 
 /**
@@ -1697,7 +1697,7 @@ __STATIC_INLINE void LL_PWR_EnableJTAGIORetention(void)
   */
 __STATIC_INLINE void LL_PWR_DisableJTAGIORetention(void)
 {
-  CLEAR_BIT(PWR->IORETR, PWR_IORETR_JTAGIORETEN);
+	CLEAR_BIT(PWR->IORETR, PWR_IORETR_JTAGIORETEN);
 }
 
 /**
@@ -1707,7 +1707,7 @@ __STATIC_INLINE void LL_PWR_DisableJTAGIORetention(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledJTAGIORetention(void)
 {
-  return ((READ_BIT(PWR->IORETR, PWR_IORETR_JTAGIORETEN) == (PWR_IORETR_JTAGIORETEN)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->IORETR, PWR_IORETR_JTAGIORETEN) == (PWR_IORETR_JTAGIORETEN)) ? 1UL : 0UL);
 }
 /**
   * @}
@@ -1725,7 +1725,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledJTAGIORetention(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_VOS(void)
 {
-  return ((READ_BIT(PWR->VOSSR, PWR_VOSSR_VOSRDY) == (PWR_VOSSR_VOSRDY)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->VOSSR, PWR_VOSSR_VOSRDY) == (PWR_VOSSR_VOSRDY)) ? 1UL : 0UL);
 }
 
 /**
@@ -1735,7 +1735,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_VOS(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_SB(void)
 {
-  return ((READ_BIT(PWR->PMSR, PWR_PMSR_SBF) == (PWR_PMSR_SBF)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMSR, PWR_PMSR_SBF) == (PWR_PMSR_SBF)) ? 1UL : 0UL);
 }
 
 /**
@@ -1745,7 +1745,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_SB(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_STOP(void)
 {
-  return ((READ_BIT(PWR->PMSR, PWR_PMSR_STOPF) == (PWR_PMSR_STOPF)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PMSR, PWR_PMSR_STOPF) == (PWR_PMSR_STOPF)) ? 1UL : 0UL);
 }
 
 /**
@@ -1755,7 +1755,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_STOP(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_PVDO(void)
 {
-  return ((READ_BIT(PWR->VMSR, PWR_VMSR_PVDO) == (PWR_VMSR_PVDO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->VMSR, PWR_VMSR_PVDO) == (PWR_VMSR_PVDO)) ? 1UL : 0UL);
 }
 
 /**
@@ -1765,7 +1765,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_PVDO(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_AVDO(void)
 {
-  return ((READ_BIT(PWR->VMSR, PWR_VMSR_AVDO) == (PWR_VMSR_AVDO)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->VMSR, PWR_VMSR_AVDO) == (PWR_VMSR_AVDO)) ? 1UL : 0UL);
 }
 
 /**
@@ -1776,7 +1776,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_AVDO(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_ACTVOS(void)
 {
-  return ((READ_BIT(PWR->VOSSR, PWR_VOSSR_ACTVOSRDY) == (PWR_VOSSR_ACTVOSRDY)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->VOSSR, PWR_VOSSR_ACTVOSRDY) == (PWR_VOSSR_ACTVOSRDY)) ? 1UL : 0UL);
 }
 
 #if defined (PWR_VMSR_USB33RDY)
@@ -1787,7 +1787,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_ACTVOS(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_VDDUSB(void)
 {
-  return ((READ_BIT(PWR->VMSR, PWR_VMSR_USB33RDY) == (PWR_VMSR_USB33RDY)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->VMSR, PWR_VMSR_USB33RDY) == (PWR_VMSR_USB33RDY)) ? 1UL : 0UL);
 }
 #endif /* PWR_VMSR_USB33RDY */
 
@@ -1798,7 +1798,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_VDDUSB(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_VDDIO2(void)
 {
-  return ((READ_BIT(PWR->VMCR, PWR_VMSR_VDDIO2RDY) == (PWR_VMSR_VDDIO2RDY)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->VMCR, PWR_VMSR_VDDIO2RDY) == (PWR_VMSR_VDDIO2RDY)) ? 1UL : 0UL);
 }
 
 /**
@@ -1808,7 +1808,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_VDDIO2(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_BRR(void)
 {
-  return ((READ_BIT(PWR->BDSR, PWR_BDSR_BRRDY) == (PWR_BDSR_BRRDY)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->BDSR, PWR_BDSR_BRRDY) == (PWR_BDSR_BRRDY)) ? 1UL : 0UL);
 }
 
 /**
@@ -1818,7 +1818,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_BRR(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_VBATL(void)
 {
-  return ((READ_BIT(PWR->BDSR, PWR_BDSR_VBATL) == (PWR_BDSR_VBATL)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->BDSR, PWR_BDSR_VBATL) == (PWR_BDSR_VBATL)) ? 1UL : 0UL);
 }
 
 /**
@@ -1828,7 +1828,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_VBATL(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_VBATH(void)
 {
-  return ((READ_BIT(PWR->BDSR, PWR_BDSR_VBATH) == (PWR_BDSR_VBATH)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->BDSR, PWR_BDSR_VBATH) == (PWR_BDSR_VBATH)) ? 1UL : 0UL);
 }
 
 /**
@@ -1839,7 +1839,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_VBATH(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_TEMPL(void)
 {
-  return ((READ_BIT(PWR->BDSR, PWR_BDSR_TEMPL) == (PWR_BDSR_TEMPL)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->BDSR, PWR_BDSR_TEMPL) == (PWR_BDSR_TEMPL)) ? 1UL : 0UL);
 }
 
 /**
@@ -1850,7 +1850,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_TEMPL(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_TEMPH(void)
 {
-  return ((READ_BIT(PWR->BDSR, PWR_BDSR_TEMPH) == (PWR_BDSR_TEMPH)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->BDSR, PWR_BDSR_TEMPH) == (PWR_BDSR_TEMPH)) ? 1UL : 0UL);
 }
 
 /**
@@ -1860,7 +1860,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_TEMPH(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU1(void)
 {
-  return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF1) == (PWR_WUSR_WUF1)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF1) == (PWR_WUSR_WUF1)) ? 1UL : 0UL);
 }
 
 /**
@@ -1870,7 +1870,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU1(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU2(void)
 {
-  return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF2) == (PWR_WUSR_WUF2)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF2) == (PWR_WUSR_WUF2)) ? 1UL : 0UL);
 }
 
 /**
@@ -1880,7 +1880,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU2(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU3(void)
 {
-  return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF3) == (PWR_WUSR_WUF3)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF3) == (PWR_WUSR_WUF3)) ? 1UL : 0UL);
 }
 
 /**
@@ -1890,7 +1890,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU3(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU4(void)
 {
-  return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF4) == (PWR_WUSR_WUF4)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF4) == (PWR_WUSR_WUF4)) ? 1UL : 0UL);
 }
 
 /**
@@ -1900,7 +1900,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU4(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU5(void)
 {
-  return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF5) == (PWR_WUSR_WUF5)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF5) == (PWR_WUSR_WUF5)) ? 1UL : 0UL);
 }
 
 #if defined (PWR_WUSR_WUF6)
@@ -1911,7 +1911,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU5(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU6(void)
 {
-  return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF6) == (PWR_WUSR_WUF6)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF6) == (PWR_WUSR_WUF6)) ? 1UL : 0UL);
 }
 #endif /* PWR_WUSR_WUF6 */
 
@@ -1923,7 +1923,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU6(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU7(void)
 {
-  return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF7) == (PWR_WUSR_WUF7)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF7) == (PWR_WUSR_WUF7)) ? 1UL : 0UL);
 }
 #endif /* PWR_WUSR_WUF7 */
 
@@ -1935,7 +1935,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU7(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU8(void)
 {
-  return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF8) == (PWR_WUSR_WUF8)) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->WUSR, PWR_WUSR_WUF8) == (PWR_WUSR_WUF8)) ? 1UL : 0UL);
 }
 #endif /* PWR_WUSR_WUF8 */
 
@@ -1946,7 +1946,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsActiveFlag_WU8(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_STOP(void)
 {
-  WRITE_REG(PWR->PMCR, PWR_PMCR_CSSF);
+	WRITE_REG(PWR->PMCR, PWR_PMCR_CSSF);
 }
 
 /**
@@ -1956,7 +1956,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_STOP(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_SB(void)
 {
-  WRITE_REG(PWR->PMCR, PWR_PMCR_CSSF);
+	WRITE_REG(PWR->PMCR, PWR_PMCR_CSSF);
 }
 
 /**
@@ -1966,7 +1966,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_SB(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_WU1(void)
 {
-  WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF1);
+	WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF1);
 }
 
 /**
@@ -1976,7 +1976,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_WU1(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_WU2(void)
 {
-  WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF2);
+	WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF2);
 }
 
 /**
@@ -1986,7 +1986,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_WU2(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_WU3(void)
 {
-  WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF3);
+	WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF3);
 }
 
 /**
@@ -1996,7 +1996,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_WU3(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_WU4(void)
 {
-  WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF4);
+	WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF4);
 }
 
 /**
@@ -2006,7 +2006,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_WU4(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_WU5(void)
 {
-  WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF5);
+	WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF5);
 }
 
 #if defined (PWR_WUSCR_CWUF6)
@@ -2017,7 +2017,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_WU5(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_WU6(void)
 {
-  WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF6);
+	WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF6);
 }
 #endif /* PWR_WUSCR_CWUF6 */
 
@@ -2029,7 +2029,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_WU6(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_WU7(void)
 {
-  WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF7);
+	WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF7);
 }
 #endif /* PWR_WUSCR_CWUF7 */
 
@@ -2041,7 +2041,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_WU7(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_WU8(void)
 {
-  WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF8);
+	WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF8);
 }
 #endif /* PWR_WUSCR_CWUF8 */
 
@@ -2052,7 +2052,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_WU8(void)
   */
 __STATIC_INLINE void LL_PWR_ClearFlag_WU(void)
 {
-  WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF);
+	WRITE_REG(PWR->WUSCR, PWR_WUSCR_CWUF);
 }
 /**
   * @}
@@ -2070,7 +2070,7 @@ __STATIC_INLINE void LL_PWR_ClearFlag_WU(void)
   */
 __STATIC_INLINE void LL_PWR_EnableNSecurePrivilege(void)
 {
-  SET_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_NSPRIV);
+	SET_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_NSPRIV);
 }
 
 /**
@@ -2080,7 +2080,7 @@ __STATIC_INLINE void LL_PWR_EnableNSecurePrivilege(void)
   */
 __STATIC_INLINE void LL_PWR_DisableNSecurePrivilege(void)
 {
-  CLEAR_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_NSPRIV);
+	CLEAR_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_NSPRIV);
 }
 
 /**
@@ -2090,7 +2090,7 @@ __STATIC_INLINE void LL_PWR_DisableNSecurePrivilege(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledNSecurePrivilege(void)
 {
-  return ((READ_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_NSPRIV) == PWR_PRIVCFGR_NSPRIV) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_NSPRIV) == PWR_PRIVCFGR_NSPRIV) ? 1UL : 0UL);
 }
 #else
 /**
@@ -2100,7 +2100,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledNSecurePrivilege(void)
   */
 __STATIC_INLINE void LL_PWR_EnableNSecurePrivilege(void)
 {
-  SET_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_PRIV);
+	SET_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_PRIV);
 }
 
 /**
@@ -2110,7 +2110,7 @@ __STATIC_INLINE void LL_PWR_EnableNSecurePrivilege(void)
   */
 __STATIC_INLINE void LL_PWR_DisableNSecurePrivilege(void)
 {
-  CLEAR_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_PRIV);
+	CLEAR_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_PRIV);
 }
 
 /**
@@ -2120,7 +2120,7 @@ __STATIC_INLINE void LL_PWR_DisableNSecurePrivilege(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledNSecurePrivilege(void)
 {
-  return ((READ_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_PRIV) == PWR_PRIVCFGR_PRIV) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_PRIV) == PWR_PRIVCFGR_PRIV) ? 1UL : 0UL);
 }
 #endif /* RCC_PRIVCFGR_NSPRIV */
 
@@ -2132,7 +2132,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledNSecurePrivilege(void)
   */
 __STATIC_INLINE void LL_PWR_EnableSecurePrivilege(void)
 {
-  SET_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_SPRIV);
+	SET_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_SPRIV);
 }
 
 /**
@@ -2142,7 +2142,7 @@ __STATIC_INLINE void LL_PWR_EnableSecurePrivilege(void)
   */
 __STATIC_INLINE void LL_PWR_DisableSecurePrivilege(void)
 {
-  CLEAR_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_SPRIV);
+	CLEAR_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_SPRIV);
 }
 #endif /* defined (__ARM_FEATURE_CMSE) &&  (__ARM_FEATURE_CMSE == 3U) */
 
@@ -2154,7 +2154,7 @@ __STATIC_INLINE void LL_PWR_DisableSecurePrivilege(void)
   */
 __STATIC_INLINE uint32_t LL_PWR_IsEnabledSecurePrivilege(void)
 {
-  return ((READ_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_SPRIV) == PWR_PRIVCFGR_SPRIV) ? 1UL : 0UL);
+	return ((READ_BIT(PWR->PRIVCFGR, PWR_PRIVCFGR_SPRIV) == PWR_PRIVCFGR_SPRIV) ? 1UL : 0UL);
 }
 #endif /* PWR_PRIVCFGR_SPRIV */
 
@@ -2194,7 +2194,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledSecurePrivilege(void)
   */
 __STATIC_INLINE void LL_PWR_ConfigSecure(uint32_t SecureConfig)
 {
-  WRITE_REG(PWR->SECCFGR, SecureConfig);
+	WRITE_REG(PWR->SECCFGR, SecureConfig);
 }
 
 /**
@@ -2230,7 +2230,7 @@ __STATIC_INLINE void LL_PWR_ConfigSecure(uint32_t SecureConfig)
   */
 __STATIC_INLINE uint32_t LL_PWR_GetConfigSecure(void)
 {
-  return (READ_REG(PWR->SECCFGR));
+	return (READ_REG(PWR->SECCFGR));
 }
 #endif /* defined (__ARM_FEATURE_CMSE) &&  (__ARM_FEATURE_CMSE == 3U) */
 /**

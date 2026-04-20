@@ -194,216 +194,200 @@ extern "C" {
   * @{
   */
 
-typedef  struct  usb_setup_req
-{
-  uint8_t   bmRequest;
-  uint8_t   bRequest;
-  uint16_t  wValue;
-  uint16_t  wIndex;
-  uint16_t  wLength;
+typedef  struct  usb_setup_req {
+	uint8_t   bmRequest;
+	uint8_t   bRequest;
+	uint16_t  wValue;
+	uint16_t  wIndex;
+	uint16_t  wLength;
 } USBD_SetupReqTypedef;
 
-typedef struct
-{
-  uint8_t   bLength;
-  uint8_t   bDescriptorType;
-  uint16_t  wTotalLength;
-  uint8_t   bNumInterfaces;
-  uint8_t   bConfigurationValue;
-  uint8_t   iConfiguration;
-  uint8_t   bmAttributes;
-  uint8_t   bMaxPower;
+typedef struct {
+	uint8_t   bLength;
+	uint8_t   bDescriptorType;
+	uint16_t  wTotalLength;
+	uint8_t   bNumInterfaces;
+	uint8_t   bConfigurationValue;
+	uint8_t   iConfiguration;
+	uint8_t   bmAttributes;
+	uint8_t   bMaxPower;
 } __PACKED USBD_ConfigDescTypeDef;
 
-typedef struct
-{
-  uint8_t   bLength;
-  uint8_t   bDescriptorType;
-  uint16_t  wTotalLength;
-  uint8_t   bNumDeviceCaps;
+typedef struct {
+	uint8_t   bLength;
+	uint8_t   bDescriptorType;
+	uint16_t  wTotalLength;
+	uint8_t   bNumDeviceCaps;
 } USBD_BosDescTypeDef;
 
-typedef struct
-{
-  uint8_t   bLength;
-  uint8_t   bDescriptorType;
-  uint8_t   bEndpointAddress;
-  uint8_t   bmAttributes;
-  uint16_t  wMaxPacketSize;
-  uint8_t   bInterval;
+typedef struct {
+	uint8_t   bLength;
+	uint8_t   bDescriptorType;
+	uint8_t   bEndpointAddress;
+	uint8_t   bmAttributes;
+	uint16_t  wMaxPacketSize;
+	uint8_t   bInterval;
 } __PACKED USBD_EpDescTypeDef;
 
-typedef  struct
-{
-  uint8_t  bLength;
-  uint8_t  bDescriptorType;
-  uint8_t  bDescriptorSubType;
+typedef  struct {
+	uint8_t  bLength;
+	uint8_t  bDescriptorType;
+	uint8_t  bDescriptorSubType;
 } USBD_DescHeaderTypeDef;
 
 struct _USBD_HandleTypeDef;
 
-typedef struct _Device_cb
-{
-  uint8_t (*Init)(struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx);
-  uint8_t (*DeInit)(struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx);
-  /* Control Endpoints*/
-  uint8_t (*Setup)(struct _USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef  *req);
-  uint8_t (*EP0_TxSent)(struct _USBD_HandleTypeDef *pdev);
-  uint8_t (*EP0_RxReady)(struct _USBD_HandleTypeDef *pdev);
-  /* Class Specific Endpoints*/
-  uint8_t (*DataIn)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
-  uint8_t (*DataOut)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
-  uint8_t (*SOF)(struct _USBD_HandleTypeDef *pdev);
-  uint8_t (*IsoINIncomplete)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
-  uint8_t (*IsoOUTIncomplete)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+typedef struct _Device_cb {
+	uint8_t (*Init)(struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx);
+	uint8_t (*DeInit)(struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx);
+	/* Control Endpoints*/
+	uint8_t (*Setup)(struct _USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef  *req);
+	uint8_t (*EP0_TxSent)(struct _USBD_HandleTypeDef *pdev);
+	uint8_t (*EP0_RxReady)(struct _USBD_HandleTypeDef *pdev);
+	/* Class Specific Endpoints*/
+	uint8_t (*DataIn)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+	uint8_t (*DataOut)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+	uint8_t (*SOF)(struct _USBD_HandleTypeDef *pdev);
+	uint8_t (*IsoINIncomplete)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+	uint8_t (*IsoOUTIncomplete)(struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
 
-  uint8_t  *(*GetHSConfigDescriptor)(uint16_t *length);
-  uint8_t  *(*GetFSConfigDescriptor)(uint16_t *length);
-  uint8_t  *(*GetOtherSpeedConfigDescriptor)(uint16_t *length);
-  uint8_t  *(*GetDeviceQualifierDescriptor)(uint16_t *length);
+	uint8_t  *(*GetHSConfigDescriptor)(uint16_t *length);
+	uint8_t  *(*GetFSConfigDescriptor)(uint16_t *length);
+	uint8_t  *(*GetOtherSpeedConfigDescriptor)(uint16_t *length);
+	uint8_t  *(*GetDeviceQualifierDescriptor)(uint16_t *length);
 #if (USBD_SUPPORT_USER_STRING_DESC == 1U)
-  uint8_t  *(*GetUsrStrDescriptor)(struct _USBD_HandleTypeDef *pdev, uint8_t index,  uint16_t *length);
+	uint8_t  *(*GetUsrStrDescriptor)(struct _USBD_HandleTypeDef *pdev, uint8_t index,  uint16_t *length);
 #endif /* USBD_SUPPORT_USER_STRING_DESC  */
 
 } USBD_ClassTypeDef;
 
 /* Following USB Device Speed */
-typedef enum
-{
-  USBD_SPEED_HIGH  = 0U,
-  USBD_SPEED_FULL  = 1U,
-  USBD_SPEED_LOW   = 2U,
+typedef enum {
+	USBD_SPEED_HIGH  = 0U,
+	USBD_SPEED_FULL  = 1U,
+	USBD_SPEED_LOW   = 2U,
 } USBD_SpeedTypeDef;
 
 /* Following USB Device status */
-typedef enum
-{
-  USBD_OK = 0U,
-  USBD_BUSY,
-  USBD_EMEM,
-  USBD_FAIL,
+typedef enum {
+	USBD_OK = 0U,
+	USBD_BUSY,
+	USBD_EMEM,
+	USBD_FAIL,
 } USBD_StatusTypeDef;
 
 /* USB Device descriptors structure */
-typedef struct
-{
-  uint8_t *(*GetDeviceDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
-  uint8_t *(*GetLangIDStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
-  uint8_t *(*GetManufacturerStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
-  uint8_t *(*GetProductStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
-  uint8_t *(*GetSerialStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
-  uint8_t *(*GetConfigurationStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
-  uint8_t *(*GetInterfaceStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+typedef struct {
+	uint8_t *(*GetDeviceDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+	uint8_t *(*GetLangIDStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+	uint8_t *(*GetManufacturerStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+	uint8_t *(*GetProductStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+	uint8_t *(*GetSerialStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+	uint8_t *(*GetConfigurationStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+	uint8_t *(*GetInterfaceStrDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
 #if (USBD_CLASS_USER_STRING_DESC == 1)
-  uint8_t *(*GetUserStrDescriptor)(USBD_SpeedTypeDef speed, uint8_t idx, uint16_t *length);
+	uint8_t *(*GetUserStrDescriptor)(USBD_SpeedTypeDef speed, uint8_t idx, uint16_t *length);
 #endif /* USBD_CLASS_USER_STRING_DESC */
 #if ((USBD_LPM_ENABLED == 1U) || (USBD_CLASS_BOS_ENABLED == 1))
-  uint8_t *(*GetBOSDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
+	uint8_t *(*GetBOSDescriptor)(USBD_SpeedTypeDef speed, uint16_t *length);
 #endif /* (USBD_LPM_ENABLED == 1U) || (USBD_CLASS_BOS_ENABLED == 1) */
 } USBD_DescriptorsTypeDef;
 
 /* USB Device handle structure */
-typedef struct
-{
-  uint32_t status;
-  uint32_t total_length;
-  uint32_t rem_length;
-  uint32_t maxpacket;
-  uint16_t is_used;
-  uint16_t bInterval;
+typedef struct {
+	uint32_t status;
+	uint32_t total_length;
+	uint32_t rem_length;
+	uint32_t maxpacket;
+	uint16_t is_used;
+	uint16_t bInterval;
 } USBD_EndpointTypeDef;
 
 #ifdef USE_USBD_COMPOSITE
-typedef enum
-{
-  CLASS_TYPE_NONE    = 0,
-  CLASS_TYPE_HID     = 1,
-  CLASS_TYPE_CDC     = 2,
-  CLASS_TYPE_MSC     = 3,
-  CLASS_TYPE_DFU     = 4,
-  CLASS_TYPE_CHID    = 5,
-  CLASS_TYPE_AUDIO   = 6,
-  CLASS_TYPE_ECM     = 7,
-  CLASS_TYPE_RNDIS   = 8,
-  CLASS_TYPE_MTP     = 9,
-  CLASS_TYPE_VIDEO   = 10,
-  CLASS_TYPE_PRINTER = 11,
-  CLASS_TYPE_CCID    = 12,
+typedef enum {
+	CLASS_TYPE_NONE    = 0,
+	CLASS_TYPE_HID     = 1,
+	CLASS_TYPE_CDC     = 2,
+	CLASS_TYPE_MSC     = 3,
+	CLASS_TYPE_DFU     = 4,
+	CLASS_TYPE_CHID    = 5,
+	CLASS_TYPE_AUDIO   = 6,
+	CLASS_TYPE_ECM     = 7,
+	CLASS_TYPE_RNDIS   = 8,
+	CLASS_TYPE_MTP     = 9,
+	CLASS_TYPE_VIDEO   = 10,
+	CLASS_TYPE_PRINTER = 11,
+	CLASS_TYPE_CCID    = 12,
 } USBD_CompositeClassTypeDef;
 
 
 /* USB Device handle structure */
-typedef struct
-{
-  uint8_t                     add;
-  uint8_t                     type;
-  uint8_t                     size;
-  uint8_t                     is_used;
+typedef struct {
+	uint8_t                     add;
+	uint8_t                     type;
+	uint8_t                     size;
+	uint8_t                     is_used;
 } USBD_EPTypeDef;
 
 /* USB Device handle structure */
-typedef struct
-{
-  USBD_CompositeClassTypeDef   ClassType;
-  uint32_t                     ClassId;
-  uint32_t                     Active;
-  uint32_t                     NumEps;
-  USBD_EPTypeDef               Eps[USBD_MAX_CLASS_ENDPOINTS];
-  uint8_t                      *EpAdd;
-  uint32_t                     NumIf;
-  uint8_t                      Ifs[USBD_MAX_CLASS_INTERFACES];
-  uint32_t                     CurrPcktSze;
+typedef struct {
+	USBD_CompositeClassTypeDef   ClassType;
+	uint32_t                     ClassId;
+	uint32_t                     Active;
+	uint32_t                     NumEps;
+	USBD_EPTypeDef               Eps[USBD_MAX_CLASS_ENDPOINTS];
+	uint8_t                      *EpAdd;
+	uint32_t                     NumIf;
+	uint8_t                      Ifs[USBD_MAX_CLASS_INTERFACES];
+	uint32_t                     CurrPcktSze;
 } USBD_CompositeElementTypeDef;
 #endif /* USE_USBD_COMPOSITE */
 
 /* USB Device handle structure */
-typedef struct _USBD_HandleTypeDef
-{
-  uint8_t                 id;
-  uint32_t                dev_config;
-  uint32_t                dev_default_config;
-  uint32_t                dev_config_status;
-  USBD_SpeedTypeDef       dev_speed;
-  USBD_EndpointTypeDef    ep_in[16];
-  USBD_EndpointTypeDef    ep_out[16];
-  __IO uint32_t           ep0_state;
-  uint32_t                ep0_data_len;
-  __IO uint8_t            dev_state;
-  __IO uint8_t            dev_old_state;
-  uint8_t                 dev_address;
-  uint8_t                 dev_connection_status;
-  uint8_t                 dev_test_mode;
-  uint32_t                dev_remote_wakeup;
-  uint8_t                 ConfIdx;
+typedef struct _USBD_HandleTypeDef {
+	uint8_t                 id;
+	uint32_t                dev_config;
+	uint32_t                dev_default_config;
+	uint32_t                dev_config_status;
+	USBD_SpeedTypeDef       dev_speed;
+	USBD_EndpointTypeDef    ep_in[16];
+	USBD_EndpointTypeDef    ep_out[16];
+	__IO uint32_t           ep0_state;
+	uint32_t                ep0_data_len;
+	__IO uint8_t            dev_state;
+	__IO uint8_t            dev_old_state;
+	uint8_t                 dev_address;
+	uint8_t                 dev_connection_status;
+	uint8_t                 dev_test_mode;
+	uint32_t                dev_remote_wakeup;
+	uint8_t                 ConfIdx;
 
-  USBD_SetupReqTypedef    request;
-  USBD_DescriptorsTypeDef *pDesc;
-  USBD_ClassTypeDef       *pClass[USBD_MAX_SUPPORTED_CLASS];
-  void                    *pClassData;
-  void                    *pClassDataCmsit[USBD_MAX_SUPPORTED_CLASS];
-  void                    *pUserData[USBD_MAX_SUPPORTED_CLASS];
-  void                    *pData;
-  void                    *pBosDesc;
-  void                    *pConfDesc;
-  uint32_t                classId;
-  uint32_t                NumClasses;
+	USBD_SetupReqTypedef    request;
+	USBD_DescriptorsTypeDef *pDesc;
+	USBD_ClassTypeDef       *pClass[USBD_MAX_SUPPORTED_CLASS];
+	void                    *pClassData;
+	void                    *pClassDataCmsit[USBD_MAX_SUPPORTED_CLASS];
+	void                    *pUserData[USBD_MAX_SUPPORTED_CLASS];
+	void                    *pData;
+	void                    *pBosDesc;
+	void                    *pConfDesc;
+	uint32_t                classId;
+	uint32_t                NumClasses;
 #ifdef USE_USBD_COMPOSITE
-  USBD_CompositeElementTypeDef tclasslist[USBD_MAX_SUPPORTED_CLASS];
+	USBD_CompositeElementTypeDef tclasslist[USBD_MAX_SUPPORTED_CLASS];
 #endif /* USE_USBD_COMPOSITE */
 } USBD_HandleTypeDef;
 
 /* USB Device endpoint direction */
-typedef enum
-{
-  OUT   = 0x00,
-  IN    = 0x80,
+typedef enum {
+	OUT   = 0x00,
+	IN    = 0x80,
 } USBD_EPDirectionTypeDef;
 
-typedef enum
-{
-  NETWORK_CONNECTION = 0x00,
-  RESPONSE_AVAILABLE = 0x01,
-  CONNECTION_SPEED_CHANGE = 0x2A
+typedef enum {
+	NETWORK_CONNECTION = 0x00,
+	RESPONSE_AVAILABLE = 0x01,
+	CONNECTION_SPEED_CHANGE = 0x2A
 } USBD_CDC_NotifCodeTypeDef;
 /**
   * @}
@@ -416,18 +400,18 @@ typedef enum
   */
 __STATIC_INLINE uint16_t SWAPBYTE(uint8_t *addr)
 {
-  uint16_t _SwapVal;
-  uint16_t _Byte1;
-  uint16_t _Byte2;
-  uint8_t *_pbuff = addr;
+	uint16_t _SwapVal;
+	uint16_t _Byte1;
+	uint16_t _Byte2;
+	uint8_t *_pbuff = addr;
 
-  _Byte1 = *(uint8_t *)_pbuff;
-  _pbuff++;
-  _Byte2 = *(uint8_t *)_pbuff;
+	_Byte1 = *(uint8_t *)_pbuff;
+	_pbuff++;
+	_Byte2 = *(uint8_t *)_pbuff;
 
-  _SwapVal = (_Byte2 << 8) | _Byte1;
+	_SwapVal = (_Byte2 << 8) | _Byte1;
 
-  return _SwapVal;
+	return _SwapVal;
 }
 
 #ifndef LOBYTE

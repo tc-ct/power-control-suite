@@ -57,73 +57,75 @@
 #include "arm_helium_utils.h"
 #include "arm_vec_math.h"
 
-float32_t arm_canberra_distance_f32(const float32_t *pA,const float32_t *pB, uint32_t blockSize)
+float32_t arm_canberra_distance_f32(const float32_t *pA, const float32_t *pB, uint32_t blockSize)
 {
-    float32_t       accum = 0.0f;
-    uint32_t         blkCnt;
-    f32x4_t         a, b, c, accumV;
+	float32_t       accum = 0.0f;
+	uint32_t         blkCnt;
+	f32x4_t         a, b, c, accumV;
 
-    accumV = vdupq_n_f32(0.0f);
+	accumV = vdupq_n_f32(0.0f);
 
-    blkCnt = blockSize >> 2;
-    while (blkCnt > 0) {
-        a = vld1q(pA);
-        b = vld1q(pB);
+	blkCnt = blockSize >> 2;
 
-        c = vabdq(a, b);
+	while (blkCnt > 0) {
+		a = vld1q(pA);
+		b = vld1q(pB);
 
-        a = vabsq(a);
-        b = vabsq(b);
-        a = vaddq(a, b);
+		c = vabdq(a, b);
 
-        /* 
-         * May divide by zero when a and b have both the same lane at zero.
-         */
-        a = vrecip_medprec_f32(a);
+		a = vabsq(a);
+		b = vabsq(b);
+		a = vaddq(a, b);
 
-        /*
-         * Force result of a division by 0 to 0. It the behavior of the
-         * sklearn canberra function.
-         */
-        a = vdupq_m_n_f32(a, 0.0f, vcmpeqq(a, 0.0f));
-        c = vmulq(c, a);
-        accumV = vaddq(accumV, c);
+		/*
+		 * May divide by zero when a and b have both the same lane at zero.
+		 */
+		a = vrecip_medprec_f32(a);
 
-        pA += 4;
-        pB += 4;
-        blkCnt--;
-    }
+		/*
+		 * Force result of a division by 0 to 0. It the behavior of the
+		 * sklearn canberra function.
+		 */
+		a = vdupq_m_n_f32(a, 0.0f, vcmpeqq(a, 0.0f));
+		c = vmulq(c, a);
+		accumV = vaddq(accumV, c);
 
-    blkCnt = blockSize & 3;
-    if (blkCnt > 0U) {
-        mve_pred16_t    p0 = vctp32q(blkCnt);
+		pA += 4;
+		pB += 4;
+		blkCnt--;
+	}
 
-        a = vldrwq_z_f32(pA, p0);
-        b = vldrwq_z_f32(pB, p0);
+	blkCnt = blockSize & 3;
 
-        c = vabdq(a, b);
+	if (blkCnt > 0U) {
+		mve_pred16_t    p0 = vctp32q(blkCnt);
 
-        a = vabsq(a);
-        b = vabsq(b);
-        a = vaddq(a, b);
+		a = vldrwq_z_f32(pA, p0);
+		b = vldrwq_z_f32(pB, p0);
 
-        /* 
-         * May divide by zero when a and b have both the same lane at zero.
-         */
-        a = vrecip_medprec_f32(a);
+		c = vabdq(a, b);
 
-        /*
-         * Force result of a division by 0 to 0. It the behavior of the
-         * sklearn canberra function.
-         */
-        a = vdupq_m_n_f32(a, 0.0f, vcmpeqq(a, 0.0f));
-        c = vmulq(c, a);
-        accumV = vaddq_m(accumV, accumV, c, p0);
-    }
+		a = vabsq(a);
+		b = vabsq(b);
+		a = vaddq(a, b);
 
-    accum = vecAddAcrossF32Mve(accumV);
+		/*
+		 * May divide by zero when a and b have both the same lane at zero.
+		 */
+		a = vrecip_medprec_f32(a);
 
-    return (accum);
+		/*
+		 * Force result of a division by 0 to 0. It the behavior of the
+		 * sklearn canberra function.
+		 */
+		a = vdupq_m_n_f32(a, 0.0f, vcmpeqq(a, 0.0f));
+		c = vmulq(c, a);
+		accumV = vaddq_m(accumV, accumV, c, p0);
+	}
+
+	accum = vecAddAcrossF32Mve(accumV);
+
+	return (accum);
 }
 
 #else
@@ -131,87 +133,89 @@ float32_t arm_canberra_distance_f32(const float32_t *pA,const float32_t *pB, uin
 
 #include "NEMath.h"
 
-float32_t arm_canberra_distance_f32(const float32_t *pA,const float32_t *pB, uint32_t blockSize)
+float32_t arm_canberra_distance_f32(const float32_t *pA, const float32_t *pB, uint32_t blockSize)
 {
-   float32_t accum=0.0f, tmpA, tmpB,diff,sum;
-   uint32_t blkCnt;
-   float32x4_t a,b,c,accumV;
-   float32x2_t accumV2;
-   uint32x4_t   isZeroV;
-   float32x4_t zeroV = vdupq_n_f32(0.0f);
+	float32_t accum = 0.0f, tmpA, tmpB, diff, sum;
+	uint32_t blkCnt;
+	float32x4_t a, b, c, accumV;
+	float32x2_t accumV2;
+	uint32x4_t   isZeroV;
+	float32x4_t zeroV = vdupq_n_f32(0.0f);
 
-   accumV = vdupq_n_f32(0.0f);
+	accumV = vdupq_n_f32(0.0f);
 
-   blkCnt = blockSize >> 2;
-   while(blkCnt > 0)
-   {
-        a = vld1q_f32(pA);
-        b = vld1q_f32(pB);
+	blkCnt = blockSize >> 2;
 
-        c = vabdq_f32(a,b);
+	while (blkCnt > 0) {
+		a = vld1q_f32(pA);
+		b = vld1q_f32(pB);
 
-        a = vabsq_f32(a);
-        b = vabsq_f32(b);
-        a = vaddq_f32(a,b);
-        isZeroV = vceqq_f32(a,zeroV);
+		c = vabdq_f32(a, b);
 
-        /* 
-         * May divide by zero when a and b have both the same lane at zero.
-         */
-        a = vinvq_f32(a);
-        
-        /*
-         * Force result of a division by 0 to 0. It the behavior of the
-         * sklearn canberra function.
-         */
-        a = vreinterpretq_f32_s32(vbicq_s32(vreinterpretq_s32_f32(a),vreinterpretq_s32_u32(isZeroV)));
-        c = vmulq_f32(c,a);
-        accumV = vaddq_f32(accumV,c);
+		a = vabsq_f32(a);
+		b = vabsq_f32(b);
+		a = vaddq_f32(a, b);
+		isZeroV = vceqq_f32(a, zeroV);
 
-        pA += 4;
-        pB += 4;
-        blkCnt --;
-   }
-   accumV2 = vpadd_f32(vget_low_f32(accumV),vget_high_f32(accumV));
-   accum = vget_lane_f32(accumV2, 0) + vget_lane_f32(accumV2, 1);
+		/*
+		 * May divide by zero when a and b have both the same lane at zero.
+		 */
+		a = vinvq_f32(a);
+
+		/*
+		 * Force result of a division by 0 to 0. It the behavior of the
+		 * sklearn canberra function.
+		 */
+		a = vreinterpretq_f32_s32(vbicq_s32(vreinterpretq_s32_f32(a), vreinterpretq_s32_u32(isZeroV)));
+		c = vmulq_f32(c, a);
+		accumV = vaddq_f32(accumV, c);
+
+		pA += 4;
+		pB += 4;
+		blkCnt --;
+	}
+
+	accumV2 = vpadd_f32(vget_low_f32(accumV), vget_high_f32(accumV));
+	accum = vget_lane_f32(accumV2, 0) + vget_lane_f32(accumV2, 1);
 
 
-   blkCnt = blockSize & 3;
-   while(blkCnt > 0)
-   {
-      tmpA = *pA++;
-      tmpB = *pB++;
+	blkCnt = blockSize & 3;
 
-      diff = fabsf(tmpA - tmpB);
-      sum = fabsf(tmpA) + fabsf(tmpB);
-      if ((tmpA != 0.0f) || (tmpB != 0.0f))
-      {
-         accum += (diff / sum);
-      }
-      blkCnt --;
-   }
-   return(accum);
+	while (blkCnt > 0) {
+		tmpA = *pA++;
+		tmpB = *pB++;
+
+		diff = fabsf(tmpA - tmpB);
+		sum = fabsf(tmpA) + fabsf(tmpB);
+
+		if ((tmpA != 0.0f) || (tmpB != 0.0f))
+			accum += (diff / sum);
+
+		blkCnt --;
+	}
+
+	return (accum);
 }
 
 #else
-float32_t arm_canberra_distance_f32(const float32_t *pA,const float32_t *pB, uint32_t blockSize)
+float32_t arm_canberra_distance_f32(const float32_t *pA, const float32_t *pB, uint32_t blockSize)
 {
-   float32_t accum=0.0f, tmpA, tmpB,diff,sum;
+	float32_t accum = 0.0f, tmpA, tmpB, diff, sum;
 
-   while(blockSize > 0)
-   {
-      tmpA = *pA++;
-      tmpB = *pB++;
+	while (blockSize > 0) {
+		tmpA = *pA++;
+		tmpB = *pB++;
 
-      diff = fabsf(tmpA - tmpB);
-      sum = fabsf(tmpA) + fabsf(tmpB);
-      if ((tmpA != 0.0f) || (tmpB != 0.0f))
-      {
-         accum += (diff / sum);
-      }
-      blockSize --;
-   }
-   return(accum);
+		diff = fabsf(tmpA - tmpB);
+		sum = fabsf(tmpA) + fabsf(tmpB);
+
+		if ((tmpA != 0.0f) || (tmpB != 0.0f))
+			accum += (diff / sum);
+
+		blockSize --;
+	}
+
+	return (accum);
 }
 #endif
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */

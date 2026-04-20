@@ -47,80 +47,78 @@
  */
 
 void arm_or_u32(
-    const uint32_t * pSrcA,
-    const uint32_t * pSrcB,
-          uint32_t * pDst,
-          uint32_t blockSize)
+	const uint32_t *pSrcA,
+	const uint32_t *pSrcB,
+	uint32_t *pDst,
+	uint32_t blockSize)
 {
-    uint32_t blkCnt;      /* Loop counter */
+	uint32_t blkCnt;      /* Loop counter */
 
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
-    uint32x4_t vecSrcA, vecSrcB;
+	uint32x4_t vecSrcA, vecSrcB;
 
-    /* Compute 4 outputs at a time */
-    blkCnt = blockSize >> 2;
+	/* Compute 4 outputs at a time */
+	blkCnt = blockSize >> 2;
 
-    while (blkCnt > 0U)
-    {
-        vecSrcA = vld1q(pSrcA);
-        vecSrcB = vld1q(pSrcB);
+	while (blkCnt > 0U) {
+		vecSrcA = vld1q(pSrcA);
+		vecSrcB = vld1q(pSrcB);
 
-        vst1q(pDst, vorrq_u32(vecSrcA, vecSrcB) );
+		vst1q(pDst, vorrq_u32(vecSrcA, vecSrcB) );
 
-        pSrcA += 4;
-        pSrcB += 4;
-        pDst  += 4;
+		pSrcA += 4;
+		pSrcB += 4;
+		pDst  += 4;
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 
-    /* Tail */
-    blkCnt = blockSize & 3;
+	/* Tail */
+	blkCnt = blockSize & 3;
 
-    if (blkCnt > 0U)
-    {
-        mve_pred16_t p0 = vctp32q(blkCnt);
-        vecSrcA = vld1q(pSrcA);
-        vecSrcB = vld1q(pSrcB);
-        vstrwq_p(pDst, vorrq_u32(vecSrcA, vecSrcB), p0);
-    }
+	if (blkCnt > 0U) {
+		mve_pred16_t p0 = vctp32q(blkCnt);
+		vecSrcA = vld1q(pSrcA);
+		vecSrcB = vld1q(pSrcB);
+		vstrwq_p(pDst, vorrq_u32(vecSrcA, vecSrcB), p0);
+	}
+
 #else
 #if defined(ARM_MATH_NEON) && !defined(ARM_MATH_AUTOVECTORIZE)
-    uint32x4_t vecA, vecB;
+	uint32x4_t vecA, vecB;
 
-    /* Compute 4 outputs at a time */
-    blkCnt = blockSize >> 2U;
+	/* Compute 4 outputs at a time */
+	blkCnt = blockSize >> 2U;
 
-    while (blkCnt > 0U)
-    {
-        vecA = vld1q_u32(pSrcA);
-        vecB = vld1q_u32(pSrcB);
+	while (blkCnt > 0U) {
+		vecA = vld1q_u32(pSrcA);
+		vecB = vld1q_u32(pSrcB);
 
-        vst1q_u32(pDst, vorrq_u32(vecA, vecB) );
+		vst1q_u32(pDst, vorrq_u32(vecA, vecB) );
 
-        pSrcA += 4;
-        pSrcB += 4;
-        pDst  += 4;
+		pSrcA += 4;
+		pSrcB += 4;
+		pDst  += 4;
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 
-    /* Tail */
-    blkCnt = blockSize & 3;
+	/* Tail */
+	blkCnt = blockSize & 3;
 #else
-    /* Initialize blkCnt with number of samples */
-    blkCnt = blockSize;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = blockSize;
 #endif
 
-    while (blkCnt > 0U)
-    {
-        *pDst++ = (*pSrcA++)|(*pSrcB++);
+	while (blkCnt > 0U) {
+		*pDst++ = (*pSrcA++) | (*pSrcB++);
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
+
 #endif /* if defined(ARM_MATH_MVEI) */
 }
 /**

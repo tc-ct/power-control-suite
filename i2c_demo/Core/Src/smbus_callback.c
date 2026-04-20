@@ -32,16 +32,19 @@ volatile uint8_t smbus_tx_complete = 0;
 volatile uint8_t smbus_rx_complete = 0;
 volatile uint8_t smbus_error = 0;
 
-void HAL_SMBUS_MasterTxCpltCallback(SMBUS_HandleTypeDef *hsmbus) {
-    smbus_tx_complete = 1;
+void HAL_SMBUS_MasterTxCpltCallback(SMBUS_HandleTypeDef *hsmbus)
+{
+	smbus_tx_complete = 1;
 }
 
-void HAL_SMBUS_MasterRxCpltCallback(SMBUS_HandleTypeDef *hsmbus) {
-    smbus_rx_complete = 1;
+void HAL_SMBUS_MasterRxCpltCallback(SMBUS_HandleTypeDef *hsmbus)
+{
+	smbus_rx_complete = 1;
 }
 
-void HAL_SMBUS_ErrorCallback(SMBUS_HandleTypeDef *hsmbus) {
-    smbus_error = 1;
-    smbus_tx_complete = 1;   /* 避免死等 */
-    smbus_rx_complete = 1;
+void HAL_SMBUS_ErrorCallback(SMBUS_HandleTypeDef *hsmbus)
+{
+	smbus_error = 1;
+	smbus_tx_complete = 1;   /* 避免死等 */
+	smbus_rx_complete = 1;
 }

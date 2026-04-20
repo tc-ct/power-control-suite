@@ -43,21 +43,20 @@ extern "C" {
 /** @defgroup CORTEX_MPU_Region_Initialization_Structure_definition MPU Region Initialization Structure Definition
   * @{
   */
-typedef struct
-{
-  uint8_t                Enable;            /*!< Specifies the status of the region.
+typedef struct {
+	uint8_t                Enable;            /*!< Specifies the status of the region.
                                                  This parameter can be a value of @ref CORTEX_MPU_Region_Enable       */
-  uint8_t                Number;            /*!< Specifies the index of the region to protect.
+	uint8_t                Number;            /*!< Specifies the index of the region to protect.
                                                  This parameter can be a value of @ref CORTEX_MPU_Region_Number       */
-  uint32_t               BaseAddress;       /*!< Specifies the base address of the region to protect.                 */
-  uint32_t               LimitAddress;      /*!< Specifies the limit address of the region to protect.                */
-  uint8_t                AttributesIndex;   /*!< Specifies the memory attributes index.
+	uint32_t               BaseAddress;       /*!< Specifies the base address of the region to protect.                 */
+	uint32_t               LimitAddress;      /*!< Specifies the limit address of the region to protect.                */
+	uint8_t                AttributesIndex;   /*!< Specifies the memory attributes index.
                                                  This parameter can be a value of @ref CORTEX_MPU_Attributes_Number   */
-  uint8_t                AccessPermission;  /*!< Specifies the region access permission type. This parameter
+	uint8_t                AccessPermission;  /*!< Specifies the region access permission type. This parameter
                                                  can be a value of @ref CORTEX_MPU_Region_Permission_Attributes       */
-  uint8_t                DisableExec;       /*!< Specifies the instruction access status.
+	uint8_t                DisableExec;       /*!< Specifies the instruction access status.
                                                  This parameter can be a value of @ref CORTEX_MPU_Instruction_Access  */
-  uint8_t                IsShareable;       /*!< Specifies the shareability status of the protected region.
+	uint8_t                IsShareable;       /*!< Specifies the shareability status of the protected region.
                                                  This parameter can be a value of @ref CORTEX_MPU_Access_Shareable    */
 } MPU_Region_InitTypeDef;
 /**
@@ -68,12 +67,11 @@ typedef struct
   *           Initialization Structure Definition
   * @{
   */
-typedef struct
-{
-  uint8_t                Number;            /*!< Specifies the number of the memory attributes to configure.
+typedef struct {
+	uint8_t                Number;            /*!< Specifies the number of the memory attributes to configure.
                                                  This parameter can be a value of @ref CORTEX_MPU_Attributes_Number   */
 
-  uint8_t                Attributes;        /*!< Specifies the memory attributes value. Attributes This parameter
+	uint8_t                Attributes;        /*!< Specifies the memory attributes value. Attributes This parameter
                                                  can be a combination of @ref CORTEX_MPU_Attributes                   */
 
 } MPU_Attributes_InitTypeDef;
@@ -270,7 +268,7 @@ void HAL_NVIC_DisableIRQ(IRQn_Type IRQn);
 void HAL_NVIC_SystemReset(void);
 uint32_t HAL_NVIC_GetPriorityGrouping(void);
 void HAL_NVIC_GetPriority(IRQn_Type IRQn, uint32_t PriorityGroup, uint32_t *const pPreemptPriority,
-                          uint32_t *const pSubPriority);
+			  uint32_t *const pSubPriority);
 uint32_t HAL_NVIC_GetPendingIRQ(IRQn_Type IRQn);
 void HAL_NVIC_SetPendingIRQ(IRQn_Type IRQn);
 void HAL_NVIC_ClearPendingIRQ(IRQn_Type IRQn);

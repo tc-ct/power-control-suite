@@ -57,63 +57,61 @@
 
 void arm_q7_to_q15_no_shift(const q7_t *pSrc, q15_t *pDst, uint32_t blockSize)
 {
-    const q7_t *pIn = pSrc;
-    uint32_t blkCnt;
+	const q7_t *pIn = pSrc;
+	uint32_t blkCnt;
 
 #if defined(ARM_MATH_DSP)
-    q31_t in;
-    q31_t in1, in2;
-    q31_t out1, out2;
+	q31_t in;
+	q31_t in1, in2;
+	q31_t out1, out2;
 
-    /*loop Unrolling */
-    blkCnt = blockSize >> 2u;
+	/*loop Unrolling */
+	blkCnt = blockSize >> 2u;
 
-    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time. */
-    while (blkCnt > 0u)
-    {
-        in = arm_nn_read_q7x4_ia(&pIn);
+	/* First part of the processing with loop unrolling.  Compute 4 outputs at a time. */
+	while (blkCnt > 0u) {
+		in = arm_nn_read_q7x4_ia(&pIn);
 
-        /* rotatate in by 8 and extend two q7_t values to q15_t values */
-        in1 = __SXTB16(__ROR((uint32_t)in, 8));
+		/* rotatate in by 8 and extend two q7_t values to q15_t values */
+		in1 = __SXTB16(__ROR((uint32_t)in, 8));
 
-        /* extend remaining two q7_t values to q15_t values */
-        in2 = __SXTB16(in);
+		/* extend remaining two q7_t values to q15_t values */
+		in2 = __SXTB16(in);
 
 #ifndef ARM_MATH_BIG_ENDIAN
-        out2 = (int32_t)__PKHTB(in1, in2, 16);
-        out1 = (int32_t)__PKHBT(in2, in1, 16);
+		out2 = (int32_t)__PKHTB(in1, in2, 16);
+		out1 = (int32_t)__PKHBT(in2, in1, 16);
 #else
-        out1 = (int32_t)__PKHTB(in1, in2, 16);
-        out2 = (int32_t)__PKHBT(in2, in1, 16);
+		out1 = (int32_t)__PKHTB(in1, in2, 16);
+		out2 = (int32_t)__PKHBT(in2, in1, 16);
 #endif
-        arm_nn_write_q15x2_ia(&pDst, out1);
-        arm_nn_write_q15x2_ia(&pDst, out2);
+		arm_nn_write_q15x2_ia(&pDst, out1);
+		arm_nn_write_q15x2_ia(&pDst, out2);
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 
-    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
-     ** No loop unrolling is used. */
-    blkCnt = blockSize % 0x4u;
+	/* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+	 ** No loop unrolling is used. */
+	blkCnt = blockSize % 0x4u;
 
 #else
 
-    /* Run the below code for Cortex-M0 */
+	/* Run the below code for Cortex-M0 */
 
-    /* Loop over blockSize number of values */
-    blkCnt = blockSize;
+	/* Loop over blockSize number of values */
+	blkCnt = blockSize;
 
 #endif /* #ifndef ARM_MATH_CM0_FAMILY */
 
-    while (blkCnt > 0u)
-    {
-        /* convert from q7 to q15 and then store the results in the destination buffer */
-        *pDst++ = (q15_t)*pIn++;
+	while (blkCnt > 0u) {
+		/* convert from q7 to q15 and then store the results in the destination buffer */
+		*pDst++ = (q15_t) * pIn++;
 
-        /* Decrement the loop counter */
-        blkCnt--;
-    }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 }
 
 /**

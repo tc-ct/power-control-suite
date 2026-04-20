@@ -41,36 +41,33 @@ extern "C" {
 /** @defgroup EXTI_Exported_Types EXTI Exported Types
   * @{
   */
-typedef enum
-{
-  HAL_EXTI_COMMON_CB_ID          = 0x00U,
-  HAL_EXTI_RISING_CB_ID          = 0x01U,
-  HAL_EXTI_FALLING_CB_ID         = 0x02U,
+typedef enum {
+	HAL_EXTI_COMMON_CB_ID          = 0x00U,
+	HAL_EXTI_RISING_CB_ID          = 0x01U,
+	HAL_EXTI_FALLING_CB_ID         = 0x02U,
 } EXTI_CallbackIDTypeDef;
 
 
 /**
   * @brief  EXTI Handle structure definition
   */
-typedef struct
-{
-  uint32_t Line;                    /*!<  Exti line number */
-  void (* RisingCallback)(void);    /*!<  Exti rising callback */
-  void (* FallingCallback)(void);   /*!<  Exti falling callback */
+typedef struct {
+	uint32_t Line;                    /*!<  Exti line number */
+	void (* RisingCallback)(void);    /*!<  Exti rising callback */
+	void (* FallingCallback)(void);   /*!<  Exti falling callback */
 } EXTI_HandleTypeDef;
 
 /**
   * @brief  EXTI Configuration structure definition
   */
-typedef struct
-{
-  uint32_t Line;      /*!< The Exti line to be configured. This parameter
+typedef struct {
+	uint32_t Line;      /*!< The Exti line to be configured. This parameter
                            can be a value of @ref EXTI_Line */
-  uint32_t Mode;      /*!< The Exit Mode to be configured for a core.
+	uint32_t Mode;      /*!< The Exit Mode to be configured for a core.
                            This parameter can be a combination of @ref EXTI_Mode */
-  uint32_t Trigger;   /*!< The Exti Trigger to be configured. This parameter
+	uint32_t Trigger;   /*!< The Exti Trigger to be configured. This parameter
                            can be a value of @ref EXTI_Trigger */
-  uint32_t GPIOSel;   /*!< The Exti GPIO multiplexer selection to be configured.
+	uint32_t GPIOSel;   /*!< The Exti GPIO multiplexer selection to be configured.
                            This parameter is only possible for line 0 to 15. It
                            can be a value of @ref EXTI_GPIOSel */
 } EXTI_ConfigTypeDef;
@@ -478,7 +475,7 @@ HAL_StatusTypeDef HAL_EXTI_SetConfigLine(EXTI_HandleTypeDef *hexti, const EXTI_C
 HAL_StatusTypeDef HAL_EXTI_GetConfigLine(const EXTI_HandleTypeDef *hexti, EXTI_ConfigTypeDef *pExtiConfig);
 HAL_StatusTypeDef HAL_EXTI_ClearConfigLine(const EXTI_HandleTypeDef *hexti);
 HAL_StatusTypeDef HAL_EXTI_RegisterCallback(EXTI_HandleTypeDef *hexti, EXTI_CallbackIDTypeDef CallbackID,
-                                            void (*pPendingCbfn)(void));
+		void (*pPendingCbfn)(void));
 HAL_StatusTypeDef HAL_EXTI_GetHandle(EXTI_HandleTypeDef *hexti, uint32_t ExtiLine);
 /**
   * @}

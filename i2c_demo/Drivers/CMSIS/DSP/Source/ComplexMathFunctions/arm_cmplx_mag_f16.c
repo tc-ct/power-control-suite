@@ -76,160 +76,159 @@
 
 
 void arm_cmplx_mag_f16(
-  const float16_t * pSrc,
-        float16_t * pDst,
-        uint32_t numSamples)
+	const float16_t *pSrc,
+	float16_t *pDst,
+	uint32_t numSamples)
 {
-    int32_t blockSize = numSamples;  /* loop counters */
-    uint32_t  blkCnt;           /* loop counters */
-    f16x8x2_t vecSrc;
-    f16x8_t sum;
+	int32_t blockSize = numSamples;  /* loop counters */
+	uint32_t  blkCnt;           /* loop counters */
+	f16x8x2_t vecSrc;
+	f16x8_t sum;
 
-    /* Compute 4 complex samples at a time */
-    blkCnt = blockSize >> 3;
-    while (blkCnt > 0U)
-    {
-        q15x8_t newtonStartVec;
-        f16x8_t sumHalf, invSqrt;
+	/* Compute 4 complex samples at a time */
+	blkCnt = blockSize >> 3;
 
-        vecSrc = vld2q(pSrc);  
-        pSrc += 16;
-        sum = vmulq(vecSrc.val[0], vecSrc.val[0]);
-        sum = vfmaq(sum, vecSrc.val[1], vecSrc.val[1]);
+	while (blkCnt > 0U) {
+		q15x8_t newtonStartVec;
+		f16x8_t sumHalf, invSqrt;
 
-        /*
-         * inlined Fast SQRT using inverse SQRT newton-raphson method
-         */
+		vecSrc = vld2q(pSrc);
+		pSrc += 16;
+		sum = vmulq(vecSrc.val[0], vecSrc.val[0]);
+		sum = vfmaq(sum, vecSrc.val[1], vecSrc.val[1]);
 
-        /* compute initial value */
-        newtonStartVec = vdupq_n_s16(INVSQRT_MAGIC_F16) - vshrq((q15x8_t) sum, 1);
-        sumHalf = sum * 0.5f;
-        /*
-         * compute 3 x iterations
-         *
-         * The more iterations, the more accuracy.
-         * If you need to trade a bit of accuracy for more performance,
-         * you can comment out the 3rd use of the macro.
-         */
-        INVSQRT_NEWTON_MVE_F16(invSqrt, sumHalf, (f16x8_t) newtonStartVec);
-        INVSQRT_NEWTON_MVE_F16(invSqrt, sumHalf, invSqrt);
-        INVSQRT_NEWTON_MVE_F16(invSqrt, sumHalf, invSqrt);
-        /*
-         * set negative values to 0
-         */
-        invSqrt = vdupq_m(invSqrt, (float16_t)0.0f, vcmpltq(invSqrt, (float16_t)0.0f));
-        /*
-         * sqrt(x) = x * invSqrt(x)
-         */
-        sum = vmulq(sum, invSqrt);
-        vstrhq_f16(pDst, sum); 
-        pDst += 8;
-        /*
-         * Decrement the blockSize loop counter
-         */
-        blkCnt--;
-    }
-    /*
-     * tail
-     */
-    blkCnt = blockSize & 7;
-    if (blkCnt > 0U)
-    {
-        mve_pred16_t p0 = vctp16q(blkCnt);
-        q15x8_t newtonStartVec;
-        f16x8_t sumHalf, invSqrt;
+		/*
+		 * inlined Fast SQRT using inverse SQRT newton-raphson method
+		 */
 
-        vecSrc = vld2q((float16_t const *)pSrc);
-        sum = vmulq(vecSrc.val[0], vecSrc.val[0]);
-        sum = vfmaq(sum, vecSrc.val[1], vecSrc.val[1]);
+		/* compute initial value */
+		newtonStartVec = vdupq_n_s16(INVSQRT_MAGIC_F16) - vshrq((q15x8_t) sum, 1);
+		sumHalf = sum * 0.5f;
+		/*
+		 * compute 3 x iterations
+		 *
+		 * The more iterations, the more accuracy.
+		 * If you need to trade a bit of accuracy for more performance,
+		 * you can comment out the 3rd use of the macro.
+		 */
+		INVSQRT_NEWTON_MVE_F16(invSqrt, sumHalf, (f16x8_t) newtonStartVec);
+		INVSQRT_NEWTON_MVE_F16(invSqrt, sumHalf, invSqrt);
+		INVSQRT_NEWTON_MVE_F16(invSqrt, sumHalf, invSqrt);
+		/*
+		 * set negative values to 0
+		 */
+		invSqrt = vdupq_m(invSqrt, (float16_t)0.0f, vcmpltq(invSqrt, (float16_t)0.0f));
+		/*
+		 * sqrt(x) = x * invSqrt(x)
+		 */
+		sum = vmulq(sum, invSqrt);
+		vstrhq_f16(pDst, sum);
+		pDst += 8;
+		/*
+		 * Decrement the blockSize loop counter
+		 */
+		blkCnt--;
+	}
 
-        /*
-         * inlined Fast SQRT using inverse SQRT newton-raphson method
-         */
+	/*
+	 * tail
+	 */
+	blkCnt = blockSize & 7;
 
-        /* compute initial value */
-        newtonStartVec = vdupq_n_s16(INVSQRT_MAGIC_F16) - vshrq((q15x8_t) sum, 1);
-        sumHalf = vmulq(sum, (float16_t)0.5);
-        /*
-         * compute 2 x iterations
-         */
-        INVSQRT_NEWTON_MVE_F16(invSqrt, sumHalf, (f16x8_t) newtonStartVec);
-        INVSQRT_NEWTON_MVE_F16(invSqrt, sumHalf, invSqrt);
-        /*
-         * set negative values to 0
-         */
-        invSqrt = vdupq_m(invSqrt, (float16_t)0.0, vcmpltq(invSqrt, (float16_t)0.0));
-        /*
-         * sqrt(x) = x * invSqrt(x)
-         */
-        sum = vmulq(sum, invSqrt);
-        vstrhq_p_f16(pDst, sum, p0);
-    }
+	if (blkCnt > 0U) {
+		mve_pred16_t p0 = vctp16q(blkCnt);
+		q15x8_t newtonStartVec;
+		f16x8_t sumHalf, invSqrt;
+
+		vecSrc = vld2q((float16_t const *)pSrc);
+		sum = vmulq(vecSrc.val[0], vecSrc.val[0]);
+		sum = vfmaq(sum, vecSrc.val[1], vecSrc.val[1]);
+
+		/*
+		 * inlined Fast SQRT using inverse SQRT newton-raphson method
+		 */
+
+		/* compute initial value */
+		newtonStartVec = vdupq_n_s16(INVSQRT_MAGIC_F16) - vshrq((q15x8_t) sum, 1);
+		sumHalf = vmulq(sum, (float16_t)0.5);
+		/*
+		 * compute 2 x iterations
+		 */
+		INVSQRT_NEWTON_MVE_F16(invSqrt, sumHalf, (f16x8_t) newtonStartVec);
+		INVSQRT_NEWTON_MVE_F16(invSqrt, sumHalf, invSqrt);
+		/*
+		 * set negative values to 0
+		 */
+		invSqrt = vdupq_m(invSqrt, (float16_t)0.0, vcmpltq(invSqrt, (float16_t)0.0));
+		/*
+		 * sqrt(x) = x * invSqrt(x)
+		 */
+		sum = vmulq(sum, invSqrt);
+		vstrhq_p_f16(pDst, sum, p0);
+	}
 }
 
 #else
 void arm_cmplx_mag_f16(
-  const float16_t * pSrc,
-        float16_t * pDst,
-        uint32_t numSamples)
+	const float16_t *pSrc,
+	float16_t *pDst,
+	uint32_t numSamples)
 {
-  uint32_t blkCnt;                               /* loop counter */
-  _Float16 real, imag;                      /* Temporary variables to hold input values */
+	uint32_t blkCnt;                               /* loop counter */
+	_Float16 real, imag;                      /* Temporary variables to hold input values */
 
 #if defined (ARM_MATH_LOOPUNROLL) && !defined(ARM_MATH_AUTOVECTORIZE)
 
-  /* Loop unrolling: Compute 4 outputs at a time */
-  blkCnt = numSamples >> 2U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = numSamples >> 2U;
 
-  while (blkCnt > 0U)
-  {
-    /* C[0] = sqrt(A[0] * A[0] + A[1] * A[1]) */
+	while (blkCnt > 0U) {
+		/* C[0] = sqrt(A[0] * A[0] + A[1] * A[1]) */
 
-    real = *pSrc++;
-    imag = *pSrc++;
+		real = *pSrc++;
+		imag = *pSrc++;
 
-    /* store result in destination buffer. */
-    arm_sqrt_f16((real * real) + (imag * imag), pDst++);
+		/* store result in destination buffer. */
+		arm_sqrt_f16((real * real) + (imag * imag), pDst++);
 
-    real = *pSrc++;
-    imag = *pSrc++;
-    arm_sqrt_f16((real * real) + (imag * imag), pDst++);
+		real = *pSrc++;
+		imag = *pSrc++;
+		arm_sqrt_f16((real * real) + (imag * imag), pDst++);
 
-    real = *pSrc++;
-    imag = *pSrc++;
-    arm_sqrt_f16((real * real) + (imag * imag), pDst++);
+		real = *pSrc++;
+		imag = *pSrc++;
+		arm_sqrt_f16((real * real) + (imag * imag), pDst++);
 
-    real = *pSrc++;
-    imag = *pSrc++;
-    arm_sqrt_f16((real * real) + (imag * imag), pDst++);
+		real = *pSrc++;
+		imag = *pSrc++;
+		arm_sqrt_f16((real * real) + (imag * imag), pDst++);
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* Loop unrolling: Compute remaining outputs */
-  blkCnt = numSamples % 0x4U;
+	/* Loop unrolling: Compute remaining outputs */
+	blkCnt = numSamples % 0x4U;
 
 #else
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = numSamples;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = numSamples;
 
 #endif /* #if defined (ARM_MATH_LOOPUNROLL) */
 
-  while (blkCnt > 0U)
-  {
-    /* C[0] = sqrt(A[0] * A[0] + A[1] * A[1]) */
+	while (blkCnt > 0U) {
+		/* C[0] = sqrt(A[0] * A[0] + A[1] * A[1]) */
 
-    real = *pSrc++;
-    imag = *pSrc++;
+		real = *pSrc++;
+		imag = *pSrc++;
 
-    /* store result in destination buffer. */
-    arm_sqrt_f16((real * real) + (imag * imag), pDst++);
+		/* store result in destination buffer. */
+		arm_sqrt_f16((real * real) + (imag * imag), pDst++);
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
 }
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */

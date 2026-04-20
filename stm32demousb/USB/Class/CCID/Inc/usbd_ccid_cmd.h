@@ -212,7 +212,7 @@ void CCID_UpdSlotChange(USBD_HandleTypeDef *pdev, uint8_t changeStatus);
 uint8_t CCID_IsSlotStatusChange(USBD_HandleTypeDef *pdev);
 uint8_t CCID_CmdAbort(USBD_HandleTypeDef *pdev, uint8_t slot, uint8_t seq);
 uint8_t USBD_CCID_Transfer_Data_Request(USBD_HandleTypeDef *pdev,
-                                        uint8_t *dataPointer, uint16_t dataLen);
+					uint8_t *dataPointer, uint16_t dataLen);
 
 
 #ifdef __cplusplus

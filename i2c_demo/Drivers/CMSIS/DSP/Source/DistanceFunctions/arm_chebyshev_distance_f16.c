@@ -64,76 +64,79 @@
 #include "arm_helium_utils.h"
 #include "arm_vec_math.h"
 
-float16_t arm_chebyshev_distance_f16(const float16_t *pA,const float16_t *pB, uint32_t blockSize)
+float16_t arm_chebyshev_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize)
 {
-    uint32_t        blkCnt;     /* loop counters */
-    f16x8_t         vecA, vecB;
-    f16x8_t         vecDiff = vdupq_n_f16(0.0);
-    float16_t       maxValue = 0.0f16;
+	uint32_t        blkCnt;     /* loop counters */
+	f16x8_t         vecA, vecB;
+	f16x8_t         vecDiff = vdupq_n_f16(0.0);
+	float16_t       maxValue = 0.0f16;
 
 
-    blkCnt = blockSize >> 3;
-    while (blkCnt > 0U) {
-        vecA = vld1q(pA);
-        pA += 8;
-        vecB = vld1q(pB);
-        pB += 8;
-        /*
-         * update per-lane max.
-         */
-        vecDiff = vmaxnmaq(vsubq(vecA, vecB), vecDiff);
-        /*
-         * Decrement the blockSize loop counter
-         */
-        blkCnt--;
-    }
-    /*
-     * tail
-     * (will be merged thru tail predication)
-     */
-    blkCnt = blockSize & 7;
-    if (blkCnt > 0U) {
-        mve_pred16_t    p0 = vctp16q(blkCnt);
+	blkCnt = blockSize >> 3;
 
-        vecA = vldrhq_z_f16(pA, p0);
-        vecB = vldrhq_z_f16(pB, p0);
+	while (blkCnt > 0U) {
+		vecA = vld1q(pA);
+		pA += 8;
+		vecB = vld1q(pB);
+		pB += 8;
+		/*
+		 * update per-lane max.
+		 */
+		vecDiff = vmaxnmaq(vsubq(vecA, vecB), vecDiff);
+		/*
+		 * Decrement the blockSize loop counter
+		 */
+		blkCnt--;
+	}
 
-        /*
-         * Get current max per lane and current index per lane
-         * when a max is selected
-         */
-        vecDiff = vmaxnmaq_m(vecDiff, vsubq(vecA, vecB), p0);
-    }
-    /*
-     * Get max value across the vector
-     */
-    return vmaxnmavq(maxValue, vecDiff);
+	/*
+	 * tail
+	 * (will be merged thru tail predication)
+	 */
+	blkCnt = blockSize & 7;
+
+	if (blkCnt > 0U) {
+		mve_pred16_t    p0 = vctp16q(blkCnt);
+
+		vecA = vldrhq_z_f16(pA, p0);
+		vecB = vldrhq_z_f16(pB, p0);
+
+		/*
+		 * Get current max per lane and current index per lane
+		 * when a max is selected
+		 */
+		vecDiff = vmaxnmaq_m(vecDiff, vsubq(vecA, vecB), p0);
+	}
+
+	/*
+	 * Get max value across the vector
+	 */
+	return vmaxnmavq(maxValue, vecDiff);
 }
 
 #else
-float16_t arm_chebyshev_distance_f16(const float16_t *pA,const float16_t *pB, uint32_t blockSize)
+float16_t arm_chebyshev_distance_f16(const float16_t *pA, const float16_t *pB, uint32_t blockSize)
 {
-   _Float16 diff=0.0f,  maxVal,tmpA, tmpB;
+	_Float16 diff = 0.0f,  maxVal, tmpA, tmpB;
 
-   tmpA = *pA++;
-   tmpB = *pB++;
-   diff = (_Float16)fabsf((float32_t)((_Float16)tmpA - (_Float16)tmpB));
-   maxVal = diff;
-   blockSize--;
+	tmpA = *pA++;
+	tmpB = *pB++;
+	diff = (_Float16)fabsf((float32_t)((_Float16)tmpA - (_Float16)tmpB));
+	maxVal = diff;
+	blockSize--;
 
-   while(blockSize > 0)
-   {
-      tmpA = *pA++;
-      tmpB = *pB++;
-      diff = (_Float16)fabsf((float32_t)((_Float16)tmpA - (_Float16)tmpB));
-      if ((_Float16)diff > (_Float16)maxVal)
-      {
-        maxVal = diff;
-      }
-      blockSize --;
-   }
-  
-   return(maxVal);
+	while (blockSize > 0) {
+		tmpA = *pA++;
+		tmpB = *pB++;
+		diff = (_Float16)fabsf((float32_t)((_Float16)tmpA - (_Float16)tmpB));
+
+		if ((_Float16)diff > (_Float16)maxVal)
+			maxVal = diff;
+
+		blockSize --;
+	}
+
+	return (maxVal);
 }
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
@@ -142,5 +145,5 @@ float16_t arm_chebyshev_distance_f16(const float16_t *pA,const float16_t *pB, ui
  * @} end of Chebyshev group
  */
 
-#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
 

@@ -55,51 +55,48 @@ void arm_relu_q7(q7_t *data, uint16_t size)
 {
 
 #if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
-    /* Run the following code for M cores with DSP extension */
+	/* Run the following code for M cores with DSP extension */
 
-    uint16_t i = size >> 2;
-    q7_t *input = data;
-    q7_t *output = data;
-    q31_t in;
-    q31_t buf;
-    q31_t mask;
+	uint16_t i = size >> 2;
+	q7_t *input = data;
+	q7_t *output = data;
+	q31_t in;
+	q31_t buf;
+	q31_t mask;
 
-    while (i)
-    {
-        in = arm_nn_read_q7x4_ia((const q7_t **)&input);
+	while (i) {
+		in = arm_nn_read_q7x4_ia((const q7_t **)&input);
 
-        /* extract the first bit */
-        buf = (int32_t)__ROR((uint32_t)in & 0x80808080, 7);
+		/* extract the first bit */
+		buf = (int32_t)__ROR((uint32_t)in & 0x80808080, 7);
 
-        /* if MSB=1, mask will be 0xFF, 0x0 otherwise */
-        mask = __QSUB8(0x00000000, buf);
+		/* if MSB=1, mask will be 0xFF, 0x0 otherwise */
+		mask = __QSUB8(0x00000000, buf);
 
-        arm_nn_write_q7x4_ia(&output, in & (~mask));
+		arm_nn_write_q7x4_ia(&output, in & (~mask));
 
-        i--;
-    }
+		i--;
+	}
 
-    i = size & 0x3;
-    while (i)
-    {
-        if (*input < 0)
-        {
-            *input = 0;
-        }
-        input++;
-        i--;
-    }
+	i = size & 0x3;
+
+	while (i) {
+		if (*input < 0)
+			*input = 0;
+
+		input++;
+		i--;
+	}
 
 #else
-    /* Run the following code as reference implementation for cores without DSP extension */
+	/* Run the following code as reference implementation for cores without DSP extension */
 
-    uint16_t i;
+	uint16_t i;
 
-    for (i = 0; i < size; i++)
-    {
-        if (data[i] < 0)
-            data[i] = 0;
-    }
+	for (i = 0; i < size; i++) {
+		if (data[i] < 0)
+			data[i] = 0;
+	}
 
 #endif
 }

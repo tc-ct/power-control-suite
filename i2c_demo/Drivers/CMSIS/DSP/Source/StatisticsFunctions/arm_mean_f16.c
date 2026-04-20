@@ -65,82 +65,80 @@
 #include "arm_helium_utils.h"
 
 void arm_mean_f16(
-  const float16_t * pSrc,
-  uint32_t blockSize,
-  float16_t * pResult)
+	const float16_t *pSrc,
+	uint32_t blockSize,
+	float16_t *pResult)
 {
-    int32_t  blkCnt;           /* loop counters */
-    f16x8_t vecSrc;
-    f16x8_t sumVec = vdupq_n_f16(0.0f16);
+	int32_t  blkCnt;           /* loop counters */
+	f16x8_t vecSrc;
+	f16x8_t sumVec = vdupq_n_f16(0.0f16);
 
-    blkCnt = blockSize;
-    do {
-        mve_pred16_t p = vctp16q(blkCnt);
+	blkCnt = blockSize;
 
-        vecSrc = vldrhq_z_f16((float16_t const *) pSrc, p);
-        sumVec = vaddq_m_f16(sumVec, sumVec, vecSrc, p);
+	do {
+		mve_pred16_t p = vctp16q(blkCnt);
 
-        blkCnt -= 8;
-        pSrc += 8;
-    }
-    while (blkCnt > 0);
+		vecSrc = vldrhq_z_f16((float16_t const *) pSrc, p);
+		sumVec = vaddq_m_f16(sumVec, sumVec, vecSrc, p);
 
-    *pResult = (_Float16)vecAddAcrossF16Mve(sumVec) / (_Float16) blockSize;
+		blkCnt -= 8;
+		pSrc += 8;
+	} while (blkCnt > 0);
+
+	*pResult = (_Float16)vecAddAcrossF16Mve(sumVec) / (_Float16) blockSize;
 }
 
 
 #else
 
 void arm_mean_f16(
-  const float16_t * pSrc,
-        uint32_t blockSize,
-        float16_t * pResult)
+	const float16_t *pSrc,
+	uint32_t blockSize,
+	float16_t *pResult)
 {
-        uint32_t blkCnt;                               /* Loop counter */
-        float16_t sum = 0.0f;                          /* Temporary result storage */
+	uint32_t blkCnt;                               /* Loop counter */
+	float16_t sum = 0.0f;                          /* Temporary result storage */
 
 #if defined (ARM_MATH_LOOPUNROLL) && !defined(ARM_MATH_AUTOVECTORIZE)
 
-  /* Loop unrolling: Compute 4 outputs at a time */
-  blkCnt = blockSize >> 2U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = blockSize >> 2U;
 
-  while (blkCnt > 0U)
-  {
-    /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
-    sum += (_Float16)*pSrc++;
+	while (blkCnt > 0U) {
+		/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
+		sum += (_Float16) * pSrc++;
 
-    sum += (_Float16)*pSrc++;
+		sum += (_Float16) * pSrc++;
 
-    sum += (_Float16)*pSrc++;
+		sum += (_Float16) * pSrc++;
 
-    sum += (_Float16)*pSrc++;
+		sum += (_Float16) * pSrc++;
 
-    /* Decrement the loop counter */
-    blkCnt--;
-  }
+		/* Decrement the loop counter */
+		blkCnt--;
+	}
 
-  /* Loop unrolling: Compute remaining outputs */
-  blkCnt = blockSize % 0x4U;
+	/* Loop unrolling: Compute remaining outputs */
+	blkCnt = blockSize % 0x4U;
 
 #else
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = blockSize;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = blockSize;
 
 #endif /* #if defined (ARM_MATH_LOOPUNROLL) */
 
-  while (blkCnt > 0U)
-  {
-    /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
-    sum += (_Float16)*pSrc++;
+	while (blkCnt > 0U) {
+		/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) */
+		sum += (_Float16) * pSrc++;
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) / blockSize  */
-  /* Store result to destination */
-  *pResult = ((_Float16)sum / (_Float16)blockSize);
+	/* C = (A[0] + A[1] + A[2] + ... + A[blockSize-1]) / blockSize  */
+	/* Store result to destination */
+	*pResult = ((_Float16)sum / (_Float16)blockSize);
 }
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
 
@@ -148,5 +146,5 @@ void arm_mean_f16(
   @} end of mean group
  */
 
-#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
 

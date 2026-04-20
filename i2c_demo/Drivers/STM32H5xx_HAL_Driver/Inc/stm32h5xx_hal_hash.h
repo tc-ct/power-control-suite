@@ -44,16 +44,15 @@ extern "C" {
 /**
   * @brief  HASH Configuration Structure definition
   */
-typedef struct
-{
-  uint32_t DataType;    /*!< no swap (32-bit data), half word swap (16-bit data), byte swap (8-bit data) or bit swap
+typedef struct {
+	uint32_t DataType;    /*!< no swap (32-bit data), half word swap (16-bit data), byte swap (8-bit data) or bit swap
                              (1-bit data). This parameter can be a value of @ref HASH_Data_Type.       */
 
-  uint32_t KeySize;     /*!< The key size is used only in HMAC operation.                 */
+	uint32_t KeySize;     /*!< The key size is used only in HMAC operation.                 */
 
-  uint8_t *pKey;        /*!< The key is used only in HMAC operation.                      */
+	uint8_t *pKey;        /*!< The key is used only in HMAC operation.                      */
 
-  uint32_t Algorithm;   /*!<  HASH algorithm MD5, SHA1 or SHA2.
+	uint32_t Algorithm;   /*!<  HASH algorithm MD5, SHA1 or SHA2.
                             This parameter can be a value of @ref HASH_Algorithm_Selection */
 
 
@@ -62,26 +61,24 @@ typedef struct
 /**
   * @brief HAL State structure definition
   */
-typedef enum
-{
-  HAL_HASH_STATE_RESET             = 0x00U,    /*!< Peripheral is not initialized            */
-  HAL_HASH_STATE_READY             = 0x01U,    /*!< Peripheral Initialized and ready for use */
-  HAL_HASH_STATE_BUSY              = 0x02U,    /*!< Processing (hashing) is ongoing          */
-  HAL_HASH_STATE_SUSPENDED         = 0x03U     /*!< Suspended state                          */
+typedef enum {
+	HAL_HASH_STATE_RESET             = 0x00U,    /*!< Peripheral is not initialized            */
+	HAL_HASH_STATE_READY             = 0x01U,    /*!< Peripheral Initialized and ready for use */
+	HAL_HASH_STATE_BUSY              = 0x02U,    /*!< Processing (hashing) is ongoing          */
+	HAL_HASH_STATE_SUSPENDED         = 0x03U     /*!< Suspended state                          */
 } HAL_HASH_StateTypeDef;
 
 /**
   * @brief HAL phase structure definition
   */
-typedef enum
-{
-  HAL_HASH_PHASE_READY             = 0x01U,    /*!< HASH peripheral is ready to start                  */
-  HAL_HASH_PHASE_PROCESS           = 0x02U,    /*!< HASH peripheral is in HASH processing phase        */
-  HAL_HASH_PHASE_HMAC_STEP_1       = 0x03U,    /*!< HASH peripheral is in HMAC step 1 processing phase
+typedef enum {
+	HAL_HASH_PHASE_READY             = 0x01U,    /*!< HASH peripheral is ready to start                  */
+	HAL_HASH_PHASE_PROCESS           = 0x02U,    /*!< HASH peripheral is in HASH processing phase        */
+	HAL_HASH_PHASE_HMAC_STEP_1       = 0x03U,    /*!< HASH peripheral is in HMAC step 1 processing phase
                                               (step 1 consists in entering the inner hash function key)*/
-  HAL_HASH_PHASE_HMAC_STEP_2       = 0x04U,    /*!< HASH peripheral is in HMAC step 2 processing phase
+	HAL_HASH_PHASE_HMAC_STEP_2       = 0x04U,    /*!< HASH peripheral is in HMAC step 2 processing phase
                                               (step 2 consists in entering the message text)           */
-  HAL_HASH_PHASE_HMAC_STEP_3       = 0x05U     /*!< HASH peripheral is in HMAC step 3 processing phase
+	HAL_HASH_PHASE_HMAC_STEP_3       = 0x05U     /*!< HASH peripheral is in HMAC step 3 processing phase
                                               (step 3 consists in entering the outer hash function key)*/
 
 } HAL_HASH_PhaseTypeDef;
@@ -90,10 +87,9 @@ typedef enum
 /**
   * @brief HAL HASH mode suspend definitions
   */
-typedef enum
-{
-  HAL_HASH_SUSPEND_NONE            = 0x00U,    /*!< HASH peripheral suspension not requested */
-  HAL_HASH_SUSPEND                 = 0x01U     /*!< HASH peripheral suspension is requested  */
+typedef enum {
+	HAL_HASH_SUSPEND_NONE            = 0x00U,    /*!< HASH peripheral suspension not requested */
+	HAL_HASH_SUSPEND                 = 0x01U     /*!< HASH peripheral suspension is requested  */
 } HAL_HASH_SuspendTypeDef;
 #endif /* USE_HAL_HASH_SUSPEND_RESUME */
 
@@ -107,60 +103,60 @@ typedef struct __HASH_HandleTypeDef
 typedef struct
 #endif /* (USE_HAL_HASH_REGISTER_CALLBACKS) */
 {
-  HASH_TypeDef               *Instance;        /*!< HASH Register base address              */
+	HASH_TypeDef               *Instance;        /*!< HASH Register base address              */
 
-  HASH_ConfigTypeDef           Init;           /*!< HASH required parameters                */
+	HASH_ConfigTypeDef           Init;           /*!< HASH required parameters                */
 
-  uint8_t const              *pHashInBuffPtr;  /*!< Pointer to input buffer                 */
+	uint8_t const              *pHashInBuffPtr;  /*!< Pointer to input buffer                 */
 
-  uint8_t                    *pHashOutBuffPtr; /*!< Pointer to output buffer (digest)       */
+	uint8_t                    *pHashOutBuffPtr; /*!< Pointer to output buffer (digest)       */
 
-  __IO uint32_t              HashInCount;      /*!< Counter of inputted data                */
+	__IO uint32_t              HashInCount;      /*!< Counter of inputted data                */
 
-  uint32_t                   Size;             /*!< Size of buffer to be processed in bytes */
+	uint32_t                   Size;             /*!< Size of buffer to be processed in bytes */
 
-  uint8_t                   *pHashKeyBuffPtr;  /*!< Pointer to key buffer (HMAC only)       */
+	uint8_t                   *pHashKeyBuffPtr;  /*!< Pointer to key buffer (HMAC only)       */
 
-  HAL_HASH_PhaseTypeDef      Phase;            /*!< HASH peripheral phase                   */
+	HAL_HASH_PhaseTypeDef      Phase;            /*!< HASH peripheral phase                   */
 
-  DMA_HandleTypeDef          *hdmain;          /*!< HASH In DMA Handle parameters           */
+	DMA_HandleTypeDef          *hdmain;          /*!< HASH In DMA Handle parameters           */
 
-  HAL_LockTypeDef            Lock;             /*!< Locking object                          */
+	HAL_LockTypeDef            Lock;             /*!< Locking object                          */
 
-  __IO  uint32_t             ErrorCode;        /*!< HASH Error code                         */
+	__IO  uint32_t             ErrorCode;        /*!< HASH Error code                         */
 
-  __IO HAL_HASH_StateTypeDef State;            /*!< HASH peripheral state                   */
+	__IO HAL_HASH_StateTypeDef State;            /*!< HASH peripheral state                   */
 
-  __IO  uint32_t             Accumulation;     /*!< HASH multi buffers accumulation flag    */
+	__IO  uint32_t             Accumulation;     /*!< HASH multi buffers accumulation flag    */
 
 #if (USE_HAL_HASH_REGISTER_CALLBACKS == 1)
-  void (* InCpltCallback)(struct __HASH_HandleTypeDef *hhash);         /*!< HASH input completion callback            */
+	void (* InCpltCallback)(struct __HASH_HandleTypeDef *hhash);         /*!< HASH input completion callback            */
 
-  void (* DgstCpltCallback)(struct __HASH_HandleTypeDef *hhash);       /*!< HASH digest computation complete callback */
+	void (* DgstCpltCallback)(struct __HASH_HandleTypeDef *hhash);       /*!< HASH digest computation complete callback */
 
-  void (* ErrorCallback)(struct __HASH_HandleTypeDef *hhash);          /*!< HASH error callback                       */
+	void (* ErrorCallback)(struct __HASH_HandleTypeDef *hhash);          /*!< HASH error callback                       */
 
-  void (* MspInitCallback)(struct __HASH_HandleTypeDef *hhash);        /*!< HASH Msp Init callback                    */
+	void (* MspInitCallback)(struct __HASH_HandleTypeDef *hhash);        /*!< HASH Msp Init callback                    */
 
-  void (* MspDeInitCallback)(struct __HASH_HandleTypeDef *hhash);      /*!< HASH Msp DeInit callback                  */
+	void (* MspDeInitCallback)(struct __HASH_HandleTypeDef *hhash);      /*!< HASH Msp DeInit callback                  */
 
 #endif /* (USE_HAL_HASH_REGISTER_CALLBACKS) */
 #if (USE_HAL_HASH_SUSPEND_RESUME == 1U)
-  __IO HAL_HASH_SuspendTypeDef    SuspendRequest;    /*!< HASH peripheral suspension request flag */
+	__IO HAL_HASH_SuspendTypeDef    SuspendRequest;    /*!< HASH peripheral suspension request flag */
 
-  HASH_ConfigTypeDef         Init_saved;             /*!< Saved HASH required parameters          */
+	HASH_ConfigTypeDef         Init_saved;             /*!< Saved HASH required parameters          */
 
-  uint8_t const              *pHashInBuffPtr_saved;  /*!< Saved pointer to input buffer           */
+	uint8_t const              *pHashInBuffPtr_saved;  /*!< Saved pointer to input buffer           */
 
-  uint8_t                    *pHashOutBuffPtr_saved; /*!< Saved pointer to output buffer (digest) */
+	uint8_t                    *pHashOutBuffPtr_saved; /*!< Saved pointer to output buffer (digest) */
 
-  __IO uint32_t              HashInCount_saved;      /*!< Saved counter of inputted data          */
+	__IO uint32_t              HashInCount_saved;      /*!< Saved counter of inputted data          */
 
-  uint32_t                   Size_saved;             /*!< Saved size of buffer to be processed    */
+	uint32_t                   Size_saved;             /*!< Saved size of buffer to be processed    */
 
-  uint8_t                    *pHashKeyBuffPtr_saved; /*!< Saved pointer to key buffer (HMAC only) */
+	uint8_t                    *pHashKeyBuffPtr_saved; /*!< Saved pointer to key buffer (HMAC only) */
 
-  HAL_HASH_PhaseTypeDef      Phase_saved;            /*!< Saved HASH peripheral phase             */
+	HAL_HASH_PhaseTypeDef      Phase_saved;            /*!< Saved HASH peripheral phase             */
 #endif /* USE_HAL_HASH_SUSPEND_RESUME */
 
 } HASH_HandleTypeDef;
@@ -169,13 +165,12 @@ typedef struct
 /**
   * @brief  HAL HASH common Callback ID enumeration definition
   */
-typedef enum
-{
-  HAL_HASH_MSPINIT_CB_ID           = 0x00U,    /*!< HASH MspInit callback ID                       */
-  HAL_HASH_MSPDEINIT_CB_ID         = 0x01U,    /*!< HASH MspDeInit callback ID                     */
-  HAL_HASH_INPUTCPLT_CB_ID         = 0x02U,    /*!< HASH input completion callback ID              */
-  HAL_HASH_DGSTCPLT_CB_ID          = 0x03U,    /*!< HASH digest computation completion callback ID */
-  HAL_HASH_ERROR_CB_ID             = 0x04U,    /*!< HASH error callback ID                         */
+typedef enum {
+	HAL_HASH_MSPINIT_CB_ID           = 0x00U,    /*!< HASH MspInit callback ID                       */
+	HAL_HASH_MSPDEINIT_CB_ID         = 0x01U,    /*!< HASH MspDeInit callback ID                     */
+	HAL_HASH_INPUTCPLT_CB_ID         = 0x02U,    /*!< HASH input completion callback ID              */
+	HAL_HASH_DGSTCPLT_CB_ID          = 0x03U,    /*!< HASH digest computation completion callback ID */
+	HAL_HASH_ERROR_CB_ID             = 0x04U,    /*!< HASH error callback ID                         */
 } HAL_HASH_CallbackIDTypeDef;
 
 /**
@@ -403,7 +398,7 @@ HAL_StatusTypeDef HAL_HASH_SetConfig(HASH_HandleTypeDef *hhash, const HASH_Confi
 /* Callbacks Register/UnRegister functions  ***********************************/
 #if (USE_HAL_HASH_REGISTER_CALLBACKS == 1)
 HAL_StatusTypeDef HAL_HASH_RegisterCallback(HASH_HandleTypeDef *hhash, HAL_HASH_CallbackIDTypeDef CallbackID,
-                                            pHASH_CallbackTypeDef pCallback);
+		pHASH_CallbackTypeDef pCallback);
 HAL_StatusTypeDef HAL_HASH_UnRegisterCallback(HASH_HandleTypeDef *hhash, HAL_HASH_CallbackIDTypeDef CallbackID);
 #endif /* USE_HAL_HASH_REGISTER_CALLBACKS */
 
@@ -419,20 +414,20 @@ void HAL_HASH_Suspend(HASH_HandleTypeDef *hhash, uint8_t *pMemBuffer);
   */
 
 HAL_StatusTypeDef HAL_HASH_Start(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size,
-                                 uint8_t *const pOutBuffer,
-                                 uint32_t Timeout);
+				 uint8_t *const pOutBuffer,
+				 uint32_t Timeout);
 HAL_StatusTypeDef HAL_HASH_Start_IT(HASH_HandleTypeDef *hhash, const  uint8_t *const pInBuffer, uint32_t Size,
-                                    uint8_t  *const pOutBuffer);
+				    uint8_t  *const pOutBuffer);
 HAL_StatusTypeDef HAL_HASH_Start_DMA(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size,
-                                     uint8_t  *const pOutBuffer);
+				     uint8_t  *const pOutBuffer);
 
 HAL_StatusTypeDef HAL_HASH_Accumulate(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size,
-                                      uint32_t Timeout);
+				      uint32_t Timeout);
 HAL_StatusTypeDef HAL_HASH_AccumulateLast(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size,
-                                          uint8_t *const pOutBuffer,
-                                          uint32_t Timeout);
+		uint8_t *const pOutBuffer,
+		uint32_t Timeout);
 HAL_StatusTypeDef HAL_HASH_AccumulateLast_IT(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size,
-                                             uint8_t *const pOutBuffer);
+		uint8_t *const pOutBuffer);
 HAL_StatusTypeDef HAL_HASH_Accumulate_IT(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size);
 
 /**
@@ -443,20 +438,20 @@ HAL_StatusTypeDef HAL_HASH_Accumulate_IT(HASH_HandleTypeDef *hhash, const uint8_
   * @{
   */
 HAL_StatusTypeDef HAL_HASH_HMAC_Start(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size,
-                                      uint8_t  *const pOutBuffer,
-                                      uint32_t Timeout);
+				      uint8_t  *const pOutBuffer,
+				      uint32_t Timeout);
 HAL_StatusTypeDef HAL_HASH_HMAC_Start_DMA(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size,
-                                          uint8_t *const pOutBuffer);
+		uint8_t *const pOutBuffer);
 HAL_StatusTypeDef HAL_HASH_HMAC_Start_IT(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size,
-                                         uint8_t *const pOutBuffer);
+		uint8_t *const pOutBuffer);
 
 HAL_StatusTypeDef HAL_HASH_HMAC_Accumulate(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size,
-                                           uint32_t Timeout);
+		uint32_t Timeout);
 HAL_StatusTypeDef HAL_HASH_HMAC_AccumulateLast(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size,
-                                               uint8_t *const pOutBuffer, uint32_t Timeout);
+		uint8_t *const pOutBuffer, uint32_t Timeout);
 HAL_StatusTypeDef HAL_HASH_HMAC_Accumulate_IT(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer, uint32_t Size);
 HAL_StatusTypeDef HAL_HASH_HMAC_AccumulateLast_IT(HASH_HandleTypeDef *hhash, const uint8_t *const pInBuffer,
-                                                  uint32_t Size, uint8_t *const pOutBuffer);
+		uint32_t Size, uint8_t *const pOutBuffer);
 
 /**
   * @}

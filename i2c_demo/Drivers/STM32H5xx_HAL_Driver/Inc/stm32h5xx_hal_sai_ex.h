@@ -45,15 +45,14 @@ extern "C" {
 /**
   * @brief  PDM microphone delay structure definition
   */
-typedef struct
-{
-  uint32_t MicPair;     /*!< Specifies which pair of microphones is selected.
+typedef struct {
+	uint32_t MicPair;     /*!< Specifies which pair of microphones is selected.
                              This parameter must be a number between Min_Data = 1 and Max_Data = 3. */
 
-  uint32_t LeftDelay;   /*!< Specifies the delay in PDM clock unit to apply on left microphone.
+	uint32_t LeftDelay;   /*!< Specifies the delay in PDM clock unit to apply on left microphone.
                              This parameter must be a number between Min_Data = 0 and Max_Data = 7. */
 
-  uint32_t RightDelay;  /*!< Specifies the delay in PDM clock unit to apply on right microphone.
+	uint32_t RightDelay;  /*!< Specifies the delay in PDM clock unit to apply on right microphone.
                              This parameter must be a number between Min_Data = 0 and Max_Data = 7. */
 } SAIEx_PdmMicDelayParamTypeDef;
 
@@ -72,7 +71,7 @@ typedef struct
   * @{
   */
 HAL_StatusTypeDef HAL_SAIEx_ConfigPdmMicDelay(const SAI_HandleTypeDef *hsai,
-                                              const SAIEx_PdmMicDelayParamTypeDef *pdmMicDelay);
+		const SAIEx_PdmMicDelayParamTypeDef *pdmMicDelay);
 /**
   * @}
   */

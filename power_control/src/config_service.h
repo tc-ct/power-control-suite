@@ -8,13 +8,13 @@
 class ConfigService
 {
 public:
-    bool load(const QString& filePath, QString* errorMessage = nullptr);
+	bool load(const QString& filePath, QString* errorMessage = nullptr);
 
-    const PowersConfig& config() const;
-    PowersConfig& mutableConfig();
+	const PowersConfig &config() const;
+	PowersConfig &mutableConfig();
 
 private:
-    PowersConfig config_{};
+	PowersConfig config_{};
 };
 
 #endif // CONFIG_SERVICE_H

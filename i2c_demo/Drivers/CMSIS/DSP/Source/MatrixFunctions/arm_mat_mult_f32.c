@@ -62,45 +62,45 @@
 
 #if defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE)
 
-#define MATRIX_DIM3 3 
-#define MATRIX_DIM4 4 
+#define MATRIX_DIM3 3
+#define MATRIX_DIM4 4
 
 __STATIC_INLINE  arm_status arm_mat_mult_f32_2x2_mve(
-    const arm_matrix_instance_f32 *pSrcA,
-    const arm_matrix_instance_f32 *pSrcB,
-    arm_matrix_instance_f32 *pDst)
+	const arm_matrix_instance_f32 *pSrcA,
+	const arm_matrix_instance_f32 *pSrcB,
+	arm_matrix_instance_f32 *pDst)
 {
-    /* {a00, a00, a10, a10} */
-    static const uint32_t  offsetA0[4] = { 0, 0, 2, 2 };
-    /* {b00, b01, b00, b01} */
-    static const uint32_t  offsetB0[4] = { 0, 1, 0, 1 };
-    /* {a01, a01, a11, a11} */
-    static const uint32_t  offsetA1[4] = { 1, 1, 3, 3 };
-    /* {b10, b11, b10, b11} */
-    static const uint32_t  offsetB1[4] = { 2, 3, 2, 3 };
+	/* {a00, a00, a10, a10} */
+	static const uint32_t  offsetA0[4] = { 0, 0, 2, 2 };
+	/* {b00, b01, b00, b01} */
+	static const uint32_t  offsetB0[4] = { 0, 1, 0, 1 };
+	/* {a01, a01, a11, a11} */
+	static const uint32_t  offsetA1[4] = { 1, 1, 3, 3 };
+	/* {b10, b11, b10, b11} */
+	static const uint32_t  offsetB1[4] = { 2, 3, 2, 3 };
 
-    uint32x4_t vecOffsA, vecOffsB;
-    f32x4_t vecInA, vecInB, vecDst;
+	uint32x4_t vecOffsA, vecOffsB;
+	f32x4_t vecInA, vecInB, vecDst;
 
-    vecOffsA = vldrwq_u32((uint32_t const *) offsetA0);
-    vecOffsB = vldrwq_u32((uint32_t const *) offsetB0);
+	vecOffsA = vldrwq_u32((uint32_t const *) offsetA0);
+	vecOffsB = vldrwq_u32((uint32_t const *) offsetB0);
 
-    vecInA = vldrwq_gather_shifted_offset((float32_t const *) pSrcA->pData, vecOffsA);
-    vecInB = vldrwq_gather_shifted_offset((float32_t const *) pSrcB->pData, vecOffsB);
+	vecInA = vldrwq_gather_shifted_offset((float32_t const *) pSrcA->pData, vecOffsA);
+	vecInB = vldrwq_gather_shifted_offset((float32_t const *) pSrcB->pData, vecOffsB);
 
-    vecDst = vmulq(vecInA, vecInB);
+	vecDst = vmulq(vecInA, vecInB);
 
-    vecOffsA = vldrwq_u32((uint32_t const *) offsetA1);
-    vecOffsB = vldrwq_u32((uint32_t const *) offsetB1);
+	vecOffsA = vldrwq_u32((uint32_t const *) offsetA1);
+	vecOffsB = vldrwq_u32((uint32_t const *) offsetB1);
 
-    vecInA = vldrwq_gather_shifted_offset((float32_t const *) pSrcA->pData, vecOffsA);
-    vecInB = vldrwq_gather_shifted_offset((float32_t const *) pSrcB->pData, vecOffsB);
+	vecInA = vldrwq_gather_shifted_offset((float32_t const *) pSrcA->pData, vecOffsA);
+	vecInB = vldrwq_gather_shifted_offset((float32_t const *) pSrcB->pData, vecOffsB);
 
-    vecDst = vfmaq(vecDst, vecInA, vecInB);
+	vecDst = vfmaq(vecDst, vecInA, vecInB);
 
-    vstrwq_f32(pDst->pData, vecDst);
+	vstrwq_f32(pDst->pData, vecDst);
 
-    return (ARM_MATH_SUCCESS);
+	return (ARM_MATH_SUCCESS);
 
 }
 
@@ -118,140 +118,140 @@ __STATIC_INLINE  arm_status arm_mat_mult_f32_2x2_mve(
  *        {a20 b00 + a21 b10 + a22 b20, a20 b01 + a21 b11 + a22 b21, a20 b02 + a21 b12 + a22 b22}}
  */
 __STATIC_INLINE  arm_status arm_mat_mult_f32_3x3_mve(
-    const arm_matrix_instance_f32 *pSrcA,
-    const arm_matrix_instance_f32 *pSrcB,
-    arm_matrix_instance_f32 *pDst)
+	const arm_matrix_instance_f32 *pSrcA,
+	const arm_matrix_instance_f32 *pSrcB,
+	arm_matrix_instance_f32 *pDst)
 {
-    float32_t   *pInB = pSrcB->pData; /* input data matrix pointer B */
-    float32_t   *pInA = pSrcA->pData; /* input data matrix pointer A  */
-    float32_t   *pOut = pDst->pData;  /* output data matrix pointer */
-    float32_t   *pInA0, *pInA1, *pInA2;
-    f32x4_t    vecMac0, vecMac1, vecMac2;
-    f32x4_t    vecInB;
-    float32_t const *pSrBVec;
+	float32_t   *pInB = pSrcB->pData; /* input data matrix pointer B */
+	float32_t   *pInA = pSrcA->pData; /* input data matrix pointer A  */
+	float32_t   *pOut = pDst->pData;  /* output data matrix pointer */
+	float32_t   *pInA0, *pInA1, *pInA2;
+	f32x4_t    vecMac0, vecMac1, vecMac2;
+	f32x4_t    vecInB;
+	float32_t const *pSrBVec;
 
-    pSrBVec = (float32_t const *) pInB;
+	pSrBVec = (float32_t const *) pInB;
 
-    pInA0 = pInA;
-    pInA1 = pInA0 + MATRIX_DIM3;
-    pInA2 = pInA1 + MATRIX_DIM3;
-    /* enable predication to disable last (4th) vector element */
-    mve_pred16_t p0 = vctp32q(MATRIX_DIM3);
+	pInA0 = pInA;
+	pInA1 = pInA0 + MATRIX_DIM3;
+	pInA2 = pInA1 + MATRIX_DIM3;
+	/* enable predication to disable last (4th) vector element */
+	mve_pred16_t p0 = vctp32q(MATRIX_DIM3);
 
-    /*
-     * load {b0,0, b0,1, b0,2, 0}
-     */
-    vecInB = vldrwq_z_f32(pSrBVec, p0);  
-    pSrBVec += MATRIX_DIM3;
+	/*
+	 * load {b0,0, b0,1, b0,2, 0}
+	 */
+	vecInB = vldrwq_z_f32(pSrBVec, p0);
+	pSrBVec += MATRIX_DIM3;
 
-    vecMac0 = vmulq(vecInB, *pInA0++);
-    vecMac1 = vmulq(vecInB, *pInA1++);
-    vecMac2 = vmulq(vecInB, *pInA2++);
-    /*
-     * load {b1,0, b1,1, b1,2, 0}
-     */
-    vecInB = vldrwq_z_f32(pSrBVec, p0);  
-    pSrBVec += MATRIX_DIM3;
+	vecMac0 = vmulq(vecInB, *pInA0++);
+	vecMac1 = vmulq(vecInB, *pInA1++);
+	vecMac2 = vmulq(vecInB, *pInA2++);
+	/*
+	 * load {b1,0, b1,1, b1,2, 0}
+	 */
+	vecInB = vldrwq_z_f32(pSrBVec, p0);
+	pSrBVec += MATRIX_DIM3;
 
-    vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
-    vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
-    vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
-    /*
-     * load {b2,0, b2,1 , b2,2, 0}
-     */
-    vecInB = vldrwq_z_f32(pSrBVec, p0);  
-    pSrBVec += MATRIX_DIM3;
+	vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
+	vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
+	vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
+	/*
+	 * load {b2,0, b2,1 , b2,2, 0}
+	 */
+	vecInB = vldrwq_z_f32(pSrBVec, p0);
+	pSrBVec += MATRIX_DIM3;
 
-    vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
-    vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
-    vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
+	vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
+	vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
+	vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
 
-    /* partial vector stores */
-    vstrwq_p_f32(pOut, vecMac0, p0); 
-    pOut += MATRIX_DIM3;
-    vstrwq_p_f32(pOut, vecMac1, p0); 
-    pOut += MATRIX_DIM3;
-    vstrwq_p_f32(pOut, vecMac2, p0);
-    /*
-     * Return to application
-     */
-    return (ARM_MATH_SUCCESS);
+	/* partial vector stores */
+	vstrwq_p_f32(pOut, vecMac0, p0);
+	pOut += MATRIX_DIM3;
+	vstrwq_p_f32(pOut, vecMac1, p0);
+	pOut += MATRIX_DIM3;
+	vstrwq_p_f32(pOut, vecMac2, p0);
+	/*
+	 * Return to application
+	 */
+	return (ARM_MATH_SUCCESS);
 }
 
 
 
 
 __STATIC_INLINE arm_status arm_mat_mult_f32_4x4_mve(
-    const arm_matrix_instance_f32 *pSrcA,
-    const arm_matrix_instance_f32 *pSrcB,
-    arm_matrix_instance_f32 *pDst)
+	const arm_matrix_instance_f32 *pSrcA,
+	const arm_matrix_instance_f32 *pSrcB,
+	arm_matrix_instance_f32 *pDst)
 {
-    float32_t const *pSrBVec;
-    float32_t *pInB = pSrcB->pData; /* input data matrix pointer B */
-    float32_t *pInA = pSrcA->pData; /* input data matrix pointer A  */
-    float32_t *pOut = pDst->pData;  /* output data matrix pointer */
-    float32_t *pInA0, *pInA1, *pInA2, *pInA3;
-    f32x4_t vecMac0, vecMac1, vecMac2, vecMac3;
-    f32x4_t vecInB;
+	float32_t const *pSrBVec;
+	float32_t *pInB = pSrcB->pData; /* input data matrix pointer B */
+	float32_t *pInA = pSrcA->pData; /* input data matrix pointer A  */
+	float32_t *pOut = pDst->pData;  /* output data matrix pointer */
+	float32_t *pInA0, *pInA1, *pInA2, *pInA3;
+	f32x4_t vecMac0, vecMac1, vecMac2, vecMac3;
+	f32x4_t vecInB;
 
-    pSrBVec = (float32_t const *) pInB;
+	pSrBVec = (float32_t const *) pInB;
 
-    pInA0 = pInA;
-    pInA1 = pInA0 + MATRIX_DIM4;
-    pInA2 = pInA1 + MATRIX_DIM4;
-    pInA3 = pInA2 + MATRIX_DIM4;
-    /*
-     * load {b0,0, b0,1, b0,2, b0,3}
-     */
-    vecInB = vld1q(pSrBVec);  
-    pSrBVec += MATRIX_DIM4;
+	pInA0 = pInA;
+	pInA1 = pInA0 + MATRIX_DIM4;
+	pInA2 = pInA1 + MATRIX_DIM4;
+	pInA3 = pInA2 + MATRIX_DIM4;
+	/*
+	 * load {b0,0, b0,1, b0,2, b0,3}
+	 */
+	vecInB = vld1q(pSrBVec);
+	pSrBVec += MATRIX_DIM4;
 
-    vecMac0 = vmulq(vecInB, *pInA0++);
-    vecMac1 = vmulq(vecInB, *pInA1++);
-    vecMac2 = vmulq(vecInB, *pInA2++);
-    vecMac3 = vmulq(vecInB, *pInA3++);
-    /*
-     * load {b1,0, b1,1, b1,2, b1,3}
-     */
-    vecInB = vld1q(pSrBVec);  
-    pSrBVec += MATRIX_DIM4;
+	vecMac0 = vmulq(vecInB, *pInA0++);
+	vecMac1 = vmulq(vecInB, *pInA1++);
+	vecMac2 = vmulq(vecInB, *pInA2++);
+	vecMac3 = vmulq(vecInB, *pInA3++);
+	/*
+	 * load {b1,0, b1,1, b1,2, b1,3}
+	 */
+	vecInB = vld1q(pSrBVec);
+	pSrBVec += MATRIX_DIM4;
 
-    vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
-    vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
-    vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
-    vecMac3 = vfmaq(vecMac3, vecInB, *pInA3++);
-    /*
-     * load {b2,0, b2,1, b2,2, b2,3}
-     */
-    vecInB = vld1q(pSrBVec);  
-    pSrBVec += MATRIX_DIM4;
+	vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
+	vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
+	vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
+	vecMac3 = vfmaq(vecMac3, vecInB, *pInA3++);
+	/*
+	 * load {b2,0, b2,1, b2,2, b2,3}
+	 */
+	vecInB = vld1q(pSrBVec);
+	pSrBVec += MATRIX_DIM4;
 
-    vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
-    vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
-    vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
-    vecMac3 = vfmaq(vecMac3, vecInB, *pInA3++);
-    /*
-     * load {b3,0, b3,1, b3,2, b3,3}
-     */
-    vecInB = vld1q(pSrBVec);  
-    pSrBVec += MATRIX_DIM4;
+	vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
+	vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
+	vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
+	vecMac3 = vfmaq(vecMac3, vecInB, *pInA3++);
+	/*
+	 * load {b3,0, b3,1, b3,2, b3,3}
+	 */
+	vecInB = vld1q(pSrBVec);
+	pSrBVec += MATRIX_DIM4;
 
-    vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
-    vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
-    vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
-    vecMac3 = vfmaq(vecMac3, vecInB, *pInA3++);
+	vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
+	vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
+	vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
+	vecMac3 = vfmaq(vecMac3, vecInB, *pInA3++);
 
-    vst1q(pOut, vecMac0);  
-    pOut += MATRIX_DIM4;
-    vst1q(pOut, vecMac1);  
-    pOut += MATRIX_DIM4;
-    vst1q(pOut, vecMac2);  
-    pOut += MATRIX_DIM4;
-    vst1q(pOut, vecMac3);
-    /*
-     * Return to application
-     */
-    return (ARM_MATH_SUCCESS);
+	vst1q(pOut, vecMac0);
+	pOut += MATRIX_DIM4;
+	vst1q(pOut, vecMac1);
+	pOut += MATRIX_DIM4;
+	vst1q(pOut, vecMac2);
+	pOut += MATRIX_DIM4;
+	vst1q(pOut, vecMac3);
+	/*
+	 * Return to application
+	 */
+	return (ARM_MATH_SUCCESS);
 }
 
 
@@ -264,255 +264,250 @@ __STATIC_INLINE arm_status arm_mat_mult_f32_4x4_mve(
  * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
  */
 arm_status arm_mat_mult_f32(
-  const arm_matrix_instance_f32 * pSrcA,
-  const arm_matrix_instance_f32 * pSrcB,
-  arm_matrix_instance_f32 * pDst)
+	const arm_matrix_instance_f32 * pSrcA,
+	const arm_matrix_instance_f32 * pSrcB,
+	arm_matrix_instance_f32 * pDst)
 {
-    float32_t  *pInB = pSrcB->pData;        /* input data matrix pointer B */
-    float32_t  *pInA = pSrcA->pData;        /* input data matrix pointer A  */
-    float32_t  *pOut = pDst->pData;         /* output data matrix pointer */
-    int         numRowsA = pSrcA->numRows;  /* number of rows of input matrix A */
-    int         numColsB = pSrcB->numCols;  /* number of columns of input matrix B */
-    int         numColsA = pSrcA->numCols;  /* number of columns of input matrix A */
-    uint32_t    blkCnt;                     /* loop counters */
-    uint32_t    i;
-    arm_status status; 
+	float32_t  *pInB = pSrcB->pData;        /* input data matrix pointer B */
+	float32_t  *pInA = pSrcA->pData;        /* input data matrix pointer A  */
+	float32_t  *pOut = pDst->pData;         /* output data matrix pointer */
+	int         numRowsA = pSrcA->numRows;  /* number of rows of input matrix A */
+	int         numColsB = pSrcB->numCols;  /* number of columns of input matrix B */
+	int         numColsA = pSrcA->numCols;  /* number of columns of input matrix A */
+	uint32_t    blkCnt;                     /* loop counters */
+	uint32_t    i;
+	arm_status status;
 
 #ifdef ARM_MATH_MATRIX_CHECK
 
-  /* Check for matrix mismatch condition */
-  if ((pSrcA->numCols != pSrcB->numRows) ||
-     (pSrcA->numRows != pDst->numRows) || (pSrcB->numCols != pDst->numCols))
-  {
-    /* Set status as ARM_MATH_SIZE_MISMATCH */
-    status = ARM_MATH_SIZE_MISMATCH;
-  }
-  else
+	/* Check for matrix mismatch condition */
+	if ((pSrcA->numCols != pSrcB->numRows) ||
+	    (pSrcA->numRows != pDst->numRows) || (pSrcB->numCols != pDst->numCols)) {
+		/* Set status as ARM_MATH_SIZE_MISMATCH */
+		status = ARM_MATH_SIZE_MISMATCH;
+	} else
 #endif /*      #ifdef ARM_MATH_MATRIX_CHECK    */
-  {
-      /* small squared matrix specialized routines */
-    if(numRowsA == numColsB && numColsB == numColsA) {
-        if (numRowsA == 1)
-        {
-           pOut[0] = pInA[0] * pInB[0];
-           return(ARM_MATH_SUCCESS);
-        }
-        else if(numRowsA == 2)
-            return arm_mat_mult_f32_2x2_mve(pSrcA, pSrcB, pDst);
-        else if(numRowsA == 3)
-            return arm_mat_mult_f32_3x3_mve(pSrcA, pSrcB, pDst);
-        else if(numRowsA == 4)
-            return arm_mat_mult_f32_4x4_mve(pSrcA, pSrcB, pDst);
-    }
+	{
+		/* small squared matrix specialized routines */
+		if (numRowsA == numColsB && numColsB == numColsA) {
+			if (numRowsA == 1) {
+				pOut[0] = pInA[0] * pInB[0];
+				return (ARM_MATH_SUCCESS);
+			} else if (numRowsA == 2)
+				return arm_mat_mult_f32_2x2_mve(pSrcA, pSrcB, pDst);
+			else if (numRowsA == 3)
+				return arm_mat_mult_f32_3x3_mve(pSrcA, pSrcB, pDst);
+			else if (numRowsA == 4)
+				return arm_mat_mult_f32_4x4_mve(pSrcA, pSrcB, pDst);
+		}
 
-    /* main loop process 4 rows */
-    i = numRowsA >> 2;
-    while (i > 0U)
-    {
-        float32_t *pInA0, *pInA1, *pInA2, *pInA3;
-        float32_t *pInB0;
-        float32_t *pOut0, *pOut1, *pOut2, *pOut3;
-        f32x4_t vecMac0, vecMac1, vecMac2, vecMac3;
-        f32x4_t vecInB;
+		/* main loop process 4 rows */
+		i = numRowsA >> 2;
 
-        /* pointers to 4 consecutive output rows */
-        pOut0 = pOut;
-        pOut1 = pOut0 + numColsB;
-        pOut2 = pOut1 + numColsB;
-        pOut3 = pOut2 + numColsB;
-        pInB0 = pInB;
+		while (i > 0U) {
+			float32_t *pInA0, *pInA1, *pInA2, *pInA3;
+			float32_t *pInB0;
+			float32_t *pOut0, *pOut1, *pOut2, *pOut3;
+			f32x4_t vecMac0, vecMac1, vecMac2, vecMac3;
+			f32x4_t vecInB;
 
-        uint32_t  k = numColsB >> 2;
-        while (k > 0U)
-        {
-            /* pointers to 4 consecutive Matrix A rows */
-            pInA0 = pInA;
-            pInA1 = pInA0 + numColsA;
-            pInA2 = pInA1 + numColsA;
-            pInA3 = pInA2 + numColsA;
+			/* pointers to 4 consecutive output rows */
+			pOut0 = pOut;
+			pOut1 = pOut0 + numColsB;
+			pOut2 = pOut1 + numColsB;
+			pOut3 = pOut2 + numColsB;
+			pInB0 = pInB;
 
-            vecMac0 = vdupq_n_f32(0.0f);
-            vecMac1 = vdupq_n_f32(0.0f);
-            vecMac2 = vdupq_n_f32(0.0f);
-            vecMac3 = vdupq_n_f32(0.0f);
+			uint32_t  k = numColsB >> 2;
 
-            blkCnt = numColsA;
+			while (k > 0U) {
+				/* pointers to 4 consecutive Matrix A rows */
+				pInA0 = pInA;
+				pInA1 = pInA0 + numColsA;
+				pInA2 = pInA1 + numColsA;
+				pInA3 = pInA2 + numColsA;
 
-            while (blkCnt > 0U)
-            {
-                /*
-                 * load {bi,4n+0, bi,4n+1, bi,4n+2, bi,4n+3}
-                 */
-                vecInB = *(f32x4_t *)pInB0; /* vldrwq_f32(pInB0, 0); */
+				vecMac0 = vdupq_n_f32(0.0f);
+				vecMac1 = vdupq_n_f32(0.0f);
+				vecMac2 = vdupq_n_f32(0.0f);
+				vecMac3 = vdupq_n_f32(0.0f);
 
-                vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
-                vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
-                vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
-                vecMac3 = vfmaq(vecMac3, vecInB, *pInA3++);
+				blkCnt = numColsA;
 
-                pInB0 = pInB0 + numColsB;
-                /*
-                 * Decrement the blockSize loop counter
-                 */
-                blkCnt--;
-            }
+				while (blkCnt > 0U) {
+					/*
+					 * load {bi,4n+0, bi,4n+1, bi,4n+2, bi,4n+3}
+					 */
+					vecInB = *(f32x4_t *)pInB0; /* vldrwq_f32(pInB0, 0); */
 
-            /* Store the results (4 x 4 block) in the destination buffer */
-            vst1q(pOut0, vecMac0);  
-            pOut0 += 4;
-            vst1q(pOut1, vecMac1);  
-            pOut1 += 4;
-            vst1q(pOut2, vecMac2);  
-            pOut2 += 4;
-            vst1q(pOut3, vecMac3);  
-            pOut3 += 4;
+					vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
+					vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
+					vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
+					vecMac3 = vfmaq(vecMac3, vecInB, *pInA3++);
 
-            /*
-             * rewind
-             */
-            pInB0 -= (numColsB * numColsA) - 4;
-            k--;
-        }
+					pInB0 = pInB0 + numColsB;
+					/*
+					 * Decrement the blockSize loop counter
+					 */
+					blkCnt--;
+				}
 
-        int       colBLeft = numColsB & 3;
-        if (colBLeft)
-        {
-            pInA0 = pInA;
-            pInA1 = pInA0 + numColsA;
-            pInA2 = pInA1 + numColsA;
-            pInA3 = pInA2 + numColsA;
-            mve_pred16_t p0 = vctp32q(colBLeft);
+				/* Store the results (4 x 4 block) in the destination buffer */
+				vst1q(pOut0, vecMac0);
+				pOut0 += 4;
+				vst1q(pOut1, vecMac1);
+				pOut1 += 4;
+				vst1q(pOut2, vecMac2);
+				pOut2 += 4;
+				vst1q(pOut3, vecMac3);
+				pOut3 += 4;
 
-            vecMac0 = vdupq_n_f32(0.0f);
-            vecMac1 = vdupq_n_f32(0.0f);
-            vecMac2 = vdupq_n_f32(0.0f);
-            vecMac3 = vdupq_n_f32(0.0f);
+				/*
+				 * rewind
+				 */
+				pInB0 -= (numColsB * numColsA) - 4;
+				k--;
+			}
 
-            blkCnt = numColsA;
+			int       colBLeft = numColsB & 3;
 
-            while (blkCnt > 0U)
-            {
-                /*
-                 * load {bi,4n+0, bi,4n+1, bi,4n+2, bi,4n+3}
-                 */
-                vecInB = vldrwq_z_f32(pInB0, p0);
+			if (colBLeft) {
+				pInA0 = pInA;
+				pInA1 = pInA0 + numColsA;
+				pInA2 = pInA1 + numColsA;
+				pInA3 = pInA2 + numColsA;
+				mve_pred16_t p0 = vctp32q(colBLeft);
 
-                vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
-                vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
-                vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
-                vecMac3 = vfmaq(vecMac3, vecInB, *pInA3++);
+				vecMac0 = vdupq_n_f32(0.0f);
+				vecMac1 = vdupq_n_f32(0.0f);
+				vecMac2 = vdupq_n_f32(0.0f);
+				vecMac3 = vdupq_n_f32(0.0f);
 
-                pInB0 = pInB0 + numColsB;
-                /*
-                 * Decrement the blockSize loop counter
-                 */
-                blkCnt--;
-            }
+				blkCnt = numColsA;
 
-            /* Store the results (4 x colBLeft block) in the destination buffer */
-            vstrwq_p_f32(pOut0, vecMac0, p0);
-            vstrwq_p_f32(pOut1, vecMac1, p0);
-            vstrwq_p_f32(pOut2, vecMac2, p0);
-            vstrwq_p_f32(pOut3, vecMac3, p0);
-        }
+				while (blkCnt > 0U) {
+					/*
+					 * load {bi,4n+0, bi,4n+1, bi,4n+2, bi,4n+3}
+					 */
+					vecInB = vldrwq_z_f32(pInB0, p0);
 
-        /* move to next rows */
-        pInA += 4 * numColsA;
-        pOut += 4 * numColsB;
-        i--;
-    }
+					vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
+					vecMac1 = vfmaq(vecMac1, vecInB, *pInA1++);
+					vecMac2 = vfmaq(vecMac2, vecInB, *pInA2++);
+					vecMac3 = vfmaq(vecMac3, vecInB, *pInA3++);
 
-    /*
-     * non multiple of 4 rows for Matrix A
-     * process single row
-     */
-    if (numRowsA & 3)
-    {
-        i = numRowsA & 3;
-        while (i > 0U)
-        {
-            float32_t   *pInA0;
-            float32_t   *pInB0;
-            float32_t   *pOut0;
-            f32x4_t    vecInB;
-            f32x4_t    vecMac0;
+					pInB0 = pInB0 + numColsB;
+					/*
+					 * Decrement the blockSize loop counter
+					 */
+					blkCnt--;
+				}
 
-            pOut0 = pOut;
-            pInB0 = pInB;
+				/* Store the results (4 x colBLeft block) in the destination buffer */
+				vstrwq_p_f32(pOut0, vecMac0, p0);
+				vstrwq_p_f32(pOut1, vecMac1, p0);
+				vstrwq_p_f32(pOut2, vecMac2, p0);
+				vstrwq_p_f32(pOut3, vecMac3, p0);
+			}
 
-            uint32_t       k = numColsB >> 2;
-            while (k > 0U)
-            {
-                pInA0 = pInA;
+			/* move to next rows */
+			pInA += 4 * numColsA;
+			pOut += 4 * numColsB;
+			i--;
+		}
 
-                vecMac0 = vdupq_n_f32(0.0f);
-                blkCnt = numColsA;
-                while (blkCnt > 0U)
-                {
-                    /*
-                     * load {bi,4n+0, bi,4n+1, bi,4n+2, bi,4n+3}
-                     */
-                    vecInB = *(f32x4_t *)pInB0; /* vldrwq_f32(pInB0, 0); */
+		/*
+		 * non multiple of 4 rows for Matrix A
+		 * process single row
+		 */
+		if (numRowsA & 3) {
+			i = numRowsA & 3;
 
-                    vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
+			while (i > 0U) {
+				float32_t   *pInA0;
+				float32_t   *pInB0;
+				float32_t   *pOut0;
+				f32x4_t    vecInB;
+				f32x4_t    vecMac0;
 
-                    pInB0 = pInB0 + numColsB;
-                    /*
-                     * Decrement the blockSize loop counter
-                     */
-                    blkCnt--;
-                }
+				pOut0 = pOut;
+				pInB0 = pInB;
 
-                /* Store the results (1 x 4 block) in the destination buffer */
-                vst1q(pOut0, vecMac0);  
-                pOut0 += 4;
+				uint32_t       k = numColsB >> 2;
 
-                /*
-                 * rewind
-                 */
-                pInB0 -= (numColsB * numColsA) - 4;
-                k--;
-            }
+				while (k > 0U) {
+					pInA0 = pInA;
 
-            int       colBLeft = numColsB & 3;
-            if (colBLeft)
-            {
-                pInA0 = pInA;
-                mve_pred16_t p0 = vctp32q(colBLeft);
+					vecMac0 = vdupq_n_f32(0.0f);
+					blkCnt = numColsA;
 
-                vecMac0 = vdupq_n_f32(0.0f);
-                blkCnt = numColsA;
-                while (blkCnt > 0U)
-                {
-                    /*
-                     * load {bi,4n+0, bi,4n+1, bi,4n+2, bi,4n+3}
-                     */
-                    vecInB = vldrwq_z_f32(pInB0, p0);
+					while (blkCnt > 0U) {
+						/*
+						 * load {bi,4n+0, bi,4n+1, bi,4n+2, bi,4n+3}
+						 */
+						vecInB = *(f32x4_t *)pInB0; /* vldrwq_f32(pInB0, 0); */
 
-                    vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
+						vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
 
-                    pInB0 = pInB0 + numColsB;
-                    /*
-                     * Decrement the blockSize loop counter
-                     */
-                    blkCnt--;
-                }
-                /* Store the results (1 x colBLeft block) in the destination buffer */
-                vstrwq_p_f32(pOut0, vecMac0, p0);
-            }
+						pInB0 = pInB0 + numColsB;
+						/*
+						 * Decrement the blockSize loop counter
+						 */
+						blkCnt--;
+					}
 
-            /* move to next row */
-            pInA += 1 * numColsA;
-            pOut += 1 * numColsB;
-            i--;
-        }
-        
-      }
-      status = ARM_MATH_SUCCESS;
-  }
+					/* Store the results (1 x 4 block) in the destination buffer */
+					vst1q(pOut0, vecMac0);
+					pOut0 += 4;
 
-  /* Return to application */
-  return (status);
+					/*
+					 * rewind
+					 */
+					pInB0 -= (numColsB * numColsA) - 4;
+					k--;
+				}
+
+				int       colBLeft = numColsB & 3;
+
+				if (colBLeft) {
+					pInA0 = pInA;
+					mve_pred16_t p0 = vctp32q(colBLeft);
+
+					vecMac0 = vdupq_n_f32(0.0f);
+					blkCnt = numColsA;
+
+					while (blkCnt > 0U) {
+						/*
+						 * load {bi,4n+0, bi,4n+1, bi,4n+2, bi,4n+3}
+						 */
+						vecInB = vldrwq_z_f32(pInB0, p0);
+
+						vecMac0 = vfmaq(vecMac0, vecInB, *pInA0++);
+
+						pInB0 = pInB0 + numColsB;
+						/*
+						 * Decrement the blockSize loop counter
+						 */
+						blkCnt--;
+					}
+
+					/* Store the results (1 x colBLeft block) in the destination buffer */
+					vstrwq_p_f32(pOut0, vecMac0, p0);
+				}
+
+				/* move to next row */
+				pInA += 1 * numColsA;
+				pOut += 1 * numColsB;
+				i--;
+			}
+
+		}
+
+		status = ARM_MATH_SUCCESS;
+	}
+
+	/* Return to application */
+	return (status);
 }
 #else
 
@@ -526,331 +521,322 @@ arm_status arm_mat_mult_f32(
  * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
  */
 arm_status arm_mat_mult_f32(
-  const arm_matrix_instance_f32 * pSrcA,
-  const arm_matrix_instance_f32 * pSrcB,
-  arm_matrix_instance_f32 * pDst)
+	const arm_matrix_instance_f32 * pSrcA,
+	const arm_matrix_instance_f32 * pSrcB,
+	arm_matrix_instance_f32 * pDst)
 {
-  float32_t *pIn1 = pSrcA->pData;                /* input data matrix pointer A */
-  float32_t *pIn2 = pSrcB->pData;                /* input data matrix pointer B */
-  float32_t *pInA = pSrcA->pData;                /* input data matrix pointer A  */
-  float32_t *pOut = pDst->pData;                 /* output data matrix pointer */
-  float32_t *px;                                 /* Temporary output data matrix pointer */
-  float32_t sum;                                 /* Accumulator */
-  uint16_t numRowsA = pSrcA->numRows;            /* number of rows of input matrix A */
-  uint16_t numColsB = pSrcB->numCols;            /* number of columns of input matrix B */
-  uint16_t numColsA = pSrcA->numCols;            /* number of columns of input matrix A */
+	float32_t *pIn1 = pSrcA->pData;                /* input data matrix pointer A */
+	float32_t *pIn2 = pSrcB->pData;                /* input data matrix pointer B */
+	float32_t *pInA = pSrcA->pData;                /* input data matrix pointer A  */
+	float32_t *pOut = pDst->pData;                 /* output data matrix pointer */
+	float32_t *px;                                 /* Temporary output data matrix pointer */
+	float32_t sum;                                 /* Accumulator */
+	uint16_t numRowsA = pSrcA->numRows;            /* number of rows of input matrix A */
+	uint16_t numColsB = pSrcB->numCols;            /* number of columns of input matrix B */
+	uint16_t numColsA = pSrcA->numCols;            /* number of columns of input matrix A */
 
 
-  uint16_t col, i = 0U, j, row = numRowsA, rowCnt, colCnt;      /* loop counters */
-  arm_status status;                             /* status of matrix multiplication */
+	uint16_t col, i = 0U, j, row = numRowsA, rowCnt, colCnt;      /* loop counters */
+	arm_status status;                             /* status of matrix multiplication */
 
-  float32x4_t a0V, a1V, a2V, a3V, a4V, a5V, a6V, a7V;
-  float32x4_t acc0,acc1,acc2,acc3,acc4,acc5,acc6,acc7,temp;
-  float32x2_t accum = vdup_n_f32(0);
-  float32_t *pIn1B = pSrcA->pData;    
-  float32_t *pIn1C = pSrcA->pData;    
-  float32_t *pIn1D = pSrcA->pData;  
-  float32_t *pIn1E = pSrcA->pData; 
-  float32_t *pIn1F = pSrcA->pData; 
-  float32_t *pIn1G = pSrcA->pData; 
-  float32_t *pIn1H = pSrcA->pData;   
+	float32x4_t a0V, a1V, a2V, a3V, a4V, a5V, a6V, a7V;
+	float32x4_t acc0, acc1, acc2, acc3, acc4, acc5, acc6, acc7, temp;
+	float32x2_t accum = vdup_n_f32(0);
+	float32_t *pIn1B = pSrcA->pData;
+	float32_t *pIn1C = pSrcA->pData;
+	float32_t *pIn1D = pSrcA->pData;
+	float32_t *pIn1E = pSrcA->pData;
+	float32_t *pIn1F = pSrcA->pData;
+	float32_t *pIn1G = pSrcA->pData;
+	float32_t *pIn1H = pSrcA->pData;
 
-  float32_t *pxB,*pxC, *pxD, *pxE, *pxF, *pxG, *pxH;                                 /* Temporary output data matrix pointer */
-  float32_t sum0,sum1, sum2,sum3, sum4, sum5 , sum6, sum7;
+	float32_t *pxB, *pxC, *pxD, *pxE, *pxF, *pxG, *pxH;                                /* Temporary output data matrix pointer */
+	float32_t sum0, sum1, sum2, sum3, sum4, sum5, sum6, sum7;
 
 #ifdef ARM_MATH_MATRIX_CHECK
 
-  /* Check for matrix mismatch condition */
-  if ((pSrcA->numCols != pSrcB->numRows) ||
-     (pSrcA->numRows != pDst->numRows) || (pSrcB->numCols != pDst->numCols))
-  {
-    /* Set status as ARM_MATH_SIZE_MISMATCH */
-    status = ARM_MATH_SIZE_MISMATCH;
-  }
-  else
+	/* Check for matrix mismatch condition */
+	if ((pSrcA->numCols != pSrcB->numRows) ||
+	    (pSrcA->numRows != pDst->numRows) || (pSrcB->numCols != pDst->numCols)) {
+		/* Set status as ARM_MATH_SIZE_MISMATCH */
+		status = ARM_MATH_SIZE_MISMATCH;
+	} else
 #endif /*      #ifdef ARM_MATH_MATRIX_CHECK    */
-  {
-    /* The following loop performs the dot-product of each row in pSrcA with each column in pSrcB */
-    /* Row loop */
-    rowCnt = row >> 3;
+	{
+		/* The following loop performs the dot-product of each row in pSrcA with each column in pSrcB */
+		/* Row loop */
+		rowCnt = row >> 3;
 
-    while(rowCnt > 0)
-    {
-      /* Output pointer is set to starting address of the row being processed */
-      px = pOut + GROUPOFROWS*i;
-      pxB = px + numColsB;
-      pxC = px + 2*numColsB;
-      pxD = px + 3*numColsB;
-      pxE = px + 4*numColsB;
-      pxF = px + 5*numColsB;
-      pxG = px + 6*numColsB;
-      pxH = px + 7*numColsB;
+		while (rowCnt > 0) {
+			/* Output pointer is set to starting address of the row being processed */
+			px = pOut + GROUPOFROWS * i;
+			pxB = px + numColsB;
+			pxC = px + 2 * numColsB;
+			pxD = px + 3 * numColsB;
+			pxE = px + 4 * numColsB;
+			pxF = px + 5 * numColsB;
+			pxG = px + 6 * numColsB;
+			pxH = px + 7 * numColsB;
 
-      /* For every row wise process, the column loop counter is to be initiated */
-      col = numColsB;
+			/* For every row wise process, the column loop counter is to be initiated */
+			col = numColsB;
 
-      /* For every row wise process, the pIn2 pointer is set
-       ** to the starting address of the pSrcB data */
-      pIn2 = pSrcB->pData;
+			/* For every row wise process, the pIn2 pointer is set
+			 ** to the starting address of the pSrcB data */
+			pIn2 = pSrcB->pData;
 
-      j = 0U;
+			j = 0U;
 
-      /* Column loop */
-      do
-      {
-        /* Set the variable sum, that acts as accumulator, to zero */
-        sum0 = 0.0f;
-        sum1 = 0.0f;
-        sum2 = 0.0f;
-        sum3 = 0.0f;
-        sum4 = 0.0f;
-        sum5 = 0.0f;
-        sum6 = 0.0f;
-        sum7 = 0.0f;
+			/* Column loop */
+			do {
+				/* Set the variable sum, that acts as accumulator, to zero */
+				sum0 = 0.0f;
+				sum1 = 0.0f;
+				sum2 = 0.0f;
+				sum3 = 0.0f;
+				sum4 = 0.0f;
+				sum5 = 0.0f;
+				sum6 = 0.0f;
+				sum7 = 0.0f;
 
-        /* Initiate the pointer pIn1 to point to the starting address of the column being processed */
-        pIn1 = pInA;
-        pIn1B = pIn1 + numColsA;
-        pIn1C = pIn1 + 2*numColsA;
-        pIn1D = pIn1 + 3*numColsA;
-        pIn1E = pIn1 + 4*numColsA;
-        pIn1F = pIn1 + 5*numColsA;
-        pIn1G = pIn1 + 6*numColsA;
-        pIn1H = pIn1 + 7*numColsA;
+				/* Initiate the pointer pIn1 to point to the starting address of the column being processed */
+				pIn1 = pInA;
+				pIn1B = pIn1 + numColsA;
+				pIn1C = pIn1 + 2 * numColsA;
+				pIn1D = pIn1 + 3 * numColsA;
+				pIn1E = pIn1 + 4 * numColsA;
+				pIn1F = pIn1 + 5 * numColsA;
+				pIn1G = pIn1 + 6 * numColsA;
+				pIn1H = pIn1 + 7 * numColsA;
 
-        acc0 = vdupq_n_f32(0.0);
-        acc1 = vdupq_n_f32(0.0);
-        acc2 = vdupq_n_f32(0.0);
-        acc3 = vdupq_n_f32(0.0);
-        acc4 = vdupq_n_f32(0.0);
-        acc5 = vdupq_n_f32(0.0);
-        acc6 = vdupq_n_f32(0.0);
-        acc7 = vdupq_n_f32(0.0);
+				acc0 = vdupq_n_f32(0.0);
+				acc1 = vdupq_n_f32(0.0);
+				acc2 = vdupq_n_f32(0.0);
+				acc3 = vdupq_n_f32(0.0);
+				acc4 = vdupq_n_f32(0.0);
+				acc5 = vdupq_n_f32(0.0);
+				acc6 = vdupq_n_f32(0.0);
+				acc7 = vdupq_n_f32(0.0);
 
-        /* Compute 4 MACs simultaneously. */
-        colCnt = numColsA >> 2U;
+				/* Compute 4 MACs simultaneously. */
+				colCnt = numColsA >> 2U;
 
-        /* Matrix multiplication */
-        while (colCnt > 0U)
-        {
-          /* c(m,n) = a(1,1)*b(1,1) + a(1,2)*b(2,1) + ... + a(m,p)*b(p,n) */
-          a0V = vld1q_f32(pIn1);  
-          a1V = vld1q_f32(pIn1B);  
-          a2V = vld1q_f32(pIn1C); 
-          a3V = vld1q_f32(pIn1D); 
-          a4V = vld1q_f32(pIn1E); 
-          a5V = vld1q_f32(pIn1F); 
-          a6V = vld1q_f32(pIn1G); 
-          a7V = vld1q_f32(pIn1H); 
+				/* Matrix multiplication */
+				while (colCnt > 0U) {
+					/* c(m,n) = a(1,1)*b(1,1) + a(1,2)*b(2,1) + ... + a(m,p)*b(p,n) */
+					a0V = vld1q_f32(pIn1);
+					a1V = vld1q_f32(pIn1B);
+					a2V = vld1q_f32(pIn1C);
+					a3V = vld1q_f32(pIn1D);
+					a4V = vld1q_f32(pIn1E);
+					a5V = vld1q_f32(pIn1F);
+					a6V = vld1q_f32(pIn1G);
+					a7V = vld1q_f32(pIn1H);
 
-	      pIn1 += 4;
-          pIn1B += 4;
-          pIn1C += 4;
-          pIn1D += 4;
-          pIn1E += 4;
-          pIn1F += 4;
-          pIn1G += 4;
-          pIn1H += 4;
-          
-          temp = vsetq_lane_f32(*pIn2,temp,0);
-          pIn2 += numColsB;
-          temp = vsetq_lane_f32(*pIn2,temp,1);
-          pIn2 += numColsB;
-          temp = vsetq_lane_f32(*pIn2,temp,2);
-          pIn2 += numColsB;
-          temp = vsetq_lane_f32(*pIn2,temp,3);
-          pIn2 += numColsB;
+					pIn1 += 4;
+					pIn1B += 4;
+					pIn1C += 4;
+					pIn1D += 4;
+					pIn1E += 4;
+					pIn1F += 4;
+					pIn1G += 4;
+					pIn1H += 4;
 
-          acc0 = vmlaq_f32(acc0,a0V,temp);
-          acc1 = vmlaq_f32(acc1,a1V,temp);
-          acc2 = vmlaq_f32(acc2,a2V,temp);
-          acc3 = vmlaq_f32(acc3,a3V,temp);
-          acc4 = vmlaq_f32(acc4,a4V,temp);
-          acc5 = vmlaq_f32(acc5,a5V,temp);
-          acc6 = vmlaq_f32(acc6,a6V,temp);
-          acc7 = vmlaq_f32(acc7,a7V,temp);
+					temp = vsetq_lane_f32(*pIn2, temp, 0);
+					pIn2 += numColsB;
+					temp = vsetq_lane_f32(*pIn2, temp, 1);
+					pIn2 += numColsB;
+					temp = vsetq_lane_f32(*pIn2, temp, 2);
+					pIn2 += numColsB;
+					temp = vsetq_lane_f32(*pIn2, temp, 3);
+					pIn2 += numColsB;
 
-          /* Decrement the loop count */
-          colCnt--;
-        }
+					acc0 = vmlaq_f32(acc0, a0V, temp);
+					acc1 = vmlaq_f32(acc1, a1V, temp);
+					acc2 = vmlaq_f32(acc2, a2V, temp);
+					acc3 = vmlaq_f32(acc3, a3V, temp);
+					acc4 = vmlaq_f32(acc4, a4V, temp);
+					acc5 = vmlaq_f32(acc5, a5V, temp);
+					acc6 = vmlaq_f32(acc6, a6V, temp);
+					acc7 = vmlaq_f32(acc7, a7V, temp);
 
-        accum = vpadd_f32(vget_low_f32(acc0), vget_high_f32(acc0));
-        sum0 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+					/* Decrement the loop count */
+					colCnt--;
+				}
 
-        accum = vpadd_f32(vget_low_f32(acc1), vget_high_f32(acc1));
-        sum1 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+				accum = vpadd_f32(vget_low_f32(acc0), vget_high_f32(acc0));
+				sum0 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
-        accum = vpadd_f32(vget_low_f32(acc2), vget_high_f32(acc2));
-        sum2 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+				accum = vpadd_f32(vget_low_f32(acc1), vget_high_f32(acc1));
+				sum1 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
-        accum = vpadd_f32(vget_low_f32(acc3), vget_high_f32(acc3));
-        sum3 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+				accum = vpadd_f32(vget_low_f32(acc2), vget_high_f32(acc2));
+				sum2 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
-        accum = vpadd_f32(vget_low_f32(acc4), vget_high_f32(acc4));
-        sum4 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+				accum = vpadd_f32(vget_low_f32(acc3), vget_high_f32(acc3));
+				sum3 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
-        accum = vpadd_f32(vget_low_f32(acc5), vget_high_f32(acc5));
-        sum5 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+				accum = vpadd_f32(vget_low_f32(acc4), vget_high_f32(acc4));
+				sum4 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
-        accum = vpadd_f32(vget_low_f32(acc6), vget_high_f32(acc6));
-        sum6 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+				accum = vpadd_f32(vget_low_f32(acc5), vget_high_f32(acc5));
+				sum5 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
-        accum = vpadd_f32(vget_low_f32(acc7), vget_high_f32(acc7));
-        sum7 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+				accum = vpadd_f32(vget_low_f32(acc6), vget_high_f32(acc6));
+				sum6 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
-        /* If the columns of pSrcA is not a multiple of 4, compute any remaining MACs here.
-         ** No loop unrolling is used. */
-        colCnt = numColsA & 3;
+				accum = vpadd_f32(vget_low_f32(acc7), vget_high_f32(acc7));
+				sum7 += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
-        while (colCnt > 0U)
-        {
-          /* c(m,n) = a(1,1)*b(1,1) + a(1,2)*b(2,1) + ... + a(m,p)*b(p,n) */
-          sum0 += *pIn1++ * (*pIn2);
-          sum1 += *pIn1B++ * (*pIn2);
-          sum2 += *pIn1C++ * (*pIn2);
-          sum3 += *pIn1D++ * (*pIn2);
-          sum4 += *pIn1E++ * (*pIn2);
-          sum5 += *pIn1F++ * (*pIn2);
-          sum6 += *pIn1G++ * (*pIn2);
-          sum7 += *pIn1H++ * (*pIn2);
-          pIn2 += numColsB;
+				/* If the columns of pSrcA is not a multiple of 4, compute any remaining MACs here.
+				 ** No loop unrolling is used. */
+				colCnt = numColsA & 3;
 
-          /* Decrement the loop counter */
-          colCnt--;
-        }
+				while (colCnt > 0U) {
+					/* c(m,n) = a(1,1)*b(1,1) + a(1,2)*b(2,1) + ... + a(m,p)*b(p,n) */
+					sum0 += *pIn1++ * (*pIn2);
+					sum1 += *pIn1B++ * (*pIn2);
+					sum2 += *pIn1C++ * (*pIn2);
+					sum3 += *pIn1D++ * (*pIn2);
+					sum4 += *pIn1E++ * (*pIn2);
+					sum5 += *pIn1F++ * (*pIn2);
+					sum6 += *pIn1G++ * (*pIn2);
+					sum7 += *pIn1H++ * (*pIn2);
+					pIn2 += numColsB;
 
-        /* Store the result in the destination buffer */
-        *px++ = sum0;
-        *pxB++ = sum1;
-        *pxC++ = sum2;
-        *pxD++ = sum3;
-        *pxE++ = sum4;
-        *pxF++ = sum5;
-        *pxG++ = sum6;
-        *pxH++ = sum7;
+					/* Decrement the loop counter */
+					colCnt--;
+				}
 
-        /* Update the pointer pIn2 to point to the  starting address of the next column */
-        j++;
-        pIn2 = pSrcB->pData + j;
+				/* Store the result in the destination buffer */
+				*px++ = sum0;
+				*pxB++ = sum1;
+				*pxC++ = sum2;
+				*pxD++ = sum3;
+				*pxE++ = sum4;
+				*pxF++ = sum5;
+				*pxG++ = sum6;
+				*pxH++ = sum7;
 
-        /* Decrement the column loop counter */
-        col--;
+				/* Update the pointer pIn2 to point to the  starting address of the next column */
+				j++;
+				pIn2 = pSrcB->pData + j;
 
-      } while (col > 0U);
+				/* Decrement the column loop counter */
+				col--;
 
-      /* Update the pointer pInA to point to the  starting address of the next row */
-      i = i + numColsB;
-      pInA = pInA + GROUPOFROWS*numColsA;
+			} while (col > 0U);
 
-      /* Decrement the row loop counter */
-      rowCnt--;
-    } 
+			/* Update the pointer pInA to point to the  starting address of the next row */
+			i = i + numColsB;
+			pInA = pInA + GROUPOFROWS * numColsA;
 
-    /*
+			/* Decrement the row loop counter */
+			rowCnt--;
+		}
 
-    i was the index of a group of rows computed by previous loop.
-    Now i is the index of a row since below code is computing row per row
-    and no more group of row per group of rows.
+		/*
 
-    */
+		i was the index of a group of rows computed by previous loop.
+		Now i is the index of a row since below code is computing row per row
+		and no more group of row per group of rows.
 
-    i = GROUPOFROWS*i;
-    rowCnt = row & 7;
+		*/
 
-    while(rowCnt > 0)
-    {
-      /* Output pointer is set to starting address of the row being processed */
-      px = pOut + i;
+		i = GROUPOFROWS * i;
+		rowCnt = row & 7;
 
-      /* For every row wise process, the column loop counter is to be initiated */
-      col = numColsB;
+		while (rowCnt > 0) {
+			/* Output pointer is set to starting address of the row being processed */
+			px = pOut + i;
 
-      /* For every row wise process, the pIn2 pointer is set
-       ** to the starting address of the pSrcB data */
-      pIn2 = pSrcB->pData;
+			/* For every row wise process, the column loop counter is to be initiated */
+			col = numColsB;
 
-      j = 0U;
+			/* For every row wise process, the pIn2 pointer is set
+			 ** to the starting address of the pSrcB data */
+			pIn2 = pSrcB->pData;
 
-      /* Column loop */
-      do
-      {
-        /* Set the variable sum, that acts as accumulator, to zero */
-        sum = 0.0f;
+			j = 0U;
 
-        /* Initiate the pointer pIn1 to point to the starting address of the column being processed */
-        pIn1 = pInA;
+			/* Column loop */
+			do {
+				/* Set the variable sum, that acts as accumulator, to zero */
+				sum = 0.0f;
 
-        acc0 = vdupq_n_f32(0.0);
+				/* Initiate the pointer pIn1 to point to the starting address of the column being processed */
+				pIn1 = pInA;
 
-        /* Compute 4 MACs simultaneously. */
-        colCnt = numColsA >> 2U;
+				acc0 = vdupq_n_f32(0.0);
 
-        /* Matrix multiplication   */
-        while (colCnt > 0U)
-        {
-          /* c(m,n) = a(1,1)*b(1,1) + a(1,2)*b(2,1) + ... + a(m,p)*b(p,n) */
-          a0V = vld1q_f32(pIn1);  // load & separate real/imag pSrcA (de-interleave 2)
-          pIn1 += 4;
-          
-          temp = vsetq_lane_f32(*pIn2,temp,0);
-          pIn2 += numColsB;
-          temp = vsetq_lane_f32(*pIn2,temp,1);
-          pIn2 += numColsB;
-          temp = vsetq_lane_f32(*pIn2,temp,2);
-          pIn2 += numColsB;
-          temp = vsetq_lane_f32(*pIn2,temp,3);
-          pIn2 += numColsB;
+				/* Compute 4 MACs simultaneously. */
+				colCnt = numColsA >> 2U;
 
-          acc0 = vmlaq_f32(acc0,a0V,temp);
+				/* Matrix multiplication   */
+				while (colCnt > 0U) {
+					/* c(m,n) = a(1,1)*b(1,1) + a(1,2)*b(2,1) + ... + a(m,p)*b(p,n) */
+					a0V = vld1q_f32(pIn1);  // load & separate real/imag pSrcA (de-interleave 2)
+					pIn1 += 4;
 
-          /* Decrement the loop count */
-          colCnt--;
-        }
+					temp = vsetq_lane_f32(*pIn2, temp, 0);
+					pIn2 += numColsB;
+					temp = vsetq_lane_f32(*pIn2, temp, 1);
+					pIn2 += numColsB;
+					temp = vsetq_lane_f32(*pIn2, temp, 2);
+					pIn2 += numColsB;
+					temp = vsetq_lane_f32(*pIn2, temp, 3);
+					pIn2 += numColsB;
 
-        accum = vpadd_f32(vget_low_f32(acc0), vget_high_f32(acc0));
-        sum += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
+					acc0 = vmlaq_f32(acc0, a0V, temp);
 
-        /* If the columns of pSrcA is not a multiple of 4, compute any remaining MACs here.
-         ** No loop unrolling is used. */
-        colCnt = numColsA % 0x4U;
+					/* Decrement the loop count */
+					colCnt--;
+				}
 
-        while (colCnt > 0U)
-        {
-          /* c(m,n) = a(1,1)*b(1,1) + a(1,2)*b(2,1) + ... + a(m,p)*b(p,n) */
-          sum += *pIn1++ * (*pIn2);
-          pIn2 += numColsB;
+				accum = vpadd_f32(vget_low_f32(acc0), vget_high_f32(acc0));
+				sum += vget_lane_f32(accum, 0) + vget_lane_f32(accum, 1);
 
-          /* Decrement the loop counter */
-          colCnt--;
-        }
+				/* If the columns of pSrcA is not a multiple of 4, compute any remaining MACs here.
+				 ** No loop unrolling is used. */
+				colCnt = numColsA % 0x4U;
 
-        /* Store the result in the destination buffer */
-        *px++ = sum;
+				while (colCnt > 0U) {
+					/* c(m,n) = a(1,1)*b(1,1) + a(1,2)*b(2,1) + ... + a(m,p)*b(p,n) */
+					sum += *pIn1++ * (*pIn2);
+					pIn2 += numColsB;
 
-        /* Update the pointer pIn2 to point to the  starting address of the next column */
-        j++;
-        pIn2 = pSrcB->pData + j;
+					/* Decrement the loop counter */
+					colCnt--;
+				}
 
-        /* Decrement the column loop counter */
-        col--;
+				/* Store the result in the destination buffer */
+				*px++ = sum;
 
-      } while (col > 0U);
+				/* Update the pointer pIn2 to point to the  starting address of the next column */
+				j++;
+				pIn2 = pSrcB->pData + j;
+
+				/* Decrement the column loop counter */
+				col--;
+
+			} while (col > 0U);
 
 
-      /* Update the pointer pInA to point to the  starting address of the next row */
-      i = i + numColsB;
-      pInA = pInA + numColsA;
+			/* Update the pointer pInA to point to the  starting address of the next row */
+			i = i + numColsB;
+			pInA = pInA + numColsA;
 
-      /* Decrement the row loop counter */
-      rowCnt--;
+			/* Decrement the row loop counter */
+			rowCnt--;
 
-    } 
-    /* Set status as ARM_MATH_SUCCESS */
-    status = ARM_MATH_SUCCESS;
-  }
+		}
 
-  /* Return to application */
-  return (status);
+		/* Set status as ARM_MATH_SUCCESS */
+		status = ARM_MATH_SUCCESS;
+	}
+
+	/* Return to application */
+	return (status);
 }
 #else
 /**
@@ -862,135 +848,129 @@ arm_status arm_mat_mult_f32(
  * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
  */
 arm_status arm_mat_mult_f32(
-  const arm_matrix_instance_f32 * pSrcA,
-  const arm_matrix_instance_f32 * pSrcB,
-        arm_matrix_instance_f32 * pDst)
+	const arm_matrix_instance_f32 * pSrcA,
+	const arm_matrix_instance_f32 * pSrcB,
+	arm_matrix_instance_f32 * pDst)
 {
-  float32_t *pIn1 = pSrcA->pData;                /* Input data matrix pointer A */
-  float32_t *pIn2 = pSrcB->pData;                /* Input data matrix pointer B */
-  float32_t *pInA = pSrcA->pData;                /* Input data matrix pointer A */
-  float32_t *pInB = pSrcB->pData;                /* Input data matrix pointer B */
-  float32_t *pOut = pDst->pData;                 /* Output data matrix pointer */
-  float32_t *px;                                 /* Temporary output data matrix pointer */
-  float32_t sum;                                 /* Accumulator */
-  uint16_t numRowsA = pSrcA->numRows;            /* Number of rows of input matrix A */
-  uint16_t numColsB = pSrcB->numCols;            /* Number of columns of input matrix B */
-  uint16_t numColsA = pSrcA->numCols;            /* Number of columns of input matrix A */
-  uint32_t col, i = 0U, row = numRowsA, colCnt;  /* Loop counters */
-  arm_status status;                             /* Status of matrix multiplication */
+	float32_t *pIn1 = pSrcA->pData;                /* Input data matrix pointer A */
+	float32_t *pIn2 = pSrcB->pData;                /* Input data matrix pointer B */
+	float32_t *pInA = pSrcA->pData;                /* Input data matrix pointer A */
+	float32_t *pInB = pSrcB->pData;                /* Input data matrix pointer B */
+	float32_t *pOut = pDst->pData;                 /* Output data matrix pointer */
+	float32_t *px;                                 /* Temporary output data matrix pointer */
+	float32_t sum;                                 /* Accumulator */
+	uint16_t numRowsA = pSrcA->numRows;            /* Number of rows of input matrix A */
+	uint16_t numColsB = pSrcB->numCols;            /* Number of columns of input matrix B */
+	uint16_t numColsA = pSrcA->numCols;            /* Number of columns of input matrix A */
+	uint32_t col, i = 0U, row = numRowsA, colCnt;  /* Loop counters */
+	arm_status status;                             /* Status of matrix multiplication */
 
 #ifdef ARM_MATH_MATRIX_CHECK
 
-  /* Check for matrix mismatch condition */
-  if ((pSrcA->numCols != pSrcB->numRows) ||
-      (pSrcA->numRows != pDst->numRows)  ||
-      (pSrcB->numCols != pDst->numCols)    )
-  {
-    /* Set status as ARM_MATH_SIZE_MISMATCH */
-    status = ARM_MATH_SIZE_MISMATCH;
-  }
-  else
+	/* Check for matrix mismatch condition */
+	if ((pSrcA->numCols != pSrcB->numRows) ||
+	    (pSrcA->numRows != pDst->numRows)  ||
+	    (pSrcB->numCols != pDst->numCols)    ) {
+		/* Set status as ARM_MATH_SIZE_MISMATCH */
+		status = ARM_MATH_SIZE_MISMATCH;
+	} else
 
 #endif /* #ifdef ARM_MATH_MATRIX_CHECK */
 
-  {
-    /* The following loop performs the dot-product of each row in pSrcA with each column in pSrcB */
-    /* row loop */
-    do
-    {
-      /* Output pointer is set to starting address of row being processed */
-      px = pOut + i;
+	{
+		/* The following loop performs the dot-product of each row in pSrcA with each column in pSrcB */
+		/* row loop */
+		do {
+			/* Output pointer is set to starting address of row being processed */
+			px = pOut + i;
 
-      /* For every row wise process, column loop counter is to be initiated */
-      col = numColsB;
+			/* For every row wise process, column loop counter is to be initiated */
+			col = numColsB;
 
-      /* For every row wise process, pIn2 pointer is set to starting address of pSrcB data */
-      pIn2 = pSrcB->pData;
+			/* For every row wise process, pIn2 pointer is set to starting address of pSrcB data */
+			pIn2 = pSrcB->pData;
 
-      /* column loop */
-      do
-      {
-        /* Set the variable sum, that acts as accumulator, to zero */
-        sum = 0.0f;
+			/* column loop */
+			do {
+				/* Set the variable sum, that acts as accumulator, to zero */
+				sum = 0.0f;
 
-        /* Initialize pointer pIn1 to point to starting address of column being processed */
-        pIn1 = pInA;
+				/* Initialize pointer pIn1 to point to starting address of column being processed */
+				pIn1 = pInA;
 
 #if defined (ARM_MATH_LOOPUNROLL)
 
-        /* Loop unrolling: Compute 4 MACs at a time. */
-        colCnt = numColsA >> 2U;
+				/* Loop unrolling: Compute 4 MACs at a time. */
+				colCnt = numColsA >> 2U;
 
-        /* matrix multiplication */
-        while (colCnt > 0U)
-        {
-          /* c(m,p) = a(m,1) * b(1,p) + a(m,2) * b(2,p) + .... + a(m,n) * b(n,p) */
+				/* matrix multiplication */
+				while (colCnt > 0U) {
+					/* c(m,p) = a(m,1) * b(1,p) + a(m,2) * b(2,p) + .... + a(m,n) * b(n,p) */
 
-          /* Perform the multiply-accumulates */
-          sum += *pIn1++ * *pIn2;
-          pIn2 += numColsB;
+					/* Perform the multiply-accumulates */
+					sum += *pIn1++ * *pIn2;
+					pIn2 += numColsB;
 
-          sum += *pIn1++ * *pIn2;
-          pIn2 += numColsB;
+					sum += *pIn1++ * *pIn2;
+					pIn2 += numColsB;
 
-          sum += *pIn1++ * *pIn2;
-          pIn2 += numColsB;
+					sum += *pIn1++ * *pIn2;
+					pIn2 += numColsB;
 
-          sum += *pIn1++ * *pIn2;
-          pIn2 += numColsB;
+					sum += *pIn1++ * *pIn2;
+					pIn2 += numColsB;
 
-          /* Decrement loop counter */
-          colCnt--;
-        }
+					/* Decrement loop counter */
+					colCnt--;
+				}
 
-        /* Loop unrolling: Compute remaining MACs */
-        colCnt = numColsA % 0x4U;
+				/* Loop unrolling: Compute remaining MACs */
+				colCnt = numColsA % 0x4U;
 
 #else
 
-        /* Initialize cntCnt with number of columns */
-        colCnt = numColsA;
+				/* Initialize cntCnt with number of columns */
+				colCnt = numColsA;
 
 #endif /* #if defined (ARM_MATH_LOOPUNROLL) */
 
-        while (colCnt > 0U)
-        {
-          /* c(m,p) = a(m,1) * b(1,p) + a(m,2) * b(2,p) + .... + a(m,n) * b(n,p) */
+				while (colCnt > 0U) {
+					/* c(m,p) = a(m,1) * b(1,p) + a(m,2) * b(2,p) + .... + a(m,n) * b(n,p) */
 
-          /* Perform the multiply-accumulates */
-          sum += *pIn1++ * *pIn2;
-          pIn2 += numColsB;
+					/* Perform the multiply-accumulates */
+					sum += *pIn1++ * *pIn2;
+					pIn2 += numColsB;
 
-          /* Decrement loop counter */
-          colCnt--;
-        }
+					/* Decrement loop counter */
+					colCnt--;
+				}
 
-        /* Store result in destination buffer */
-        *px++ = sum;
+				/* Store result in destination buffer */
+				*px++ = sum;
 
-        /* Decrement column loop counter */
-        col--;
+				/* Decrement column loop counter */
+				col--;
 
-        /* Update pointer pIn2 to point to starting address of next column */
-        pIn2 = pInB + (numColsB - col);
+				/* Update pointer pIn2 to point to starting address of next column */
+				pIn2 = pInB + (numColsB - col);
 
-      } while (col > 0U);
+			} while (col > 0U);
 
-      /* Update pointer pInA to point to starting address of next row */
-      i = i + numColsB;
-      pInA = pInA + numColsA;
+			/* Update pointer pInA to point to starting address of next row */
+			i = i + numColsB;
+			pInA = pInA + numColsA;
 
-      /* Decrement row loop counter */
-      row--;
+			/* Decrement row loop counter */
+			row--;
 
-    } while (row > 0U);
+		} while (row > 0U);
 
-    /* Set status as ARM_MATH_SUCCESS */
-    status = ARM_MATH_SUCCESS;
-  }
+		/* Set status as ARM_MATH_SUCCESS */
+		status = ARM_MATH_SUCCESS;
+	}
 
-  /* Return to application */
-  return (status);
+	/* Return to application */
+	return (status);
 }
 
 #endif /* #if defined(ARM_MATH_NEON) */

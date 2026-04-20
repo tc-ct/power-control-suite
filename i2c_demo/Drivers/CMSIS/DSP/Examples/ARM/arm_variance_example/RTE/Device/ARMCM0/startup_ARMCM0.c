@@ -69,36 +69,36 @@ void Interrupt9_Handler     (void) __attribute__ ((weak, alias("Default_Handler"
 #endif
 
 extern const VECTOR_TABLE_Type __VECTOR_TABLE[48];
-       const VECTOR_TABLE_Type __VECTOR_TABLE[48] __VECTOR_TABLE_ATTRIBUTE = {
-  (VECTOR_TABLE_Type)(&__INITIAL_SP),       /*     Initial Stack Pointer */
-  Reset_Handler,                            /*     Reset Handler */
-  NMI_Handler,                              /* -14 NMI Handler */
-  HardFault_Handler,                        /* -13 Hard Fault Handler */
-  0,                                        /*     Reserved */
-  0,                                        /*     Reserved */
-  0,                                        /*     Reserved */
-  0,                                        /*     Reserved */
-  0,                                        /*     Reserved */
-  0,                                        /*     Reserved */
-  0,                                        /*     Reserved */
-  SVC_Handler,                              /*  -5 SVCall Handler */
-  0,                                        /*     Reserved */
-  0,                                        /*     Reserved */
-  PendSV_Handler,                           /*  -2 PendSV Handler */
-  SysTick_Handler,                          /*  -1 SysTick Handler */
+const VECTOR_TABLE_Type __VECTOR_TABLE[48] __VECTOR_TABLE_ATTRIBUTE = {
+	(VECTOR_TABLE_Type)(&__INITIAL_SP),       /*     Initial Stack Pointer */
+	Reset_Handler,                            /*     Reset Handler */
+	NMI_Handler,                              /* -14 NMI Handler */
+	HardFault_Handler,                        /* -13 Hard Fault Handler */
+	0,                                        /*     Reserved */
+	0,                                        /*     Reserved */
+	0,                                        /*     Reserved */
+	0,                                        /*     Reserved */
+	0,                                        /*     Reserved */
+	0,                                        /*     Reserved */
+	0,                                        /*     Reserved */
+	SVC_Handler,                              /*  -5 SVCall Handler */
+	0,                                        /*     Reserved */
+	0,                                        /*     Reserved */
+	PendSV_Handler,                           /*  -2 PendSV Handler */
+	SysTick_Handler,                          /*  -1 SysTick Handler */
 
-  /* Interrupts */
-  Interrupt0_Handler,                       /*   0 Interrupt 0 */
-  Interrupt1_Handler,                       /*   1 Interrupt 1 */
-  Interrupt2_Handler,                       /*   2 Interrupt 2 */
-  Interrupt3_Handler,                       /*   3 Interrupt 3 */
-  Interrupt4_Handler,                       /*   4 Interrupt 4 */
-  Interrupt5_Handler,                       /*   5 Interrupt 5 */
-  Interrupt6_Handler,                       /*   6 Interrupt 6 */
-  Interrupt7_Handler,                       /*   7 Interrupt 7 */
-  Interrupt8_Handler,                       /*   8 Interrupt 8 */
-  Interrupt9_Handler                        /*   9 Interrupt 9 */
-                                            /* Interrupts 10..31 are left out */
+	/* Interrupts */
+	Interrupt0_Handler,                       /*   0 Interrupt 0 */
+	Interrupt1_Handler,                       /*   1 Interrupt 1 */
+	Interrupt2_Handler,                       /*   2 Interrupt 2 */
+	Interrupt3_Handler,                       /*   3 Interrupt 3 */
+	Interrupt4_Handler,                       /*   4 Interrupt 4 */
+	Interrupt5_Handler,                       /*   5 Interrupt 5 */
+	Interrupt6_Handler,                       /*   6 Interrupt 6 */
+	Interrupt7_Handler,                       /*   7 Interrupt 7 */
+	Interrupt8_Handler,                       /*   8 Interrupt 8 */
+	Interrupt9_Handler                        /*   9 Interrupt 9 */
+	/* Interrupts 10..31 are left out */
 };
 
 #if defined ( __GNUC__ )
@@ -110,8 +110,8 @@ extern const VECTOR_TABLE_Type __VECTOR_TABLE[48];
  *----------------------------------------------------------------------------*/
 __NO_RETURN void Reset_Handler(void)
 {
-  SystemInit();                             /* CMSIS System Initialization */
-  __PROGRAM_START();                        /* Enter PreMain (C library entry point) */
+	SystemInit();                             /* CMSIS System Initialization */
+	__PROGRAM_START();                        /* Enter PreMain (C library entry point) */
 }
 
 /*----------------------------------------------------------------------------
@@ -119,7 +119,7 @@ __NO_RETURN void Reset_Handler(void)
  *----------------------------------------------------------------------------*/
 void HardFault_Handler(void)
 {
-  while(1);
+	while (1);
 }
 
 /*----------------------------------------------------------------------------
@@ -127,5 +127,5 @@ void HardFault_Handler(void)
  *----------------------------------------------------------------------------*/
 void Default_Handler(void)
 {
-  while(1);
+	while (1);
 }

@@ -44,24 +44,23 @@ extern "C" {
   * @{
   */
 /* Array used to get the USART prescaler division decimal values versus @ref USART_LL_EC_PRESCALER values */
-static const uint32_t USART_PRESCALER_TAB[] =
-{
-  1UL,
-  2UL,
-  4UL,
-  6UL,
-  8UL,
-  10UL,
-  12UL,
-  16UL,
-  32UL,
-  64UL,
-  128UL,
-  256UL,
-  256UL,
-  256UL,
-  256UL,
-  256UL
+static const uint32_t USART_PRESCALER_TAB[] = {
+	1UL,
+	2UL,
+	4UL,
+	6UL,
+	8UL,
+	10UL,
+	12UL,
+	16UL,
+	32UL,
+	64UL,
+	128UL,
+	256UL,
+	256UL,
+	256UL,
+	256UL,
+	256UL
 };
 /**
   * @}
@@ -93,50 +92,49 @@ static const uint32_t USART_PRESCALER_TAB[] =
 /**
   * @brief LL USART Init Structure definition
   */
-typedef struct
-{
-  uint32_t PrescalerValue;            /*!< Specifies the Prescaler to compute the communication baud rate.
+typedef struct {
+	uint32_t PrescalerValue;            /*!< Specifies the Prescaler to compute the communication baud rate.
                                            This parameter can be a value of @ref USART_LL_EC_PRESCALER.
 
                                            This feature can be modified afterwards using unitary
                                            function @ref LL_USART_SetPrescaler().*/
 
-  uint32_t BaudRate;                  /*!< This field defines expected Usart communication baud rate.
+	uint32_t BaudRate;                  /*!< This field defines expected Usart communication baud rate.
 
                                            This feature can be modified afterwards using unitary
                                            function @ref LL_USART_SetBaudRate().*/
 
-  uint32_t DataWidth;                 /*!< Specifies the number of data bits transmitted or received in a frame.
+	uint32_t DataWidth;                 /*!< Specifies the number of data bits transmitted or received in a frame.
                                            This parameter can be a value of @ref USART_LL_EC_DATAWIDTH.
 
                                            This feature can be modified afterwards using unitary
                                            function @ref LL_USART_SetDataWidth().*/
 
-  uint32_t StopBits;                  /*!< Specifies the number of stop bits transmitted.
+	uint32_t StopBits;                  /*!< Specifies the number of stop bits transmitted.
                                            This parameter can be a value of @ref USART_LL_EC_STOPBITS.
 
                                            This feature can be modified afterwards using unitary
                                            function @ref LL_USART_SetStopBitsLength().*/
 
-  uint32_t Parity;                    /*!< Specifies the parity mode.
+	uint32_t Parity;                    /*!< Specifies the parity mode.
                                            This parameter can be a value of @ref USART_LL_EC_PARITY.
 
                                            This feature can be modified afterwards using unitary
                                            function @ref LL_USART_SetParity().*/
 
-  uint32_t TransferDirection;         /*!< Specifies whether the Receive and/or Transmit mode is enabled or disabled.
+	uint32_t TransferDirection;         /*!< Specifies whether the Receive and/or Transmit mode is enabled or disabled.
                                            This parameter can be a value of @ref USART_LL_EC_DIRECTION.
 
                                            This feature can be modified afterwards using unitary
                                            function @ref LL_USART_SetTransferDirection().*/
 
-  uint32_t HardwareFlowControl;       /*!< Specifies whether the hardware flow control mode is enabled or disabled.
+	uint32_t HardwareFlowControl;       /*!< Specifies whether the hardware flow control mode is enabled or disabled.
                                            This parameter can be a value of @ref USART_LL_EC_HWCONTROL.
 
                                            This feature can be modified afterwards using unitary
                                            function @ref LL_USART_SetHWFlowCtrl().*/
 
-  uint32_t OverSampling;              /*!< Specifies whether USART oversampling mode is 16 or 8.
+	uint32_t OverSampling;              /*!< Specifies whether USART oversampling mode is 16 or 8.
                                            This parameter can be a value of @ref USART_LL_EC_OVERSAMPLING.
 
                                            This feature can be modified afterwards using unitary
@@ -147,30 +145,29 @@ typedef struct
 /**
   * @brief LL USART Clock Init Structure definition
   */
-typedef struct
-{
-  uint32_t ClockOutput;               /*!< Specifies whether the USART clock is enabled or disabled.
+typedef struct {
+	uint32_t ClockOutput;               /*!< Specifies whether the USART clock is enabled or disabled.
                                            This parameter can be a value of @ref USART_LL_EC_CLOCK.
 
                                            USART HW configuration can be modified afterwards using unitary functions
                                            @ref LL_USART_EnableSCLKOutput() or @ref LL_USART_DisableSCLKOutput().
                                            For more details, refer to description of this function. */
 
-  uint32_t ClockPolarity;             /*!< Specifies the steady state of the serial clock.
+	uint32_t ClockPolarity;             /*!< Specifies the steady state of the serial clock.
                                            This parameter can be a value of @ref USART_LL_EC_POLARITY.
 
                                            USART HW configuration can be modified afterwards using unitary
                                            functions @ref LL_USART_SetClockPolarity().
                                            For more details, refer to description of this function. */
 
-  uint32_t ClockPhase;                /*!< Specifies the clock transition on which the bit capture is made.
+	uint32_t ClockPhase;                /*!< Specifies the clock transition on which the bit capture is made.
                                            This parameter can be a value of @ref USART_LL_EC_PHASE.
 
                                            USART HW configuration can be modified afterwards using unitary
                                            functions @ref LL_USART_SetClockPhase().
                                            For more details, refer to description of this function. */
 
-  uint32_t LastBitClockPulse;         /*!< Specifies whether the clock pulse corresponding to the last transmitted
+	uint32_t LastBitClockPulse;         /*!< Specifies whether the clock pulse corresponding to the last transmitted
                                            data bit (MSB) has to be output on the SCLK pin in synchronous mode.
                                            This parameter can be a value of @ref USART_LL_EC_LASTCLKPULSE.
 
@@ -638,7 +635,7 @@ typedef struct
   */
 __STATIC_INLINE void LL_USART_Enable(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR1, USART_CR1_UE);
+	SET_BIT(USARTx->CR1, USART_CR1_UE);
 }
 
 /**
@@ -652,7 +649,7 @@ __STATIC_INLINE void LL_USART_Enable(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_Disable(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR1, USART_CR1_UE);
+	CLEAR_BIT(USARTx->CR1, USART_CR1_UE);
 }
 
 /**
@@ -663,7 +660,7 @@ __STATIC_INLINE void LL_USART_Disable(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabled(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_UE) == (USART_CR1_UE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_UE) == (USART_CR1_UE)) ? 1UL : 0UL);
 }
 
 /**
@@ -676,7 +673,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabled(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableFIFO(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR1, USART_CR1_FIFOEN);
+	SET_BIT(USARTx->CR1, USART_CR1_FIFOEN);
 }
 
 /**
@@ -689,7 +686,7 @@ __STATIC_INLINE void LL_USART_EnableFIFO(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableFIFO(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR1, USART_CR1_FIFOEN);
+	CLEAR_BIT(USARTx->CR1, USART_CR1_FIFOEN);
 }
 
 /**
@@ -702,7 +699,7 @@ __STATIC_INLINE void LL_USART_DisableFIFO(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledFIFO(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_FIFOEN) == (USART_CR1_FIFOEN)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_FIFOEN) == (USART_CR1_FIFOEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -722,7 +719,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledFIFO(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetTXFIFOThreshold(USART_TypeDef *USARTx, uint32_t Threshold)
 {
-  ATOMIC_MODIFY_REG(USARTx->CR3, USART_CR3_TXFTCFG, Threshold << USART_CR3_TXFTCFG_Pos);
+	ATOMIC_MODIFY_REG(USARTx->CR3, USART_CR3_TXFTCFG, Threshold << USART_CR3_TXFTCFG_Pos);
 }
 
 /**
@@ -741,7 +738,7 @@ __STATIC_INLINE void LL_USART_SetTXFIFOThreshold(USART_TypeDef *USARTx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_USART_GetTXFIFOThreshold(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_TXFTCFG) >> USART_CR3_TXFTCFG_Pos);
+	return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_TXFTCFG) >> USART_CR3_TXFTCFG_Pos);
 }
 
 /**
@@ -761,7 +758,7 @@ __STATIC_INLINE uint32_t LL_USART_GetTXFIFOThreshold(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE void LL_USART_SetRXFIFOThreshold(USART_TypeDef *USARTx, uint32_t Threshold)
 {
-  ATOMIC_MODIFY_REG(USARTx->CR3, USART_CR3_RXFTCFG, Threshold << USART_CR3_RXFTCFG_Pos);
+	ATOMIC_MODIFY_REG(USARTx->CR3, USART_CR3_RXFTCFG, Threshold << USART_CR3_RXFTCFG_Pos);
 }
 
 /**
@@ -780,7 +777,7 @@ __STATIC_INLINE void LL_USART_SetRXFIFOThreshold(USART_TypeDef *USARTx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_USART_GetRXFIFOThreshold(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_RXFTCFG) >> USART_CR3_RXFTCFG_Pos);
+	return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_RXFTCFG) >> USART_CR3_RXFTCFG_Pos);
 }
 
 /**
@@ -808,8 +805,8 @@ __STATIC_INLINE uint32_t LL_USART_GetRXFIFOThreshold(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE void LL_USART_ConfigFIFOsThreshold(USART_TypeDef *USARTx, uint32_t TXThreshold, uint32_t RXThreshold)
 {
-  ATOMIC_MODIFY_REG(USARTx->CR3, USART_CR3_TXFTCFG | USART_CR3_RXFTCFG, (TXThreshold << USART_CR3_TXFTCFG_Pos) |
-                    (RXThreshold << USART_CR3_RXFTCFG_Pos));
+	ATOMIC_MODIFY_REG(USARTx->CR3, USART_CR3_TXFTCFG | USART_CR3_RXFTCFG, (TXThreshold << USART_CR3_TXFTCFG_Pos) |
+			  (RXThreshold << USART_CR3_RXFTCFG_Pos));
 }
 
 /**
@@ -824,7 +821,7 @@ __STATIC_INLINE void LL_USART_ConfigFIFOsThreshold(USART_TypeDef *USARTx, uint32
   */
 __STATIC_INLINE void LL_USART_EnableInStopMode(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_UESM);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_UESM);
 }
 
 /**
@@ -838,7 +835,7 @@ __STATIC_INLINE void LL_USART_EnableInStopMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableInStopMode(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_UESM);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_UESM);
 }
 
 /**
@@ -851,7 +848,7 @@ __STATIC_INLINE void LL_USART_DisableInStopMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledInStopMode(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_UESM) == (USART_CR1_UESM)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_UESM) == (USART_CR1_UESM)) ? 1UL : 0UL);
 }
 
 /**
@@ -862,7 +859,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledInStopMode(const USART_TypeDef *USART
   */
 __STATIC_INLINE void LL_USART_EnableDirectionRx(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_RE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_RE);
 }
 
 /**
@@ -873,7 +870,7 @@ __STATIC_INLINE void LL_USART_EnableDirectionRx(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableDirectionRx(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_RE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_RE);
 }
 
 /**
@@ -884,7 +881,7 @@ __STATIC_INLINE void LL_USART_DisableDirectionRx(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableDirectionTx(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_TE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_TE);
 }
 
 /**
@@ -895,7 +892,7 @@ __STATIC_INLINE void LL_USART_EnableDirectionTx(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableDirectionTx(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_TE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_TE);
 }
 
 /**
@@ -913,7 +910,7 @@ __STATIC_INLINE void LL_USART_DisableDirectionTx(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetTransferDirection(USART_TypeDef *USARTx, uint32_t TransferDirection)
 {
-  ATOMIC_MODIFY_REG(USARTx->CR1, USART_CR1_RE | USART_CR1_TE, TransferDirection);
+	ATOMIC_MODIFY_REG(USARTx->CR1, USART_CR1_RE | USART_CR1_TE, TransferDirection);
 }
 
 /**
@@ -929,7 +926,7 @@ __STATIC_INLINE void LL_USART_SetTransferDirection(USART_TypeDef *USARTx, uint32
   */
 __STATIC_INLINE uint32_t LL_USART_GetTransferDirection(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_RE | USART_CR1_TE));
+	return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_RE | USART_CR1_TE));
 }
 
 /**
@@ -948,7 +945,7 @@ __STATIC_INLINE uint32_t LL_USART_GetTransferDirection(const USART_TypeDef *USAR
   */
 __STATIC_INLINE void LL_USART_SetParity(USART_TypeDef *USARTx, uint32_t Parity)
 {
-  MODIFY_REG(USARTx->CR1, USART_CR1_PS | USART_CR1_PCE, Parity);
+	MODIFY_REG(USARTx->CR1, USART_CR1_PS | USART_CR1_PCE, Parity);
 }
 
 /**
@@ -963,7 +960,7 @@ __STATIC_INLINE void LL_USART_SetParity(USART_TypeDef *USARTx, uint32_t Parity)
   */
 __STATIC_INLINE uint32_t LL_USART_GetParity(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_PS | USART_CR1_PCE));
+	return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_PS | USART_CR1_PCE));
 }
 
 /**
@@ -977,7 +974,7 @@ __STATIC_INLINE uint32_t LL_USART_GetParity(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetWakeUpMethod(USART_TypeDef *USARTx, uint32_t Method)
 {
-  MODIFY_REG(USARTx->CR1, USART_CR1_WAKE, Method);
+	MODIFY_REG(USARTx->CR1, USART_CR1_WAKE, Method);
 }
 
 /**
@@ -990,7 +987,7 @@ __STATIC_INLINE void LL_USART_SetWakeUpMethod(USART_TypeDef *USARTx, uint32_t Me
   */
 __STATIC_INLINE uint32_t LL_USART_GetWakeUpMethod(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_WAKE));
+	return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_WAKE));
 }
 
 /**
@@ -1006,7 +1003,7 @@ __STATIC_INLINE uint32_t LL_USART_GetWakeUpMethod(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetDataWidth(USART_TypeDef *USARTx, uint32_t DataWidth)
 {
-  MODIFY_REG(USARTx->CR1, USART_CR1_M, DataWidth);
+	MODIFY_REG(USARTx->CR1, USART_CR1_M, DataWidth);
 }
 
 /**
@@ -1021,7 +1018,7 @@ __STATIC_INLINE void LL_USART_SetDataWidth(USART_TypeDef *USARTx, uint32_t DataW
   */
 __STATIC_INLINE uint32_t LL_USART_GetDataWidth(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_M));
+	return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_M));
 }
 
 /**
@@ -1032,7 +1029,7 @@ __STATIC_INLINE uint32_t LL_USART_GetDataWidth(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableMuteMode(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_MME);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_MME);
 }
 
 /**
@@ -1043,7 +1040,7 @@ __STATIC_INLINE void LL_USART_EnableMuteMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableMuteMode(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_MME);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_MME);
 }
 
 /**
@@ -1054,7 +1051,7 @@ __STATIC_INLINE void LL_USART_DisableMuteMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledMuteMode(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_MME) == (USART_CR1_MME)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_MME) == (USART_CR1_MME)) ? 1UL : 0UL);
 }
 
 /**
@@ -1068,7 +1065,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledMuteMode(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetOverSampling(USART_TypeDef *USARTx, uint32_t OverSampling)
 {
-  MODIFY_REG(USARTx->CR1, USART_CR1_OVER8, OverSampling);
+	MODIFY_REG(USARTx->CR1, USART_CR1_OVER8, OverSampling);
 }
 
 /**
@@ -1081,7 +1078,7 @@ __STATIC_INLINE void LL_USART_SetOverSampling(USART_TypeDef *USARTx, uint32_t Ov
   */
 __STATIC_INLINE uint32_t LL_USART_GetOverSampling(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_OVER8));
+	return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_OVER8));
 }
 
 /**
@@ -1097,7 +1094,7 @@ __STATIC_INLINE uint32_t LL_USART_GetOverSampling(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetLastClkPulseOutput(USART_TypeDef *USARTx, uint32_t LastBitClockPulse)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_LBCL, LastBitClockPulse);
+	MODIFY_REG(USARTx->CR2, USART_CR2_LBCL, LastBitClockPulse);
 }
 
 /**
@@ -1113,7 +1110,7 @@ __STATIC_INLINE void LL_USART_SetLastClkPulseOutput(USART_TypeDef *USARTx, uint3
   */
 __STATIC_INLINE uint32_t LL_USART_GetLastClkPulseOutput(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_LBCL));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_LBCL));
 }
 
 /**
@@ -1129,7 +1126,7 @@ __STATIC_INLINE uint32_t LL_USART_GetLastClkPulseOutput(const USART_TypeDef *USA
   */
 __STATIC_INLINE void LL_USART_SetClockPhase(USART_TypeDef *USARTx, uint32_t ClockPhase)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_CPHA, ClockPhase);
+	MODIFY_REG(USARTx->CR2, USART_CR2_CPHA, ClockPhase);
 }
 
 /**
@@ -1144,7 +1141,7 @@ __STATIC_INLINE void LL_USART_SetClockPhase(USART_TypeDef *USARTx, uint32_t Cloc
   */
 __STATIC_INLINE uint32_t LL_USART_GetClockPhase(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_CPHA));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_CPHA));
 }
 
 /**
@@ -1160,7 +1157,7 @@ __STATIC_INLINE uint32_t LL_USART_GetClockPhase(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetClockPolarity(USART_TypeDef *USARTx, uint32_t ClockPolarity)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_CPOL, ClockPolarity);
+	MODIFY_REG(USARTx->CR2, USART_CR2_CPOL, ClockPolarity);
 }
 
 /**
@@ -1175,7 +1172,7 @@ __STATIC_INLINE void LL_USART_SetClockPolarity(USART_TypeDef *USARTx, uint32_t C
   */
 __STATIC_INLINE uint32_t LL_USART_GetClockPolarity(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_CPOL));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_CPOL));
 }
 
 /**
@@ -1203,7 +1200,7 @@ __STATIC_INLINE uint32_t LL_USART_GetClockPolarity(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ConfigClock(USART_TypeDef *USARTx, uint32_t Phase, uint32_t Polarity, uint32_t LBCPOutput)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_CPHA | USART_CR2_CPOL | USART_CR2_LBCL, Phase | Polarity | LBCPOutput);
+	MODIFY_REG(USARTx->CR2, USART_CR2_CPHA | USART_CR2_CPOL | USART_CR2_LBCL, Phase | Polarity | LBCPOutput);
 }
 
 /**
@@ -1229,7 +1226,7 @@ __STATIC_INLINE void LL_USART_ConfigClock(USART_TypeDef *USARTx, uint32_t Phase,
   */
 __STATIC_INLINE void LL_USART_SetPrescaler(USART_TypeDef *USARTx, uint32_t PrescalerValue)
 {
-  MODIFY_REG(USARTx->PRESC, USART_PRESC_PRESCALER, (uint16_t)PrescalerValue);
+	MODIFY_REG(USARTx->PRESC, USART_PRESC_PRESCALER, (uint16_t)PrescalerValue);
 }
 
 /**
@@ -1254,7 +1251,7 @@ __STATIC_INLINE void LL_USART_SetPrescaler(USART_TypeDef *USARTx, uint32_t Presc
   */
 __STATIC_INLINE uint32_t LL_USART_GetPrescaler(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->PRESC, USART_PRESC_PRESCALER));
+	return (uint32_t)(READ_BIT(USARTx->PRESC, USART_PRESC_PRESCALER));
 }
 
 /**
@@ -1267,7 +1264,7 @@ __STATIC_INLINE uint32_t LL_USART_GetPrescaler(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableSCLKOutput(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR2, USART_CR2_CLKEN);
+	SET_BIT(USARTx->CR2, USART_CR2_CLKEN);
 }
 
 /**
@@ -1280,7 +1277,7 @@ __STATIC_INLINE void LL_USART_EnableSCLKOutput(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableSCLKOutput(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR2, USART_CR2_CLKEN);
+	CLEAR_BIT(USARTx->CR2, USART_CR2_CLKEN);
 }
 
 /**
@@ -1293,7 +1290,7 @@ __STATIC_INLINE void LL_USART_DisableSCLKOutput(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledSCLKOutput(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR2, USART_CR2_CLKEN) == (USART_CR2_CLKEN)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR2, USART_CR2_CLKEN) == (USART_CR2_CLKEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -1309,7 +1306,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledSCLKOutput(const USART_TypeDef *USART
   */
 __STATIC_INLINE void LL_USART_SetStopBitsLength(USART_TypeDef *USARTx, uint32_t StopBits)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_STOP, StopBits);
+	MODIFY_REG(USARTx->CR2, USART_CR2_STOP, StopBits);
 }
 
 /**
@@ -1324,7 +1321,7 @@ __STATIC_INLINE void LL_USART_SetStopBitsLength(USART_TypeDef *USARTx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_USART_GetStopBitsLength(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_STOP));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_STOP));
 }
 
 /**
@@ -1355,10 +1352,10 @@ __STATIC_INLINE uint32_t LL_USART_GetStopBitsLength(const USART_TypeDef *USARTx)
   * @retval None
   */
 __STATIC_INLINE void LL_USART_ConfigCharacter(USART_TypeDef *USARTx, uint32_t DataWidth, uint32_t Parity,
-                                              uint32_t StopBits)
+		uint32_t StopBits)
 {
-  MODIFY_REG(USARTx->CR1, USART_CR1_PS | USART_CR1_PCE | USART_CR1_M, Parity | DataWidth);
-  MODIFY_REG(USARTx->CR2, USART_CR2_STOP, StopBits);
+	MODIFY_REG(USARTx->CR1, USART_CR1_PS | USART_CR1_PCE | USART_CR1_M, Parity | DataWidth);
+	MODIFY_REG(USARTx->CR2, USART_CR2_STOP, StopBits);
 }
 
 /**
@@ -1372,7 +1369,7 @@ __STATIC_INLINE void LL_USART_ConfigCharacter(USART_TypeDef *USARTx, uint32_t Da
   */
 __STATIC_INLINE void LL_USART_SetTXRXSwap(USART_TypeDef *USARTx, uint32_t SwapConfig)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_SWAP, SwapConfig);
+	MODIFY_REG(USARTx->CR2, USART_CR2_SWAP, SwapConfig);
 }
 
 /**
@@ -1385,7 +1382,7 @@ __STATIC_INLINE void LL_USART_SetTXRXSwap(USART_TypeDef *USARTx, uint32_t SwapCo
   */
 __STATIC_INLINE uint32_t LL_USART_GetTXRXSwap(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_SWAP));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_SWAP));
 }
 
 /**
@@ -1399,7 +1396,7 @@ __STATIC_INLINE uint32_t LL_USART_GetTXRXSwap(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetRXPinLevel(USART_TypeDef *USARTx, uint32_t PinInvMethod)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_RXINV, PinInvMethod);
+	MODIFY_REG(USARTx->CR2, USART_CR2_RXINV, PinInvMethod);
 }
 
 /**
@@ -1412,7 +1409,7 @@ __STATIC_INLINE void LL_USART_SetRXPinLevel(USART_TypeDef *USARTx, uint32_t PinI
   */
 __STATIC_INLINE uint32_t LL_USART_GetRXPinLevel(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_RXINV));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_RXINV));
 }
 
 /**
@@ -1426,7 +1423,7 @@ __STATIC_INLINE uint32_t LL_USART_GetRXPinLevel(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetTXPinLevel(USART_TypeDef *USARTx, uint32_t PinInvMethod)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_TXINV, PinInvMethod);
+	MODIFY_REG(USARTx->CR2, USART_CR2_TXINV, PinInvMethod);
 }
 
 /**
@@ -1439,7 +1436,7 @@ __STATIC_INLINE void LL_USART_SetTXPinLevel(USART_TypeDef *USARTx, uint32_t PinI
   */
 __STATIC_INLINE uint32_t LL_USART_GetTXPinLevel(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_TXINV));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_TXINV));
 }
 
 /**
@@ -1455,7 +1452,7 @@ __STATIC_INLINE uint32_t LL_USART_GetTXPinLevel(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetBinaryDataLogic(USART_TypeDef *USARTx, uint32_t DataLogic)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_DATAINV, DataLogic);
+	MODIFY_REG(USARTx->CR2, USART_CR2_DATAINV, DataLogic);
 }
 
 /**
@@ -1468,7 +1465,7 @@ __STATIC_INLINE void LL_USART_SetBinaryDataLogic(USART_TypeDef *USARTx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_USART_GetBinaryDataLogic(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_DATAINV));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_DATAINV));
 }
 
 /**
@@ -1484,7 +1481,7 @@ __STATIC_INLINE uint32_t LL_USART_GetBinaryDataLogic(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE void LL_USART_SetTransferBitOrder(USART_TypeDef *USARTx, uint32_t BitOrder)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_MSBFIRST, BitOrder);
+	MODIFY_REG(USARTx->CR2, USART_CR2_MSBFIRST, BitOrder);
 }
 
 /**
@@ -1499,7 +1496,7 @@ __STATIC_INLINE void LL_USART_SetTransferBitOrder(USART_TypeDef *USARTx, uint32_
   */
 __STATIC_INLINE uint32_t LL_USART_GetTransferBitOrder(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_MSBFIRST));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_MSBFIRST));
 }
 
 /**
@@ -1512,7 +1509,7 @@ __STATIC_INLINE uint32_t LL_USART_GetTransferBitOrder(const USART_TypeDef *USART
   */
 __STATIC_INLINE void LL_USART_EnableAutoBaudRate(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR2, USART_CR2_ABREN);
+	SET_BIT(USARTx->CR2, USART_CR2_ABREN);
 }
 
 /**
@@ -1525,7 +1522,7 @@ __STATIC_INLINE void LL_USART_EnableAutoBaudRate(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableAutoBaudRate(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR2, USART_CR2_ABREN);
+	CLEAR_BIT(USARTx->CR2, USART_CR2_ABREN);
 }
 
 /**
@@ -1538,7 +1535,7 @@ __STATIC_INLINE void LL_USART_DisableAutoBaudRate(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledAutoBaud(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR2, USART_CR2_ABREN) == (USART_CR2_ABREN)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR2, USART_CR2_ABREN) == (USART_CR2_ABREN)) ? 1UL : 0UL);
 }
 
 /**
@@ -1556,7 +1553,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledAutoBaud(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetAutoBaudRateMode(USART_TypeDef *USARTx, uint32_t AutoBaudRateMode)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_ABRMODE, AutoBaudRateMode);
+	MODIFY_REG(USARTx->CR2, USART_CR2_ABRMODE, AutoBaudRateMode);
 }
 
 /**
@@ -1573,7 +1570,7 @@ __STATIC_INLINE void LL_USART_SetAutoBaudRateMode(USART_TypeDef *USARTx, uint32_
   */
 __STATIC_INLINE uint32_t LL_USART_GetAutoBaudRateMode(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_ABRMODE));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_ABRMODE));
 }
 
 /**
@@ -1584,7 +1581,7 @@ __STATIC_INLINE uint32_t LL_USART_GetAutoBaudRateMode(const USART_TypeDef *USART
   */
 __STATIC_INLINE void LL_USART_EnableRxTimeout(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR2, USART_CR2_RTOEN);
+	SET_BIT(USARTx->CR2, USART_CR2_RTOEN);
 }
 
 /**
@@ -1595,7 +1592,7 @@ __STATIC_INLINE void LL_USART_EnableRxTimeout(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableRxTimeout(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR2, USART_CR2_RTOEN);
+	CLEAR_BIT(USARTx->CR2, USART_CR2_RTOEN);
 }
 
 /**
@@ -1606,7 +1603,7 @@ __STATIC_INLINE void LL_USART_DisableRxTimeout(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledRxTimeout(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR2, USART_CR2_RTOEN) == (USART_CR2_RTOEN)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR2, USART_CR2_RTOEN) == (USART_CR2_RTOEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -1634,8 +1631,8 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledRxTimeout(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE void LL_USART_ConfigNodeAddress(USART_TypeDef *USARTx, uint32_t AddressLen, uint32_t NodeAddress)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_ADD | USART_CR2_ADDM7,
-             (uint32_t)(AddressLen | (NodeAddress << USART_CR2_ADD_Pos)));
+	MODIFY_REG(USARTx->CR2, USART_CR2_ADD | USART_CR2_ADDM7,
+		   (uint32_t)(AddressLen | (NodeAddress << USART_CR2_ADD_Pos)));
 }
 
 /**
@@ -1650,7 +1647,7 @@ __STATIC_INLINE void LL_USART_ConfigNodeAddress(USART_TypeDef *USARTx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_USART_GetNodeAddress(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_ADD) >> USART_CR2_ADD_Pos);
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_ADD) >> USART_CR2_ADD_Pos);
 }
 
 /**
@@ -1663,7 +1660,7 @@ __STATIC_INLINE uint32_t LL_USART_GetNodeAddress(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_GetNodeAddressLen(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_ADDM7));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_ADDM7));
 }
 
 /**
@@ -1676,7 +1673,7 @@ __STATIC_INLINE uint32_t LL_USART_GetNodeAddressLen(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableRTSHWFlowCtrl(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR3, USART_CR3_RTSE);
+	SET_BIT(USARTx->CR3, USART_CR3_RTSE);
 }
 
 /**
@@ -1689,7 +1686,7 @@ __STATIC_INLINE void LL_USART_EnableRTSHWFlowCtrl(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableRTSHWFlowCtrl(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR3, USART_CR3_RTSE);
+	CLEAR_BIT(USARTx->CR3, USART_CR3_RTSE);
 }
 
 /**
@@ -1702,7 +1699,7 @@ __STATIC_INLINE void LL_USART_DisableRTSHWFlowCtrl(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableCTSHWFlowCtrl(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR3, USART_CR3_CTSE);
+	SET_BIT(USARTx->CR3, USART_CR3_CTSE);
 }
 
 /**
@@ -1715,7 +1712,7 @@ __STATIC_INLINE void LL_USART_EnableCTSHWFlowCtrl(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableCTSHWFlowCtrl(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR3, USART_CR3_CTSE);
+	CLEAR_BIT(USARTx->CR3, USART_CR3_CTSE);
 }
 
 /**
@@ -1734,7 +1731,7 @@ __STATIC_INLINE void LL_USART_DisableCTSHWFlowCtrl(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetHWFlowCtrl(USART_TypeDef *USARTx, uint32_t HardwareFlowControl)
 {
-  MODIFY_REG(USARTx->CR3, USART_CR3_RTSE | USART_CR3_CTSE, HardwareFlowControl);
+	MODIFY_REG(USARTx->CR3, USART_CR3_RTSE | USART_CR3_CTSE, HardwareFlowControl);
 }
 
 /**
@@ -1752,7 +1749,7 @@ __STATIC_INLINE void LL_USART_SetHWFlowCtrl(USART_TypeDef *USARTx, uint32_t Hard
   */
 __STATIC_INLINE uint32_t LL_USART_GetHWFlowCtrl(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_RTSE | USART_CR3_CTSE));
+	return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_RTSE | USART_CR3_CTSE));
 }
 
 /**
@@ -1763,7 +1760,7 @@ __STATIC_INLINE uint32_t LL_USART_GetHWFlowCtrl(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableOneBitSamp(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR3, USART_CR3_ONEBIT);
+	SET_BIT(USARTx->CR3, USART_CR3_ONEBIT);
 }
 
 /**
@@ -1774,7 +1771,7 @@ __STATIC_INLINE void LL_USART_EnableOneBitSamp(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableOneBitSamp(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR3, USART_CR3_ONEBIT);
+	CLEAR_BIT(USARTx->CR3, USART_CR3_ONEBIT);
 }
 
 /**
@@ -1785,7 +1782,7 @@ __STATIC_INLINE void LL_USART_DisableOneBitSamp(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledOneBitSamp(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_ONEBIT) == (USART_CR3_ONEBIT)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_ONEBIT) == (USART_CR3_ONEBIT)) ? 1UL : 0UL);
 }
 
 /**
@@ -1796,7 +1793,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledOneBitSamp(const USART_TypeDef *USART
   */
 __STATIC_INLINE void LL_USART_EnableOverrunDetect(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR3, USART_CR3_OVRDIS);
+	CLEAR_BIT(USARTx->CR3, USART_CR3_OVRDIS);
 }
 
 /**
@@ -1807,7 +1804,7 @@ __STATIC_INLINE void LL_USART_EnableOverrunDetect(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableOverrunDetect(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR3, USART_CR3_OVRDIS);
+	SET_BIT(USARTx->CR3, USART_CR3_OVRDIS);
 }
 
 /**
@@ -1818,7 +1815,7 @@ __STATIC_INLINE void LL_USART_DisableOverrunDetect(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledOverrunDetect(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_OVRDIS) != USART_CR3_OVRDIS) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_OVRDIS) != USART_CR3_OVRDIS) ? 1UL : 0UL);
 }
 
 /**
@@ -1835,7 +1832,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledOverrunDetect(const USART_TypeDef *US
   */
 __STATIC_INLINE void LL_USART_SetWKUPType(USART_TypeDef *USARTx, uint32_t Type)
 {
-  MODIFY_REG(USARTx->CR3, USART_CR3_WUS, Type);
+	MODIFY_REG(USARTx->CR3, USART_CR3_WUS, Type);
 }
 
 /**
@@ -1851,7 +1848,7 @@ __STATIC_INLINE void LL_USART_SetWKUPType(USART_TypeDef *USARTx, uint32_t Type)
   */
 __STATIC_INLINE uint32_t LL_USART_GetWKUPType(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_WUS));
+	return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_WUS));
 }
 
 /**
@@ -1884,31 +1881,23 @@ __STATIC_INLINE uint32_t LL_USART_GetWKUPType(const USART_TypeDef *USARTx)
   * @retval None
   */
 __STATIC_INLINE void LL_USART_SetBaudRate(USART_TypeDef *USARTx, uint32_t PeriphClk, uint32_t PrescalerValue,
-                                          uint32_t OverSampling,
-                                          uint32_t BaudRate)
+		uint32_t OverSampling,
+		uint32_t BaudRate)
 {
-  uint32_t usartdiv;
-  uint32_t brrtemp;
+	uint32_t usartdiv;
+	uint32_t brrtemp;
 
-  if (PrescalerValue > LL_USART_PRESCALER_DIV256)
-  {
-    /* Do not overstep the size of USART_PRESCALER_TAB */
-  }
-  else if (BaudRate == 0U)
-  {
-    /* Can Not divide per 0 */
-  }
-  else if (OverSampling == LL_USART_OVERSAMPLING_8)
-  {
-    usartdiv = (uint16_t)(__LL_USART_DIV_SAMPLING8(PeriphClk, (uint8_t)PrescalerValue, BaudRate));
-    brrtemp = usartdiv & 0xFFF0U;
-    brrtemp |= (uint16_t)((usartdiv & (uint16_t)0x000FU) >> 1U);
-    USARTx->BRR = brrtemp;
-  }
-  else
-  {
-    USARTx->BRR = (uint16_t)(__LL_USART_DIV_SAMPLING16(PeriphClk, (uint8_t)PrescalerValue, BaudRate));
-  }
+	if (PrescalerValue > LL_USART_PRESCALER_DIV256) {
+		/* Do not overstep the size of USART_PRESCALER_TAB */
+	} else if (BaudRate == 0U) {
+		/* Can Not divide per 0 */
+	} else if (OverSampling == LL_USART_OVERSAMPLING_8) {
+		usartdiv = (uint16_t)(__LL_USART_DIV_SAMPLING8(PeriphClk, (uint8_t)PrescalerValue, BaudRate));
+		brrtemp = usartdiv & 0xFFF0U;
+		brrtemp |= (uint16_t)((usartdiv & (uint16_t)0x000FU) >> 1U);
+		USARTx->BRR = brrtemp;
+	} else
+		USARTx->BRR = (uint16_t)(__LL_USART_DIV_SAMPLING16(PeriphClk, (uint8_t)PrescalerValue, BaudRate));
 }
 
 /**
@@ -1938,34 +1927,27 @@ __STATIC_INLINE void LL_USART_SetBaudRate(USART_TypeDef *USARTx, uint32_t Periph
   * @retval Baud Rate
   */
 __STATIC_INLINE uint32_t LL_USART_GetBaudRate(const USART_TypeDef *USARTx, uint32_t PeriphClk, uint32_t PrescalerValue,
-                                              uint32_t OverSampling)
+		uint32_t OverSampling)
 {
-  uint32_t usartdiv;
-  uint32_t brrresult = 0x0U;
-  uint32_t periphclkpresc = (uint32_t)(PeriphClk / (USART_PRESCALER_TAB[(uint8_t)PrescalerValue]));
+	uint32_t usartdiv;
+	uint32_t brrresult = 0x0U;
+	uint32_t periphclkpresc = (uint32_t)(PeriphClk / (USART_PRESCALER_TAB[(uint8_t)PrescalerValue]));
 
-  usartdiv = USARTx->BRR;
+	usartdiv = USARTx->BRR;
 
-  if (usartdiv == 0U)
-  {
-    /* Do not perform a division by 0 */
-  }
-  else if (OverSampling == LL_USART_OVERSAMPLING_8)
-  {
-    usartdiv = (uint16_t)((usartdiv & 0xFFF0U) | ((usartdiv & 0x0007U) << 1U)) ;
-    if (usartdiv != 0U)
-    {
-      brrresult = (periphclkpresc * 2U) / usartdiv;
-    }
-  }
-  else
-  {
-    if ((usartdiv & 0xFFFFU) != 0U)
-    {
-      brrresult = periphclkpresc / usartdiv;
-    }
-  }
-  return (brrresult);
+	if (usartdiv == 0U) {
+		/* Do not perform a division by 0 */
+	} else if (OverSampling == LL_USART_OVERSAMPLING_8) {
+		usartdiv = (uint16_t)((usartdiv & 0xFFF0U) | ((usartdiv & 0x0007U) << 1U)) ;
+
+		if (usartdiv != 0U)
+			brrresult = (periphclkpresc * 2U) / usartdiv;
+	} else {
+		if ((usartdiv & 0xFFFFU) != 0U)
+			brrresult = periphclkpresc / usartdiv;
+	}
+
+	return (brrresult);
 }
 
 /**
@@ -1977,7 +1959,7 @@ __STATIC_INLINE uint32_t LL_USART_GetBaudRate(const USART_TypeDef *USARTx, uint3
   */
 __STATIC_INLINE void LL_USART_SetRxTimeout(USART_TypeDef *USARTx, uint32_t Timeout)
 {
-  MODIFY_REG(USARTx->RTOR, USART_RTOR_RTO, Timeout);
+	MODIFY_REG(USARTx->RTOR, USART_RTOR_RTO, Timeout);
 }
 
 /**
@@ -1988,7 +1970,7 @@ __STATIC_INLINE void LL_USART_SetRxTimeout(USART_TypeDef *USARTx, uint32_t Timeo
   */
 __STATIC_INLINE uint32_t LL_USART_GetRxTimeout(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->RTOR, USART_RTOR_RTO));
+	return (uint32_t)(READ_BIT(USARTx->RTOR, USART_RTOR_RTO));
 }
 
 /**
@@ -2000,7 +1982,7 @@ __STATIC_INLINE uint32_t LL_USART_GetRxTimeout(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetBlockLength(USART_TypeDef *USARTx, uint32_t BlockLength)
 {
-  MODIFY_REG(USARTx->RTOR, USART_RTOR_BLEN, BlockLength << USART_RTOR_BLEN_Pos);
+	MODIFY_REG(USARTx->RTOR, USART_RTOR_BLEN, BlockLength << USART_RTOR_BLEN_Pos);
 }
 
 /**
@@ -2011,7 +1993,7 @@ __STATIC_INLINE void LL_USART_SetBlockLength(USART_TypeDef *USARTx, uint32_t Blo
   */
 __STATIC_INLINE uint32_t LL_USART_GetBlockLength(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->RTOR, USART_RTOR_BLEN) >> USART_RTOR_BLEN_Pos);
+	return (uint32_t)(READ_BIT(USARTx->RTOR, USART_RTOR_BLEN) >> USART_RTOR_BLEN_Pos);
 }
 
 /**
@@ -2032,7 +2014,7 @@ __STATIC_INLINE uint32_t LL_USART_GetBlockLength(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIrda(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR3, USART_CR3_IREN);
+	SET_BIT(USARTx->CR3, USART_CR3_IREN);
 }
 
 /**
@@ -2045,7 +2027,7 @@ __STATIC_INLINE void LL_USART_EnableIrda(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIrda(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR3, USART_CR3_IREN);
+	CLEAR_BIT(USARTx->CR3, USART_CR3_IREN);
 }
 
 /**
@@ -2058,7 +2040,7 @@ __STATIC_INLINE void LL_USART_DisableIrda(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIrda(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_IREN) == (USART_CR3_IREN)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_IREN) == (USART_CR3_IREN)) ? 1UL : 0UL);
 }
 
 /**
@@ -2074,7 +2056,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIrda(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetIrdaPowerMode(USART_TypeDef *USARTx, uint32_t PowerMode)
 {
-  MODIFY_REG(USARTx->CR3, USART_CR3_IRLP, PowerMode);
+	MODIFY_REG(USARTx->CR3, USART_CR3_IRLP, PowerMode);
 }
 
 /**
@@ -2089,7 +2071,7 @@ __STATIC_INLINE void LL_USART_SetIrdaPowerMode(USART_TypeDef *USARTx, uint32_t P
   */
 __STATIC_INLINE uint32_t LL_USART_GetIrdaPowerMode(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_IRLP));
+	return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_IRLP));
 }
 
 /**
@@ -2104,7 +2086,7 @@ __STATIC_INLINE uint32_t LL_USART_GetIrdaPowerMode(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetIrdaPrescaler(USART_TypeDef *USARTx, uint32_t PrescalerValue)
 {
-  MODIFY_REG(USARTx->GTPR, USART_GTPR_PSC, (uint16_t)PrescalerValue);
+	MODIFY_REG(USARTx->GTPR, USART_GTPR_PSC, (uint16_t)PrescalerValue);
 }
 
 /**
@@ -2118,7 +2100,7 @@ __STATIC_INLINE void LL_USART_SetIrdaPrescaler(USART_TypeDef *USARTx, uint32_t P
   */
 __STATIC_INLINE uint32_t LL_USART_GetIrdaPrescaler(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->GTPR, USART_GTPR_PSC));
+	return (uint32_t)(READ_BIT(USARTx->GTPR, USART_GTPR_PSC));
 }
 
 /**
@@ -2139,7 +2121,7 @@ __STATIC_INLINE uint32_t LL_USART_GetIrdaPrescaler(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableSmartcardNACK(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR3, USART_CR3_NACK);
+	SET_BIT(USARTx->CR3, USART_CR3_NACK);
 }
 
 /**
@@ -2152,7 +2134,7 @@ __STATIC_INLINE void LL_USART_EnableSmartcardNACK(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableSmartcardNACK(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR3, USART_CR3_NACK);
+	CLEAR_BIT(USARTx->CR3, USART_CR3_NACK);
 }
 
 /**
@@ -2165,7 +2147,7 @@ __STATIC_INLINE void LL_USART_DisableSmartcardNACK(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledSmartcardNACK(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_NACK) == (USART_CR3_NACK)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_NACK) == (USART_CR3_NACK)) ? 1UL : 0UL);
 }
 
 /**
@@ -2178,7 +2160,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledSmartcardNACK(const USART_TypeDef *US
   */
 __STATIC_INLINE void LL_USART_EnableSmartcard(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR3, USART_CR3_SCEN);
+	SET_BIT(USARTx->CR3, USART_CR3_SCEN);
 }
 
 /**
@@ -2191,7 +2173,7 @@ __STATIC_INLINE void LL_USART_EnableSmartcard(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableSmartcard(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR3, USART_CR3_SCEN);
+	CLEAR_BIT(USARTx->CR3, USART_CR3_SCEN);
 }
 
 /**
@@ -2204,7 +2186,7 @@ __STATIC_INLINE void LL_USART_DisableSmartcard(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledSmartcard(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_SCEN) == (USART_CR3_SCEN)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_SCEN) == (USART_CR3_SCEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -2223,7 +2205,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledSmartcard(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE void LL_USART_SetSmartcardAutoRetryCount(USART_TypeDef *USARTx, uint32_t AutoRetryCount)
 {
-  MODIFY_REG(USARTx->CR3, USART_CR3_SCARCNT, AutoRetryCount << USART_CR3_SCARCNT_Pos);
+	MODIFY_REG(USARTx->CR3, USART_CR3_SCARCNT, AutoRetryCount << USART_CR3_SCARCNT_Pos);
 }
 
 /**
@@ -2236,7 +2218,7 @@ __STATIC_INLINE void LL_USART_SetSmartcardAutoRetryCount(USART_TypeDef *USARTx, 
   */
 __STATIC_INLINE uint32_t LL_USART_GetSmartcardAutoRetryCount(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_SCARCNT) >> USART_CR3_SCARCNT_Pos);
+	return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_SCARCNT) >> USART_CR3_SCARCNT_Pos);
 }
 
 /**
@@ -2251,7 +2233,7 @@ __STATIC_INLINE uint32_t LL_USART_GetSmartcardAutoRetryCount(const USART_TypeDef
   */
 __STATIC_INLINE void LL_USART_SetSmartcardPrescaler(USART_TypeDef *USARTx, uint32_t PrescalerValue)
 {
-  MODIFY_REG(USARTx->GTPR, USART_GTPR_PSC, (uint16_t)PrescalerValue);
+	MODIFY_REG(USARTx->GTPR, USART_GTPR_PSC, (uint16_t)PrescalerValue);
 }
 
 /**
@@ -2265,7 +2247,7 @@ __STATIC_INLINE void LL_USART_SetSmartcardPrescaler(USART_TypeDef *USARTx, uint3
   */
 __STATIC_INLINE uint32_t LL_USART_GetSmartcardPrescaler(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->GTPR, USART_GTPR_PSC));
+	return (uint32_t)(READ_BIT(USARTx->GTPR, USART_GTPR_PSC));
 }
 
 /**
@@ -2280,7 +2262,7 @@ __STATIC_INLINE uint32_t LL_USART_GetSmartcardPrescaler(const USART_TypeDef *USA
   */
 __STATIC_INLINE void LL_USART_SetSmartcardGuardTime(USART_TypeDef *USARTx, uint32_t GuardTime)
 {
-  MODIFY_REG(USARTx->GTPR, USART_GTPR_GT, (uint16_t)(GuardTime << USART_GTPR_GT_Pos));
+	MODIFY_REG(USARTx->GTPR, USART_GTPR_GT, (uint16_t)(GuardTime << USART_GTPR_GT_Pos));
 }
 
 /**
@@ -2294,7 +2276,7 @@ __STATIC_INLINE void LL_USART_SetSmartcardGuardTime(USART_TypeDef *USARTx, uint3
   */
 __STATIC_INLINE uint32_t LL_USART_GetSmartcardGuardTime(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->GTPR, USART_GTPR_GT) >> USART_GTPR_GT_Pos);
+	return (uint32_t)(READ_BIT(USARTx->GTPR, USART_GTPR_GT) >> USART_GTPR_GT_Pos);
 }
 
 /**
@@ -2315,7 +2297,7 @@ __STATIC_INLINE uint32_t LL_USART_GetSmartcardGuardTime(const USART_TypeDef *USA
   */
 __STATIC_INLINE void LL_USART_EnableHalfDuplex(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR3, USART_CR3_HDSEL);
+	SET_BIT(USARTx->CR3, USART_CR3_HDSEL);
 }
 
 /**
@@ -2328,7 +2310,7 @@ __STATIC_INLINE void LL_USART_EnableHalfDuplex(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableHalfDuplex(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR3, USART_CR3_HDSEL);
+	CLEAR_BIT(USARTx->CR3, USART_CR3_HDSEL);
 }
 
 /**
@@ -2341,7 +2323,7 @@ __STATIC_INLINE void LL_USART_DisableHalfDuplex(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledHalfDuplex(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_HDSEL) == (USART_CR3_HDSEL)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_HDSEL) == (USART_CR3_HDSEL)) ? 1UL : 0UL);
 }
 
 /**
@@ -2361,7 +2343,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledHalfDuplex(const USART_TypeDef *USART
   */
 __STATIC_INLINE void LL_USART_EnableSPISlave(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR2, USART_CR2_SLVEN);
+	SET_BIT(USARTx->CR2, USART_CR2_SLVEN);
 }
 
 /**
@@ -2374,7 +2356,7 @@ __STATIC_INLINE void LL_USART_EnableSPISlave(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableSPISlave(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR2, USART_CR2_SLVEN);
+	CLEAR_BIT(USARTx->CR2, USART_CR2_SLVEN);
 }
 
 /**
@@ -2387,7 +2369,7 @@ __STATIC_INLINE void LL_USART_DisableSPISlave(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledSPISlave(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR2, USART_CR2_SLVEN) == (USART_CR2_SLVEN)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR2, USART_CR2_SLVEN) == (USART_CR2_SLVEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -2402,7 +2384,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledSPISlave(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableSPISlaveSelect(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR2, USART_CR2_DIS_NSS);
+	CLEAR_BIT(USARTx->CR2, USART_CR2_DIS_NSS);
 }
 
 /**
@@ -2416,7 +2398,7 @@ __STATIC_INLINE void LL_USART_EnableSPISlaveSelect(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableSPISlaveSelect(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR2, USART_CR2_DIS_NSS);
+	SET_BIT(USARTx->CR2, USART_CR2_DIS_NSS);
 }
 
 /**
@@ -2429,7 +2411,7 @@ __STATIC_INLINE void LL_USART_DisableSPISlaveSelect(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledSPISlaveSelect(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR2, USART_CR2_DIS_NSS) != (USART_CR2_DIS_NSS)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR2, USART_CR2_DIS_NSS) != (USART_CR2_DIS_NSS)) ? 1UL : 0UL);
 }
 
 /**
@@ -2453,7 +2435,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledSPISlaveSelect(const USART_TypeDef *U
   */
 __STATIC_INLINE void LL_USART_SetLINBrkDetectionLen(USART_TypeDef *USARTx, uint32_t LINBDLength)
 {
-  MODIFY_REG(USARTx->CR2, USART_CR2_LBDL, LINBDLength);
+	MODIFY_REG(USARTx->CR2, USART_CR2_LBDL, LINBDLength);
 }
 
 /**
@@ -2468,7 +2450,7 @@ __STATIC_INLINE void LL_USART_SetLINBrkDetectionLen(USART_TypeDef *USARTx, uint3
   */
 __STATIC_INLINE uint32_t LL_USART_GetLINBrkDetectionLen(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_LBDL));
+	return (uint32_t)(READ_BIT(USARTx->CR2, USART_CR2_LBDL));
 }
 
 /**
@@ -2481,7 +2463,7 @@ __STATIC_INLINE uint32_t LL_USART_GetLINBrkDetectionLen(const USART_TypeDef *USA
   */
 __STATIC_INLINE void LL_USART_EnableLIN(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR2, USART_CR2_LINEN);
+	SET_BIT(USARTx->CR2, USART_CR2_LINEN);
 }
 
 /**
@@ -2494,7 +2476,7 @@ __STATIC_INLINE void LL_USART_EnableLIN(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableLIN(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR2, USART_CR2_LINEN);
+	CLEAR_BIT(USARTx->CR2, USART_CR2_LINEN);
 }
 
 /**
@@ -2507,7 +2489,7 @@ __STATIC_INLINE void LL_USART_DisableLIN(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledLIN(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR2, USART_CR2_LINEN) == (USART_CR2_LINEN)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR2, USART_CR2_LINEN) == (USART_CR2_LINEN)) ? 1UL : 0UL);
 }
 
 /**
@@ -2529,7 +2511,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledLIN(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetDEDeassertionTime(USART_TypeDef *USARTx, uint32_t Time)
 {
-  MODIFY_REG(USARTx->CR1, USART_CR1_DEDT, Time << USART_CR1_DEDT_Pos);
+	MODIFY_REG(USARTx->CR1, USART_CR1_DEDT, Time << USART_CR1_DEDT_Pos);
 }
 
 /**
@@ -2542,7 +2524,7 @@ __STATIC_INLINE void LL_USART_SetDEDeassertionTime(USART_TypeDef *USARTx, uint32
   */
 __STATIC_INLINE uint32_t LL_USART_GetDEDeassertionTime(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_DEDT) >> USART_CR1_DEDT_Pos);
+	return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_DEDT) >> USART_CR1_DEDT_Pos);
 }
 
 /**
@@ -2556,7 +2538,7 @@ __STATIC_INLINE uint32_t LL_USART_GetDEDeassertionTime(const USART_TypeDef *USAR
   */
 __STATIC_INLINE void LL_USART_SetDEAssertionTime(USART_TypeDef *USARTx, uint32_t Time)
 {
-  MODIFY_REG(USARTx->CR1, USART_CR1_DEAT, Time << USART_CR1_DEAT_Pos);
+	MODIFY_REG(USARTx->CR1, USART_CR1_DEAT, Time << USART_CR1_DEAT_Pos);
 }
 
 /**
@@ -2569,7 +2551,7 @@ __STATIC_INLINE void LL_USART_SetDEAssertionTime(USART_TypeDef *USARTx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_USART_GetDEAssertionTime(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_DEAT) >> USART_CR1_DEAT_Pos);
+	return (uint32_t)(READ_BIT(USARTx->CR1, USART_CR1_DEAT) >> USART_CR1_DEAT_Pos);
 }
 
 /**
@@ -2582,7 +2564,7 @@ __STATIC_INLINE uint32_t LL_USART_GetDEAssertionTime(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE void LL_USART_EnableDEMode(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR3, USART_CR3_DEM);
+	SET_BIT(USARTx->CR3, USART_CR3_DEM);
 }
 
 /**
@@ -2595,7 +2577,7 @@ __STATIC_INLINE void LL_USART_EnableDEMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableDEMode(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR3, USART_CR3_DEM);
+	CLEAR_BIT(USARTx->CR3, USART_CR3_DEM);
 }
 
 /**
@@ -2608,7 +2590,7 @@ __STATIC_INLINE void LL_USART_DisableDEMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledDEMode(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_DEM) == (USART_CR3_DEM)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_DEM) == (USART_CR3_DEM)) ? 1UL : 0UL);
 }
 
 /**
@@ -2624,7 +2606,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledDEMode(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_SetDESignalPolarity(USART_TypeDef *USARTx, uint32_t Polarity)
 {
-  MODIFY_REG(USARTx->CR3, USART_CR3_DEP, Polarity);
+	MODIFY_REG(USARTx->CR3, USART_CR3_DEP, Polarity);
 }
 
 /**
@@ -2639,7 +2621,7 @@ __STATIC_INLINE void LL_USART_SetDESignalPolarity(USART_TypeDef *USARTx, uint32_
   */
 __STATIC_INLINE uint32_t LL_USART_GetDESignalPolarity(const USART_TypeDef *USARTx)
 {
-  return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_DEP));
+	return (uint32_t)(READ_BIT(USARTx->CR3, USART_CR3_DEP));
 }
 
 /**
@@ -2677,12 +2659,12 @@ __STATIC_INLINE uint32_t LL_USART_GetDESignalPolarity(const USART_TypeDef *USART
   */
 __STATIC_INLINE void LL_USART_ConfigAsyncMode(USART_TypeDef *USARTx)
 {
-  /* In Asynchronous mode, the following bits must be kept cleared:
-  - LINEN, CLKEN bits in the USART_CR2 register,
-  - SCEN, IREN and HDSEL bits in the USART_CR3 register.
-  */
-  CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
-  CLEAR_BIT(USARTx->CR3, (USART_CR3_SCEN | USART_CR3_IREN | USART_CR3_HDSEL));
+	/* In Asynchronous mode, the following bits must be kept cleared:
+	- LINEN, CLKEN bits in the USART_CR2 register,
+	- SCEN, IREN and HDSEL bits in the USART_CR3 register.
+	*/
+	CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
+	CLEAR_BIT(USARTx->CR3, (USART_CR3_SCEN | USART_CR3_IREN | USART_CR3_HDSEL));
 }
 
 /**
@@ -2714,14 +2696,14 @@ __STATIC_INLINE void LL_USART_ConfigAsyncMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ConfigSyncMode(USART_TypeDef *USARTx)
 {
-  /* In Synchronous mode, the following bits must be kept cleared:
-  - LINEN bit in the USART_CR2 register,
-  - SCEN, IREN and HDSEL bits in the USART_CR3 register.
-  */
-  CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN));
-  CLEAR_BIT(USARTx->CR3, (USART_CR3_SCEN | USART_CR3_IREN | USART_CR3_HDSEL));
-  /* set the UART/USART in Synchronous mode */
-  SET_BIT(USARTx->CR2, USART_CR2_CLKEN);
+	/* In Synchronous mode, the following bits must be kept cleared:
+	- LINEN bit in the USART_CR2 register,
+	- SCEN, IREN and HDSEL bits in the USART_CR3 register.
+	*/
+	CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN));
+	CLEAR_BIT(USARTx->CR3, (USART_CR3_SCEN | USART_CR3_IREN | USART_CR3_HDSEL));
+	/* set the UART/USART in Synchronous mode */
+	SET_BIT(USARTx->CR2, USART_CR2_CLKEN);
 }
 
 /**
@@ -2755,14 +2737,14 @@ __STATIC_INLINE void LL_USART_ConfigSyncMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ConfigLINMode(USART_TypeDef *USARTx)
 {
-  /* In LIN mode, the following bits must be kept cleared:
-  - STOP and CLKEN bits in the USART_CR2 register,
-  - IREN, SCEN and HDSEL bits in the USART_CR3 register.
-  */
-  CLEAR_BIT(USARTx->CR2, (USART_CR2_CLKEN | USART_CR2_STOP));
-  CLEAR_BIT(USARTx->CR3, (USART_CR3_IREN | USART_CR3_SCEN | USART_CR3_HDSEL));
-  /* Set the UART/USART in LIN mode */
-  SET_BIT(USARTx->CR2, USART_CR2_LINEN);
+	/* In LIN mode, the following bits must be kept cleared:
+	- STOP and CLKEN bits in the USART_CR2 register,
+	- IREN, SCEN and HDSEL bits in the USART_CR3 register.
+	*/
+	CLEAR_BIT(USARTx->CR2, (USART_CR2_CLKEN | USART_CR2_STOP));
+	CLEAR_BIT(USARTx->CR3, (USART_CR3_IREN | USART_CR3_SCEN | USART_CR3_HDSEL));
+	/* Set the UART/USART in LIN mode */
+	SET_BIT(USARTx->CR2, USART_CR2_LINEN);
 }
 
 /**
@@ -2794,14 +2776,14 @@ __STATIC_INLINE void LL_USART_ConfigLINMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ConfigHalfDuplexMode(USART_TypeDef *USARTx)
 {
-  /* In Half Duplex mode, the following bits must be kept cleared:
-  - LINEN and CLKEN bits in the USART_CR2 register,
-  - SCEN and IREN bits in the USART_CR3 register.
-  */
-  CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
-  CLEAR_BIT(USARTx->CR3, (USART_CR3_SCEN | USART_CR3_IREN));
-  /* set the UART/USART in Half Duplex mode */
-  SET_BIT(USARTx->CR3, USART_CR3_HDSEL);
+	/* In Half Duplex mode, the following bits must be kept cleared:
+	- LINEN and CLKEN bits in the USART_CR2 register,
+	- SCEN and IREN bits in the USART_CR3 register.
+	*/
+	CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
+	CLEAR_BIT(USARTx->CR3, (USART_CR3_SCEN | USART_CR3_IREN));
+	/* set the UART/USART in Half Duplex mode */
+	SET_BIT(USARTx->CR3, USART_CR3_HDSEL);
 }
 
 /**
@@ -2835,17 +2817,17 @@ __STATIC_INLINE void LL_USART_ConfigHalfDuplexMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ConfigSmartcardMode(USART_TypeDef *USARTx)
 {
-  /* In Smartcard mode, the following bits must be kept cleared:
-  - LINEN bit in the USART_CR2 register,
-  - IREN and HDSEL bits in the USART_CR3 register.
-  */
-  CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN));
-  CLEAR_BIT(USARTx->CR3, (USART_CR3_IREN | USART_CR3_HDSEL));
-  /* Configure Stop bits to 1.5 bits */
-  /* Synchronous mode is activated by default */
-  SET_BIT(USARTx->CR2, (USART_CR2_STOP_0 | USART_CR2_STOP_1 | USART_CR2_CLKEN));
-  /* set the UART/USART in Smartcard mode */
-  SET_BIT(USARTx->CR3, USART_CR3_SCEN);
+	/* In Smartcard mode, the following bits must be kept cleared:
+	- LINEN bit in the USART_CR2 register,
+	- IREN and HDSEL bits in the USART_CR3 register.
+	*/
+	CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN));
+	CLEAR_BIT(USARTx->CR3, (USART_CR3_IREN | USART_CR3_HDSEL));
+	/* Configure Stop bits to 1.5 bits */
+	/* Synchronous mode is activated by default */
+	SET_BIT(USARTx->CR2, (USART_CR2_STOP_0 | USART_CR2_STOP_1 | USART_CR2_CLKEN));
+	/* set the UART/USART in Smartcard mode */
+	SET_BIT(USARTx->CR3, USART_CR3_SCEN);
 }
 
 /**
@@ -2879,14 +2861,14 @@ __STATIC_INLINE void LL_USART_ConfigSmartcardMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ConfigIrdaMode(USART_TypeDef *USARTx)
 {
-  /* In IRDA mode, the following bits must be kept cleared:
-  - LINEN, STOP and CLKEN bits in the USART_CR2 register,
-  - SCEN and HDSEL bits in the USART_CR3 register.
-  */
-  CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN | USART_CR2_STOP));
-  CLEAR_BIT(USARTx->CR3, (USART_CR3_SCEN | USART_CR3_HDSEL));
-  /* set the UART/USART in IRDA mode */
-  SET_BIT(USARTx->CR3, USART_CR3_IREN);
+	/* In IRDA mode, the following bits must be kept cleared:
+	- LINEN, STOP and CLKEN bits in the USART_CR2 register,
+	- SCEN and HDSEL bits in the USART_CR3 register.
+	*/
+	CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN | USART_CR2_STOP));
+	CLEAR_BIT(USARTx->CR3, (USART_CR3_SCEN | USART_CR3_HDSEL));
+	/* set the UART/USART in IRDA mode */
+	SET_BIT(USARTx->CR3, USART_CR3_IREN);
 }
 
 /**
@@ -2918,12 +2900,12 @@ __STATIC_INLINE void LL_USART_ConfigIrdaMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ConfigMultiProcessMode(USART_TypeDef *USARTx)
 {
-  /* In Multi Processor mode, the following bits must be kept cleared:
-  - LINEN and CLKEN bits in the USART_CR2 register,
-  - IREN, SCEN and HDSEL bits in the USART_CR3 register.
-  */
-  CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
-  CLEAR_BIT(USARTx->CR3, (USART_CR3_SCEN | USART_CR3_HDSEL | USART_CR3_IREN));
+	/* In Multi Processor mode, the following bits must be kept cleared:
+	- LINEN and CLKEN bits in the USART_CR2 register,
+	- IREN, SCEN and HDSEL bits in the USART_CR3 register.
+	*/
+	CLEAR_BIT(USARTx->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
+	CLEAR_BIT(USARTx->CR3, (USART_CR3_SCEN | USART_CR3_HDSEL | USART_CR3_IREN));
 }
 
 /**
@@ -2942,7 +2924,7 @@ __STATIC_INLINE void LL_USART_ConfigMultiProcessMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_PE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_PE) == (USART_ISR_PE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_PE) == (USART_ISR_PE)) ? 1UL : 0UL);
 }
 
 /**
@@ -2953,7 +2935,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_PE(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_FE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_FE) == (USART_ISR_FE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_FE) == (USART_ISR_FE)) ? 1UL : 0UL);
 }
 
 /**
@@ -2964,7 +2946,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_FE(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_NE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_NE) == (USART_ISR_NE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_NE) == (USART_ISR_NE)) ? 1UL : 0UL);
 }
 
 /**
@@ -2975,7 +2957,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_NE(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_ORE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_ORE) == (USART_ISR_ORE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_ORE) == (USART_ISR_ORE)) ? 1UL : 0UL);
 }
 
 /**
@@ -2986,7 +2968,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_ORE(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_IDLE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_IDLE) == (USART_ISR_IDLE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_IDLE) == (USART_ISR_IDLE)) ? 1UL : 0UL);
 }
 
 #define LL_USART_IsActiveFlag_RXNE  LL_USART_IsActiveFlag_RXNE_RXFNE /* Redefinition for legacy purpose */
@@ -3001,7 +2983,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_IDLE(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RXNE_RXFNE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_RXNE_RXFNE) == (USART_ISR_RXNE_RXFNE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_RXNE_RXFNE) == (USART_ISR_RXNE_RXFNE)) ? 1UL : 0UL);
 }
 
 /**
@@ -3012,7 +2994,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RXNE_RXFNE(const USART_TypeDef *U
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TC(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_TC) == (USART_ISR_TC)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_TC) == (USART_ISR_TC)) ? 1UL : 0UL);
 }
 
 #define LL_USART_IsActiveFlag_TXE  LL_USART_IsActiveFlag_TXE_TXFNF /* Redefinition for legacy purpose */
@@ -3027,7 +3009,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TC(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TXE_TXFNF(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_TXE_TXFNF) == (USART_ISR_TXE_TXFNF)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_TXE_TXFNF) == (USART_ISR_TXE_TXFNF)) ? 1UL : 0UL);
 }
 
 /**
@@ -3040,7 +3022,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TXE_TXFNF(const USART_TypeDef *US
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_LBD(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_LBDF) == (USART_ISR_LBDF)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_LBDF) == (USART_ISR_LBDF)) ? 1UL : 0UL);
 }
 
 /**
@@ -3053,7 +3035,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_LBD(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_nCTS(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_CTSIF) == (USART_ISR_CTSIF)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_CTSIF) == (USART_ISR_CTSIF)) ? 1UL : 0UL);
 }
 
 /**
@@ -3066,7 +3048,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_nCTS(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_CTS(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_CTS) == (USART_ISR_CTS)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_CTS) == (USART_ISR_CTS)) ? 1UL : 0UL);
 }
 
 /**
@@ -3077,7 +3059,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_CTS(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RTO(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_RTOF) == (USART_ISR_RTOF)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_RTOF) == (USART_ISR_RTOF)) ? 1UL : 0UL);
 }
 
 /**
@@ -3090,7 +3072,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RTO(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_EOB(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_EOBF) == (USART_ISR_EOBF)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_EOBF) == (USART_ISR_EOBF)) ? 1UL : 0UL);
 }
 
 /**
@@ -3103,7 +3085,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_EOB(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_UDR(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_UDR) == (USART_ISR_UDR)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_UDR) == (USART_ISR_UDR)) ? 1UL : 0UL);
 }
 
 /**
@@ -3116,7 +3098,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_UDR(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_ABRE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_ABRE) == (USART_ISR_ABRE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_ABRE) == (USART_ISR_ABRE)) ? 1UL : 0UL);
 }
 
 /**
@@ -3129,7 +3111,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_ABRE(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_ABR(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_ABRF) == (USART_ISR_ABRF)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_ABRF) == (USART_ISR_ABRF)) ? 1UL : 0UL);
 }
 
 /**
@@ -3140,7 +3122,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_ABR(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_BUSY(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_BUSY) == (USART_ISR_BUSY)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_BUSY) == (USART_ISR_BUSY)) ? 1UL : 0UL);
 }
 
 /**
@@ -3151,7 +3133,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_BUSY(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_CM(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_CMF) == (USART_ISR_CMF)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_CMF) == (USART_ISR_CMF)) ? 1UL : 0UL);
 }
 
 /**
@@ -3162,7 +3144,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_CM(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_SBK(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_SBKF) == (USART_ISR_SBKF)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_SBKF) == (USART_ISR_SBKF)) ? 1UL : 0UL);
 }
 
 /**
@@ -3173,7 +3155,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_SBK(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RWU(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_RWU) == (USART_ISR_RWU)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_RWU) == (USART_ISR_RWU)) ? 1UL : 0UL);
 }
 
 /**
@@ -3186,7 +3168,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RWU(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_WKUP(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_WUF) == (USART_ISR_WUF)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_WUF) == (USART_ISR_WUF)) ? 1UL : 0UL);
 }
 
 /**
@@ -3197,7 +3179,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_WKUP(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TEACK(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_TEACK) == (USART_ISR_TEACK)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_TEACK) == (USART_ISR_TEACK)) ? 1UL : 0UL);
 }
 
 /**
@@ -3208,7 +3190,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TEACK(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_REACK(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_REACK) == (USART_ISR_REACK)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_REACK) == (USART_ISR_REACK)) ? 1UL : 0UL);
 }
 
 /**
@@ -3221,7 +3203,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_REACK(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TXFE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_TXFE) == (USART_ISR_TXFE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_TXFE) == (USART_ISR_TXFE)) ? 1UL : 0UL);
 }
 
 /**
@@ -3234,7 +3216,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TXFE(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RXFF(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_RXFF) == (USART_ISR_RXFF)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_RXFF) == (USART_ISR_RXFF)) ? 1UL : 0UL);
 }
 
 /**
@@ -3245,7 +3227,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RXFF(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TCBGT(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_TCBGT) == (USART_ISR_TCBGT)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_TCBGT) == (USART_ISR_TCBGT)) ? 1UL : 0UL);
 }
 
 /**
@@ -3258,7 +3240,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TCBGT(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TXFT(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_TXFT) == (USART_ISR_TXFT)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_TXFT) == (USART_ISR_TXFT)) ? 1UL : 0UL);
 }
 
 /**
@@ -3271,7 +3253,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_TXFT(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RXFT(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->ISR, USART_ISR_RXFT) == (USART_ISR_RXFT)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->ISR, USART_ISR_RXFT) == (USART_ISR_RXFT)) ? 1UL : 0UL);
 }
 
 /**
@@ -3282,7 +3264,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RXFT(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_PE(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_PECF);
+	WRITE_REG(USARTx->ICR, USART_ICR_PECF);
 }
 
 /**
@@ -3293,7 +3275,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_PE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_FE(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_FECF);
+	WRITE_REG(USARTx->ICR, USART_ICR_FECF);
 }
 
 /**
@@ -3304,7 +3286,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_FE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_NE(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_NECF);
+	WRITE_REG(USARTx->ICR, USART_ICR_NECF);
 }
 
 /**
@@ -3315,7 +3297,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_NE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_ORE(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_ORECF);
+	WRITE_REG(USARTx->ICR, USART_ICR_ORECF);
 }
 
 /**
@@ -3326,7 +3308,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_ORE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_IDLE(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_IDLECF);
+	WRITE_REG(USARTx->ICR, USART_ICR_IDLECF);
 }
 
 /**
@@ -3339,7 +3321,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_IDLE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_TXFE(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_TXFECF);
+	WRITE_REG(USARTx->ICR, USART_ICR_TXFECF);
 }
 
 /**
@@ -3350,7 +3332,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_TXFE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_TC(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_TCCF);
+	WRITE_REG(USARTx->ICR, USART_ICR_TCCF);
 }
 
 /**
@@ -3361,7 +3343,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_TC(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_TCBGT(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_TCBGTCF);
+	WRITE_REG(USARTx->ICR, USART_ICR_TCBGTCF);
 }
 
 /**
@@ -3374,7 +3356,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_TCBGT(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_LBD(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_LBDCF);
+	WRITE_REG(USARTx->ICR, USART_ICR_LBDCF);
 }
 
 /**
@@ -3387,7 +3369,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_LBD(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_nCTS(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_CTSCF);
+	WRITE_REG(USARTx->ICR, USART_ICR_CTSCF);
 }
 
 /**
@@ -3398,7 +3380,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_nCTS(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_RTO(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_RTOCF);
+	WRITE_REG(USARTx->ICR, USART_ICR_RTOCF);
 }
 
 /**
@@ -3411,7 +3393,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_RTO(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_EOB(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_EOBCF);
+	WRITE_REG(USARTx->ICR, USART_ICR_EOBCF);
 }
 
 /**
@@ -3424,7 +3406,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_EOB(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_UDR(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_UDRCF);
+	WRITE_REG(USARTx->ICR, USART_ICR_UDRCF);
 }
 
 /**
@@ -3435,7 +3417,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_UDR(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_CM(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_CMCF);
+	WRITE_REG(USARTx->ICR, USART_ICR_CMCF);
 }
 
 /**
@@ -3448,7 +3430,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_CM(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_WKUP(USART_TypeDef *USARTx)
 {
-  WRITE_REG(USARTx->ICR, USART_ICR_WUCF);
+	WRITE_REG(USARTx->ICR, USART_ICR_WUCF);
 }
 
 /**
@@ -3467,7 +3449,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_WKUP(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_IDLE(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_IDLEIE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_IDLEIE);
 }
 
 #define LL_USART_EnableIT_RXNE  LL_USART_EnableIT_RXNE_RXFNE /* Redefinition for legacy purpose */
@@ -3482,7 +3464,7 @@ __STATIC_INLINE void LL_USART_EnableIT_IDLE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_RXNE_RXFNE(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_RXNEIE_RXFNEIE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_RXNEIE_RXFNEIE);
 }
 
 /**
@@ -3493,7 +3475,7 @@ __STATIC_INLINE void LL_USART_EnableIT_RXNE_RXFNE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_TC(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_TCIE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_TCIE);
 }
 
 #define LL_USART_EnableIT_TXE  LL_USART_EnableIT_TXE_TXFNF /* Redefinition for legacy purpose */
@@ -3508,7 +3490,7 @@ __STATIC_INLINE void LL_USART_EnableIT_TC(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_TXE_TXFNF(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_TXEIE_TXFNFIE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_TXEIE_TXFNFIE);
 }
 
 /**
@@ -3519,7 +3501,7 @@ __STATIC_INLINE void LL_USART_EnableIT_TXE_TXFNF(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_PE(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_PEIE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_PEIE);
 }
 
 /**
@@ -3530,7 +3512,7 @@ __STATIC_INLINE void LL_USART_EnableIT_PE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_CM(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_CMIE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_CMIE);
 }
 
 /**
@@ -3541,7 +3523,7 @@ __STATIC_INLINE void LL_USART_EnableIT_CM(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_RTO(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_RTOIE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_RTOIE);
 }
 
 /**
@@ -3554,7 +3536,7 @@ __STATIC_INLINE void LL_USART_EnableIT_RTO(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_EOB(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_EOBIE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_EOBIE);
 }
 
 /**
@@ -3567,7 +3549,7 @@ __STATIC_INLINE void LL_USART_EnableIT_EOB(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_TXFE(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_TXFEIE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_TXFEIE);
 }
 
 /**
@@ -3578,7 +3560,7 @@ __STATIC_INLINE void LL_USART_EnableIT_TXFE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_RXFF(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_RXFFIE);
+	ATOMIC_SET_BIT(USARTx->CR1, USART_CR1_RXFFIE);
 }
 
 /**
@@ -3591,7 +3573,7 @@ __STATIC_INLINE void LL_USART_EnableIT_RXFF(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_LBD(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR2, USART_CR2_LBDIE);
+	SET_BIT(USARTx->CR2, USART_CR2_LBDIE);
 }
 
 /**
@@ -3606,7 +3588,7 @@ __STATIC_INLINE void LL_USART_EnableIT_LBD(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_ERROR(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_EIE);
+	ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_EIE);
 }
 
 /**
@@ -3619,7 +3601,7 @@ __STATIC_INLINE void LL_USART_EnableIT_ERROR(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_CTS(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_CTSIE);
+	ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_CTSIE);
 }
 
 /**
@@ -3632,7 +3614,7 @@ __STATIC_INLINE void LL_USART_EnableIT_CTS(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_WKUP(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_WUFIE);
+	ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_WUFIE);
 }
 
 /**
@@ -3645,7 +3627,7 @@ __STATIC_INLINE void LL_USART_EnableIT_WKUP(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_TXFT(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_TXFTIE);
+	ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_TXFTIE);
 }
 
 /**
@@ -3658,7 +3640,7 @@ __STATIC_INLINE void LL_USART_EnableIT_TXFT(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_TCBGT(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_TCBGTIE);
+	ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_TCBGTIE);
 }
 
 /**
@@ -3671,7 +3653,7 @@ __STATIC_INLINE void LL_USART_EnableIT_TCBGT(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableIT_RXFT(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_RXFTIE);
+	ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_RXFTIE);
 }
 
 /**
@@ -3682,7 +3664,7 @@ __STATIC_INLINE void LL_USART_EnableIT_RXFT(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_IDLE(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_IDLEIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_IDLEIE);
 }
 
 #define LL_USART_DisableIT_RXNE  LL_USART_DisableIT_RXNE_RXFNE /* Redefinition for legacy purpose */
@@ -3697,7 +3679,7 @@ __STATIC_INLINE void LL_USART_DisableIT_IDLE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_RXNE_RXFNE(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_RXNEIE_RXFNEIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_RXNEIE_RXFNEIE);
 }
 
 /**
@@ -3708,7 +3690,7 @@ __STATIC_INLINE void LL_USART_DisableIT_RXNE_RXFNE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_TC(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_TCIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_TCIE);
 }
 
 #define LL_USART_DisableIT_TXE  LL_USART_DisableIT_TXE_TXFNF /* Redefinition for legacy purpose */
@@ -3723,7 +3705,7 @@ __STATIC_INLINE void LL_USART_DisableIT_TC(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_TXE_TXFNF(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_TXEIE_TXFNFIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_TXEIE_TXFNFIE);
 }
 
 /**
@@ -3734,7 +3716,7 @@ __STATIC_INLINE void LL_USART_DisableIT_TXE_TXFNF(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_PE(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_PEIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_PEIE);
 }
 
 /**
@@ -3745,7 +3727,7 @@ __STATIC_INLINE void LL_USART_DisableIT_PE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_CM(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_CMIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_CMIE);
 }
 
 /**
@@ -3756,7 +3738,7 @@ __STATIC_INLINE void LL_USART_DisableIT_CM(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_RTO(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_RTOIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_RTOIE);
 }
 
 /**
@@ -3769,7 +3751,7 @@ __STATIC_INLINE void LL_USART_DisableIT_RTO(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_EOB(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_EOBIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_EOBIE);
 }
 
 /**
@@ -3782,7 +3764,7 @@ __STATIC_INLINE void LL_USART_DisableIT_EOB(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_TXFE(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_TXFEIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_TXFEIE);
 }
 
 /**
@@ -3795,7 +3777,7 @@ __STATIC_INLINE void LL_USART_DisableIT_TXFE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_RXFF(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_RXFFIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR1, USART_CR1_RXFFIE);
 }
 
 /**
@@ -3808,7 +3790,7 @@ __STATIC_INLINE void LL_USART_DisableIT_RXFF(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_LBD(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR2, USART_CR2_LBDIE);
+	CLEAR_BIT(USARTx->CR2, USART_CR2_LBDIE);
 }
 
 /**
@@ -3823,7 +3805,7 @@ __STATIC_INLINE void LL_USART_DisableIT_LBD(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_ERROR(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_EIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_EIE);
 }
 
 /**
@@ -3836,7 +3818,7 @@ __STATIC_INLINE void LL_USART_DisableIT_ERROR(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_CTS(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_CTSIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_CTSIE);
 }
 
 /**
@@ -3849,7 +3831,7 @@ __STATIC_INLINE void LL_USART_DisableIT_CTS(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_WKUP(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_WUFIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_WUFIE);
 }
 
 /**
@@ -3862,7 +3844,7 @@ __STATIC_INLINE void LL_USART_DisableIT_WKUP(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_TXFT(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_TXFTIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_TXFTIE);
 }
 
 /**
@@ -3875,7 +3857,7 @@ __STATIC_INLINE void LL_USART_DisableIT_TXFT(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_TCBGT(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_TCBGTIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_TCBGTIE);
 }
 
 /**
@@ -3888,7 +3870,7 @@ __STATIC_INLINE void LL_USART_DisableIT_TCBGT(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableIT_RXFT(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_RXFTIE);
+	ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_RXFTIE);
 }
 
 /**
@@ -3899,7 +3881,7 @@ __STATIC_INLINE void LL_USART_DisableIT_RXFT(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_IDLE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_IDLEIE) == (USART_CR1_IDLEIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_IDLEIE) == (USART_CR1_IDLEIE)) ? 1UL : 0UL);
 }
 
 #define LL_USART_IsEnabledIT_RXNE  LL_USART_IsEnabledIT_RXNE_RXFNE /* Redefinition for legacy purpose */
@@ -3914,7 +3896,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_IDLE(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_RXNE_RXFNE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_RXNEIE_RXFNEIE) == (USART_CR1_RXNEIE_RXFNEIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_RXNEIE_RXFNEIE) == (USART_CR1_RXNEIE_RXFNEIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -3925,7 +3907,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_RXNE_RXFNE(const USART_TypeDef *US
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_TC(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_TCIE) == (USART_CR1_TCIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_TCIE) == (USART_CR1_TCIE)) ? 1UL : 0UL);
 }
 
 #define LL_USART_IsEnabledIT_TXE  LL_USART_IsEnabledIT_TXE_TXFNF /* Redefinition for legacy purpose */
@@ -3940,7 +3922,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_TC(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_TXE_TXFNF(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_TXEIE_TXFNFIE) == (USART_CR1_TXEIE_TXFNFIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_TXEIE_TXFNFIE) == (USART_CR1_TXEIE_TXFNFIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -3951,7 +3933,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_TXE_TXFNF(const USART_TypeDef *USA
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_PE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_PEIE) == (USART_CR1_PEIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_PEIE) == (USART_CR1_PEIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -3962,7 +3944,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_PE(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_CM(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_CMIE) == (USART_CR1_CMIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_CMIE) == (USART_CR1_CMIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -3973,7 +3955,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_CM(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_RTO(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_RTOIE) == (USART_CR1_RTOIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_RTOIE) == (USART_CR1_RTOIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -3986,7 +3968,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_RTO(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_EOB(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_EOBIE) == (USART_CR1_EOBIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_EOBIE) == (USART_CR1_EOBIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -3999,7 +3981,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_EOB(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_TXFE(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_TXFEIE) == (USART_CR1_TXFEIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_TXFEIE) == (USART_CR1_TXFEIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -4012,7 +3994,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_TXFE(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_RXFF(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR1, USART_CR1_RXFFIE) == (USART_CR1_RXFFIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR1, USART_CR1_RXFFIE) == (USART_CR1_RXFFIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -4025,7 +4007,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_RXFF(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_LBD(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR2, USART_CR2_LBDIE) == (USART_CR2_LBDIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR2, USART_CR2_LBDIE) == (USART_CR2_LBDIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -4036,7 +4018,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_LBD(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_ERROR(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_EIE) == (USART_CR3_EIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_EIE) == (USART_CR3_EIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -4049,7 +4031,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_ERROR(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_CTS(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_CTSIE) == (USART_CR3_CTSIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_CTSIE) == (USART_CR3_CTSIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -4062,7 +4044,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_CTS(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_WKUP(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_WUFIE) == (USART_CR3_WUFIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_WUFIE) == (USART_CR3_WUFIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -4075,7 +4057,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_WKUP(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_TXFT(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_TXFTIE) == (USART_CR3_TXFTIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_TXFTIE) == (USART_CR3_TXFTIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -4088,7 +4070,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_TXFT(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_TCBGT(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_TCBGTIE) == (USART_CR3_TCBGTIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_TCBGTIE) == (USART_CR3_TCBGTIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -4101,7 +4083,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_TCBGT(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_RXFT(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_RXFTIE) == (USART_CR3_RXFTIE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_RXFTIE) == (USART_CR3_RXFTIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -4120,7 +4102,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledIT_RXFT(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_EnableDMAReq_RX(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_DMAR);
+	ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_DMAR);
 }
 
 /**
@@ -4131,7 +4113,7 @@ __STATIC_INLINE void LL_USART_EnableDMAReq_RX(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableDMAReq_RX(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_DMAR);
+	ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_DMAR);
 }
 
 /**
@@ -4142,7 +4124,7 @@ __STATIC_INLINE void LL_USART_DisableDMAReq_RX(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledDMAReq_RX(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_DMAR) == (USART_CR3_DMAR)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_DMAR) == (USART_CR3_DMAR)) ? 1UL : 0UL);
 }
 
 /**
@@ -4153,7 +4135,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledDMAReq_RX(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE void LL_USART_EnableDMAReq_TX(USART_TypeDef *USARTx)
 {
-  ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_DMAT);
+	ATOMIC_SET_BIT(USARTx->CR3, USART_CR3_DMAT);
 }
 
 /**
@@ -4164,7 +4146,7 @@ __STATIC_INLINE void LL_USART_EnableDMAReq_TX(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableDMAReq_TX(USART_TypeDef *USARTx)
 {
-  ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_DMAT);
+	ATOMIC_CLEAR_BIT(USARTx->CR3, USART_CR3_DMAT);
 }
 
 /**
@@ -4175,7 +4157,7 @@ __STATIC_INLINE void LL_USART_DisableDMAReq_TX(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledDMAReq_TX(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_DMAT) == (USART_CR3_DMAT)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_DMAT) == (USART_CR3_DMAT)) ? 1UL : 0UL);
 }
 
 /**
@@ -4186,7 +4168,7 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledDMAReq_TX(const USART_TypeDef *USARTx
   */
 __STATIC_INLINE void LL_USART_EnableDMADeactOnRxErr(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->CR3, USART_CR3_DDRE);
+	SET_BIT(USARTx->CR3, USART_CR3_DDRE);
 }
 
 /**
@@ -4197,7 +4179,7 @@ __STATIC_INLINE void LL_USART_EnableDMADeactOnRxErr(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_DisableDMADeactOnRxErr(USART_TypeDef *USARTx)
 {
-  CLEAR_BIT(USARTx->CR3, USART_CR3_DDRE);
+	CLEAR_BIT(USARTx->CR3, USART_CR3_DDRE);
 }
 
 /**
@@ -4208,7 +4190,7 @@ __STATIC_INLINE void LL_USART_DisableDMADeactOnRxErr(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint32_t LL_USART_IsEnabledDMADeactOnRxErr(const USART_TypeDef *USARTx)
 {
-  return ((READ_BIT(USARTx->CR3, USART_CR3_DDRE) == (USART_CR3_DDRE)) ? 1UL : 0UL);
+	return ((READ_BIT(USARTx->CR3, USART_CR3_DDRE) == (USART_CR3_DDRE)) ? 1UL : 0UL);
 }
 
 /**
@@ -4223,20 +4205,17 @@ __STATIC_INLINE uint32_t LL_USART_IsEnabledDMADeactOnRxErr(const USART_TypeDef *
   */
 __STATIC_INLINE uint32_t LL_USART_DMA_GetRegAddr(const USART_TypeDef *USARTx, uint32_t Direction)
 {
-  uint32_t data_reg_addr;
+	uint32_t data_reg_addr;
 
-  if (Direction == LL_USART_DMA_REG_DATA_TRANSMIT)
-  {
-    /* return address of TDR register */
-    data_reg_addr = (uint32_t) &(USARTx->TDR);
-  }
-  else
-  {
-    /* return address of RDR register */
-    data_reg_addr = (uint32_t) &(USARTx->RDR);
-  }
+	if (Direction == LL_USART_DMA_REG_DATA_TRANSMIT) {
+		/* return address of TDR register */
+		data_reg_addr = (uint32_t) & (USARTx->TDR);
+	} else {
+		/* return address of RDR register */
+		data_reg_addr = (uint32_t) & (USARTx->RDR);
+	}
 
-  return data_reg_addr;
+	return data_reg_addr;
 }
 
 /**
@@ -4255,7 +4234,7 @@ __STATIC_INLINE uint32_t LL_USART_DMA_GetRegAddr(const USART_TypeDef *USARTx, ui
   */
 __STATIC_INLINE uint8_t LL_USART_ReceiveData8(const USART_TypeDef *USARTx)
 {
-  return (uint8_t)(READ_BIT(USARTx->RDR, USART_RDR_RDR) & 0xFFU);
+	return (uint8_t)(READ_BIT(USARTx->RDR, USART_RDR_RDR) & 0xFFU);
 }
 
 /**
@@ -4266,7 +4245,7 @@ __STATIC_INLINE uint8_t LL_USART_ReceiveData8(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE uint16_t LL_USART_ReceiveData9(const USART_TypeDef *USARTx)
 {
-  return (uint16_t)(READ_BIT(USARTx->RDR, USART_RDR_RDR));
+	return (uint16_t)(READ_BIT(USARTx->RDR, USART_RDR_RDR));
 }
 
 /**
@@ -4278,7 +4257,7 @@ __STATIC_INLINE uint16_t LL_USART_ReceiveData9(const USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_TransmitData8(USART_TypeDef *USARTx, uint8_t Value)
 {
-  USARTx->TDR = Value;
+	USARTx->TDR = Value;
 }
 
 /**
@@ -4290,7 +4269,7 @@ __STATIC_INLINE void LL_USART_TransmitData8(USART_TypeDef *USARTx, uint8_t Value
   */
 __STATIC_INLINE void LL_USART_TransmitData9(USART_TypeDef *USARTx, uint16_t Value)
 {
-  USARTx->TDR = (uint16_t)(Value & 0x1FFUL);
+	USARTx->TDR = (uint16_t)(Value & 0x1FFUL);
 }
 
 /**
@@ -4311,7 +4290,7 @@ __STATIC_INLINE void LL_USART_TransmitData9(USART_TypeDef *USARTx, uint16_t Valu
   */
 __STATIC_INLINE void LL_USART_RequestAutoBaudRate(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->RQR, (uint16_t)USART_RQR_ABRRQ);
+	SET_BIT(USARTx->RQR, (uint16_t)USART_RQR_ABRRQ);
 }
 
 /**
@@ -4322,7 +4301,7 @@ __STATIC_INLINE void LL_USART_RequestAutoBaudRate(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_RequestBreakSending(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->RQR, (uint16_t)USART_RQR_SBKRQ);
+	SET_BIT(USARTx->RQR, (uint16_t)USART_RQR_SBKRQ);
 }
 
 /**
@@ -4333,7 +4312,7 @@ __STATIC_INLINE void LL_USART_RequestBreakSending(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_RequestEnterMuteMode(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->RQR, (uint16_t)USART_RQR_MMRQ);
+	SET_BIT(USARTx->RQR, (uint16_t)USART_RQR_MMRQ);
 }
 
 /**
@@ -4348,7 +4327,7 @@ __STATIC_INLINE void LL_USART_RequestEnterMuteMode(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_RequestRxDataFlush(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->RQR, (uint16_t)USART_RQR_RXFRQ);
+	SET_BIT(USARTx->RQR, (uint16_t)USART_RQR_RXFRQ);
 }
 
 /**
@@ -4361,7 +4340,7 @@ __STATIC_INLINE void LL_USART_RequestRxDataFlush(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_RequestTxDataFlush(USART_TypeDef *USARTx)
 {
-  SET_BIT(USARTx->RQR, (uint16_t)USART_RQR_TXFRQ);
+	SET_BIT(USARTx->RQR, (uint16_t)USART_RQR_TXFRQ);
 }
 
 /**

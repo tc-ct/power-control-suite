@@ -86,21 +86,20 @@ extern "C" {
 /**
   * @brief  RTC Init structures definition
   */
-typedef struct
-{
-  uint32_t HourFormat;   /*!< Specifies the RTC Hours Format.
+typedef struct {
+	uint32_t HourFormat;   /*!< Specifies the RTC Hours Format.
                               This parameter can be a value of @ref RTC_LL_EC_HOURFORMAT
 
                               This feature can be modified afterwards using unitary function
                               @ref LL_RTC_SetHourFormat(). */
 
-  uint32_t AsynchPrescaler; /*!< Specifies the RTC Asynchronous Predivider value.
+	uint32_t AsynchPrescaler; /*!< Specifies the RTC Asynchronous Predivider value.
                               This parameter must be a number between Min_Data = 0x00 and Max_Data = 0x7F
 
                               This feature can be modified afterwards using unitary function
                               @ref LL_RTC_SetAsynchPrescaler(). */
 
-  uint32_t SynchPrescaler;  /*!< Specifies the RTC Synchronous Predivider value.
+	uint32_t SynchPrescaler;  /*!< Specifies the RTC Synchronous Predivider value.
                               This parameter must be a number between Min_Data = 0x00 and Max_Data = 0x7FFF
 
                               This feature can be modified afterwards using unitary function
@@ -110,15 +109,14 @@ typedef struct
 /**
   * @brief  RTC Time structure definition
   */
-typedef struct
-{
-  uint32_t TimeFormat; /*!< Specifies the RTC AM/PM Time.
+typedef struct {
+	uint32_t TimeFormat; /*!< Specifies the RTC AM/PM Time.
                             This parameter can be a value of @ref RTC_LL_EC_TIME_FORMAT
 
                             This feature can be modified afterwards using unitary function
                             @ref LL_RTC_TIME_SetFormat(). */
 
-  uint8_t Hours;       /*!< Specifies the RTC Time Hours.
+	uint8_t Hours;       /*!< Specifies the RTC Time Hours.
                             This parameter must be a number between Min_Data = 0 and Max_Data = 12
                             if the @ref LL_RTC_TIME_FORMAT_PM is selected.
 
@@ -128,13 +126,13 @@ typedef struct
                             This feature can be modified afterwards using unitary function
                             @ref LL_RTC_TIME_SetHour(). */
 
-  uint8_t Minutes;     /*!< Specifies the RTC Time Minutes.
+	uint8_t Minutes;     /*!< Specifies the RTC Time Minutes.
                             This parameter must be a number between Min_Data = 0 and Max_Data = 59
 
                             This feature can be modified afterwards using unitary function
                             @ref LL_RTC_TIME_SetMinute(). */
 
-  uint8_t Seconds;     /*!< Specifies the RTC Time Seconds.
+	uint8_t Seconds;     /*!< Specifies the RTC Time Seconds.
                             This parameter must be a number between Min_Data = 0 and Max_Data = 59
 
                             This feature can be modified afterwards using unitary function
@@ -144,27 +142,26 @@ typedef struct
 /**
   * @brief  RTC Date structure definition
   */
-typedef struct
-{
-  uint8_t WeekDay;  /*!< Specifies the RTC Date WeekDay.
+typedef struct {
+	uint8_t WeekDay;  /*!< Specifies the RTC Date WeekDay.
                          This parameter can be a value of @ref RTC_LL_EC_WEEKDAY
 
                          This feature can be modified afterwards using unitary function
                          @ref LL_RTC_DATE_SetWeekDay(). */
 
-  uint8_t Month;    /*!< Specifies the RTC Date Month.
+	uint8_t Month;    /*!< Specifies the RTC Date Month.
                          This parameter can be a value of @ref RTC_LL_EC_MONTH
 
                          This feature can be modified afterwards using unitary function
                          @ref LL_RTC_DATE_SetMonth(). */
 
-  uint8_t Day;      /*!< Specifies the RTC Date Day.
+	uint8_t Day;      /*!< Specifies the RTC Date Day.
                          This parameter must be a number between Min_Data = 1 and Max_Data = 31
 
                          This feature can be modified afterwards using unitary function
                          @ref LL_RTC_DATE_SetDay(). */
 
-  uint8_t Year;     /*!< Specifies the RTC Date Year.
+	uint8_t Year;     /*!< Specifies the RTC Date Year.
                          This parameter must be a number between Min_Data = 0 and Max_Data = 99
 
                          This feature can be modified afterwards using unitary function
@@ -174,11 +171,10 @@ typedef struct
 /**
   * @brief  RTC Alarm structure definition
   */
-typedef struct
-{
-  LL_RTC_TimeTypeDef AlarmTime;  /*!< Specifies the RTC Alarm Time members. */
+typedef struct {
+	LL_RTC_TimeTypeDef AlarmTime;  /*!< Specifies the RTC Alarm Time members. */
 
-  uint32_t AlarmMask;            /*!< Specifies the RTC Alarm Masks.
+	uint32_t AlarmMask;            /*!< Specifies the RTC Alarm Masks.
                                       This parameter can be a value of @ref RTC_LL_EC_ALMA_MASK for ALARM A or
                                       @ref RTC_LL_EC_ALMB_MASK for ALARM B.
 
@@ -186,7 +182,7 @@ typedef struct
                                       @ref LL_RTC_ALMA_SetMask() for ALARM A or @ref LL_RTC_ALMB_SetMask() for ALARM B.
                                  */
 
-  uint32_t AlarmDateWeekDaySel;  /*!< Specifies the RTC Alarm is on day or WeekDay.
+	uint32_t AlarmDateWeekDaySel;  /*!< Specifies the RTC Alarm is on day or WeekDay.
                                       This parameter can be a value of @ref RTC_LL_EC_ALMA_WEEKDAY_SELECTION
                                       for ALARM A or @ref RTC_LL_EC_ALMB_WEEKDAY_SELECTION for ALARM B.
 
@@ -196,7 +192,7 @@ typedef struct
                                       for ALARM B.
                                  */
 
-  uint8_t AlarmDateWeekDay;      /*!< Specifies the RTC Alarm Day/WeekDay.
+	uint8_t AlarmDateWeekDay;      /*!< Specifies the RTC Alarm Day/WeekDay.
                                       If AlarmDateWeekDaySel set to day, this parameter must be a number
                                       between Min_Data = 1 and Max_Data = 31.
 
@@ -1109,7 +1105,7 @@ typedef struct
   */
 __STATIC_INLINE void LL_RTC_SetHourFormat(RTC_TypeDef *RTCx, uint32_t HourFormat)
 {
-  MODIFY_REG(RTCx->CR, RTC_CR_FMT, HourFormat);
+	MODIFY_REG(RTCx->CR, RTC_CR_FMT, HourFormat);
 }
 
 /**
@@ -1122,7 +1118,7 @@ __STATIC_INLINE void LL_RTC_SetHourFormat(RTC_TypeDef *RTCx, uint32_t HourFormat
   */
 __STATIC_INLINE uint32_t LL_RTC_GetHourFormat(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_FMT));
+	return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_FMT));
 }
 
 #if defined(RTC_CR_OSEL)
@@ -1140,7 +1136,7 @@ __STATIC_INLINE uint32_t LL_RTC_GetHourFormat(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetAlarmOutEvent(RTC_TypeDef *RTCx, uint32_t AlarmOutput)
 {
-  MODIFY_REG(RTCx->CR, RTC_CR_OSEL, AlarmOutput);
+	MODIFY_REG(RTCx->CR, RTC_CR_OSEL, AlarmOutput);
 }
 
 /**
@@ -1155,7 +1151,7 @@ __STATIC_INLINE void LL_RTC_SetAlarmOutEvent(RTC_TypeDef *RTCx, uint32_t AlarmOu
   */
 __STATIC_INLINE uint32_t LL_RTC_GetAlarmOutEvent(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_OSEL));
+	return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_OSEL));
 }
 #endif /* RTC_CR_OSEL */
 
@@ -1172,7 +1168,7 @@ __STATIC_INLINE uint32_t LL_RTC_GetAlarmOutEvent(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetAlarmOutputType(RTC_TypeDef *RTCx, uint32_t Output)
 {
-  MODIFY_REG(RTCx->CR, RTC_CR_TAMPALRM_TYPE, Output);
+	MODIFY_REG(RTCx->CR, RTC_CR_TAMPALRM_TYPE, Output);
 }
 
 /**
@@ -1185,7 +1181,7 @@ __STATIC_INLINE void LL_RTC_SetAlarmOutputType(RTC_TypeDef *RTCx, uint32_t Outpu
   */
 __STATIC_INLINE uint32_t LL_RTC_GetAlarmOutputType(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_TAMPALRM_TYPE));
+	return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_TAMPALRM_TYPE));
 }
 #endif /* RTC_CR_TAMPALRM_TYPE */
 
@@ -1200,8 +1196,8 @@ __STATIC_INLINE uint32_t LL_RTC_GetAlarmOutputType(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableInitMode(RTC_TypeDef *RTCx)
 {
-  /* Set the Initialization mode */
-  SET_BIT(RTCx->ICSR, RTC_ICSR_INIT);
+	/* Set the Initialization mode */
+	SET_BIT(RTCx->ICSR, RTC_ICSR_INIT);
 }
 
 /**
@@ -1212,8 +1208,8 @@ __STATIC_INLINE void LL_RTC_EnableInitMode(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableInitMode(RTC_TypeDef *RTCx)
 {
-  /* Exit Initialization mode */
-  CLEAR_BIT(RTCx->ICSR, RTC_ICSR_INIT);
+	/* Exit Initialization mode */
+	CLEAR_BIT(RTCx->ICSR, RTC_ICSR_INIT);
 
 }
 
@@ -1231,7 +1227,7 @@ __STATIC_INLINE void LL_RTC_DisableInitMode(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetBinaryMode(RTC_TypeDef *RTCx, uint32_t BinaryMode)
 {
-  MODIFY_REG(RTCx->ICSR, RTC_ICSR_BIN, BinaryMode);
+	MODIFY_REG(RTCx->ICSR, RTC_ICSR_BIN, BinaryMode);
 }
 
 /**
@@ -1246,7 +1242,7 @@ __STATIC_INLINE void LL_RTC_SetBinaryMode(RTC_TypeDef *RTCx, uint32_t BinaryMode
   */
 __STATIC_INLINE uint32_t LL_RTC_GetBinaryMode(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ICSR, RTC_ICSR_BIN));
+	return (uint32_t)(READ_BIT(RTCx->ICSR, RTC_ICSR_BIN));
 }
 
 /**
@@ -1268,7 +1264,7 @@ __STATIC_INLINE uint32_t LL_RTC_GetBinaryMode(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetBinMixBCDU(RTC_TypeDef *RTCx, uint32_t BinMixBcdU)
 {
-  MODIFY_REG(RTCx->ICSR, RTC_ICSR_BCDU, BinMixBcdU);
+	MODIFY_REG(RTCx->ICSR, RTC_ICSR_BCDU, BinMixBcdU);
 }
 
 /**
@@ -1288,7 +1284,7 @@ __STATIC_INLINE void LL_RTC_SetBinMixBCDU(RTC_TypeDef *RTCx, uint32_t BinMixBcdU
   */
 __STATIC_INLINE uint32_t LL_RTC_GetBinMixBCDU(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ICSR, RTC_ICSR_BCDU));
+	return (uint32_t)(READ_BIT(RTCx->ICSR, RTC_ICSR_BCDU));
 }
 
 
@@ -1305,7 +1301,7 @@ __STATIC_INLINE uint32_t LL_RTC_GetBinMixBCDU(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetOutputPolarity(RTC_TypeDef *RTCx, uint32_t Polarity)
 {
-  MODIFY_REG(RTCx->CR, RTC_CR_POL, Polarity);
+	MODIFY_REG(RTCx->CR, RTC_CR_POL, Polarity);
 }
 
 /**
@@ -1318,7 +1314,7 @@ __STATIC_INLINE void LL_RTC_SetOutputPolarity(RTC_TypeDef *RTCx, uint32_t Polari
   */
 __STATIC_INLINE uint32_t LL_RTC_GetOutputPolarity(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_POL));
+	return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_POL));
 }
 #endif /* RTC_CR_POL */
 
@@ -1331,7 +1327,7 @@ __STATIC_INLINE uint32_t LL_RTC_GetOutputPolarity(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableShadowRegBypass(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_BYPSHAD);
+	SET_BIT(RTCx->CR, RTC_CR_BYPSHAD);
 }
 
 /**
@@ -1342,7 +1338,7 @@ __STATIC_INLINE void LL_RTC_EnableShadowRegBypass(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableShadowRegBypass(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_BYPSHAD);
+	CLEAR_BIT(RTCx->CR, RTC_CR_BYPSHAD);
 }
 
 /**
@@ -1353,7 +1349,7 @@ __STATIC_INLINE void LL_RTC_DisableShadowRegBypass(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsShadowRegBypassEnabled(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_BYPSHAD) == (RTC_CR_BYPSHAD)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_BYPSHAD) == (RTC_CR_BYPSHAD)) ? 1U : 0U);
 }
 
 #if defined(RTC_CR_REFCKON)
@@ -1367,7 +1363,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsShadowRegBypassEnabled(const RTC_TypeDef *RTCx
   */
 __STATIC_INLINE void LL_RTC_EnableRefClock(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_REFCKON);
+	SET_BIT(RTCx->CR, RTC_CR_REFCKON);
 }
 
 /**
@@ -1380,7 +1376,7 @@ __STATIC_INLINE void LL_RTC_EnableRefClock(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableRefClock(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_REFCKON);
+	CLEAR_BIT(RTCx->CR, RTC_CR_REFCKON);
 }
 #endif /* RTC_CR_REFCKON */
 
@@ -1393,7 +1389,7 @@ __STATIC_INLINE void LL_RTC_DisableRefClock(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetAsynchPrescaler(RTC_TypeDef *RTCx, uint32_t AsynchPrescaler)
 {
-  MODIFY_REG(RTCx->PRER, RTC_PRER_PREDIV_A, AsynchPrescaler << RTC_PRER_PREDIV_A_Pos);
+	MODIFY_REG(RTCx->PRER, RTC_PRER_PREDIV_A, AsynchPrescaler << RTC_PRER_PREDIV_A_Pos);
 }
 
 /**
@@ -1405,7 +1401,7 @@ __STATIC_INLINE void LL_RTC_SetAsynchPrescaler(RTC_TypeDef *RTCx, uint32_t Async
   */
 __STATIC_INLINE void LL_RTC_SetSynchPrescaler(RTC_TypeDef *RTCx, uint32_t SynchPrescaler)
 {
-  MODIFY_REG(RTCx->PRER, RTC_PRER_PREDIV_S, SynchPrescaler);
+	MODIFY_REG(RTCx->PRER, RTC_PRER_PREDIV_S, SynchPrescaler);
 }
 
 /**
@@ -1416,7 +1412,7 @@ __STATIC_INLINE void LL_RTC_SetSynchPrescaler(RTC_TypeDef *RTCx, uint32_t SynchP
   */
 __STATIC_INLINE uint32_t LL_RTC_GetAsynchPrescaler(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->PRER, RTC_PRER_PREDIV_A) >> RTC_PRER_PREDIV_A_Pos);
+	return (uint32_t)(READ_BIT(RTCx->PRER, RTC_PRER_PREDIV_A) >> RTC_PRER_PREDIV_A_Pos);
 }
 
 /**
@@ -1427,7 +1423,7 @@ __STATIC_INLINE uint32_t LL_RTC_GetAsynchPrescaler(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_GetSynchPrescaler(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->PRER, RTC_PRER_PREDIV_S));
+	return (uint32_t)(READ_BIT(RTCx->PRER, RTC_PRER_PREDIV_S));
 }
 
 /**
@@ -1438,7 +1434,7 @@ __STATIC_INLINE uint32_t LL_RTC_GetSynchPrescaler(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableWriteProtection(RTC_TypeDef *RTCx)
 {
-  WRITE_REG(RTCx->WPR, RTC_WRITE_PROTECTION_DISABLE);
+	WRITE_REG(RTCx->WPR, RTC_WRITE_PROTECTION_DISABLE);
 }
 
 /**
@@ -1449,8 +1445,8 @@ __STATIC_INLINE void LL_RTC_EnableWriteProtection(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableWriteProtection(RTC_TypeDef *RTCx)
 {
-  WRITE_REG(RTCx->WPR, RTC_WRITE_PROTECTION_ENABLE_1);
-  WRITE_REG(RTCx->WPR, RTC_WRITE_PROTECTION_ENABLE_2);
+	WRITE_REG(RTCx->WPR, RTC_WRITE_PROTECTION_ENABLE_1);
+	WRITE_REG(RTCx->WPR, RTC_WRITE_PROTECTION_ENABLE_2);
 }
 
 #ifdef RTC_CR_TAMPOE
@@ -1464,7 +1460,7 @@ __STATIC_INLINE void LL_RTC_DisableWriteProtection(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableTamperOutput(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_TAMPOE);
+	SET_BIT(RTCx->CR, RTC_CR_TAMPOE);
 }
 
 /**
@@ -1475,7 +1471,7 @@ __STATIC_INLINE void LL_RTC_EnableTamperOutput(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableTamperOutput(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_TAMPOE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_TAMPOE);
 }
 
 /**
@@ -1486,7 +1482,7 @@ __STATIC_INLINE void LL_RTC_DisableTamperOutput(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsTamperOutputEnabled(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_TAMPOE) == (RTC_CR_TAMPOE)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_TAMPOE) == (RTC_CR_TAMPOE)) ? 1U : 0U);
 }
 
 /**
@@ -1497,7 +1493,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsTamperOutputEnabled(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableAlarmPullUp(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_TAMPALRM_PU);
+	SET_BIT(RTCx->CR, RTC_CR_TAMPALRM_PU);
 }
 #endif /* RTC_CR_TAMPOE */
 
@@ -1510,7 +1506,7 @@ __STATIC_INLINE void LL_RTC_EnableAlarmPullUp(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableAlarmPullUp(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_TAMPALRM_PU);
+	CLEAR_BIT(RTCx->CR, RTC_CR_TAMPALRM_PU);
 }
 
 /**
@@ -1521,7 +1517,7 @@ __STATIC_INLINE void LL_RTC_DisableAlarmPullUp(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsAlarmPullUpEnabled(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_TAMPALRM_PU) == (RTC_CR_TAMPALRM_PU)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_TAMPALRM_PU) == (RTC_CR_TAMPALRM_PU)) ? 1U : 0U);
 }
 #endif /* RTC_CR_TAMPALRM_PU */
 
@@ -1538,7 +1534,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsAlarmPullUpEnabled(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableOutput2(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_OUT2EN);
+	SET_BIT(RTCx->CR, RTC_CR_OUT2EN);
 }
 
 /**
@@ -1549,7 +1545,7 @@ __STATIC_INLINE void LL_RTC_EnableOutput2(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableOutput2(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_OUT2EN);
+	CLEAR_BIT(RTCx->CR, RTC_CR_OUT2EN);
 }
 
 /**
@@ -1560,7 +1556,7 @@ __STATIC_INLINE void LL_RTC_DisableOutput2(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsOutput2Enabled(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_OUT2EN) == (RTC_CR_OUT2EN)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_OUT2EN) == (RTC_CR_OUT2EN)) ? 1U : 0U);
 }
 #endif /* RTC_CR_OUT2EN */
 
@@ -1585,7 +1581,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsOutput2Enabled(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TIME_SetFormat(RTC_TypeDef *RTCx, uint32_t TimeFormat)
 {
-  MODIFY_REG(RTCx->TR, RTC_TR_PM, TimeFormat);
+	MODIFY_REG(RTCx->TR, RTC_TR_PM, TimeFormat);
 }
 
 /**
@@ -1602,7 +1598,7 @@ __STATIC_INLINE void LL_RTC_TIME_SetFormat(RTC_TypeDef *RTCx, uint32_t TimeForma
   */
 __STATIC_INLINE uint32_t LL_RTC_TIME_GetFormat(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TR, RTC_TR_PM));
+	return (uint32_t)(READ_BIT(RTCx->TR, RTC_TR_PM));
 }
 
 /**
@@ -1618,8 +1614,8 @@ __STATIC_INLINE uint32_t LL_RTC_TIME_GetFormat(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TIME_SetHour(RTC_TypeDef *RTCx, uint32_t Hours)
 {
-  MODIFY_REG(RTCx->TR, (RTC_TR_HT | RTC_TR_HU),
-             (((Hours & 0xF0U) << (RTC_TR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_TR_HU_Pos)));
+	MODIFY_REG(RTCx->TR, (RTC_TR_HT | RTC_TR_HU),
+		   (((Hours & 0xF0U) << (RTC_TR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_TR_HU_Pos)));
 }
 
 /**
@@ -1637,7 +1633,7 @@ __STATIC_INLINE void LL_RTC_TIME_SetHour(RTC_TypeDef *RTCx, uint32_t Hours)
   */
 __STATIC_INLINE uint32_t LL_RTC_TIME_GetHour(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->TR, (RTC_TR_HT | RTC_TR_HU))) >> RTC_TR_HU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->TR, (RTC_TR_HT | RTC_TR_HU))) >> RTC_TR_HU_Pos);
 }
 
 /**
@@ -1653,8 +1649,8 @@ __STATIC_INLINE uint32_t LL_RTC_TIME_GetHour(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TIME_SetMinute(RTC_TypeDef *RTCx, uint32_t Minutes)
 {
-  MODIFY_REG(RTCx->TR, (RTC_TR_MNT | RTC_TR_MNU),
-             (((Minutes & 0xF0U) << (RTC_TR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_TR_MNU_Pos)));
+	MODIFY_REG(RTCx->TR, (RTC_TR_MNT | RTC_TR_MNU),
+		   (((Minutes & 0xF0U) << (RTC_TR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_TR_MNU_Pos)));
 }
 
 /**
@@ -1672,7 +1668,7 @@ __STATIC_INLINE void LL_RTC_TIME_SetMinute(RTC_TypeDef *RTCx, uint32_t Minutes)
   */
 __STATIC_INLINE uint32_t LL_RTC_TIME_GetMinute(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TR, (RTC_TR_MNT | RTC_TR_MNU)) >> RTC_TR_MNU_Pos);
+	return (uint32_t)(READ_BIT(RTCx->TR, (RTC_TR_MNT | RTC_TR_MNU)) >> RTC_TR_MNU_Pos);
 }
 
 /**
@@ -1688,8 +1684,8 @@ __STATIC_INLINE uint32_t LL_RTC_TIME_GetMinute(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TIME_SetSecond(RTC_TypeDef *RTCx, uint32_t Seconds)
 {
-  MODIFY_REG(RTCx->TR, (RTC_TR_ST | RTC_TR_SU),
-             (((Seconds & 0xF0U) << (RTC_TR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_TR_SU_Pos)));
+	MODIFY_REG(RTCx->TR, (RTC_TR_ST | RTC_TR_SU),
+		   (((Seconds & 0xF0U) << (RTC_TR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_TR_SU_Pos)));
 }
 
 /**
@@ -1707,7 +1703,7 @@ __STATIC_INLINE void LL_RTC_TIME_SetSecond(RTC_TypeDef *RTCx, uint32_t Seconds)
   */
 __STATIC_INLINE uint32_t LL_RTC_TIME_GetSecond(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TR, (RTC_TR_ST | RTC_TR_SU)) >> RTC_TR_SU_Pos);
+	return (uint32_t)(READ_BIT(RTCx->TR, (RTC_TR_ST | RTC_TR_SU)) >> RTC_TR_SU_Pos);
 }
 
 /**
@@ -1732,18 +1728,18 @@ __STATIC_INLINE uint32_t LL_RTC_TIME_GetSecond(const RTC_TypeDef *RTCx)
   * @retval None
   */
 __STATIC_INLINE void LL_RTC_TIME_Config(RTC_TypeDef *RTCx,
-                                        uint32_t Format12_24,
-                                        uint32_t Hours,
-                                        uint32_t Minutes,
-                                        uint32_t Seconds)
+					uint32_t Format12_24,
+					uint32_t Hours,
+					uint32_t Minutes,
+					uint32_t Seconds)
 {
-  uint32_t temp;
+	uint32_t temp;
 
-  temp = Format12_24                                                                                    | \
-         (((Hours & 0xF0U) << (RTC_TR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_TR_HU_Pos))     | \
-         (((Minutes & 0xF0U) << (RTC_TR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_TR_MNU_Pos)) | \
-         (((Seconds & 0xF0U) << (RTC_TR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_TR_SU_Pos));
-  MODIFY_REG(RTCx->TR, (RTC_TR_PM | RTC_TR_HT | RTC_TR_HU | RTC_TR_MNT | RTC_TR_MNU | RTC_TR_ST | RTC_TR_SU), temp);
+	temp = Format12_24                                                                                    | \
+	       (((Hours & 0xF0U) << (RTC_TR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_TR_HU_Pos))     | \
+	       (((Minutes & 0xF0U) << (RTC_TR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_TR_MNU_Pos)) | \
+	       (((Seconds & 0xF0U) << (RTC_TR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_TR_SU_Pos));
+	MODIFY_REG(RTCx->TR, (RTC_TR_PM | RTC_TR_HT | RTC_TR_HU | RTC_TR_MNT | RTC_TR_MNU | RTC_TR_ST | RTC_TR_SU), temp);
 }
 
 /**
@@ -1765,14 +1761,14 @@ __STATIC_INLINE void LL_RTC_TIME_Config(RTC_TypeDef *RTCx,
   */
 __STATIC_INLINE uint32_t LL_RTC_TIME_Get(const RTC_TypeDef *RTCx)
 {
-  uint32_t temp;
+	uint32_t temp;
 
-  temp = READ_BIT(RTCx->TR, (RTC_TR_HT | RTC_TR_HU | RTC_TR_MNT | RTC_TR_MNU | RTC_TR_ST | RTC_TR_SU));
-  return (uint32_t)((((((temp & RTC_TR_HT) >> RTC_TR_HT_Pos) << 4U)                  | \
-                      ((temp & RTC_TR_HU) >> RTC_TR_HU_Pos)) << RTC_OFFSET_HOUR)     | \
-                    (((((temp & RTC_TR_MNT) >> RTC_TR_MNT_Pos) << 4U)                | \
-                      ((temp & RTC_TR_MNU) >> RTC_TR_MNU_Pos)) << RTC_OFFSET_MINUTE) | \
-                    ((((temp & RTC_TR_ST) >> RTC_TR_ST_Pos) << 4U) | ((temp & RTC_TR_SU) >> RTC_TR_SU_Pos)));
+	temp = READ_BIT(RTCx->TR, (RTC_TR_HT | RTC_TR_HU | RTC_TR_MNT | RTC_TR_MNU | RTC_TR_ST | RTC_TR_SU));
+	return (uint32_t)((((((temp & RTC_TR_HT) >> RTC_TR_HT_Pos) << 4U)                  | \
+			    ((temp & RTC_TR_HU) >> RTC_TR_HU_Pos)) << RTC_OFFSET_HOUR)     | \
+			  (((((temp & RTC_TR_MNT) >> RTC_TR_MNT_Pos) << 4U)                | \
+			    ((temp & RTC_TR_MNU) >> RTC_TR_MNU_Pos)) << RTC_OFFSET_MINUTE) | \
+			  ((((temp & RTC_TR_ST) >> RTC_TR_ST_Pos) << 4U) | ((temp & RTC_TR_SU) >> RTC_TR_SU_Pos)));
 }
 
 /**
@@ -1784,7 +1780,7 @@ __STATIC_INLINE uint32_t LL_RTC_TIME_Get(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TIME_EnableDayLightStore(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_BKP);
+	SET_BIT(RTCx->CR, RTC_CR_BKP);
 }
 
 /**
@@ -1796,7 +1792,7 @@ __STATIC_INLINE void LL_RTC_TIME_EnableDayLightStore(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TIME_DisableDayLightStore(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_BKP);
+	CLEAR_BIT(RTCx->CR, RTC_CR_BKP);
 }
 
 /**
@@ -1807,7 +1803,7 @@ __STATIC_INLINE void LL_RTC_TIME_DisableDayLightStore(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TIME_IsDayLightStoreEnabled(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_BKP) == (RTC_CR_BKP)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_BKP) == (RTC_CR_BKP)) ? 1U : 0U);
 }
 
 /**
@@ -1819,7 +1815,7 @@ __STATIC_INLINE uint32_t LL_RTC_TIME_IsDayLightStoreEnabled(const RTC_TypeDef *R
   */
 __STATIC_INLINE void LL_RTC_TIME_DecHour(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_SUB1H);
+	SET_BIT(RTCx->CR, RTC_CR_SUB1H);
 }
 
 /**
@@ -1831,7 +1827,7 @@ __STATIC_INLINE void LL_RTC_TIME_DecHour(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TIME_IncHour(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_ADD1H);
+	SET_BIT(RTCx->CR, RTC_CR_ADD1H);
 }
 
 /**
@@ -1850,7 +1846,7 @@ __STATIC_INLINE void LL_RTC_TIME_IncHour(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TIME_GetSubSecond(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->SSR, RTC_SSR_SS));
+	return (uint32_t)(READ_BIT(RTCx->SSR, RTC_SSR_SS));
 }
 
 /**
@@ -1869,7 +1865,7 @@ __STATIC_INLINE uint32_t LL_RTC_TIME_GetSubSecond(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TIME_Synchronize(RTC_TypeDef *RTCx, uint32_t ShiftSecond, uint32_t Fraction)
 {
-  WRITE_REG(RTCx->SHIFTR, ShiftSecond | Fraction);
+	WRITE_REG(RTCx->SHIFTR, ShiftSecond | Fraction);
 }
 
 /**
@@ -1891,8 +1887,8 @@ __STATIC_INLINE void LL_RTC_TIME_Synchronize(RTC_TypeDef *RTCx, uint32_t ShiftSe
   */
 __STATIC_INLINE void LL_RTC_DATE_SetYear(RTC_TypeDef *RTCx, uint32_t Year)
 {
-  MODIFY_REG(RTCx->DR, (RTC_DR_YT | RTC_DR_YU),
-             (((Year & 0xF0U) << (RTC_DR_YT_Pos - 4U)) | ((Year & 0x0FU) << RTC_DR_YU_Pos)));
+	MODIFY_REG(RTCx->DR, (RTC_DR_YT | RTC_DR_YU),
+		   (((Year & 0xF0U) << (RTC_DR_YT_Pos - 4U)) | ((Year & 0x0FU) << RTC_DR_YU_Pos)));
 }
 
 /**
@@ -1907,7 +1903,7 @@ __STATIC_INLINE void LL_RTC_DATE_SetYear(RTC_TypeDef *RTCx, uint32_t Year)
   */
 __STATIC_INLINE uint32_t LL_RTC_DATE_GetYear(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->DR, (RTC_DR_YT | RTC_DR_YU))) >> RTC_DR_YU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->DR, (RTC_DR_YT | RTC_DR_YU))) >> RTC_DR_YU_Pos);
 }
 
 /**
@@ -1926,7 +1922,7 @@ __STATIC_INLINE uint32_t LL_RTC_DATE_GetYear(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DATE_SetWeekDay(RTC_TypeDef *RTCx, uint32_t WeekDay)
 {
-  MODIFY_REG(RTCx->DR, RTC_DR_WDU, WeekDay << RTC_DR_WDU_Pos);
+	MODIFY_REG(RTCx->DR, RTC_DR_WDU, WeekDay << RTC_DR_WDU_Pos);
 }
 
 /**
@@ -1946,7 +1942,7 @@ __STATIC_INLINE void LL_RTC_DATE_SetWeekDay(RTC_TypeDef *RTCx, uint32_t WeekDay)
   */
 __STATIC_INLINE uint32_t LL_RTC_DATE_GetWeekDay(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->DR, RTC_DR_WDU) >> RTC_DR_WDU_Pos);
+	return (uint32_t)(READ_BIT(RTCx->DR, RTC_DR_WDU) >> RTC_DR_WDU_Pos);
 }
 
 /**
@@ -1972,8 +1968,8 @@ __STATIC_INLINE uint32_t LL_RTC_DATE_GetWeekDay(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DATE_SetMonth(RTC_TypeDef *RTCx, uint32_t Month)
 {
-  MODIFY_REG(RTCx->DR, (RTC_DR_MT | RTC_DR_MU),
-             (((Month & 0xF0U) << (RTC_DR_MT_Pos - 4U)) | ((Month & 0x0FU) << RTC_DR_MU_Pos)));
+	MODIFY_REG(RTCx->DR, (RTC_DR_MT | RTC_DR_MU),
+		   (((Month & 0xF0U) << (RTC_DR_MT_Pos - 4U)) | ((Month & 0x0FU) << RTC_DR_MU_Pos)));
 }
 
 /**
@@ -2000,7 +1996,7 @@ __STATIC_INLINE void LL_RTC_DATE_SetMonth(RTC_TypeDef *RTCx, uint32_t Month)
   */
 __STATIC_INLINE uint32_t LL_RTC_DATE_GetMonth(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->DR, (RTC_DR_MT | RTC_DR_MU))) >> RTC_DR_MU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->DR, (RTC_DR_MT | RTC_DR_MU))) >> RTC_DR_MU_Pos);
 }
 
 /**
@@ -2014,8 +2010,8 @@ __STATIC_INLINE uint32_t LL_RTC_DATE_GetMonth(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DATE_SetDay(RTC_TypeDef *RTCx, uint32_t Day)
 {
-  MODIFY_REG(RTCx->DR, (RTC_DR_DT | RTC_DR_DU),
-             (((Day & 0xF0U) << (RTC_DR_DT_Pos - 4U)) | ((Day & 0x0FU) << RTC_DR_DU_Pos)));
+	MODIFY_REG(RTCx->DR, (RTC_DR_DT | RTC_DR_DU),
+		   (((Day & 0xF0U) << (RTC_DR_DT_Pos - 4U)) | ((Day & 0x0FU) << RTC_DR_DU_Pos)));
 }
 
 /**
@@ -2030,7 +2026,7 @@ __STATIC_INLINE void LL_RTC_DATE_SetDay(RTC_TypeDef *RTCx, uint32_t Day)
   */
 __STATIC_INLINE uint32_t LL_RTC_DATE_GetDay(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->DR, (RTC_DR_DT | RTC_DR_DU))) >> RTC_DR_DU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->DR, (RTC_DR_DT | RTC_DR_DU))) >> RTC_DR_DU_Pos);
 }
 
 /**
@@ -2069,19 +2065,19 @@ __STATIC_INLINE uint32_t LL_RTC_DATE_GetDay(const RTC_TypeDef *RTCx)
   * @retval None
   */
 __STATIC_INLINE void LL_RTC_DATE_Config(RTC_TypeDef *RTCx,
-                                        uint32_t WeekDay,
-                                        uint32_t Day,
-                                        uint32_t Month,
-                                        uint32_t Year)
+					uint32_t WeekDay,
+					uint32_t Day,
+					uint32_t Month,
+					uint32_t Year)
 {
-  uint32_t temp;
+	uint32_t temp;
 
-  temp = (WeekDay << RTC_DR_WDU_Pos)                                                      | \
-         (((Year & 0xF0U) << (RTC_DR_YT_Pos - 4U)) | ((Year & 0x0FU) << RTC_DR_YU_Pos))   | \
-         (((Month & 0xF0U) << (RTC_DR_MT_Pos - 4U)) | ((Month & 0x0FU) << RTC_DR_MU_Pos)) | \
-         (((Day & 0xF0U) << (RTC_DR_DT_Pos - 4U)) | ((Day & 0x0FU) << RTC_DR_DU_Pos));
+	temp = (WeekDay << RTC_DR_WDU_Pos)                                                      | \
+	       (((Year & 0xF0U) << (RTC_DR_YT_Pos - 4U)) | ((Year & 0x0FU) << RTC_DR_YU_Pos))   | \
+	       (((Month & 0xF0U) << (RTC_DR_MT_Pos - 4U)) | ((Month & 0x0FU) << RTC_DR_MU_Pos)) | \
+	       (((Day & 0xF0U) << (RTC_DR_DT_Pos - 4U)) | ((Day & 0x0FU) << RTC_DR_DU_Pos));
 
-  MODIFY_REG(RTCx->DR, (RTC_DR_WDU | RTC_DR_MT | RTC_DR_MU | RTC_DR_DT | RTC_DR_DU | RTC_DR_YT | RTC_DR_YU), temp);
+	MODIFY_REG(RTCx->DR, (RTC_DR_WDU | RTC_DR_MT | RTC_DR_MU | RTC_DR_DT | RTC_DR_DU | RTC_DR_YT | RTC_DR_YU), temp);
 }
 
 /**
@@ -2102,15 +2098,15 @@ __STATIC_INLINE void LL_RTC_DATE_Config(RTC_TypeDef *RTCx,
   */
 __STATIC_INLINE uint32_t LL_RTC_DATE_Get(const RTC_TypeDef *RTCx)
 {
-  uint32_t temp;
+	uint32_t temp;
 
-  temp = READ_BIT(RTCx->DR, (RTC_DR_WDU | RTC_DR_MT | RTC_DR_MU | RTC_DR_DT | RTC_DR_DU | RTC_DR_YT | RTC_DR_YU));
-  return (uint32_t)((((temp & RTC_DR_WDU) >> RTC_DR_WDU_Pos) << RTC_OFFSET_WEEKDAY) | \
-                    (((((temp & RTC_DR_DT) >> RTC_DR_DT_Pos) << 4U)                 | \
-                      ((temp & RTC_DR_DU) >> RTC_DR_DU_Pos)) << RTC_OFFSET_DAY)       | \
-                    (((((temp & RTC_DR_MT) >> RTC_DR_MT_Pos) << 4U)                 | \
-                      ((temp & RTC_DR_MU) >> RTC_DR_MU_Pos)) << RTC_OFFSET_MONTH)     | \
-                    ((((temp & RTC_DR_YT) >> RTC_DR_YT_Pos) << 4U) | ((temp & RTC_DR_YU) >> RTC_DR_YU_Pos)));
+	temp = READ_BIT(RTCx->DR, (RTC_DR_WDU | RTC_DR_MT | RTC_DR_MU | RTC_DR_DT | RTC_DR_DU | RTC_DR_YT | RTC_DR_YU));
+	return (uint32_t)((((temp & RTC_DR_WDU) >> RTC_DR_WDU_Pos) << RTC_OFFSET_WEEKDAY) | \
+			  (((((temp & RTC_DR_DT) >> RTC_DR_DT_Pos) << 4U)                 | \
+			    ((temp & RTC_DR_DU) >> RTC_DR_DU_Pos)) << RTC_OFFSET_DAY)       | \
+			  (((((temp & RTC_DR_MT) >> RTC_DR_MT_Pos) << 4U)                 | \
+			    ((temp & RTC_DR_MU) >> RTC_DR_MU_Pos)) << RTC_OFFSET_MONTH)     | \
+			  ((((temp & RTC_DR_YT) >> RTC_DR_YT_Pos) << 4U) | ((temp & RTC_DR_YU) >> RTC_DR_YU_Pos)));
 }
 
 /**
@@ -2130,7 +2126,7 @@ __STATIC_INLINE uint32_t LL_RTC_DATE_Get(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_Enable(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_ALRAE);
+	SET_BIT(RTCx->CR, RTC_CR_ALRAE);
 }
 
 /**
@@ -2142,7 +2138,7 @@ __STATIC_INLINE void LL_RTC_ALMA_Enable(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_Disable(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_ALRAE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_ALRAE);
 }
 
 /**
@@ -2163,7 +2159,7 @@ __STATIC_INLINE void LL_RTC_ALMA_Disable(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_SetMask(RTC_TypeDef *RTCx, uint32_t Mask)
 {
-  MODIFY_REG(RTCx->ALRMAR, RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1, Mask);
+	MODIFY_REG(RTCx->ALRMAR, RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1, Mask);
 }
 
 /**
@@ -2183,7 +2179,7 @@ __STATIC_INLINE void LL_RTC_ALMA_SetMask(RTC_TypeDef *RTCx, uint32_t Mask)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetMask(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMAR, RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1));
+	return (uint32_t)(READ_BIT(RTCx->ALRMAR, RTC_ALRMAR_MSK4 | RTC_ALRMAR_MSK3 | RTC_ALRMAR_MSK2 | RTC_ALRMAR_MSK1));
 }
 
 /**
@@ -2194,7 +2190,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetMask(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_EnableWeekday(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->ALRMAR, RTC_ALRMAR_WDSEL);
+	SET_BIT(RTCx->ALRMAR, RTC_ALRMAR_WDSEL);
 }
 
 /**
@@ -2205,7 +2201,7 @@ __STATIC_INLINE void LL_RTC_ALMA_EnableWeekday(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_DisableWeekday(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->ALRMAR, RTC_ALRMAR_WDSEL);
+	CLEAR_BIT(RTCx->ALRMAR, RTC_ALRMAR_WDSEL);
 }
 
 /**
@@ -2219,8 +2215,8 @@ __STATIC_INLINE void LL_RTC_ALMA_DisableWeekday(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_SetDay(RTC_TypeDef *RTCx, uint32_t Day)
 {
-  MODIFY_REG(RTCx->ALRMAR, (RTC_ALRMAR_DT | RTC_ALRMAR_DU),
-             (((Day & 0xF0U) << (RTC_ALRMAR_DT_Pos - 4U)) | ((Day & 0x0FU) << RTC_ALRMAR_DU_Pos)));
+	MODIFY_REG(RTCx->ALRMAR, (RTC_ALRMAR_DT | RTC_ALRMAR_DU),
+		   (((Day & 0xF0U) << (RTC_ALRMAR_DT_Pos - 4U)) | ((Day & 0x0FU) << RTC_ALRMAR_DU_Pos)));
 }
 
 /**
@@ -2233,7 +2229,7 @@ __STATIC_INLINE void LL_RTC_ALMA_SetDay(RTC_TypeDef *RTCx, uint32_t Day)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetDay(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->ALRMAR, (RTC_ALRMAR_DT | RTC_ALRMAR_DU))) >> RTC_ALRMAR_DU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->ALRMAR, (RTC_ALRMAR_DT | RTC_ALRMAR_DU))) >> RTC_ALRMAR_DU_Pos);
 }
 
 /**
@@ -2252,7 +2248,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetDay(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_SetWeekDay(RTC_TypeDef *RTCx, uint32_t WeekDay)
 {
-  MODIFY_REG(RTCx->ALRMAR, RTC_ALRMAR_DU, WeekDay << RTC_ALRMAR_DU_Pos);
+	MODIFY_REG(RTCx->ALRMAR, RTC_ALRMAR_DU, WeekDay << RTC_ALRMAR_DU_Pos);
 }
 
 /**
@@ -2270,7 +2266,7 @@ __STATIC_INLINE void LL_RTC_ALMA_SetWeekDay(RTC_TypeDef *RTCx, uint32_t WeekDay)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetWeekDay(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMAR, RTC_ALRMAR_DU) >> RTC_ALRMAR_DU_Pos);
+	return (uint32_t)(READ_BIT(RTCx->ALRMAR, RTC_ALRMAR_DU) >> RTC_ALRMAR_DU_Pos);
 }
 
 /**
@@ -2284,7 +2280,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetWeekDay(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_SetTimeFormat(RTC_TypeDef *RTCx, uint32_t TimeFormat)
 {
-  MODIFY_REG(RTCx->ALRMAR, RTC_ALRMAR_PM, TimeFormat);
+	MODIFY_REG(RTCx->ALRMAR, RTC_ALRMAR_PM, TimeFormat);
 }
 
 /**
@@ -2297,7 +2293,7 @@ __STATIC_INLINE void LL_RTC_ALMA_SetTimeFormat(RTC_TypeDef *RTCx, uint32_t TimeF
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetTimeFormat(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMAR, RTC_ALRMAR_PM));
+	return (uint32_t)(READ_BIT(RTCx->ALRMAR, RTC_ALRMAR_PM));
 }
 
 /**
@@ -2311,8 +2307,8 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetTimeFormat(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_SetHour(RTC_TypeDef *RTCx, uint32_t Hours)
 {
-  MODIFY_REG(RTCx->ALRMAR, (RTC_ALRMAR_HT | RTC_ALRMAR_HU),
-             (((Hours & 0xF0U) << (RTC_ALRMAR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_ALRMAR_HU_Pos)));
+	MODIFY_REG(RTCx->ALRMAR, (RTC_ALRMAR_HT | RTC_ALRMAR_HU),
+		   (((Hours & 0xF0U) << (RTC_ALRMAR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_ALRMAR_HU_Pos)));
 }
 
 /**
@@ -2325,7 +2321,7 @@ __STATIC_INLINE void LL_RTC_ALMA_SetHour(RTC_TypeDef *RTCx, uint32_t Hours)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetHour(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->ALRMAR, (RTC_ALRMAR_HT | RTC_ALRMAR_HU))) >> RTC_ALRMAR_HU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->ALRMAR, (RTC_ALRMAR_HT | RTC_ALRMAR_HU))) >> RTC_ALRMAR_HU_Pos);
 }
 
 /**
@@ -2339,8 +2335,8 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetHour(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_SetMinute(RTC_TypeDef *RTCx, uint32_t Minutes)
 {
-  MODIFY_REG(RTCx->ALRMAR, (RTC_ALRMAR_MNT | RTC_ALRMAR_MNU),
-             (((Minutes & 0xF0U) << (RTC_ALRMAR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_ALRMAR_MNU_Pos)));
+	MODIFY_REG(RTCx->ALRMAR, (RTC_ALRMAR_MNT | RTC_ALRMAR_MNU),
+		   (((Minutes & 0xF0U) << (RTC_ALRMAR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_ALRMAR_MNU_Pos)));
 }
 
 /**
@@ -2353,7 +2349,7 @@ __STATIC_INLINE void LL_RTC_ALMA_SetMinute(RTC_TypeDef *RTCx, uint32_t Minutes)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetMinute(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->ALRMAR, (RTC_ALRMAR_MNT | RTC_ALRMAR_MNU))) >> RTC_ALRMAR_MNU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->ALRMAR, (RTC_ALRMAR_MNT | RTC_ALRMAR_MNU))) >> RTC_ALRMAR_MNU_Pos);
 }
 
 /**
@@ -2367,8 +2363,8 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetMinute(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_SetSecond(RTC_TypeDef *RTCx, uint32_t Seconds)
 {
-  MODIFY_REG(RTCx->ALRMAR, (RTC_ALRMAR_ST | RTC_ALRMAR_SU),
-             (((Seconds & 0xF0U) << (RTC_ALRMAR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_ALRMAR_SU_Pos)));
+	MODIFY_REG(RTCx->ALRMAR, (RTC_ALRMAR_ST | RTC_ALRMAR_SU),
+		   (((Seconds & 0xF0U) << (RTC_ALRMAR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_ALRMAR_SU_Pos)));
 }
 
 /**
@@ -2381,7 +2377,7 @@ __STATIC_INLINE void LL_RTC_ALMA_SetSecond(RTC_TypeDef *RTCx, uint32_t Seconds)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetSecond(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->ALRMAR, (RTC_ALRMAR_ST | RTC_ALRMAR_SU))) >> RTC_ALRMAR_SU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->ALRMAR, (RTC_ALRMAR_ST | RTC_ALRMAR_SU))) >> RTC_ALRMAR_SU_Pos);
 }
 
 /**
@@ -2403,19 +2399,19 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetSecond(const RTC_TypeDef *RTCx)
   * @retval None
   */
 __STATIC_INLINE void LL_RTC_ALMA_ConfigTime(RTC_TypeDef *RTCx,
-                                            uint32_t Format12_24,
-                                            uint32_t Hours,
-                                            uint32_t Minutes,
-                                            uint32_t Seconds)
+		uint32_t Format12_24,
+		uint32_t Hours,
+		uint32_t Minutes,
+		uint32_t Seconds)
 {
-  uint32_t temp;
+	uint32_t temp;
 
-  temp = Format12_24 | (((Hours & 0xF0U) << (RTC_ALRMAR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_ALRMAR_HU_Pos))    | \
-         (((Minutes & 0xF0U) << (RTC_ALRMAR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_ALRMAR_MNU_Pos)) | \
-         (((Seconds & 0xF0U) << (RTC_ALRMAR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_ALRMAR_SU_Pos));
+	temp = Format12_24 | (((Hours & 0xF0U) << (RTC_ALRMAR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_ALRMAR_HU_Pos))    | \
+	       (((Minutes & 0xF0U) << (RTC_ALRMAR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_ALRMAR_MNU_Pos)) | \
+	       (((Seconds & 0xF0U) << (RTC_ALRMAR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_ALRMAR_SU_Pos));
 
-  MODIFY_REG(RTCx->ALRMAR, RTC_ALRMAR_PM | RTC_ALRMAR_HT | RTC_ALRMAR_HU | RTC_ALRMAR_MNT | RTC_ALRMAR_MNU | \
-             RTC_ALRMAR_ST | RTC_ALRMAR_SU, temp);
+	MODIFY_REG(RTCx->ALRMAR, RTC_ALRMAR_PM | RTC_ALRMAR_HT | RTC_ALRMAR_HU | RTC_ALRMAR_MNT | RTC_ALRMAR_MNU | \
+		   RTC_ALRMAR_ST | RTC_ALRMAR_SU, temp);
 }
 
 /**
@@ -2433,8 +2429,8 @@ __STATIC_INLINE void LL_RTC_ALMA_ConfigTime(RTC_TypeDef *RTCx,
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetTime(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((LL_RTC_ALMA_GetHour(RTCx) << RTC_OFFSET_HOUR) |
-                    (LL_RTC_ALMA_GetMinute(RTCx) << RTC_OFFSET_MINUTE) | LL_RTC_ALMA_GetSecond(RTCx));
+	return (uint32_t)((LL_RTC_ALMA_GetHour(RTCx) << RTC_OFFSET_HOUR) |
+			  (LL_RTC_ALMA_GetMinute(RTCx) << RTC_OFFSET_MINUTE) | LL_RTC_ALMA_GetSecond(RTCx));
 }
 
 /**
@@ -2449,7 +2445,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetTime(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_SetSubSecondMask(RTC_TypeDef *RTCx, uint32_t Mask)
 {
-  MODIFY_REG(RTCx->ALRMASSR, RTC_ALRMASSR_MASKSS, Mask << RTC_ALRMASSR_MASKSS_Pos);
+	MODIFY_REG(RTCx->ALRMASSR, RTC_ALRMASSR_MASKSS, Mask << RTC_ALRMASSR_MASKSS_Pos);
 }
 
 /**
@@ -2461,7 +2457,7 @@ __STATIC_INLINE void LL_RTC_ALMA_SetSubSecondMask(RTC_TypeDef *RTCx, uint32_t Ma
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetSubSecondMask(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMASSR, RTC_ALRMASSR_MASKSS) >> RTC_ALRMASSR_MASKSS_Pos);
+	return (uint32_t)(READ_BIT(RTCx->ALRMASSR, RTC_ALRMASSR_MASKSS) >> RTC_ALRMASSR_MASKSS_Pos);
 }
 
 /**
@@ -2477,7 +2473,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetSubSecondMask(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_SetBinAutoClr(RTC_TypeDef *RTCx, uint32_t BinaryAutoClr)
 {
-  MODIFY_REG(RTCx->ALRMASSR, RTC_ALRMASSR_SSCLR, BinaryAutoClr);
+	MODIFY_REG(RTCx->ALRMASSR, RTC_ALRMASSR_SSCLR, BinaryAutoClr);
 }
 
 /**
@@ -2490,7 +2486,7 @@ __STATIC_INLINE void LL_RTC_ALMA_SetBinAutoClr(RTC_TypeDef *RTCx, uint32_t Binar
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetBinAutoClr(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMASSR, RTC_ALRMASSR_SSCLR));
+	return (uint32_t)(READ_BIT(RTCx->ALRMASSR, RTC_ALRMASSR_SSCLR));
 }
 
 /**
@@ -2503,7 +2499,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetBinAutoClr(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMA_SetSubSecond(RTC_TypeDef *RTCx, uint32_t Subsecond)
 {
-  MODIFY_REG(RTCx->ALRMASSR, RTC_ALRMASSR_SS, Subsecond);
+	MODIFY_REG(RTCx->ALRMASSR, RTC_ALRMASSR_SS, Subsecond);
 }
 
 /**
@@ -2515,7 +2511,7 @@ __STATIC_INLINE void LL_RTC_ALMA_SetSubSecond(RTC_TypeDef *RTCx, uint32_t Subsec
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMA_GetSubSecond(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMASSR, RTC_ALRMASSR_SS));
+	return (uint32_t)(READ_BIT(RTCx->ALRMASSR, RTC_ALRMASSR_SS));
 }
 
 /**
@@ -2535,7 +2531,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMA_GetSubSecond(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_Enable(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_ALRBE);
+	SET_BIT(RTCx->CR, RTC_CR_ALRBE);
 }
 
 /**
@@ -2547,7 +2543,7 @@ __STATIC_INLINE void LL_RTC_ALMB_Enable(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_Disable(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_ALRBE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_ALRBE);
 }
 
 /**
@@ -2568,7 +2564,7 @@ __STATIC_INLINE void LL_RTC_ALMB_Disable(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_SetMask(RTC_TypeDef *RTCx, uint32_t Mask)
 {
-  MODIFY_REG(RTCx->ALRMBR, RTC_ALRMBR_MSK4 | RTC_ALRMBR_MSK3 | RTC_ALRMBR_MSK2 | RTC_ALRMBR_MSK1, Mask);
+	MODIFY_REG(RTCx->ALRMBR, RTC_ALRMBR_MSK4 | RTC_ALRMBR_MSK3 | RTC_ALRMBR_MSK2 | RTC_ALRMBR_MSK1, Mask);
 }
 
 /**
@@ -2588,7 +2584,7 @@ __STATIC_INLINE void LL_RTC_ALMB_SetMask(RTC_TypeDef *RTCx, uint32_t Mask)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetMask(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMBR, RTC_ALRMBR_MSK4 | RTC_ALRMBR_MSK3 | RTC_ALRMBR_MSK2 | RTC_ALRMBR_MSK1));
+	return (uint32_t)(READ_BIT(RTCx->ALRMBR, RTC_ALRMBR_MSK4 | RTC_ALRMBR_MSK3 | RTC_ALRMBR_MSK2 | RTC_ALRMBR_MSK1));
 }
 
 /**
@@ -2599,7 +2595,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetMask(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_EnableWeekday(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->ALRMBR, RTC_ALRMBR_WDSEL);
+	SET_BIT(RTCx->ALRMBR, RTC_ALRMBR_WDSEL);
 }
 
 /**
@@ -2610,7 +2606,7 @@ __STATIC_INLINE void LL_RTC_ALMB_EnableWeekday(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_DisableWeekday(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->ALRMBR, RTC_ALRMBR_WDSEL);
+	CLEAR_BIT(RTCx->ALRMBR, RTC_ALRMBR_WDSEL);
 }
 
 /**
@@ -2624,8 +2620,8 @@ __STATIC_INLINE void LL_RTC_ALMB_DisableWeekday(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_SetDay(RTC_TypeDef *RTCx, uint32_t Day)
 {
-  MODIFY_REG(RTCx->ALRMBR, (RTC_ALRMBR_DT | RTC_ALRMBR_DU),
-             (((Day & 0xF0U) << (RTC_ALRMBR_DT_Pos - 4U)) | ((Day & 0x0FU) << RTC_ALRMBR_DU_Pos)));
+	MODIFY_REG(RTCx->ALRMBR, (RTC_ALRMBR_DT | RTC_ALRMBR_DU),
+		   (((Day & 0xF0U) << (RTC_ALRMBR_DT_Pos - 4U)) | ((Day & 0x0FU) << RTC_ALRMBR_DU_Pos)));
 }
 
 /**
@@ -2638,7 +2634,7 @@ __STATIC_INLINE void LL_RTC_ALMB_SetDay(RTC_TypeDef *RTCx, uint32_t Day)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetDay(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->ALRMBR, (RTC_ALRMBR_DT | RTC_ALRMBR_DU))) >> RTC_ALRMBR_DU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->ALRMBR, (RTC_ALRMBR_DT | RTC_ALRMBR_DU))) >> RTC_ALRMBR_DU_Pos);
 }
 
 /**
@@ -2657,7 +2653,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetDay(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_SetWeekDay(RTC_TypeDef *RTCx, uint32_t WeekDay)
 {
-  MODIFY_REG(RTCx->ALRMBR, RTC_ALRMBR_DU, WeekDay << RTC_ALRMBR_DU_Pos);
+	MODIFY_REG(RTCx->ALRMBR, RTC_ALRMBR_DU, WeekDay << RTC_ALRMBR_DU_Pos);
 }
 
 /**
@@ -2675,7 +2671,7 @@ __STATIC_INLINE void LL_RTC_ALMB_SetWeekDay(RTC_TypeDef *RTCx, uint32_t WeekDay)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetWeekDay(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMBR, RTC_ALRMBR_DU) >> RTC_ALRMBR_DU_Pos);
+	return (uint32_t)(READ_BIT(RTCx->ALRMBR, RTC_ALRMBR_DU) >> RTC_ALRMBR_DU_Pos);
 }
 
 /**
@@ -2689,7 +2685,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetWeekDay(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_SetTimeFormat(RTC_TypeDef *RTCx, uint32_t TimeFormat)
 {
-  MODIFY_REG(RTCx->ALRMBR, RTC_ALRMBR_PM, TimeFormat);
+	MODIFY_REG(RTCx->ALRMBR, RTC_ALRMBR_PM, TimeFormat);
 }
 
 /**
@@ -2702,7 +2698,7 @@ __STATIC_INLINE void LL_RTC_ALMB_SetTimeFormat(RTC_TypeDef *RTCx, uint32_t TimeF
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetTimeFormat(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMBR, RTC_ALRMBR_PM));
+	return (uint32_t)(READ_BIT(RTCx->ALRMBR, RTC_ALRMBR_PM));
 }
 
 /**
@@ -2716,8 +2712,8 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetTimeFormat(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_SetHour(RTC_TypeDef *RTCx, uint32_t Hours)
 {
-  MODIFY_REG(RTCx->ALRMBR, (RTC_ALRMBR_HT | RTC_ALRMBR_HU),
-             (((Hours & 0xF0U) << (RTC_ALRMBR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_ALRMBR_HU_Pos)));
+	MODIFY_REG(RTCx->ALRMBR, (RTC_ALRMBR_HT | RTC_ALRMBR_HU),
+		   (((Hours & 0xF0U) << (RTC_ALRMBR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_ALRMBR_HU_Pos)));
 }
 
 /**
@@ -2730,7 +2726,7 @@ __STATIC_INLINE void LL_RTC_ALMB_SetHour(RTC_TypeDef *RTCx, uint32_t Hours)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetHour(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->ALRMBR, (RTC_ALRMBR_HT | RTC_ALRMBR_HU))) >> RTC_ALRMBR_HU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->ALRMBR, (RTC_ALRMBR_HT | RTC_ALRMBR_HU))) >> RTC_ALRMBR_HU_Pos);
 }
 
 /**
@@ -2744,8 +2740,8 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetHour(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_SetMinute(RTC_TypeDef *RTCx, uint32_t Minutes)
 {
-  MODIFY_REG(RTCx->ALRMBR, (RTC_ALRMBR_MNT | RTC_ALRMBR_MNU),
-             (((Minutes & 0xF0U) << (RTC_ALRMBR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_ALRMBR_MNU_Pos)));
+	MODIFY_REG(RTCx->ALRMBR, (RTC_ALRMBR_MNT | RTC_ALRMBR_MNU),
+		   (((Minutes & 0xF0U) << (RTC_ALRMBR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_ALRMBR_MNU_Pos)));
 }
 
 /**
@@ -2758,7 +2754,7 @@ __STATIC_INLINE void LL_RTC_ALMB_SetMinute(RTC_TypeDef *RTCx, uint32_t Minutes)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetMinute(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->ALRMBR, (RTC_ALRMBR_MNT | RTC_ALRMBR_MNU))) >> RTC_ALRMBR_MNU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->ALRMBR, (RTC_ALRMBR_MNT | RTC_ALRMBR_MNU))) >> RTC_ALRMBR_MNU_Pos);
 }
 
 /**
@@ -2772,8 +2768,8 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetMinute(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_SetSecond(RTC_TypeDef *RTCx, uint32_t Seconds)
 {
-  MODIFY_REG(RTCx->ALRMBR, (RTC_ALRMBR_ST | RTC_ALRMBR_SU),
-             (((Seconds & 0xF0U) << (RTC_ALRMBR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_ALRMBR_SU_Pos)));
+	MODIFY_REG(RTCx->ALRMBR, (RTC_ALRMBR_ST | RTC_ALRMBR_SU),
+		   (((Seconds & 0xF0U) << (RTC_ALRMBR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_ALRMBR_SU_Pos)));
 }
 
 /**
@@ -2786,7 +2782,7 @@ __STATIC_INLINE void LL_RTC_ALMB_SetSecond(RTC_TypeDef *RTCx, uint32_t Seconds)
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetSecond(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((READ_BIT(RTCx->ALRMBR, (RTC_ALRMBR_ST | RTC_ALRMBR_SU))) >> RTC_ALRMBR_SU_Pos);
+	return (uint32_t)((READ_BIT(RTCx->ALRMBR, (RTC_ALRMBR_ST | RTC_ALRMBR_SU))) >> RTC_ALRMBR_SU_Pos);
 }
 
 /**
@@ -2808,19 +2804,19 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetSecond(const RTC_TypeDef *RTCx)
   * @retval None
   */
 __STATIC_INLINE void LL_RTC_ALMB_ConfigTime(RTC_TypeDef *RTCx,
-                                            uint32_t Format12_24,
-                                            uint32_t Hours,
-                                            uint32_t Minutes,
-                                            uint32_t Seconds)
+		uint32_t Format12_24,
+		uint32_t Hours,
+		uint32_t Minutes,
+		uint32_t Seconds)
 {
-  uint32_t temp;
+	uint32_t temp;
 
-  temp = Format12_24 | (((Hours & 0xF0U) << (RTC_ALRMBR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_ALRMBR_HU_Pos))    | \
-         (((Minutes & 0xF0U) << (RTC_ALRMBR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_ALRMBR_MNU_Pos)) | \
-         (((Seconds & 0xF0U) << (RTC_ALRMBR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_ALRMBR_SU_Pos));
+	temp = Format12_24 | (((Hours & 0xF0U) << (RTC_ALRMBR_HT_Pos - 4U)) | ((Hours & 0x0FU) << RTC_ALRMBR_HU_Pos))    | \
+	       (((Minutes & 0xF0U) << (RTC_ALRMBR_MNT_Pos - 4U)) | ((Minutes & 0x0FU) << RTC_ALRMBR_MNU_Pos)) | \
+	       (((Seconds & 0xF0U) << (RTC_ALRMBR_ST_Pos - 4U)) | ((Seconds & 0x0FU) << RTC_ALRMBR_SU_Pos));
 
-  MODIFY_REG(RTCx->ALRMBR, RTC_ALRMBR_PM | RTC_ALRMBR_HT | RTC_ALRMBR_HU | RTC_ALRMBR_MNT | RTC_ALRMBR_MNU | \
-             RTC_ALRMBR_ST | RTC_ALRMBR_SU, temp);
+	MODIFY_REG(RTCx->ALRMBR, RTC_ALRMBR_PM | RTC_ALRMBR_HT | RTC_ALRMBR_HU | RTC_ALRMBR_MNT | RTC_ALRMBR_MNU | \
+		   RTC_ALRMBR_ST | RTC_ALRMBR_SU, temp);
 }
 
 /**
@@ -2838,8 +2834,8 @@ __STATIC_INLINE void LL_RTC_ALMB_ConfigTime(RTC_TypeDef *RTCx,
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetTime(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)((LL_RTC_ALMB_GetHour(RTCx) << RTC_OFFSET_HOUR) | \
-                    (LL_RTC_ALMB_GetMinute(RTCx) << RTC_OFFSET_MINUTE) | LL_RTC_ALMB_GetSecond(RTCx));
+	return (uint32_t)((LL_RTC_ALMB_GetHour(RTCx) << RTC_OFFSET_HOUR) | \
+			  (LL_RTC_ALMB_GetMinute(RTCx) << RTC_OFFSET_MINUTE) | LL_RTC_ALMB_GetSecond(RTCx));
 }
 
 /**
@@ -2854,7 +2850,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetTime(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_SetSubSecondMask(RTC_TypeDef *RTCx, uint32_t Mask)
 {
-  MODIFY_REG(RTCx->ALRMBSSR, RTC_ALRMBSSR_MASKSS, Mask << RTC_ALRMBSSR_MASKSS_Pos);
+	MODIFY_REG(RTCx->ALRMBSSR, RTC_ALRMBSSR_MASKSS, Mask << RTC_ALRMBSSR_MASKSS_Pos);
 }
 
 /**
@@ -2866,7 +2862,7 @@ __STATIC_INLINE void LL_RTC_ALMB_SetSubSecondMask(RTC_TypeDef *RTCx, uint32_t Ma
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetSubSecondMask(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMBSSR, RTC_ALRMBSSR_MASKSS)  >> RTC_ALRMBSSR_MASKSS_Pos);
+	return (uint32_t)(READ_BIT(RTCx->ALRMBSSR, RTC_ALRMBSSR_MASKSS)  >> RTC_ALRMBSSR_MASKSS_Pos);
 }
 
 /**
@@ -2882,7 +2878,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetSubSecondMask(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_SetBinAutoClr(RTC_TypeDef *RTCx, uint32_t BinaryAutoClr)
 {
-  MODIFY_REG(RTCx->ALRMBSSR, RTC_ALRMBSSR_SSCLR, BinaryAutoClr);
+	MODIFY_REG(RTCx->ALRMBSSR, RTC_ALRMBSSR_SSCLR, BinaryAutoClr);
 }
 
 /**
@@ -2895,7 +2891,7 @@ __STATIC_INLINE void LL_RTC_ALMB_SetBinAutoClr(RTC_TypeDef *RTCx, uint32_t Binar
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetBinAutoClr(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMBSSR, RTC_ALRMBSSR_SSCLR));
+	return (uint32_t)(READ_BIT(RTCx->ALRMBSSR, RTC_ALRMBSSR_SSCLR));
 }
 
 /**
@@ -2908,7 +2904,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetBinAutoClr(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ALMB_SetSubSecond(RTC_TypeDef *RTCx, uint32_t Subsecond)
 {
-  MODIFY_REG(RTCx->ALRMBSSR, RTC_ALRMBSSR_SS, Subsecond);
+	MODIFY_REG(RTCx->ALRMBSSR, RTC_ALRMBSSR_SS, Subsecond);
 }
 
 /**
@@ -2920,7 +2916,7 @@ __STATIC_INLINE void LL_RTC_ALMB_SetSubSecond(RTC_TypeDef *RTCx, uint32_t Subsec
   */
 __STATIC_INLINE uint32_t LL_RTC_ALMB_GetSubSecond(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->ALRMBSSR, RTC_ALRMBSSR_SS));
+	return (uint32_t)(READ_BIT(RTCx->ALRMBSSR, RTC_ALRMBSSR_SS));
 }
 
 /**
@@ -2940,7 +2936,7 @@ __STATIC_INLINE uint32_t LL_RTC_ALMB_GetSubSecond(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TS_EnableInternalEvent(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_ITSE);
+	SET_BIT(RTCx->CR, RTC_CR_ITSE);
 }
 
 /**
@@ -2952,7 +2948,7 @@ __STATIC_INLINE void LL_RTC_TS_EnableInternalEvent(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TS_DisableInternalEvent(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_ITSE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_ITSE);
 }
 
 #ifdef RTC_CR_TSE
@@ -2965,7 +2961,7 @@ __STATIC_INLINE void LL_RTC_TS_DisableInternalEvent(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TS_Enable(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_TSE);
+	SET_BIT(RTCx->CR, RTC_CR_TSE);
 }
 
 /**
@@ -2977,7 +2973,7 @@ __STATIC_INLINE void LL_RTC_TS_Enable(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TS_Disable(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_TSE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_TSE);
 }
 #endif /* RTC_CR_TSE */
 
@@ -2995,7 +2991,7 @@ __STATIC_INLINE void LL_RTC_TS_Disable(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TS_SetActiveEdge(RTC_TypeDef *RTCx, uint32_t Edge)
 {
-  MODIFY_REG(RTCx->CR, RTC_CR_TSEDGE, Edge);
+	MODIFY_REG(RTCx->CR, RTC_CR_TSEDGE, Edge);
 }
 
 /**
@@ -3009,7 +3005,7 @@ __STATIC_INLINE void LL_RTC_TS_SetActiveEdge(RTC_TypeDef *RTCx, uint32_t Edge)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetActiveEdge(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_TSEDGE));
+	return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_TSEDGE));
 }
 #endif /* RTC_CR_TSEDGE */
 
@@ -3023,7 +3019,7 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetActiveEdge(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetTimeFormat(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TSTR, RTC_TSTR_PM));
+	return (uint32_t)(READ_BIT(RTCx->TSTR, RTC_TSTR_PM));
 }
 
 /**
@@ -3036,7 +3032,7 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetTimeFormat(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetHour(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TSTR, RTC_TSTR_HT | RTC_TSTR_HU) >> RTC_TSTR_HU_Pos);
+	return (uint32_t)(READ_BIT(RTCx->TSTR, RTC_TSTR_HT | RTC_TSTR_HU) >> RTC_TSTR_HU_Pos);
 }
 
 /**
@@ -3049,7 +3045,7 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetHour(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetMinute(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TSTR, RTC_TSTR_MNT | RTC_TSTR_MNU) >> RTC_TSTR_MNU_Pos);
+	return (uint32_t)(READ_BIT(RTCx->TSTR, RTC_TSTR_MNT | RTC_TSTR_MNU) >> RTC_TSTR_MNU_Pos);
 }
 
 /**
@@ -3062,7 +3058,7 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetMinute(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetSecond(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TSTR, RTC_TSTR_ST | RTC_TSTR_SU));
+	return (uint32_t)(READ_BIT(RTCx->TSTR, RTC_TSTR_ST | RTC_TSTR_SU));
 }
 
 /**
@@ -3080,8 +3076,8 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetSecond(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetTime(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TSTR,
-                             RTC_TSTR_HT | RTC_TSTR_HU | RTC_TSTR_MNT | RTC_TSTR_MNU | RTC_TSTR_ST | RTC_TSTR_SU));
+	return (uint32_t)(READ_BIT(RTCx->TSTR,
+				   RTC_TSTR_HT | RTC_TSTR_HU | RTC_TSTR_MNT | RTC_TSTR_MNU | RTC_TSTR_ST | RTC_TSTR_SU));
 }
 
 /**
@@ -3099,7 +3095,7 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetTime(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetWeekDay(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TSDR, RTC_TSDR_WDU) >> RTC_TSDR_WDU_Pos);
+	return (uint32_t)(READ_BIT(RTCx->TSDR, RTC_TSDR_WDU) >> RTC_TSDR_WDU_Pos);
 }
 
 /**
@@ -3124,7 +3120,7 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetWeekDay(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetMonth(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TSDR, RTC_TSDR_MT | RTC_TSDR_MU) >> RTC_TSDR_MU_Pos);
+	return (uint32_t)(READ_BIT(RTCx->TSDR, RTC_TSDR_MT | RTC_TSDR_MU) >> RTC_TSDR_MU_Pos);
 }
 
 /**
@@ -3137,7 +3133,7 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetMonth(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetDay(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TSDR, RTC_TSDR_DT | RTC_TSDR_DU));
+	return (uint32_t)(READ_BIT(RTCx->TSDR, RTC_TSDR_DT | RTC_TSDR_DU));
 }
 
 /**
@@ -3154,7 +3150,7 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetDay(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetDate(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TSDR, RTC_TSDR_WDU | RTC_TSDR_MT | RTC_TSDR_MU | RTC_TSDR_DT | RTC_TSDR_DU));
+	return (uint32_t)(READ_BIT(RTCx->TSDR, RTC_TSDR_WDU | RTC_TSDR_MT | RTC_TSDR_MU | RTC_TSDR_DT | RTC_TSDR_DU));
 }
 
 /**
@@ -3166,7 +3162,7 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetDate(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_TS_GetSubSecond(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->TSSSR, RTC_TSSSR_SS));
+	return (uint32_t)(READ_BIT(RTCx->TSSSR, RTC_TSSSR_SS));
 }
 
 /**
@@ -3177,7 +3173,7 @@ __STATIC_INLINE uint32_t LL_RTC_TS_GetSubSecond(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TS_EnableOnTamper(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_TAMPTS);
+	SET_BIT(RTCx->CR, RTC_CR_TAMPTS);
 }
 
 /**
@@ -3188,7 +3184,7 @@ __STATIC_INLINE void LL_RTC_TS_EnableOnTamper(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TS_DisableOnTamper(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_TAMPTS);
+	CLEAR_BIT(RTCx->CR, RTC_CR_TAMPTS);
 }
 
 
@@ -3212,8 +3208,8 @@ __STATIC_INLINE void LL_RTC_TS_DisableOnTamper(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_Enable(const RTC_TypeDef *RTCx, uint32_t Tamper)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->CR1, Tamper);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->CR1, Tamper);
 }
 
 /**
@@ -3228,8 +3224,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_Enable(const RTC_TypeDef *RTCx, uint32_t Tamp
   */
 __STATIC_INLINE void LL_RTC_TAMPER_Disable(const RTC_TypeDef *RTCx, uint32_t Tamper)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->CR1, Tamper);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->CR1, Tamper);
 }
 
 /**
@@ -3245,8 +3241,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_Disable(const RTC_TypeDef *RTCx, uint32_t Tam
   */
 __STATIC_INLINE void LL_RTC_TAMPER_EnableMask(const RTC_TypeDef *RTCx, uint32_t Mask)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->CR2, Mask);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->CR2, Mask);
 }
 
 /**
@@ -3261,8 +3257,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_EnableMask(const RTC_TypeDef *RTCx, uint32_t 
   */
 __STATIC_INLINE void LL_RTC_TAMPER_DisableMask(const RTC_TypeDef *RTCx, uint32_t Mask)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->CR2, Mask);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->CR2, Mask);
 }
 
 /**
@@ -3277,8 +3273,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_DisableMask(const RTC_TypeDef *RTCx, uint32_t
   */
 __STATIC_INLINE void LL_RTC_TAMPER_EnableEraseBKP(const RTC_TypeDef *RTCx, uint32_t Tamper)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->CR2, Tamper);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->CR2, Tamper);
 }
 
 /**
@@ -3293,8 +3289,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_EnableEraseBKP(const RTC_TypeDef *RTCx, uint3
   */
 __STATIC_INLINE void LL_RTC_TAMPER_DisableEraseBKP(const RTC_TypeDef *RTCx, uint32_t Tamper)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->CR2, Tamper);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->CR2, Tamper);
 }
 
 /**
@@ -3305,8 +3301,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_DisableEraseBKP(const RTC_TypeDef *RTCx, uint
   */
 __STATIC_INLINE void LL_RTC_TAMPER_DisablePullUp(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->FLTCR, TAMP_FLTCR_TAMPPUDIS);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->FLTCR, TAMP_FLTCR_TAMPPUDIS);
 }
 
 /**
@@ -3317,8 +3313,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_DisablePullUp(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_EnablePullUp(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->FLTCR, TAMP_FLTCR_TAMPPUDIS);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->FLTCR, TAMP_FLTCR_TAMPPUDIS);
 }
 
 /**
@@ -3334,8 +3330,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_EnablePullUp(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_SetPrecharge(const RTC_TypeDef *RTCx, uint32_t Duration)
 {
-  UNUSED(RTCx);
-  MODIFY_REG(TAMP->FLTCR, TAMP_FLTCR_TAMPPRCH, Duration);
+	UNUSED(RTCx);
+	MODIFY_REG(TAMP->FLTCR, TAMP_FLTCR_TAMPPRCH, Duration);
 }
 
 /**
@@ -3350,8 +3346,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_SetPrecharge(const RTC_TypeDef *RTCx, uint32_
   */
 __STATIC_INLINE uint32_t LL_RTC_TAMPER_GetPrecharge(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return (uint32_t)(READ_BIT(TAMP->FLTCR, TAMP_FLTCR_TAMPPRCH));
+	UNUSED(RTCx);
+	return (uint32_t)(READ_BIT(TAMP->FLTCR, TAMP_FLTCR_TAMPPRCH));
 }
 
 /**
@@ -3367,8 +3363,8 @@ __STATIC_INLINE uint32_t LL_RTC_TAMPER_GetPrecharge(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_SetFilterCount(const RTC_TypeDef *RTCx, uint32_t FilterCount)
 {
-  UNUSED(RTCx);
-  MODIFY_REG(TAMP->FLTCR, TAMP_FLTCR_TAMPFLT, FilterCount);
+	UNUSED(RTCx);
+	MODIFY_REG(TAMP->FLTCR, TAMP_FLTCR_TAMPFLT, FilterCount);
 }
 
 /**
@@ -3383,8 +3379,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_SetFilterCount(const RTC_TypeDef *RTCx, uint3
   */
 __STATIC_INLINE uint32_t LL_RTC_TAMPER_GetFilterCount(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return (uint32_t)(READ_BIT(TAMP->FLTCR, TAMP_FLTCR_TAMPFLT));
+	UNUSED(RTCx);
+	return (uint32_t)(READ_BIT(TAMP->FLTCR, TAMP_FLTCR_TAMPFLT));
 }
 
 /**
@@ -3404,8 +3400,8 @@ __STATIC_INLINE uint32_t LL_RTC_TAMPER_GetFilterCount(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_SetSamplingFreq(const RTC_TypeDef *RTCx, uint32_t SamplingFreq)
 {
-  UNUSED(RTCx);
-  MODIFY_REG(TAMP->FLTCR, TAMP_FLTCR_TAMPFREQ, SamplingFreq);
+	UNUSED(RTCx);
+	MODIFY_REG(TAMP->FLTCR, TAMP_FLTCR_TAMPFREQ, SamplingFreq);
 }
 
 /**
@@ -3424,8 +3420,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_SetSamplingFreq(const RTC_TypeDef *RTCx, uint
   */
 __STATIC_INLINE uint32_t LL_RTC_TAMPER_GetSamplingFreq(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return (uint32_t)(READ_BIT(TAMP->FLTCR, TAMP_FLTCR_TAMPFREQ));
+	UNUSED(RTCx);
+	return (uint32_t)(READ_BIT(TAMP->FLTCR, TAMP_FLTCR_TAMPFREQ));
 }
 
 /**
@@ -3441,8 +3437,8 @@ __STATIC_INLINE uint32_t LL_RTC_TAMPER_GetSamplingFreq(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_EnableActiveLevel(const RTC_TypeDef *RTCx, uint32_t Tamper)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->CR2, Tamper);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->CR2, Tamper);
 }
 
 /**
@@ -3458,8 +3454,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_EnableActiveLevel(const RTC_TypeDef *RTCx, ui
   */
 __STATIC_INLINE void LL_RTC_TAMPER_DisableActiveLevel(const RTC_TypeDef *RTCx, uint32_t Tamper)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->CR2, Tamper);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->CR2, Tamper);
 }
 
 /**
@@ -3483,8 +3479,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_DisableActiveLevel(const RTC_TypeDef *RTCx, u
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ITAMP_Enable(const RTC_TypeDef *RTCx, uint32_t InternalTamper)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->CR1, InternalTamper);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->CR1, InternalTamper);
 }
 
 /**
@@ -3500,8 +3496,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_ITAMP_Enable(const RTC_TypeDef *RTCx, uint32_
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ITAMP_Disable(const RTC_TypeDef *RTCx, uint32_t InternalTamper)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->CR1, InternalTamper);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->CR1, InternalTamper);
 }
 
 /**
@@ -3516,8 +3512,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_ITAMP_Disable(const RTC_TypeDef *RTCx, uint32
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ITAMP_EnableEraseBKP(const RTC_TypeDef *RTCx, uint32_t InternalTamper)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->CR3, InternalTamper);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->CR3, InternalTamper);
 }
 
 /**
@@ -3532,8 +3528,8 @@ __STATIC_INLINE void LL_RTC_TAMPER_ITAMP_EnableEraseBKP(const RTC_TypeDef *RTCx,
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ITAMP_DisableEraseBKP(const RTC_TypeDef *RTCx, uint32_t InternalTamper)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->CR3, InternalTamper);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->CR3, InternalTamper);
 }
 
 /**
@@ -3555,7 +3551,7 @@ __STATIC_INLINE void LL_RTC_TAMPER_ITAMP_DisableEraseBKP(const RTC_TypeDef *RTCx
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_EnableActiveMode(uint32_t Tamper)
 {
-  SET_BIT(TAMP->ATCR1, Tamper);
+	SET_BIT(TAMP->ATCR1, Tamper);
 }
 
 /**
@@ -3570,7 +3566,7 @@ __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_EnableActiveMode(uint32_t Tamper)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_DisableActiveMode(uint32_t Tamper)
 {
-  CLEAR_BIT(TAMP->ATCR1, Tamper);
+	CLEAR_BIT(TAMP->ATCR1, Tamper);
 }
 
 /**
@@ -3580,7 +3576,7 @@ __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_DisableActiveMode(uint32_t Tamper)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_EnableFilter(void)
 {
-  SET_BIT(TAMP->ATCR1, TAMP_ATCR1_FLTEN);
+	SET_BIT(TAMP->ATCR1, TAMP_ATCR1_FLTEN);
 }
 
 /**
@@ -3590,7 +3586,7 @@ __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_EnableFilter(void)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_DisableFilter(void)
 {
-  CLEAR_BIT(TAMP->ATCR1, TAMP_ATCR1_FLTEN);
+	CLEAR_BIT(TAMP->ATCR1, TAMP_ATCR1_FLTEN);
 }
 
 /**
@@ -3601,7 +3597,7 @@ __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_DisableFilter(void)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_SetOutputChangePeriod(uint32_t ActiveOutputChangePeriod)
 {
-  MODIFY_REG(TAMP->ATCR1, TAMP_ATCR1_ATPER, (ActiveOutputChangePeriod << TAMP_ATCR1_ATPER_Pos));
+	MODIFY_REG(TAMP->ATCR1, TAMP_ATCR1_ATPER, (ActiveOutputChangePeriod << TAMP_ATCR1_ATPER_Pos));
 }
 
 /**
@@ -3611,7 +3607,7 @@ __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_SetOutputChangePeriod(uint32_t ActiveOu
   */
 __STATIC_INLINE uint32_t LL_RTC_TAMPER_ATAMP_GetOutputChangePeriod(void)
 {
-  return (READ_BIT(TAMP->ATCR1, TAMP_ATCR1_ATPER) >> TAMP_ATCR1_ATPER_Pos);
+	return (READ_BIT(TAMP->ATCR1, TAMP_ATCR1_ATPER) >> TAMP_ATCR1_ATPER_Pos);
 }
 
 /**
@@ -3624,7 +3620,7 @@ __STATIC_INLINE uint32_t LL_RTC_TAMPER_ATAMP_GetOutputChangePeriod(void)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_SetAsyncPrescaler(uint32_t ActiveAsynvPrescaler)
 {
-  MODIFY_REG(TAMP->ATCR1, TAMP_ATCR1_ATCKSEL, ActiveAsynvPrescaler);
+	MODIFY_REG(TAMP->ATCR1, TAMP_ATCR1_ATCKSEL, ActiveAsynvPrescaler);
 }
 
 /**
@@ -3634,7 +3630,7 @@ __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_SetAsyncPrescaler(uint32_t ActiveAsynvP
   */
 __STATIC_INLINE uint32_t LL_RTC_TAMPER_ATAMP_GetAsyncPrescaler(void)
 {
-  return (READ_BIT(TAMP->ATCR1, TAMP_ATCR1_ATCKSEL));
+	return (READ_BIT(TAMP->ATCR1, TAMP_ATCR1_ATCKSEL));
 }
 
 /**
@@ -3644,7 +3640,7 @@ __STATIC_INLINE uint32_t LL_RTC_TAMPER_ATAMP_GetAsyncPrescaler(void)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_EnableOutputSharing(void)
 {
-  SET_BIT(TAMP->ATCR1, TAMP_ATCR1_ATOSHARE);
+	SET_BIT(TAMP->ATCR1, TAMP_ATCR1_ATOSHARE);
 }
 
 /**
@@ -3654,7 +3650,7 @@ __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_EnableOutputSharing(void)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_DisableOutputSharing(void)
 {
-  CLEAR_BIT(TAMP->ATCR1, TAMP_ATCR1_ATOSHARE);
+	CLEAR_BIT(TAMP->ATCR1, TAMP_ATCR1_ATOSHARE);
 }
 
 /**
@@ -3668,13 +3664,13 @@ __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_DisableOutputSharing(void)
 __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_SetSharedOuputSelection(uint32_t OutputSelection)
 {
 #if (RTC_TAMP_NB == 2U)
-  MODIFY_REG(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2), OutputSelection);
+	MODIFY_REG(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2), OutputSelection);
 #elif (RTC_TAMP_NB == 3U)
-  MODIFY_REG(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2 | TAMP_ATCR2_ATOSEL3), OutputSelection);
+	MODIFY_REG(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2 | TAMP_ATCR2_ATOSEL3), OutputSelection);
 #elif (RTC_TAMP_NB == 8U)
-  MODIFY_REG(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2 | TAMP_ATCR2_ATOSEL3 | TAMP_ATCR2_ATOSEL4 | \
-                           TAMP_ATCR2_ATOSEL5 | TAMP_ATCR2_ATOSEL6 | TAMP_ATCR2_ATOSEL7 | TAMP_ATCR2_ATOSEL8), \
-             OutputSelection);
+	MODIFY_REG(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2 | TAMP_ATCR2_ATOSEL3 | TAMP_ATCR2_ATOSEL4 | \
+				 TAMP_ATCR2_ATOSEL5 | TAMP_ATCR2_ATOSEL6 | TAMP_ATCR2_ATOSEL7 | TAMP_ATCR2_ATOSEL8), \
+		   OutputSelection);
 #endif /* RTC_TAMP_NB */
 
 }
@@ -3687,12 +3683,12 @@ __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_SetSharedOuputSelection(uint32_t Output
 __STATIC_INLINE uint32_t LL_RTC_TAMPER_ATAMP_GetSharedOuputSelection(void)
 {
 #if (RTC_TAMP_NB == 2U)
-  return (READ_BIT(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2)));
+	return (READ_BIT(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2)));
 #elif (RTC_TAMP_NB == 3U)
-  return (READ_BIT(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2 | TAMP_ATCR2_ATOSEL3)));
+	return (READ_BIT(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2 | TAMP_ATCR2_ATOSEL3)));
 #elif (RTC_TAMP_NB == 8U)
-  return (READ_BIT(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2 | TAMP_ATCR2_ATOSEL3 | TAMP_ATCR2_ATOSEL4 | \
-                                 TAMP_ATCR2_ATOSEL5 | TAMP_ATCR2_ATOSEL6 | TAMP_ATCR2_ATOSEL7 | TAMP_ATCR2_ATOSEL8)));
+	return (READ_BIT(TAMP->ATCR2, (TAMP_ATCR2_ATOSEL1 | TAMP_ATCR2_ATOSEL2 | TAMP_ATCR2_ATOSEL3 | TAMP_ATCR2_ATOSEL4 | \
+				       TAMP_ATCR2_ATOSEL5 | TAMP_ATCR2_ATOSEL6 | TAMP_ATCR2_ATOSEL7 | TAMP_ATCR2_ATOSEL8)));
 #endif /* RTC_TAMP_NB */
 }
 
@@ -3704,7 +3700,7 @@ __STATIC_INLINE uint32_t LL_RTC_TAMPER_ATAMP_GetSharedOuputSelection(void)
   */
 __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_WriteSeed(uint32_t Seed)
 {
-  WRITE_REG(TAMP->ATSEEDR, Seed);
+	WRITE_REG(TAMP->ATSEEDR, Seed);
 }
 
 /**
@@ -3714,7 +3710,7 @@ __STATIC_INLINE void LL_RTC_TAMPER_ATAMP_WriteSeed(uint32_t Seed)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ATAMP_INITS(void)
 {
-  return ((READ_BIT(TAMP->ATOR, TAMP_ATOR_INITS) == (TAMP_ATOR_INITS)) ? 1U : 0U);
+	return ((READ_BIT(TAMP->ATOR, TAMP_ATOR_INITS) == (TAMP_ATOR_INITS)) ? 1U : 0U);
 }
 
 /**
@@ -3724,7 +3720,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ATAMP_INITS(void)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ATAMP_SEEDF(void)
 {
-  return ((READ_BIT(TAMP->ATOR, TAMP_ATOR_SEEDF) == (TAMP_ATOR_SEEDF)) ? 1U : 0U);
+	return ((READ_BIT(TAMP->ATOR, TAMP_ATOR_SEEDF) == (TAMP_ATOR_SEEDF)) ? 1U : 0U);
 }
 
 /**
@@ -3744,7 +3740,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ATAMP_SEEDF(void)
   */
 __STATIC_INLINE void LL_RTC_WAKEUP_Enable(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_WUTE);
+	SET_BIT(RTCx->CR, RTC_CR_WUTE);
 }
 
 /**
@@ -3756,7 +3752,7 @@ __STATIC_INLINE void LL_RTC_WAKEUP_Enable(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_WAKEUP_Disable(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_WUTE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_WUTE);
 }
 
 /**
@@ -3767,7 +3763,7 @@ __STATIC_INLINE void LL_RTC_WAKEUP_Disable(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_WAKEUP_IsEnabled(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_WUTE) == (RTC_CR_WUTE)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_WUTE) == (RTC_CR_WUTE)) ? 1U : 0U);
 }
 
 /**
@@ -3787,7 +3783,7 @@ __STATIC_INLINE uint32_t LL_RTC_WAKEUP_IsEnabled(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_WAKEUP_SetClock(RTC_TypeDef *RTCx, uint32_t WakeupClock)
 {
-  MODIFY_REG(RTCx->CR, RTC_CR_WUCKSEL, WakeupClock);
+	MODIFY_REG(RTCx->CR, RTC_CR_WUCKSEL, WakeupClock);
 }
 
 /**
@@ -3804,7 +3800,7 @@ __STATIC_INLINE void LL_RTC_WAKEUP_SetClock(RTC_TypeDef *RTCx, uint32_t WakeupCl
   */
 __STATIC_INLINE uint32_t LL_RTC_WAKEUP_GetClock(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_WUCKSEL));
+	return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_WUCKSEL));
 }
 
 /**
@@ -3817,7 +3813,7 @@ __STATIC_INLINE uint32_t LL_RTC_WAKEUP_GetClock(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_WAKEUP_SetAutoReload(RTC_TypeDef *RTCx, uint32_t Value)
 {
-  MODIFY_REG(RTCx->WUTR, RTC_WUTR_WUT, Value);
+	MODIFY_REG(RTCx->WUTR, RTC_WUTR_WUT, Value);
 }
 
 /**
@@ -3828,7 +3824,7 @@ __STATIC_INLINE void LL_RTC_WAKEUP_SetAutoReload(RTC_TypeDef *RTCx, uint32_t Val
   */
 __STATIC_INLINE uint32_t LL_RTC_WAKEUP_GetAutoReload(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->WUTR, RTC_WUTR_WUT));
+	return (uint32_t)(READ_BIT(RTCx->WUTR, RTC_WUTR_WUT));
 }
 
 /**
@@ -3855,15 +3851,15 @@ __STATIC_INLINE uint32_t LL_RTC_WAKEUP_GetAutoReload(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_BKP_SetRegister(const RTC_TypeDef *RTCx, uint32_t BackupRegister, uint32_t Data)
 {
-  __IO uint32_t tmp;
+	__IO uint32_t tmp;
 
-  UNUSED(RTCx);
+	UNUSED(RTCx);
 
-  tmp = (uint32_t)(&(TAMP->BKP0R));
-  tmp += (BackupRegister * 4U);
+	tmp = (uint32_t)(&(TAMP->BKP0R));
+	tmp += (BackupRegister * 4U);
 
-  /* Write the specified register */
-  *(__IO uint32_t *)tmp = (uint32_t)Data;
+	/* Write the specified register */
+	*(__IO uint32_t *)tmp = (uint32_t)Data;
 }
 
 /**
@@ -3881,15 +3877,15 @@ __STATIC_INLINE void LL_RTC_BKP_SetRegister(const RTC_TypeDef *RTCx, uint32_t Ba
   */
 __STATIC_INLINE uint32_t LL_RTC_BKP_GetRegister(const RTC_TypeDef *RTCx, uint32_t BackupRegister)
 {
-  uint32_t tmp;
+	uint32_t tmp;
 
-  UNUSED(RTCx);
+	UNUSED(RTCx);
 
-  tmp = (uint32_t)(&(TAMP->BKP0R));
-  tmp += (BackupRegister * 4U);
+	tmp = (uint32_t)(&(TAMP->BKP0R));
+	tmp += (BackupRegister * 4U);
 
-  /* Read the specified register */
-  return (*(__IO uint32_t *)tmp);
+	/* Read the specified register */
+	return (*(__IO uint32_t *)tmp);
 }
 
 /**
@@ -3915,7 +3911,7 @@ __STATIC_INLINE uint32_t LL_RTC_BKP_GetRegister(const RTC_TypeDef *RTCx, uint32_
   */
 __STATIC_INLINE void LL_RTC_CAL_SetOutputFreq(RTC_TypeDef *RTCx, uint32_t Frequency)
 {
-  MODIFY_REG(RTCx->CR, RTC_CR_COE | RTC_CR_COSEL, Frequency);
+	MODIFY_REG(RTCx->CR, RTC_CR_COE | RTC_CR_COSEL, Frequency);
 }
 
 /**
@@ -3930,7 +3926,7 @@ __STATIC_INLINE void LL_RTC_CAL_SetOutputFreq(RTC_TypeDef *RTCx, uint32_t Freque
   */
 __STATIC_INLINE uint32_t LL_RTC_CAL_GetOutputFreq(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_COE | RTC_CR_COSEL));
+	return (uint32_t)(READ_BIT(RTCx->CR, RTC_CR_COE | RTC_CR_COSEL));
 }
 #endif /* RTC_CR_COE */
 
@@ -3947,7 +3943,7 @@ __STATIC_INLINE uint32_t LL_RTC_CAL_GetOutputFreq(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_CAL_SetPulse(RTC_TypeDef *RTCx, uint32_t Pulse)
 {
-  MODIFY_REG(RTCx->CALR, RTC_CALR_CALP, Pulse);
+	MODIFY_REG(RTCx->CALR, RTC_CALR_CALP, Pulse);
 }
 
 /**
@@ -3958,7 +3954,7 @@ __STATIC_INLINE void LL_RTC_CAL_SetPulse(RTC_TypeDef *RTCx, uint32_t Pulse)
   */
 __STATIC_INLINE uint32_t LL_RTC_CAL_IsPulseInserted(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CALR, RTC_CALR_CALP) == (RTC_CALR_CALP)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CALR, RTC_CALR_CALP) == (RTC_CALR_CALP)) ? 1U : 0U);
 }
 
 /**
@@ -3976,7 +3972,7 @@ __STATIC_INLINE uint32_t LL_RTC_CAL_IsPulseInserted(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_CAL_SetPeriod(RTC_TypeDef *RTCx, uint32_t Period)
 {
-  MODIFY_REG(RTCx->CALR, RTC_CALR_CALW8 | RTC_CALR_CALW16, Period);
+	MODIFY_REG(RTCx->CALR, RTC_CALR_CALW8 | RTC_CALR_CALW16, Period);
 }
 
 /**
@@ -3991,7 +3987,7 @@ __STATIC_INLINE void LL_RTC_CAL_SetPeriod(RTC_TypeDef *RTCx, uint32_t Period)
   */
 __STATIC_INLINE uint32_t LL_RTC_CAL_GetPeriod(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->CALR, RTC_CALR_CALW8 | RTC_CALR_CALW16));
+	return (uint32_t)(READ_BIT(RTCx->CALR, RTC_CALR_CALW8 | RTC_CALR_CALW16));
 }
 
 /**
@@ -4005,7 +4001,7 @@ __STATIC_INLINE uint32_t LL_RTC_CAL_GetPeriod(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_CAL_SetMinus(RTC_TypeDef *RTCx, uint32_t CalibMinus)
 {
-  MODIFY_REG(RTCx->CALR, RTC_CALR_CALM, CalibMinus);
+	MODIFY_REG(RTCx->CALR, RTC_CALR_CALM, CalibMinus);
 }
 
 /**
@@ -4016,7 +4012,7 @@ __STATIC_INLINE void LL_RTC_CAL_SetMinus(RTC_TypeDef *RTCx, uint32_t CalibMinus)
   */
 __STATIC_INLINE uint32_t LL_RTC_CAL_GetMinus(const RTC_TypeDef *RTCx)
 {
-  return (uint32_t)(READ_BIT(RTCx->CALR, RTC_CALR_CALM));
+	return (uint32_t)(READ_BIT(RTCx->CALR, RTC_CALR_CALM));
 }
 
 /**
@@ -4029,7 +4025,7 @@ __STATIC_INLINE uint32_t LL_RTC_CAL_GetMinus(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_CAL_LowPower_Enable(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CALR, RTC_CALR_LPCAL);
+	SET_BIT(RTCx->CALR, RTC_CALR_LPCAL);
 }
 
 /**
@@ -4042,7 +4038,7 @@ __STATIC_INLINE void LL_RTC_CAL_LowPower_Enable(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_CAL_LowPower_Disable(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CALR, RTC_CALR_LPCAL);
+	CLEAR_BIT(RTCx->CALR, RTC_CALR_LPCAL);
 }
 
 /**
@@ -4053,7 +4049,7 @@ __STATIC_INLINE void LL_RTC_CAL_LowPower_Disable(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_CAL_LowPower_IsEnabled(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CALR, RTC_CALR_LPCAL) == (RTC_CALR_LPCAL)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CALR, RTC_CALR_LPCAL) == (RTC_CALR_LPCAL)) ? 1U : 0U);
 }
 
 /**
@@ -4072,7 +4068,7 @@ __STATIC_INLINE uint32_t LL_RTC_CAL_LowPower_IsEnabled(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITS(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->SR, RTC_SR_ITSF) == (RTC_SR_ITSF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->SR, RTC_SR_ITSF) == (RTC_SR_ITSF)) ? 1U : 0U);
 }
 
 /**
@@ -4083,7 +4079,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITS(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_RECALP(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->ICSR, RTC_ICSR_RECALPF) == (RTC_ICSR_RECALPF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->ICSR, RTC_ICSR_RECALPF) == (RTC_ICSR_RECALPF)) ? 1U : 0U);
 }
 
 /**
@@ -4094,7 +4090,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_RECALP(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TSOV(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->SR, RTC_SR_TSOVF) == (RTC_SR_TSOVF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->SR, RTC_SR_TSOVF) == (RTC_SR_TSOVF)) ? 1U : 0U);
 }
 
 /**
@@ -4105,7 +4101,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TSOV(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TS(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->SR, RTC_SR_TSF) == (RTC_SR_TSF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->SR, RTC_SR_TSF) == (RTC_SR_TSF)) ? 1U : 0U);
 }
 
 /**
@@ -4116,7 +4112,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TS(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_WUT(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->SR, RTC_SR_WUTF) == (RTC_SR_WUTF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->SR, RTC_SR_WUTF) == (RTC_SR_WUTF)) ? 1U : 0U);
 }
 
 /**
@@ -4127,7 +4123,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_WUT(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ALRB(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->SR, RTC_SR_ALRBF) == (RTC_SR_ALRBF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->SR, RTC_SR_ALRBF) == (RTC_SR_ALRBF)) ? 1U : 0U);
 }
 
 /**
@@ -4138,7 +4134,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ALRB(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ALRA(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->SR, RTC_SR_ALRAF) == (RTC_SR_ALRAF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->SR, RTC_SR_ALRAF) == (RTC_SR_ALRAF)) ? 1U : 0U);
 }
 
 /**
@@ -4149,7 +4145,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ALRA(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_SSRU(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->SR, RTC_SR_SSRUF) == (RTC_SR_SSRUF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->SR, RTC_SR_SSRUF) == (RTC_SR_SSRUF)) ? 1U : 0U);
 }
 
 /**
@@ -4160,7 +4156,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_SSRU(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITS(RTC_TypeDef *RTCx)
 {
-  WRITE_REG(RTCx->SCR, RTC_SCR_CITSF);
+	WRITE_REG(RTCx->SCR, RTC_SCR_CITSF);
 }
 
 /**
@@ -4171,7 +4167,7 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITS(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_TSOV(RTC_TypeDef *RTCx)
 {
-  WRITE_REG(RTCx->SCR, RTC_SCR_CTSOVF);
+	WRITE_REG(RTCx->SCR, RTC_SCR_CTSOVF);
 }
 
 /**
@@ -4182,7 +4178,7 @@ __STATIC_INLINE void LL_RTC_ClearFlag_TSOV(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_TS(RTC_TypeDef *RTCx)
 {
-  WRITE_REG(RTCx->SCR, RTC_SCR_CTSF);
+	WRITE_REG(RTCx->SCR, RTC_SCR_CTSF);
 }
 
 /**
@@ -4193,7 +4189,7 @@ __STATIC_INLINE void LL_RTC_ClearFlag_TS(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_WUT(RTC_TypeDef *RTCx)
 {
-  WRITE_REG(RTCx->SCR, RTC_SCR_CWUTF);
+	WRITE_REG(RTCx->SCR, RTC_SCR_CWUTF);
 }
 
 /**
@@ -4204,7 +4200,7 @@ __STATIC_INLINE void LL_RTC_ClearFlag_WUT(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ALRB(RTC_TypeDef *RTCx)
 {
-  WRITE_REG(RTCx->SCR, RTC_SCR_CALRBF);
+	WRITE_REG(RTCx->SCR, RTC_SCR_CALRBF);
 }
 
 /**
@@ -4215,7 +4211,7 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ALRB(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ALRA(RTC_TypeDef *RTCx)
 {
-  WRITE_REG(RTCx->SCR, RTC_SCR_CALRAF);
+	WRITE_REG(RTCx->SCR, RTC_SCR_CALRAF);
 }
 
 /**
@@ -4226,7 +4222,7 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ALRA(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_SSRU(RTC_TypeDef *RTCx)
 {
-  WRITE_REG(RTCx->SCR, RTC_SCR_CSSRUF);
+	WRITE_REG(RTCx->SCR, RTC_SCR_CSSRUF);
 }
 
 /**
@@ -4237,7 +4233,7 @@ __STATIC_INLINE void LL_RTC_ClearFlag_SSRU(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_INIT(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->ICSR, RTC_ICSR_INITF) == (RTC_ICSR_INITF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->ICSR, RTC_ICSR_INITF) == (RTC_ICSR_INITF)) ? 1U : 0U);
 }
 
 /**
@@ -4248,7 +4244,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_INIT(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_RS(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->ICSR, RTC_ICSR_RSF) == (RTC_ICSR_RSF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->ICSR, RTC_ICSR_RSF) == (RTC_ICSR_RSF)) ? 1U : 0U);
 }
 
 /**
@@ -4259,7 +4255,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_RS(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_RS(RTC_TypeDef *RTCx)
 {
-  WRITE_REG(RTCx->ICSR, (~((RTC_ICSR_RSF | RTC_ICSR_INIT) & 0x000000FFU) | (RTCx->ICSR & RTC_ICSR_INIT)));
+	WRITE_REG(RTCx->ICSR, (~((RTC_ICSR_RSF | RTC_ICSR_INIT) & 0x000000FFU) | (RTCx->ICSR & RTC_ICSR_INIT)));
 }
 
 /**
@@ -4270,7 +4266,7 @@ __STATIC_INLINE void LL_RTC_ClearFlag_RS(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_INITS(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->ICSR, RTC_ICSR_INITS) == (RTC_ICSR_INITS)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->ICSR, RTC_ICSR_INITS) == (RTC_ICSR_INITS)) ? 1U : 0U);
 }
 
 /**
@@ -4281,7 +4277,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_INITS(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_SHP(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->ICSR, RTC_ICSR_SHPF) == (RTC_ICSR_SHPF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->ICSR, RTC_ICSR_SHPF) == (RTC_ICSR_SHPF)) ? 1U : 0U);
 }
 
 /**
@@ -4292,7 +4288,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_SHP(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_WUTW(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->ICSR, RTC_ICSR_WUTWF) == (RTC_ICSR_WUTWF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->ICSR, RTC_ICSR_WUTWF) == (RTC_ICSR_WUTWF)) ? 1U : 0U);
 }
 
 /**
@@ -4303,7 +4299,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_WUTW(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ALRAM(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->MISR, RTC_MISR_ALRAMF) == (RTC_MISR_ALRAMF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->MISR, RTC_MISR_ALRAMF) == (RTC_MISR_ALRAMF)) ? 1U : 0U);
 }
 
 /**
@@ -4314,7 +4310,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ALRAM(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_SSRUM(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->MISR, RTC_MISR_SSRUMF) == (RTC_MISR_SSRUMF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->MISR, RTC_MISR_SSRUMF) == (RTC_MISR_SSRUMF)) ? 1U : 0U);
 }
 
 /**
@@ -4325,7 +4321,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_SSRUM(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ALRBM(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->MISR, RTC_MISR_ALRBMF) == (RTC_MISR_ALRBMF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->MISR, RTC_MISR_ALRBMF) == (RTC_MISR_ALRBMF)) ? 1U : 0U);
 }
 
 /**
@@ -4336,7 +4332,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ALRBM(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_WUTM(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->MISR, RTC_MISR_WUTMF) == (RTC_MISR_WUTMF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->MISR, RTC_MISR_WUTMF) == (RTC_MISR_WUTMF)) ? 1U : 0U);
 }
 
 /**
@@ -4347,7 +4343,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_WUTM(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TSM(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->MISR, RTC_MISR_TSMF) == (RTC_MISR_TSMF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->MISR, RTC_MISR_TSMF) == (RTC_MISR_TSMF)) ? 1U : 0U);
 }
 
 /**
@@ -4358,7 +4354,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TSM(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TSOVM(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->MISR, RTC_MISR_TSOVMF) == (RTC_MISR_TSOVMF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->MISR, RTC_MISR_TSOVMF) == (RTC_MISR_TSOVMF)) ? 1U : 0U);
 }
 
 /**
@@ -4369,7 +4365,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TSOVM(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITSM(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->MISR, RTC_MISR_ITSMF) == (RTC_MISR_ITSMF)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->MISR, RTC_MISR_ITSMF) == (RTC_MISR_ITSMF)) ? 1U : 0U);
 }
 
 /**
@@ -4380,8 +4376,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITSM(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP1(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP1F) == (TAMP_SR_TAMP1F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP1F) == (TAMP_SR_TAMP1F)) ? 1U : 0U);
 }
 
 /**
@@ -4392,8 +4388,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP1(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP2F) == (TAMP_SR_TAMP2F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP2F) == (TAMP_SR_TAMP2F)) ? 1U : 0U);
 }
 
 #if (RTC_TAMP_NB > 2U)
@@ -4405,8 +4401,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP3F) == (TAMP_SR_TAMP3F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP3F) == (TAMP_SR_TAMP3F)) ? 1U : 0U);
 }
 
 /**
@@ -4417,8 +4413,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP3(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP4(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP4F) == (TAMP_SR_TAMP4F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP4F) == (TAMP_SR_TAMP4F)) ? 1U : 0U);
 }
 
 /**
@@ -4429,8 +4425,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP4(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP5(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP5F) == (TAMP_SR_TAMP5F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP5F) == (TAMP_SR_TAMP5F)) ? 1U : 0U);
 }
 
 /**
@@ -4441,8 +4437,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP5(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP6(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP6F) == (TAMP_SR_TAMP6F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP6F) == (TAMP_SR_TAMP6F)) ? 1U : 0U);
 }
 #endif /* (RTC_TAMP_NB > 2U) */
 
@@ -4455,8 +4451,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP6(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP7(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP7F) == (TAMP_SR_TAMP7F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP7F) == (TAMP_SR_TAMP7F)) ? 1U : 0U);
 }
 
 /**
@@ -4467,8 +4463,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP7(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP8(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP8F) == (TAMP_SR_TAMP8F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_TAMP8F) == (TAMP_SR_TAMP8F)) ? 1U : 0U);
 }
 #endif /* (RTC_TAMP_NB > 6U) */
 
@@ -4480,8 +4476,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP8(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP1(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP1F) == (TAMP_SR_ITAMP1F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP1F) == (TAMP_SR_ITAMP1F)) ? 1U : 0U);
 }
 
 /**
@@ -4492,8 +4488,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP1(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP2F) == (TAMP_SR_ITAMP2F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP2F) == (TAMP_SR_ITAMP2F)) ? 1U : 0U);
 }
 
 /**
@@ -4504,8 +4500,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP3F) == (TAMP_SR_ITAMP3F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP3F) == (TAMP_SR_ITAMP3F)) ? 1U : 0U);
 }
 
 /**
@@ -4516,8 +4512,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP3(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP4(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP4F) == (TAMP_SR_ITAMP4F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP4F) == (TAMP_SR_ITAMP4F)) ? 1U : 0U);
 }
 
 /**
@@ -4528,8 +4524,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP4(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP5(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP5F) == (TAMP_SR_ITAMP5F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP5F) == (TAMP_SR_ITAMP5F)) ? 1U : 0U);
 }
 
 /**
@@ -4540,8 +4536,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP5(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP6(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP6F) == (TAMP_SR_ITAMP6F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP6F) == (TAMP_SR_ITAMP6F)) ? 1U : 0U);
 }
 
 /**
@@ -4552,8 +4548,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP6(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP7(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP7F) == (TAMP_SR_ITAMP7F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP7F) == (TAMP_SR_ITAMP7F)) ? 1U : 0U);
 }
 
 /**
@@ -4564,8 +4560,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP7(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP8(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP8F) == (TAMP_SR_ITAMP8F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP8F) == (TAMP_SR_ITAMP8F)) ? 1U : 0U);
 }
 
 /**
@@ -4576,8 +4572,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP8(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP9(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP9F) == (TAMP_SR_ITAMP9F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP9F) == (TAMP_SR_ITAMP9F)) ? 1U : 0U);
 }
 
 /**
@@ -4588,8 +4584,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP9(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP11(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP11F) == (TAMP_SR_ITAMP11F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP11F) == (TAMP_SR_ITAMP11F)) ? 1U : 0U);
 }
 
 /**
@@ -4600,8 +4596,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP11(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP12(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP12F) == (TAMP_SR_ITAMP12F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP12F) == (TAMP_SR_ITAMP12F)) ? 1U : 0U);
 }
 
 /**
@@ -4612,8 +4608,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP12(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP13(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP13F) == (TAMP_SR_ITAMP13F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP13F) == (TAMP_SR_ITAMP13F)) ? 1U : 0U);
 }
 
 /**
@@ -4624,8 +4620,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP13(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP15(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP15F) == (TAMP_SR_ITAMP15F)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->SR, TAMP_SR_ITAMP15F) == (TAMP_SR_ITAMP15F)) ? 1U : 0U);
 }
 
 /**
@@ -4636,8 +4632,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP15(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP1M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP1MF) == (TAMP_MISR_TAMP1MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP1MF) == (TAMP_MISR_TAMP1MF)) ? 1U : 0U);
 }
 
 /**
@@ -4648,8 +4644,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP1M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP2M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP2MF) == (TAMP_MISR_TAMP2MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP2MF) == (TAMP_MISR_TAMP2MF)) ? 1U : 0U);
 }
 
 #if (RTC_TAMP_NB > 2U)
@@ -4661,8 +4657,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP2M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP3M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP3MF) == (TAMP_MISR_TAMP3MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP3MF) == (TAMP_MISR_TAMP3MF)) ? 1U : 0U);
 }
 
 /**
@@ -4673,8 +4669,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP3M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP4M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP4MF) == (TAMP_MISR_TAMP4MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP4MF) == (TAMP_MISR_TAMP4MF)) ? 1U : 0U);
 }
 
 /**
@@ -4685,8 +4681,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP4M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP5M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP5MF) == (TAMP_MISR_TAMP5MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP5MF) == (TAMP_MISR_TAMP5MF)) ? 1U : 0U);
 }
 
 /**
@@ -4697,8 +4693,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP5M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP6M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP6MF) == (TAMP_MISR_TAMP6MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP6MF) == (TAMP_MISR_TAMP6MF)) ? 1U : 0U);
 }
 #endif /* (RTC_TAMP_NB > 2U) */
 
@@ -4711,8 +4707,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP6M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP7M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP7MF) == (TAMP_MISR_TAMP7MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP7MF) == (TAMP_MISR_TAMP7MF)) ? 1U : 0U);
 }
 
 /**
@@ -4723,8 +4719,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP7M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP8M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP8MF) == (TAMP_MISR_TAMP8MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_TAMP8MF) == (TAMP_MISR_TAMP8MF)) ? 1U : 0U);
 }
 #endif /* (RTC_TAMP_NB > 6U) */
 
@@ -4736,8 +4732,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_TAMP8M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP1M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP1MF) == (TAMP_MISR_ITAMP1MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP1MF) == (TAMP_MISR_ITAMP1MF)) ? 1U : 0U);
 }
 
 /**
@@ -4748,8 +4744,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP1M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP2M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP2MF) == (TAMP_MISR_ITAMP2MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP2MF) == (TAMP_MISR_ITAMP2MF)) ? 1U : 0U);
 }
 
 /**
@@ -4760,8 +4756,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP2M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP3M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP3MF) == (TAMP_MISR_ITAMP3MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP3MF) == (TAMP_MISR_ITAMP3MF)) ? 1U : 0U);
 }
 
 /**
@@ -4772,8 +4768,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP3M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP4M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP4MF) == (TAMP_MISR_ITAMP4MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP4MF) == (TAMP_MISR_ITAMP4MF)) ? 1U : 0U);
 }
 
 /**
@@ -4784,8 +4780,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP4M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP5M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP5MF) == (TAMP_MISR_ITAMP5MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP5MF) == (TAMP_MISR_ITAMP5MF)) ? 1U : 0U);
 }
 
 /**
@@ -4796,8 +4792,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP5M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP6M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP6MF) == (TAMP_MISR_ITAMP6MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP6MF) == (TAMP_MISR_ITAMP6MF)) ? 1U : 0U);
 }
 
 /**
@@ -4808,8 +4804,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP6M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP7M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP7MF) == (TAMP_MISR_ITAMP7MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP7MF) == (TAMP_MISR_ITAMP7MF)) ? 1U : 0U);
 }
 
 /**
@@ -4820,8 +4816,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP7M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP8M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP8MF) == (TAMP_MISR_ITAMP8MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP8MF) == (TAMP_MISR_ITAMP8MF)) ? 1U : 0U);
 }
 
 /**
@@ -4832,8 +4828,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP8M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP9M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP9MF) == (TAMP_MISR_ITAMP9MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP9MF) == (TAMP_MISR_ITAMP9MF)) ? 1U : 0U);
 }
 
 /**
@@ -4844,8 +4840,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP9M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP11M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP11MF) == (TAMP_MISR_ITAMP11MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP11MF) == (TAMP_MISR_ITAMP11MF)) ? 1U : 0U);
 }
 
 /**
@@ -4856,8 +4852,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP11M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP12M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP12MF) == (TAMP_MISR_ITAMP12MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP12MF) == (TAMP_MISR_ITAMP12MF)) ? 1U : 0U);
 }
 
 /**
@@ -4868,8 +4864,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP12M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP13M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP13MF) == (TAMP_MISR_ITAMP13MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP13MF) == (TAMP_MISR_ITAMP13MF)) ? 1U : 0U);
 }
 
 /**
@@ -4880,8 +4876,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP13M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP15M(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP15MF) == (TAMP_MISR_ITAMP15MF)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->MISR, TAMP_MISR_ITAMP15MF) == (TAMP_MISR_ITAMP15MF)) ? 1U : 0U);
 }
 
 /**
@@ -4892,8 +4888,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsActiveFlag_ITAMP15M(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_TAMP1(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP1F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP1F);
 }
 
 /**
@@ -4904,8 +4900,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_TAMP1(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_TAMP2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP2F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP2F);
 }
 
 #if (RTC_TAMP_NB > 2U)
@@ -4917,8 +4913,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_TAMP2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_TAMP3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP3F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP3F);
 }
 
 /**
@@ -4929,8 +4925,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_TAMP3(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_TAMP4(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP4F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP4F);
 }
 
 /**
@@ -4941,8 +4937,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_TAMP4(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_TAMP5(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP5F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP5F);
 }
 
 /**
@@ -4953,8 +4949,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_TAMP5(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_TAMP6(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP6F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP6F);
 }
 #endif /* (RTC_TAMP_NB > 2U) */
 
@@ -4967,8 +4963,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_TAMP6(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_TAMP7(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP7F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP7F);
 }
 
 /**
@@ -4979,8 +4975,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_TAMP7(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_TAMP8(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP8F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CTAMP8F);
 }
 #endif /* (RTC_TAMP_NB > 6U) */
 
@@ -4992,8 +4988,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_TAMP8(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP1(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP1F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP1F);
 }
 
 /**
@@ -5004,8 +5000,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP1(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP2F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP2F);
 }
 
 /**
@@ -5016,8 +5012,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP3F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP3F);
 }
 
 /**
@@ -5028,8 +5024,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP3(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP4(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP4F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP4F);
 }
 
 /**
@@ -5040,8 +5036,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP4(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP5(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP5F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP5F);
 }
 
 /**
@@ -5052,8 +5048,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP5(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP6(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP6F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP6F);
 }
 
 /**
@@ -5064,8 +5060,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP6(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP7(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP7F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP7F);
 }
 
 /**
@@ -5076,8 +5072,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP7(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP8(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP8F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP8F);
 }
 
 /**
@@ -5088,8 +5084,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP8(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP9(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP9F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP9F);
 }
 
 /**
@@ -5100,8 +5096,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP9(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP11(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP11F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP11F);
 }
 
 /**
@@ -5112,8 +5108,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP11(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP12(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP12F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP12F);
 }
 
 /**
@@ -5124,8 +5120,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP12(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP13(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP13F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP13F);
 }
 
 /**
@@ -5136,8 +5132,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP13(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP15(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP15F);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->SCR, TAMP_SCR_CITAMP15F);
 }
 
 /**
@@ -5175,8 +5171,8 @@ __STATIC_INLINE void LL_RTC_ClearFlag_ITAMP15(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetRtcSecure(RTC_TypeDef *RTCx, uint32_t rtcSecure)
 {
-  MODIFY_REG(RTCx->SECCFGR, RTC_SECCFGR_SEC | RTC_SECCFGR_INITSEC | RTC_SECCFGR_CALSEC | RTC_SECCFGR_TSSEC | \
-             RTC_SECCFGR_WUTSEC | RTC_SECCFGR_ALRASEC | RTC_SECCFGR_ALRBSEC, rtcSecure);
+	MODIFY_REG(RTCx->SECCFGR, RTC_SECCFGR_SEC | RTC_SECCFGR_INITSEC | RTC_SECCFGR_CALSEC | RTC_SECCFGR_TSSEC | \
+		   RTC_SECCFGR_WUTSEC | RTC_SECCFGR_ALRASEC | RTC_SECCFGR_ALRBSEC, rtcSecure);
 }
 #endif /* #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U) */
 
@@ -5203,8 +5199,8 @@ __STATIC_INLINE void LL_RTC_SetRtcSecure(RTC_TypeDef *RTCx, uint32_t rtcSecure)
   */
 __STATIC_INLINE uint32_t LL_RTC_GetRtcSecure(const RTC_TypeDef *RTCx)
 {
-  return READ_BIT(RTCx->SECCFGR, RTC_SECCFGR_SEC | RTC_SECCFGR_INITSEC | RTC_SECCFGR_CALSEC | RTC_SECCFGR_TSSEC | \
-                  RTC_SECCFGR_WUTSEC | RTC_SECCFGR_ALRASEC | RTC_SECCFGR_ALRBSEC);
+	return READ_BIT(RTCx->SECCFGR, RTC_SECCFGR_SEC | RTC_SECCFGR_INITSEC | RTC_SECCFGR_CALSEC | RTC_SECCFGR_TSSEC | \
+			RTC_SECCFGR_WUTSEC | RTC_SECCFGR_ALRASEC | RTC_SECCFGR_ALRBSEC);
 }
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
@@ -5219,8 +5215,8 @@ __STATIC_INLINE uint32_t LL_RTC_GetRtcSecure(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetTampSecure(const RTC_TypeDef *RTCx, uint32_t tampSecure)
 {
-  UNUSED(RTCx);
-  MODIFY_REG(TAMP->SECCFGR, TAMP_SECCFGR_TAMPSEC, tampSecure);
+	UNUSED(RTCx);
+	MODIFY_REG(TAMP->SECCFGR, TAMP_SECCFGR_TAMPSEC, tampSecure);
 }
 #endif /* #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U) */
 
@@ -5234,8 +5230,8 @@ __STATIC_INLINE void LL_RTC_SetTampSecure(const RTC_TypeDef *RTCx, uint32_t tamp
   */
 __STATIC_INLINE uint32_t LL_RTC_GetTampSecure(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return READ_BIT(TAMP->SECCFGR, TAMP_SECCFGR_TAMPSEC);
+	UNUSED(RTCx);
+	return READ_BIT(TAMP->SECCFGR, TAMP_SECCFGR_TAMPSEC);
 }
 
 /**
@@ -5272,8 +5268,8 @@ __STATIC_INLINE uint32_t LL_RTC_GetTampSecure(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetRtcPrivilege(RTC_TypeDef *RTCx, uint32_t rtcPrivilege)
 {
-  MODIFY_REG(RTCx->PRIVCFGR, RTC_PRIVCFGR_PRIV | RTC_PRIVCFGR_INITPRIV | RTC_PRIVCFGR_CALPRIV | RTC_PRIVCFGR_TSPRIV | \
-             RTC_PRIVCFGR_WUTPRIV | RTC_PRIVCFGR_ALRAPRIV | RTC_PRIVCFGR_ALRBPRIV, rtcPrivilege);
+	MODIFY_REG(RTCx->PRIVCFGR, RTC_PRIVCFGR_PRIV | RTC_PRIVCFGR_INITPRIV | RTC_PRIVCFGR_CALPRIV | RTC_PRIVCFGR_TSPRIV | \
+		   RTC_PRIVCFGR_WUTPRIV | RTC_PRIVCFGR_ALRAPRIV | RTC_PRIVCFGR_ALRBPRIV, rtcPrivilege);
 }
 
 /**
@@ -5299,9 +5295,9 @@ __STATIC_INLINE void LL_RTC_SetRtcPrivilege(RTC_TypeDef *RTCx, uint32_t rtcPrivi
   */
 __STATIC_INLINE uint32_t LL_RTC_GetRtcPrivilege(const RTC_TypeDef *RTCx)
 {
-  return READ_BIT(RTCx->PRIVCFGR, RTC_PRIVCFGR_PRIV   | RTC_PRIVCFGR_INITPRIV | RTC_PRIVCFGR_CALPRIV  | \
-                  RTC_PRIVCFGR_TSPRIV | RTC_PRIVCFGR_WUTPRIV  | RTC_PRIVCFGR_ALRAPRIV | \
-                  RTC_PRIVCFGR_ALRBPRIV);
+	return READ_BIT(RTCx->PRIVCFGR, RTC_PRIVCFGR_PRIV   | RTC_PRIVCFGR_INITPRIV | RTC_PRIVCFGR_CALPRIV  | \
+			RTC_PRIVCFGR_TSPRIV | RTC_PRIVCFGR_WUTPRIV  | RTC_PRIVCFGR_ALRAPRIV | \
+			RTC_PRIVCFGR_ALRBPRIV);
 }
 
 /**
@@ -5315,8 +5311,8 @@ __STATIC_INLINE uint32_t LL_RTC_GetRtcPrivilege(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetTampPrivilege(const RTC_TypeDef *RTCx, uint32_t tampPrivilege)
 {
-  UNUSED(RTCx);
-  MODIFY_REG(TAMP->PRIVCFGR, TAMP_PRIVCFGR_TAMPPRIV, tampPrivilege);
+	UNUSED(RTCx);
+	MODIFY_REG(TAMP->PRIVCFGR, TAMP_PRIVCFGR_TAMPPRIV, tampPrivilege);
 }
 
 /**
@@ -5329,8 +5325,8 @@ __STATIC_INLINE void LL_RTC_SetTampPrivilege(const RTC_TypeDef *RTCx, uint32_t t
   */
 __STATIC_INLINE uint32_t LL_RTC_GetTampPrivilege(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return READ_BIT(TAMP->PRIVCFGR, TAMP_PRIVCFGR_TAMPPRIV);
+	UNUSED(RTCx);
+	return READ_BIT(TAMP->PRIVCFGR, TAMP_PRIVCFGR_TAMPPRIV);
 }
 
 /**
@@ -5348,8 +5344,8 @@ __STATIC_INLINE uint32_t LL_RTC_GetTampPrivilege(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_SetBackupRegisterPrivilege(const RTC_TypeDef *RTCx, uint32_t bckupRegisterPrivilege)
 {
-  UNUSED(RTCx);
-  MODIFY_REG(TAMP->PRIVCFGR, (TAMP_PRIVCFGR_BKPWPRIV | TAMP_PRIVCFGR_BKPRWPRIV), bckupRegisterPrivilege);
+	UNUSED(RTCx);
+	MODIFY_REG(TAMP->PRIVCFGR, (TAMP_PRIVCFGR_BKPWPRIV | TAMP_PRIVCFGR_BKPRWPRIV), bckupRegisterPrivilege);
 }
 
 /**
@@ -5365,8 +5361,8 @@ __STATIC_INLINE void LL_RTC_SetBackupRegisterPrivilege(const RTC_TypeDef *RTCx, 
   */
 __STATIC_INLINE uint32_t LL_RTC_GetBackupRegisterPrivilege(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return READ_BIT(TAMP->PRIVCFGR, (TAMP_PRIVCFGR_BKPWPRIV | TAMP_PRIVCFGR_BKPRWPRIV));
+	UNUSED(RTCx);
+	return READ_BIT(TAMP->PRIVCFGR, (TAMP_PRIVCFGR_BKPWPRIV | TAMP_PRIVCFGR_BKPRWPRIV));
 }
 /**
   * @}
@@ -5408,9 +5404,9 @@ __STATIC_INLINE uint32_t LL_RTC_GetBackupRegisterPrivilege(const RTC_TypeDef *RT
   */
 __STATIC_INLINE void LL_RTC_SetBackupRegProtection(const RTC_TypeDef *RTCx, uint32_t startZone2, uint32_t startZone3)
 {
-  UNUSED(RTCx);
-  MODIFY_REG(TAMP->SECCFGR, (TAMP_SECCFGR_BKPRWSEC_Msk | TAMP_SECCFGR_BKPWSEC_Msk),
-             (startZone2 << TAMP_SECCFGR_BKPRWSEC_Pos) | (startZone3 << TAMP_SECCFGR_BKPWSEC_Pos));
+	UNUSED(RTCx);
+	MODIFY_REG(TAMP->SECCFGR, (TAMP_SECCFGR_BKPRWSEC_Msk | TAMP_SECCFGR_BKPWSEC_Msk),
+		   (startZone2 << TAMP_SECCFGR_BKPRWSEC_Pos) | (startZone3 << TAMP_SECCFGR_BKPWSEC_Pos));
 }
 
 /**
@@ -5424,8 +5420,8 @@ __STATIC_INLINE void LL_RTC_SetBackupRegProtection(const RTC_TypeDef *RTCx, uint
   */
 __STATIC_INLINE uint32_t LL_RTC_GetBackupRegProtectionStartZone2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return READ_BIT(TAMP->SECCFGR, TAMP_SECCFGR_BKPRWSEC_Msk) >> TAMP_SECCFGR_BKPRWSEC_Pos;
+	UNUSED(RTCx);
+	return READ_BIT(TAMP->SECCFGR, TAMP_SECCFGR_BKPRWSEC_Msk) >> TAMP_SECCFGR_BKPRWSEC_Pos;
 }
 
 /**
@@ -5439,8 +5435,8 @@ __STATIC_INLINE uint32_t LL_RTC_GetBackupRegProtectionStartZone2(const RTC_TypeD
   */
 __STATIC_INLINE uint32_t LL_RTC_GetBackupRegProtectionStartZone3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return READ_BIT(TAMP->SECCFGR, TAMP_SECCFGR_BKPWSEC_Msk) >> TAMP_SECCFGR_BKPWSEC_Pos;
+	UNUSED(RTCx);
+	return READ_BIT(TAMP->SECCFGR, TAMP_SECCFGR_BKPWSEC_Msk) >> TAMP_SECCFGR_BKPWSEC_Pos;
 }
 /**
   * @}
@@ -5459,7 +5455,7 @@ __STATIC_INLINE uint32_t LL_RTC_GetBackupRegProtectionStartZone3(const RTC_TypeD
   */
 __STATIC_INLINE void LL_RTC_EnableIT_TS(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_TSIE);
+	SET_BIT(RTCx->CR, RTC_CR_TSIE);
 }
 
 /**
@@ -5471,7 +5467,7 @@ __STATIC_INLINE void LL_RTC_EnableIT_TS(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_TS(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_TSIE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_TSIE);
 }
 
 /**
@@ -5483,7 +5479,7 @@ __STATIC_INLINE void LL_RTC_DisableIT_TS(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_WUT(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_WUTIE);
+	SET_BIT(RTCx->CR, RTC_CR_WUTIE);
 }
 
 /**
@@ -5495,7 +5491,7 @@ __STATIC_INLINE void LL_RTC_EnableIT_WUT(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_WUT(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_WUTIE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_WUTIE);
 }
 
 /**
@@ -5507,7 +5503,7 @@ __STATIC_INLINE void LL_RTC_DisableIT_WUT(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ALRB(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_ALRBIE);
+	SET_BIT(RTCx->CR, RTC_CR_ALRBIE);
 }
 
 /**
@@ -5519,7 +5515,7 @@ __STATIC_INLINE void LL_RTC_EnableIT_ALRB(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ALRB(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_ALRBIE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_ALRBIE);
 }
 
 /**
@@ -5531,7 +5527,7 @@ __STATIC_INLINE void LL_RTC_DisableIT_ALRB(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ALRA(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_ALRAIE);
+	SET_BIT(RTCx->CR, RTC_CR_ALRAIE);
 }
 
 /**
@@ -5543,7 +5539,7 @@ __STATIC_INLINE void LL_RTC_EnableIT_ALRA(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ALRA(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_ALRAIE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_ALRAIE);
 }
 
 /**
@@ -5555,7 +5551,7 @@ __STATIC_INLINE void LL_RTC_DisableIT_ALRA(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_SSRU(RTC_TypeDef *RTCx)
 {
-  SET_BIT(RTCx->CR, RTC_CR_SSRUIE);
+	SET_BIT(RTCx->CR, RTC_CR_SSRUIE);
 }
 
 /**
@@ -5567,7 +5563,7 @@ __STATIC_INLINE void LL_RTC_EnableIT_SSRU(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_SSRU(RTC_TypeDef *RTCx)
 {
-  CLEAR_BIT(RTCx->CR, RTC_CR_SSRUIE);
+	CLEAR_BIT(RTCx->CR, RTC_CR_SSRUIE);
 }
 
 /**
@@ -5578,7 +5574,7 @@ __STATIC_INLINE void LL_RTC_DisableIT_SSRU(RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TS(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_TSIE) == (RTC_CR_TSIE)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_TSIE) == (RTC_CR_TSIE)) ? 1U : 0U);
 }
 
 /**
@@ -5589,7 +5585,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TS(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_WUT(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_WUTIE) == (RTC_CR_WUTIE)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_WUTIE) == (RTC_CR_WUTIE)) ? 1U : 0U);
 }
 
 /**
@@ -5600,7 +5596,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_WUT(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ALRB(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_ALRBIE) == (RTC_CR_ALRBIE)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_ALRBIE) == (RTC_CR_ALRBIE)) ? 1U : 0U);
 }
 
 /**
@@ -5611,7 +5607,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ALRB(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ALRA(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_ALRAIE) == (RTC_CR_ALRAIE)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_ALRAIE) == (RTC_CR_ALRAIE)) ? 1U : 0U);
 }
 
 /**
@@ -5622,7 +5618,7 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ALRA(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_SSRU(const RTC_TypeDef *RTCx)
 {
-  return ((READ_BIT(RTCx->CR, RTC_CR_SSRUIE) == (RTC_CR_SSRUIE)) ? 1U : 0U);
+	return ((READ_BIT(RTCx->CR, RTC_CR_SSRUIE) == (RTC_CR_SSRUIE)) ? 1U : 0U);
 }
 
 /**
@@ -5633,8 +5629,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_SSRU(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_TAMP1(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_TAMP1IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_TAMP1IE);
 }
 
 /**
@@ -5645,8 +5641,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_TAMP1(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_TAMP1(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP1IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP1IE);
 }
 
 /**
@@ -5657,8 +5653,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_TAMP1(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_TAMP2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_TAMP2IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_TAMP2IE);
 }
 
 /**
@@ -5669,8 +5665,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_TAMP2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_TAMP2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP2IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP2IE);
 }
 
 #if (RTC_TAMP_NB > 2U)
@@ -5682,8 +5678,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_TAMP2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_TAMP3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_TAMP3IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_TAMP3IE);
 }
 
 /**
@@ -5694,8 +5690,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_TAMP3(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_TAMP3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP3IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP3IE);
 }
 
 /**
@@ -5706,8 +5702,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_TAMP3(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_TAMP4(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_TAMP4IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_TAMP4IE);
 }
 
 /**
@@ -5718,8 +5714,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_TAMP4(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_TAMP4(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP4IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP4IE);
 }
 
 /**
@@ -5730,8 +5726,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_TAMP4(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_TAMP5(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_TAMP5IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_TAMP5IE);
 }
 
 /**
@@ -5742,8 +5738,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_TAMP5(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_TAMP5(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP5IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP5IE);
 }
 
 /**
@@ -5754,8 +5750,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_TAMP5(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_TAMP6(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_TAMP6IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_TAMP6IE);
 }
 
 /**
@@ -5766,8 +5762,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_TAMP6(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_TAMP6(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP6IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP6IE);
 }
 #endif /* (RTC_TAMP_NB > 2U) */
 
@@ -5780,8 +5776,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_TAMP6(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_TAMP7(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_TAMP7IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_TAMP7IE);
 }
 
 /**
@@ -5792,8 +5788,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_TAMP7(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_TAMP7(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP7IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP7IE);
 }
 
 /**
@@ -5804,8 +5800,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_TAMP7(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_TAMP8(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_TAMP8IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_TAMP8IE);
 }
 
 /**
@@ -5816,8 +5812,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_TAMP8(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_TAMP8(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP8IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_TAMP8IE);
 }
 #endif /* (RTC_TAMP_NB > 6U) */
 
@@ -5829,8 +5825,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_TAMP8(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP1(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP1IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP1IE);
 }
 
 /**
@@ -5841,8 +5837,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP1(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP1(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP1IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP1IE);
 }
 
 /**
@@ -5853,8 +5849,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP1(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP2IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP2IE);
 }
 
 /**
@@ -5865,8 +5861,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP2IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP2IE);
 }
 
 /**
@@ -5877,8 +5873,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP3IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP3IE);
 }
 
 /**
@@ -5889,8 +5885,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP3(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP3IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP3IE);
 }
 
 /**
@@ -5901,8 +5897,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP3(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP4(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP4IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP4IE);
 }
 
 /**
@@ -5913,8 +5909,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP4(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP4(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP4IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP4IE);
 }
 
 /**
@@ -5925,8 +5921,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP4(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP5(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP5IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP5IE);
 }
 
 /**
@@ -5937,8 +5933,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP5(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP5(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP5IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP5IE);
 }
 
 /**
@@ -5949,8 +5945,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP5(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP6(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP6IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP6IE);
 }
 
 /**
@@ -5961,8 +5957,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP6(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP6(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP6IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP6IE);
 }
 
 /**
@@ -5973,8 +5969,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP6(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP7(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP7IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP7IE);
 }
 
 /**
@@ -5985,8 +5981,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP7(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP7(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP7IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP7IE);
 }
 
 /**
@@ -5997,8 +5993,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP7(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP8(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP8IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP8IE);
 }
 
 /**
@@ -6009,8 +6005,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP8(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP8(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP8IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP8IE);
 }
 
 /**
@@ -6021,8 +6017,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP8(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP9(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP9IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP9IE);
 }
 
 /**
@@ -6033,8 +6029,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP9(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP9(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP9IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP9IE);
 }
 
 /**
@@ -6045,8 +6041,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP9(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP11(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP11IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP11IE);
 }
 
 /**
@@ -6057,8 +6053,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP11(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP11(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP11IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP11IE);
 }
 
 /**
@@ -6069,8 +6065,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP11(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP12(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP12IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP12IE);
 }
 
 /**
@@ -6081,8 +6077,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP12(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP12(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP12IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP12IE);
 }
 
 /**
@@ -6093,8 +6089,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP12(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP13(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP13IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP13IE);
 }
 
 /**
@@ -6105,8 +6101,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP13(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP13(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP13IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP13IE);
 }
 
 /**
@@ -6117,8 +6113,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP13(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableIT_ITAMP15(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  SET_BIT(TAMP->IER, TAMP_IER_ITAMP15IE);
+	UNUSED(RTCx);
+	SET_BIT(TAMP->IER, TAMP_IER_ITAMP15IE);
 }
 
 /**
@@ -6129,8 +6125,8 @@ __STATIC_INLINE void LL_RTC_EnableIT_ITAMP15(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableIT_ITAMP15(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP15IE);
+	UNUSED(RTCx);
+	CLEAR_BIT(TAMP->IER, TAMP_IER_ITAMP15IE);
 }
 
 /**
@@ -6141,8 +6137,8 @@ __STATIC_INLINE void LL_RTC_DisableIT_ITAMP15(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP1(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP1IE) == (TAMP_IER_TAMP1IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP1IE) == (TAMP_IER_TAMP1IE)) ? 1U : 0U);
 }
 
 /**
@@ -6153,8 +6149,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP1(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP2IE) == (TAMP_IER_TAMP2IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP2IE) == (TAMP_IER_TAMP2IE)) ? 1U : 0U);
 }
 
 #if (RTC_TAMP_NB > 2U)
@@ -6166,8 +6162,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP3IE) == (TAMP_IER_TAMP3IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP3IE) == (TAMP_IER_TAMP3IE)) ? 1U : 0U);
 }
 
 /**
@@ -6178,8 +6174,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP3(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP4(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP4IE) == (TAMP_IER_TAMP4IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP4IE) == (TAMP_IER_TAMP4IE)) ? 1U : 0U);
 }
 
 /**
@@ -6190,8 +6186,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP4(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP5(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP5IE) == (TAMP_IER_TAMP5IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP5IE) == (TAMP_IER_TAMP5IE)) ? 1U : 0U);
 }
 
 /**
@@ -6202,8 +6198,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP5(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP6(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP6IE) == (TAMP_IER_TAMP6IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP6IE) == (TAMP_IER_TAMP6IE)) ? 1U : 0U);
 }
 #endif /* (RTC_TAMP_NB > 2U) */
 
@@ -6216,8 +6212,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP6(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP7(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP7IE) == (TAMP_IER_TAMP7IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP7IE) == (TAMP_IER_TAMP7IE)) ? 1U : 0U);
 }
 
 /**
@@ -6228,8 +6224,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP7(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP8(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP8IE) == (TAMP_IER_TAMP8IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_TAMP8IE) == (TAMP_IER_TAMP8IE)) ? 1U : 0U);
 }
 #endif /* (RTC_TAMP_NB > 6U) */
 
@@ -6241,8 +6237,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_TAMP8(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP1(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP1IE) == (TAMP_IER_ITAMP1IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP1IE) == (TAMP_IER_ITAMP1IE)) ? 1U : 0U);
 }
 
 /**
@@ -6253,8 +6249,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP1(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP2(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP2IE) == (TAMP_IER_ITAMP2IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP2IE) == (TAMP_IER_ITAMP2IE)) ? 1U : 0U);
 }
 
 /**
@@ -6265,8 +6261,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP3(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP3IE) == (TAMP_IER_ITAMP3IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP3IE) == (TAMP_IER_ITAMP3IE)) ? 1U : 0U);
 }
 
 /**
@@ -6277,8 +6273,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP3(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP4(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP4IE) == (TAMP_IER_ITAMP4IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP4IE) == (TAMP_IER_ITAMP4IE)) ? 1U : 0U);
 }
 
 /**
@@ -6289,8 +6285,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP4(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP5(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP5IE) == (TAMP_IER_ITAMP5IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP5IE) == (TAMP_IER_ITAMP5IE)) ? 1U : 0U);
 }
 
 /**
@@ -6301,8 +6297,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP5(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP6(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP6IE) == (TAMP_IER_ITAMP6IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP6IE) == (TAMP_IER_ITAMP6IE)) ? 1U : 0U);
 }
 
 /**
@@ -6313,8 +6309,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP6(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP7(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP7IE) == (TAMP_IER_ITAMP7IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP7IE) == (TAMP_IER_ITAMP7IE)) ? 1U : 0U);
 }
 
 /**
@@ -6325,8 +6321,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP7(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP8(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP8IE) == (TAMP_IER_ITAMP8IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP8IE) == (TAMP_IER_ITAMP8IE)) ? 1U : 0U);
 }
 
 /**
@@ -6337,8 +6333,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP8(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP9(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP9IE) == (TAMP_IER_ITAMP9IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP9IE) == (TAMP_IER_ITAMP9IE)) ? 1U : 0U);
 }
 
 /**
@@ -6349,8 +6345,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP9(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP11(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP11IE) == (TAMP_IER_ITAMP11IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP11IE) == (TAMP_IER_ITAMP11IE)) ? 1U : 0U);
 }
 
 /**
@@ -6361,8 +6357,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP11(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP12(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP12IE) == (TAMP_IER_ITAMP12IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP12IE) == (TAMP_IER_ITAMP12IE)) ? 1U : 0U);
 }
 
 /**
@@ -6373,8 +6369,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP12(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP13(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP13IE) == (TAMP_IER_ITAMP13IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP13IE) == (TAMP_IER_ITAMP13IE)) ? 1U : 0U);
 }
 
 /**
@@ -6385,8 +6381,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP13(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP15(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP15IE) == (TAMP_IER_ITAMP15IE)) ? 1U : 0U);
+	UNUSED(RTCx);
+	return ((READ_BIT(TAMP->IER, TAMP_IER_ITAMP15IE) == (TAMP_IER_ITAMP15IE)) ? 1U : 0U);
 }
 
 /**
@@ -6397,8 +6393,8 @@ __STATIC_INLINE uint32_t LL_RTC_IsEnabledIT_ITAMP15(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_IncrementMonotonicCounter(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  WRITE_REG(TAMP->COUNT1R, 0U);
+	UNUSED(RTCx);
+	WRITE_REG(TAMP->COUNT1R, 0U);
 }
 
 /**
@@ -6409,8 +6405,8 @@ __STATIC_INLINE void LL_RTC_IncrementMonotonicCounter(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_GetMonotonicCounter(const RTC_TypeDef *RTCx)
 {
-  UNUSED(RTCx);
-  return READ_REG(TAMP->COUNT1R);
+	UNUSED(RTCx);
+	return READ_REG(TAMP->COUNT1R);
 }
 
 #if defined (RTC_OR_OUT2_RMP)
@@ -6422,10 +6418,10 @@ __STATIC_INLINE uint32_t LL_RTC_GetMonotonicCounter(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_EnableRemapRtcOut2(const RTC_TypeDef *RTCx)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(RTCx);
-  /* Enable RTC OUT2 remap */
-  SET_BIT(RTC->OR, RTC_OR_OUT2_RMP);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(RTCx);
+	/* Enable RTC OUT2 remap */
+	SET_BIT(RTC->OR, RTC_OR_OUT2_RMP);
 }
 
 /**
@@ -6436,10 +6432,10 @@ __STATIC_INLINE void LL_RTC_EnableRemapRtcOut2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE void LL_RTC_DisableRemapRtcOut2(const RTC_TypeDef *RTCx)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(RTCx);
-  /* Disable  RTC OUT2 remap */
-  CLEAR_BIT(RTC->OR, RTC_OR_OUT2_RMP);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(RTCx);
+	/* Disable  RTC OUT2 remap */
+	CLEAR_BIT(RTC->OR, RTC_OR_OUT2_RMP);
 }
 
 /**
@@ -6450,10 +6446,10 @@ __STATIC_INLINE void LL_RTC_DisableRemapRtcOut2(const RTC_TypeDef *RTCx)
   */
 __STATIC_INLINE uint32_t LL_RTC_IsEnabledRemapRtcOut2(const RTC_TypeDef *RTCx)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(RTCx);
-  /* Disable  RTC OUT2 remap */
-  return ((READ_BIT(RTC->OR, RTC_OR_OUT2_RMP) == (RTC_OR_OUT2_RMP)) ? 1U : 0U);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(RTCx);
+	/* Disable  RTC OUT2 remap */
+	return ((READ_BIT(RTC->OR, RTC_OR_OUT2_RMP) == (RTC_OR_OUT2_RMP)) ? 1U : 0U);
 }
 #endif /* defined (RTC_OR_OUT2_RMP) */
 

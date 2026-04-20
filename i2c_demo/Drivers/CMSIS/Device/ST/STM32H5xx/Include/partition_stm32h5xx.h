@@ -13,7 +13,7 @@
   *
   ******************************************************************************
   * Copyright (c) 2009-2019 Arm Limited. All rights reserved.
-  * Copyright (c) 2023 STMicroelectronics. All rights reserved.  
+  * Copyright (c) 2023 STMicroelectronics. All rights reserved.
   *
   * SPDX-License-Identifier: Apache-2.0
   *
@@ -43,7 +43,7 @@
 #define PARTITION_STM32H5XX_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif /* __cplusplus */
 
 /** @addtogroup Secure_configuration_section
@@ -51,17 +51,17 @@
   */
 
 #if defined(STM32H573xx)
-  #include "partition_stm32h573xx.h"
+#include "partition_stm32h573xx.h"
 #elif defined(STM32H563xx)
-  #include "partition_stm32h563xx.h"
+#include "partition_stm32h563xx.h"
 #elif defined(STM32H562xx)
-  #include "partition_stm32h562xx.h"
+#include "partition_stm32h562xx.h"
 #elif defined(STM32H533xx)
-  #include "partition_stm32h533xx.h"
+#include "partition_stm32h533xx.h"
 #elif defined(STM32H523xx)
-  #include "partition_stm32h523xx.h"
+#include "partition_stm32h523xx.h"
 #else
-  #error "Please select first the target STM32H5xx device used in your application (in stm32h5xx.h file)"
+#error "Please select first the target STM32H5xx device used in your application (in stm32h5xx.h file)"
 #endif
 
 

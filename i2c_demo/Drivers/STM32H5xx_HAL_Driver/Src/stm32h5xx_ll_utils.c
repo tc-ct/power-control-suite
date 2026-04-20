@@ -183,9 +183,9 @@
   * @{
   */
 static uint32_t    UTILS_GetPLLOutputFrequency(uint32_t PLL_InputFrequency,
-                                               const LL_UTILS_PLLInitTypeDef *UTILS_PLLInitStruct);
+		const LL_UTILS_PLLInitTypeDef *UTILS_PLLInitStruct);
 static ErrorStatus UTILS_EnablePLLAndSwitchSystem(uint32_t SYSCLK_Frequency,
-                                                  LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct);
+		LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct);
 static ErrorStatus UTILS_PLL_IsBusy(void);
 /**
   * @}
@@ -211,8 +211,8 @@ static ErrorStatus UTILS_PLL_IsBusy(void);
   */
 void LL_Init1msTick(uint32_t HCLKFrequency)
 {
-  /* Use frequency provided in argument */
-  LL_InitTick(HCLKFrequency, 1000U);
+	/* Use frequency provided in argument */
+	LL_InitTick(HCLKFrequency, 1000U);
 }
 
 /**
@@ -225,10 +225,10 @@ void LL_Init1msTick(uint32_t HCLKFrequency)
   */
 void LL_Init1msTick_HCLK_Div8(uint32_t HCLKFrequency)
 {
-  /* Configure the SysTick to have 1ms time base with HCLK/8 as SysTick clock source */
-  SysTick->LOAD = (uint32_t)((HCLKFrequency / 8000U) - 1UL);
-  SysTick->VAL = 0UL;
-  SysTick->CTRL = SysTick_CTRL_ENABLE_Msk;
+	/* Configure the SysTick to have 1ms time base with HCLK/8 as SysTick clock source */
+	SysTick->LOAD = (uint32_t)((HCLKFrequency / 8000U) - 1UL);
+	SysTick->VAL = 0UL;
+	SysTick->CTRL = SysTick_CTRL_ENABLE_Msk;
 }
 
 /**
@@ -239,10 +239,10 @@ void LL_Init1msTick_HCLK_Div8(uint32_t HCLKFrequency)
   */
 void LL_Init1msTick_LSE(void)
 {
-  /* Configure the SysTick to have 1ms time base with LSE as SysTick clock source */
-  SysTick->LOAD = (uint32_t)((LSE_VALUE / 1000U) - 1UL);
-  SysTick->VAL = 0UL;
-  SysTick->CTRL = SysTick_CTRL_ENABLE_Msk;
+	/* Configure the SysTick to have 1ms time base with LSE as SysTick clock source */
+	SysTick->LOAD = (uint32_t)((LSE_VALUE / 1000U) - 1UL);
+	SysTick->VAL = 0UL;
+	SysTick->CTRL = SysTick_CTRL_ENABLE_Msk;
 }
 
 /**
@@ -253,10 +253,10 @@ void LL_Init1msTick_LSE(void)
   */
 void LL_Init1msTick_LSI(void)
 {
-  /* Configure the SysTick to have 1ms time base with LSI as SysTick clock source */
-  SysTick->LOAD = (uint32_t)((LSI_VALUE / 1000U) - 1UL);
-  SysTick->VAL = 0UL;
-  SysTick->CTRL = SysTick_CTRL_ENABLE_Msk;
+	/* Configure the SysTick to have 1ms time base with LSI as SysTick clock source */
+	SysTick->LOAD = (uint32_t)((LSI_VALUE / 1000U) - 1UL);
+	SysTick->VAL = 0UL;
+	SysTick->CTRL = SysTick_CTRL_ENABLE_Msk;
 }
 
 /**
@@ -271,25 +271,20 @@ void LL_Init1msTick_LSI(void)
   */
 void LL_mDelay(uint32_t Delay)
 {
-  __IO uint32_t  tmp = SysTick->CTRL;  /* Clear the COUNTFLAG first */
-  uint32_t tmpDelay = Delay;
+	__IO uint32_t  tmp = SysTick->CTRL;  /* Clear the COUNTFLAG first */
+	uint32_t tmpDelay = Delay;
 
-  /* Add this code to indicate that local variable is not used */
-  ((void)tmp);
+	/* Add this code to indicate that local variable is not used */
+	((void)tmp);
 
-  /* Add a period to guaranty minimum wait */
-  if (tmpDelay < LL_MAX_DELAY)
-  {
-    tmpDelay++;
-  }
+	/* Add a period to guaranty minimum wait */
+	if (tmpDelay < LL_MAX_DELAY)
+		tmpDelay++;
 
-  while (tmpDelay != 0U)
-  {
-    if ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) != 0U)
-    {
-      tmpDelay--;
-    }
-  }
+	while (tmpDelay != 0U) {
+		if ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) != 0U)
+			tmpDelay--;
+	}
 }
 
 /**
@@ -345,8 +340,8 @@ void LL_mDelay(uint32_t Delay)
   */
 void LL_SetSystemCoreClock(uint32_t HCLKFrequency)
 {
-  /* HCLK clock frequency */
-  SystemCoreClock = HCLKFrequency;
+	/* HCLK clock frequency */
+	SystemCoreClock = HCLKFrequency;
 }
 
 /**
@@ -367,73 +362,69 @@ void LL_SetSystemCoreClock(uint32_t HCLKFrequency)
   *          - ERROR: Max frequency configuration not done
   */
 ErrorStatus LL_PLL_ConfigSystemClock_CSI(LL_UTILS_PLLInitTypeDef *UTILS_PLLInitStruct,
-                                         LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct)
+		LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct)
 {
-  ErrorStatus status;
+	ErrorStatus status;
 #ifdef  USE_FULL_ASSERT
-  uint32_t vcoinput_freq;
-  uint32_t vcooutput_freq;
+	uint32_t vcoinput_freq;
+	uint32_t vcooutput_freq;
 #endif /* USE_FULL_ASSERT */
-  uint32_t pllfreq;
+	uint32_t pllfreq;
 
-  /* Check the parameters */
-  assert_param(IS_LL_UTILS_PLLM_VALUE(UTILS_PLLInitStruct->PLLM));
-  assert_param(IS_LL_UTILS_PLLN_VALUE(UTILS_PLLInitStruct->PLLN));
-  assert_param(IS_LL_UTILS_PLLP_VALUE(UTILS_PLLInitStruct->PLLP));
-  assert_param(IS_LL_UTILS_FRACN_VALUE(UTILS_PLLInitStruct->FRACN));
+	/* Check the parameters */
+	assert_param(IS_LL_UTILS_PLLM_VALUE(UTILS_PLLInitStruct->PLLM));
+	assert_param(IS_LL_UTILS_PLLN_VALUE(UTILS_PLLInitStruct->PLLN));
+	assert_param(IS_LL_UTILS_PLLP_VALUE(UTILS_PLLInitStruct->PLLP));
+	assert_param(IS_LL_UTILS_FRACN_VALUE(UTILS_PLLInitStruct->FRACN));
 
-  /* Check VCO Input frequency */
+	/* Check VCO Input frequency */
 #ifdef  USE_FULL_ASSERT
-  vcoinput_freq = CSI_VALUE / UTILS_PLLInitStruct->PLLM;
+	vcoinput_freq = CSI_VALUE / UTILS_PLLInitStruct->PLLM;
 #endif /* USE_FULL_ASSERT */
-  assert_param(IS_LL_UTILS_PLLVCO_INPUT(vcoinput_freq, UTILS_PLLInitStruct->VCO_Input));
+	assert_param(IS_LL_UTILS_PLLVCO_INPUT(vcoinput_freq, UTILS_PLLInitStruct->VCO_Input));
 
-  /* Check VCO Input ranges */
-  assert_param(IS_LL_UTILS_CHECK_VCO_RANGES(UTILS_PLLInitStruct->VCO_Input, UTILS_PLLInitStruct->VCO_Output));
+	/* Check VCO Input ranges */
+	assert_param(IS_LL_UTILS_CHECK_VCO_RANGES(UTILS_PLLInitStruct->VCO_Input, UTILS_PLLInitStruct->VCO_Output));
 
-  /* Check VCO Output frequency */
+	/* Check VCO Output frequency */
 #ifdef  USE_FULL_ASSERT
-  vcooutput_freq = LL_RCC_CalcPLLClockFreq(CSI_VALUE, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
-                                           UTILS_PLLInitStruct->FRACN, 1U);
-  /* PLL1P Set to 1 to check the assert param (VCO_output)*/
+	vcooutput_freq = LL_RCC_CalcPLLClockFreq(CSI_VALUE, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
+			 UTILS_PLLInitStruct->FRACN, 1U);
+	/* PLL1P Set to 1 to check the assert param (VCO_output)*/
 #endif /* USE_FULL_ASSERT */
-  assert_param(IS_LL_UTILS_PLLVCO_OUTPUT(vcooutput_freq, UTILS_PLLInitStruct->VCO_Output));
+	assert_param(IS_LL_UTILS_PLLVCO_OUTPUT(vcooutput_freq, UTILS_PLLInitStruct->VCO_Output));
 
-  /* Check if the main PLL is enabled */
-  if (UTILS_PLL_IsBusy() == SUCCESS)
-  {
-    /* Calculate the new PLL output frequency */
-    pllfreq = UTILS_GetPLLOutputFrequency(CSI_VALUE, UTILS_PLLInitStruct);
+	/* Check if the main PLL is enabled */
+	if (UTILS_PLL_IsBusy() == SUCCESS) {
+		/* Calculate the new PLL output frequency */
+		pllfreq = UTILS_GetPLLOutputFrequency(CSI_VALUE, UTILS_PLLInitStruct);
 
-    /* Enable CSI if not enabled */
-    if (LL_RCC_CSI_IsReady() != 1U)
-    {
-      LL_RCC_CSI_Enable();
-      while (LL_RCC_CSI_IsReady() != 1U)
-      {
-        /* Wait for CSI ready */
-      }
-    }
+		/* Enable CSI if not enabled */
+		if (LL_RCC_CSI_IsReady() != 1U) {
+			LL_RCC_CSI_Enable();
 
-    /* Configure PLL */
-    LL_RCC_PLL1_ConfigDomain_SYS(LL_RCC_PLL1SOURCE_CSI, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
-                                 UTILS_PLLInitStruct->PLLP);
-    LL_RCC_PLL1FRACN_Disable();
-    LL_RCC_PLL1_SetFRACN(UTILS_PLLInitStruct->FRACN);
-    LL_RCC_PLL1FRACN_Enable();
-    LL_RCC_PLL1_SetVCOInputRange(UTILS_PLLInitStruct->VCO_Input);
-    LL_RCC_PLL1_SetVCOOutputRange(UTILS_PLLInitStruct->VCO_Output);
+			while (LL_RCC_CSI_IsReady() != 1U) {
+				/* Wait for CSI ready */
+			}
+		}
 
-    /* Enable PLL and switch system clock to PLL */
-    status = UTILS_EnablePLLAndSwitchSystem(pllfreq, UTILS_ClkInitStruct);
-  }
-  else
-  {
-    /* Current PLL configuration cannot be modified */
-    status = ERROR;
-  }
+		/* Configure PLL */
+		LL_RCC_PLL1_ConfigDomain_SYS(LL_RCC_PLL1SOURCE_CSI, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
+					     UTILS_PLLInitStruct->PLLP);
+		LL_RCC_PLL1FRACN_Disable();
+		LL_RCC_PLL1_SetFRACN(UTILS_PLLInitStruct->FRACN);
+		LL_RCC_PLL1FRACN_Enable();
+		LL_RCC_PLL1_SetVCOInputRange(UTILS_PLLInitStruct->VCO_Input);
+		LL_RCC_PLL1_SetVCOOutputRange(UTILS_PLLInitStruct->VCO_Output);
 
-  return status;
+		/* Enable PLL and switch system clock to PLL */
+		status = UTILS_EnablePLLAndSwitchSystem(pllfreq, UTILS_ClkInitStruct);
+	} else {
+		/* Current PLL configuration cannot be modified */
+		status = ERROR;
+	}
+
+	return status;
 }
 
 
@@ -457,76 +448,72 @@ ErrorStatus LL_PLL_ConfigSystemClock_CSI(LL_UTILS_PLLInitTypeDef *UTILS_PLLInitS
   *
   */
 ErrorStatus LL_PLL_ConfigSystemClock_HSI(LL_UTILS_PLLInitTypeDef *UTILS_PLLInitStruct,
-                                         LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct)
+		LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct)
 {
-  ErrorStatus status;
+	ErrorStatus status;
 #ifdef  USE_FULL_ASSERT
-  uint32_t vcoinput_freq;
-  uint32_t vcooutput_freq;
+	uint32_t vcoinput_freq;
+	uint32_t vcooutput_freq;
 #endif /* USE_FULL_ASSERT */
-  uint32_t pllfreq;
-  uint32_t hsi_clk;
+	uint32_t pllfreq;
+	uint32_t hsi_clk;
 
-  /* Check the parameters */
-  assert_param(IS_LL_UTILS_PLLM_VALUE(UTILS_PLLInitStruct->PLLM));
-  assert_param(IS_LL_UTILS_PLLN_VALUE(UTILS_PLLInitStruct->PLLN));
-  assert_param(IS_LL_UTILS_PLLP_VALUE(UTILS_PLLInitStruct->PLLP));
-  assert_param(IS_LL_UTILS_FRACN_VALUE(UTILS_PLLInitStruct->FRACN));
+	/* Check the parameters */
+	assert_param(IS_LL_UTILS_PLLM_VALUE(UTILS_PLLInitStruct->PLLM));
+	assert_param(IS_LL_UTILS_PLLN_VALUE(UTILS_PLLInitStruct->PLLN));
+	assert_param(IS_LL_UTILS_PLLP_VALUE(UTILS_PLLInitStruct->PLLP));
+	assert_param(IS_LL_UTILS_FRACN_VALUE(UTILS_PLLInitStruct->FRACN));
 
-  hsi_clk = (HSI_VALUE >> (LL_RCC_HSI_GetDivider() >> RCC_CR_HSIDIV_Pos));
+	hsi_clk = (HSI_VALUE >> (LL_RCC_HSI_GetDivider() >> RCC_CR_HSIDIV_Pos));
 
-  /* Check VCO Input frequency */
+	/* Check VCO Input frequency */
 #ifdef  USE_FULL_ASSERT
-  vcoinput_freq = hsi_clk / UTILS_PLLInitStruct->PLLM;
+	vcoinput_freq = hsi_clk / UTILS_PLLInitStruct->PLLM;
 #endif /* USE_FULL_ASSERT */
-  assert_param(IS_LL_UTILS_PLLVCO_INPUT(vcoinput_freq, UTILS_PLLInitStruct->VCO_Input));
+	assert_param(IS_LL_UTILS_PLLVCO_INPUT(vcoinput_freq, UTILS_PLLInitStruct->VCO_Input));
 
-  /* Check VCO Input ranges */
-  assert_param(IS_LL_UTILS_CHECK_VCO_RANGES(UTILS_PLLInitStruct->VCO_Input, UTILS_PLLInitStruct->VCO_Output));
+	/* Check VCO Input ranges */
+	assert_param(IS_LL_UTILS_CHECK_VCO_RANGES(UTILS_PLLInitStruct->VCO_Input, UTILS_PLLInitStruct->VCO_Output));
 
-  /* Check VCO Output frequency */
+	/* Check VCO Output frequency */
 #ifdef  USE_FULL_ASSERT
-  vcooutput_freq = LL_RCC_CalcPLLClockFreq(hsi_clk, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
-                                           UTILS_PLLInitStruct->FRACN, 1UL);
-  /* PLL1P Set to 1 to check the assert param (VCO_output)*/
+	vcooutput_freq = LL_RCC_CalcPLLClockFreq(hsi_clk, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
+			 UTILS_PLLInitStruct->FRACN, 1UL);
+	/* PLL1P Set to 1 to check the assert param (VCO_output)*/
 #endif /* USE_FULL_ASSERT */
-  assert_param(IS_LL_UTILS_PLLVCO_OUTPUT(vcooutput_freq, UTILS_PLLInitStruct->VCO_Output));
+	assert_param(IS_LL_UTILS_PLLVCO_OUTPUT(vcooutput_freq, UTILS_PLLInitStruct->VCO_Output));
 
-  /* Check if the main PLL is enabled */
-  if (UTILS_PLL_IsBusy() == SUCCESS)
-  {
-    /* Calculate the new PLL output frequency */
-    pllfreq = UTILS_GetPLLOutputFrequency(hsi_clk, UTILS_PLLInitStruct);
+	/* Check if the main PLL is enabled */
+	if (UTILS_PLL_IsBusy() == SUCCESS) {
+		/* Calculate the new PLL output frequency */
+		pllfreq = UTILS_GetPLLOutputFrequency(hsi_clk, UTILS_PLLInitStruct);
 
-    /* Enable HSI if not enabled */
-    if (LL_RCC_HSI_IsReady() != 1U)
-    {
-      LL_RCC_HSI_Enable();
-      while (LL_RCC_HSI_IsReady() != 1U)
-      {
-        /* Wait for HSI ready */
-      }
-    }
+		/* Enable HSI if not enabled */
+		if (LL_RCC_HSI_IsReady() != 1U) {
+			LL_RCC_HSI_Enable();
 
-    /* Configure PLL */
-    LL_RCC_PLL1_ConfigDomain_SYS(LL_RCC_PLL1SOURCE_HSI, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
-                                 UTILS_PLLInitStruct->PLLP);
-    LL_RCC_PLL1FRACN_Disable();
-    LL_RCC_PLL1_SetFRACN(UTILS_PLLInitStruct->FRACN);
-    LL_RCC_PLL1FRACN_Enable();
-    LL_RCC_PLL1_SetVCOInputRange(UTILS_PLLInitStruct->VCO_Input);
-    LL_RCC_PLL1_SetVCOOutputRange(UTILS_PLLInitStruct->VCO_Output);
+			while (LL_RCC_HSI_IsReady() != 1U) {
+				/* Wait for HSI ready */
+			}
+		}
 
-    /* Enable PLL and switch system clock to PLL */
-    status = UTILS_EnablePLLAndSwitchSystem(pllfreq, UTILS_ClkInitStruct);
-  }
-  else
-  {
-    /* Current PLL configuration cannot be modified */
-    status = ERROR;
-  }
+		/* Configure PLL */
+		LL_RCC_PLL1_ConfigDomain_SYS(LL_RCC_PLL1SOURCE_HSI, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
+					     UTILS_PLLInitStruct->PLLP);
+		LL_RCC_PLL1FRACN_Disable();
+		LL_RCC_PLL1_SetFRACN(UTILS_PLLInitStruct->FRACN);
+		LL_RCC_PLL1FRACN_Enable();
+		LL_RCC_PLL1_SetVCOInputRange(UTILS_PLLInitStruct->VCO_Input);
+		LL_RCC_PLL1_SetVCOOutputRange(UTILS_PLLInitStruct->VCO_Output);
 
-  return status;
+		/* Enable PLL and switch system clock to PLL */
+		status = UTILS_EnablePLLAndSwitchSystem(pllfreq, UTILS_ClkInitStruct);
+	} else {
+		/* Current PLL configuration cannot be modified */
+		status = ERROR;
+	}
+
+	return status;
 }
 
 /**
@@ -551,93 +538,83 @@ ErrorStatus LL_PLL_ConfigSystemClock_HSI(LL_UTILS_PLLInitTypeDef *UTILS_PLLInitS
   *          - ERROR: Max frequency configuration not done
   */
 ErrorStatus LL_PLL_ConfigSystemClock_HSE(uint32_t HSEFrequency, uint32_t HSEBypass,
-                                         LL_UTILS_PLLInitTypeDef *UTILS_PLLInitStruct,
-                                         LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct)
+		LL_UTILS_PLLInitTypeDef *UTILS_PLLInitStruct,
+		LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct)
 {
-  ErrorStatus status;
+	ErrorStatus status;
 #ifdef  USE_FULL_ASSERT
-  uint32_t vcoinput_freq;
-  uint32_t vcooutput_freq;
+	uint32_t vcoinput_freq;
+	uint32_t vcooutput_freq;
 #endif /* USE_FULL_ASSERT */
-  uint32_t pllfreq;
+	uint32_t pllfreq;
 
-  /* Check the parameters */
-  assert_param(IS_LL_UTILS_PLLM_VALUE(UTILS_PLLInitStruct->PLLM));
-  assert_param(IS_LL_UTILS_PLLN_VALUE(UTILS_PLLInitStruct->PLLN));
-  assert_param(IS_LL_UTILS_PLLP_VALUE(UTILS_PLLInitStruct->PLLP));
-  assert_param(IS_LL_UTILS_FRACN_VALUE(UTILS_PLLInitStruct->FRACN));
-  assert_param(IS_LL_UTILS_HSE_FREQUENCY(HSEFrequency));
-  assert_param(IS_LL_UTILS_HSE_BYPASS(HSEBypass));
+	/* Check the parameters */
+	assert_param(IS_LL_UTILS_PLLM_VALUE(UTILS_PLLInitStruct->PLLM));
+	assert_param(IS_LL_UTILS_PLLN_VALUE(UTILS_PLLInitStruct->PLLN));
+	assert_param(IS_LL_UTILS_PLLP_VALUE(UTILS_PLLInitStruct->PLLP));
+	assert_param(IS_LL_UTILS_FRACN_VALUE(UTILS_PLLInitStruct->FRACN));
+	assert_param(IS_LL_UTILS_HSE_FREQUENCY(HSEFrequency));
+	assert_param(IS_LL_UTILS_HSE_BYPASS(HSEBypass));
 
-  /* Check VCO Input frequency */
+	/* Check VCO Input frequency */
 #ifdef  USE_FULL_ASSERT
-  vcoinput_freq = HSEFrequency / UTILS_PLLInitStruct->PLLM;
+	vcoinput_freq = HSEFrequency / UTILS_PLLInitStruct->PLLM;
 #endif /* USE_FULL_ASSERT */
-  assert_param(IS_LL_UTILS_PLLVCO_INPUT(vcoinput_freq, UTILS_PLLInitStruct->VCO_Input));
+	assert_param(IS_LL_UTILS_PLLVCO_INPUT(vcoinput_freq, UTILS_PLLInitStruct->VCO_Input));
 
-  /* Check VCO Input/output ranges compatibility */
-  assert_param(IS_LL_UTILS_CHECK_VCO_RANGES(UTILS_PLLInitStruct->VCO_Input, UTILS_PLLInitStruct->VCO_Output));
+	/* Check VCO Input/output ranges compatibility */
+	assert_param(IS_LL_UTILS_CHECK_VCO_RANGES(UTILS_PLLInitStruct->VCO_Input, UTILS_PLLInitStruct->VCO_Output));
 
-  /* Check VCO output frequency */
+	/* Check VCO output frequency */
 #ifdef  USE_FULL_ASSERT
-  vcooutput_freq = LL_RCC_CalcPLLClockFreq(HSEFrequency, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
-                                           UTILS_PLLInitStruct->FRACN, 1U);
-  /* PLL1P Set to 1 to check the assert param (VCO_output)*/
+	vcooutput_freq = LL_RCC_CalcPLLClockFreq(HSEFrequency, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
+			 UTILS_PLLInitStruct->FRACN, 1U);
+	/* PLL1P Set to 1 to check the assert param (VCO_output)*/
 #endif /* USE_FULL_ASSERT */
-  assert_param(IS_LL_UTILS_PLLVCO_OUTPUT(vcooutput_freq, UTILS_PLLInitStruct->VCO_Output));
+	assert_param(IS_LL_UTILS_PLLVCO_OUTPUT(vcooutput_freq, UTILS_PLLInitStruct->VCO_Output));
 
-  /* Check if the main PLL is enabled */
-  if (UTILS_PLL_IsBusy() == SUCCESS)
-  {
-    /* Calculate the new PLL output frequency */
-    pllfreq = UTILS_GetPLLOutputFrequency(HSEFrequency, UTILS_PLLInitStruct);
+	/* Check if the main PLL is enabled */
+	if (UTILS_PLL_IsBusy() == SUCCESS) {
+		/* Calculate the new PLL output frequency */
+		pllfreq = UTILS_GetPLLOutputFrequency(HSEFrequency, UTILS_PLLInitStruct);
 
-    /* Enable HSE if not enabled */
-    if (LL_RCC_HSE_IsReady() != 1U)
-    {
-      /* Check if need to enable HSE bypass feature or not */
-      if (HSEBypass == LL_UTILS_HSEBYPASS_ON)
-      {
-        LL_RCC_HSE_EnableBypass();
-        LL_RCC_HSE_SetExternalClockType(LL_RCC_HSE_ANALOG_TYPE);
-      }
-      else if (HSEBypass == LL_UTILS_HSEBYPASS_DIGITAL_ON)
-      {
-        LL_RCC_HSE_EnableBypass();
-        LL_RCC_HSE_SetExternalClockType(LL_RCC_HSE_DIGITAL_TYPE);
-      }
-      else
-      {
-        LL_RCC_HSE_DisableBypass();
-      }
+		/* Enable HSE if not enabled */
+		if (LL_RCC_HSE_IsReady() != 1U) {
+			/* Check if need to enable HSE bypass feature or not */
+			if (HSEBypass == LL_UTILS_HSEBYPASS_ON) {
+				LL_RCC_HSE_EnableBypass();
+				LL_RCC_HSE_SetExternalClockType(LL_RCC_HSE_ANALOG_TYPE);
+			} else if (HSEBypass == LL_UTILS_HSEBYPASS_DIGITAL_ON) {
+				LL_RCC_HSE_EnableBypass();
+				LL_RCC_HSE_SetExternalClockType(LL_RCC_HSE_DIGITAL_TYPE);
+			} else
+				LL_RCC_HSE_DisableBypass();
 
-      /* Enable HSE */
-      LL_RCC_HSE_Enable();
-      while (LL_RCC_HSE_IsReady() != 1U)
-      {
-        /* Wait for HSE ready */
-      }
-    }
+			/* Enable HSE */
+			LL_RCC_HSE_Enable();
 
-    /* Configure PLL */
-    LL_RCC_PLL1_ConfigDomain_SYS(LL_RCC_PLL1SOURCE_HSE, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
-                                 UTILS_PLLInitStruct->PLLP);
-    LL_RCC_PLL1FRACN_Disable();
-    LL_RCC_PLL1_SetFRACN(UTILS_PLLInitStruct->FRACN);
-    LL_RCC_PLL1FRACN_Enable();
-    LL_RCC_PLL1_SetVCOInputRange(UTILS_PLLInitStruct->VCO_Input);
-    LL_RCC_PLL1_SetVCOOutputRange(UTILS_PLLInitStruct->VCO_Output);
+			while (LL_RCC_HSE_IsReady() != 1U) {
+				/* Wait for HSE ready */
+			}
+		}
 
-    /* Enable PLL and switch system clock to PLL */
-    status = UTILS_EnablePLLAndSwitchSystem(pllfreq, UTILS_ClkInitStruct);
-  }
-  else
-  {
-    /* Current PLL configuration cannot be modified */
-    status = ERROR;
-  }
+		/* Configure PLL */
+		LL_RCC_PLL1_ConfigDomain_SYS(LL_RCC_PLL1SOURCE_HSE, UTILS_PLLInitStruct->PLLM, UTILS_PLLInitStruct->PLLN,
+					     UTILS_PLLInitStruct->PLLP);
+		LL_RCC_PLL1FRACN_Disable();
+		LL_RCC_PLL1_SetFRACN(UTILS_PLLInitStruct->FRACN);
+		LL_RCC_PLL1FRACN_Enable();
+		LL_RCC_PLL1_SetVCOInputRange(UTILS_PLLInitStruct->VCO_Input);
+		LL_RCC_PLL1_SetVCOOutputRange(UTILS_PLLInitStruct->VCO_Output);
 
-  return status;
+		/* Enable PLL and switch system clock to PLL */
+		status = UTILS_EnablePLLAndSwitchSystem(pllfreq, UTILS_ClkInitStruct);
+	} else {
+		/* Current PLL configuration cannot be modified */
+		status = ERROR;
+	}
+
+	return status;
 }
 
 /**
@@ -658,174 +635,110 @@ ErrorStatus LL_PLL_ConfigSystemClock_HSE(uint32_t HSEFrequency, uint32_t HSEBypa
   */
 ErrorStatus LL_SetFlashLatency(uint32_t HCLK_Frequency)
 {
-  ErrorStatus status = SUCCESS;
-  uint32_t timeout;
-  uint32_t getlatency;
-  uint32_t latency = LL_FLASH_LATENCY_0;  /* default value 0WS */
+	ErrorStatus status = SUCCESS;
+	uint32_t timeout;
+	uint32_t getlatency;
+	uint32_t latency = LL_FLASH_LATENCY_0;  /* default value 0WS */
 
-  /* Frequency cannot be equal to 0 */
-  if (HCLK_Frequency == 0U)
-  {
-    status = ERROR;
-  }
-  else
-  {
-    if (LL_PWR_GetRegulVoltageScaling() == LL_PWR_REGU_VOLTAGE_SCALE0)
-    {
-      if (HCLK_Frequency <= UTILS_SCALE0_LATENCY0_FREQ)
-      {
-        /* 0 < HCLK <= 42 => 0WS (1 CPU cycles) : Do nothing, keep latency to default  LL_FLASH_LATENCY_0 */
-      }
-      else if ((HCLK_Frequency <= UTILS_SCALE0_LATENCY1_FREQ))
-      {
-        /* 42 < HCLK <=84  => 1WS (2 CPU cycles) */
-        latency = LL_FLASH_LATENCY_1;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE0_LATENCY2_FREQ)
-      {
-        /* 84 < HCLK <= 126 => 2WS (3 CPU cycles) */
-        latency = LL_FLASH_LATENCY_2;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE0_LATENCY3_FREQ)
-      {
-        /* 126 < HCLK <= 168 => 3WS (4 CPU cycles) */
-        latency = LL_FLASH_LATENCY_3;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE0_LATENCY4_FREQ)
-      {
-        /* 168 < HCLK <= 210 => 4WS (5 CPU cycles) */
-        latency = LL_FLASH_LATENCY_4;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE0_LATENCY5_FREQ)
-      {
-        /* 210 < HCLK <= 250 => 5WS (6 CPU cycles) */
-        latency = LL_FLASH_LATENCY_5;
-      }
-      else
-      {
-        status = ERROR;
-      }
-    }
-    else if (LL_PWR_GetRegulVoltageScaling() == LL_PWR_REGU_VOLTAGE_SCALE1)
-    {
-      if (HCLK_Frequency <= UTILS_SCALE1_LATENCY0_FREQ)
-      {
-        /* 0 < HCLK <= 34 => 0WS (1 CPU cycles) : Do nothing, keep latency to default  LL_FLASH_LATENCY_0 */
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE1_LATENCY1_FREQ)
-      {
-        /* 34 < HCLK <=68  => 1WS (2 CPU cycles) */
-        latency = LL_FLASH_LATENCY_1;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE1_LATENCY2_FREQ)
-      {
-        /* 68 < HCLK <= 102 => 2WS (3 CPU cycles) */
-        latency = LL_FLASH_LATENCY_2;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE1_LATENCY3_FREQ)
-      {
-        /* 102 < HCLK <= 136 => 3WS (4 CPU cycles) */
-        latency = LL_FLASH_LATENCY_3;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE1_LATENCY4_FREQ)
-      {
-        /* 136 < HCLK <= 170 => 4WS (5 CPU cycles) */
-        latency = LL_FLASH_LATENCY_4;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE1_LATENCY5_FREQ)
-      {
-        /* 170 < HCLK <= 200 => 5WS (6 CPU cycles) */
-        latency = LL_FLASH_LATENCY_5;
-      }
-      else
-      {
-        status = ERROR;
-      }
-    }
-    else if (LL_PWR_GetRegulVoltageScaling() == LL_PWR_REGU_VOLTAGE_SCALE2)
-    {
-      if (HCLK_Frequency <= UTILS_SCALE2_LATENCY0_FREQ)
-      {
-        /* 0 < HCLK <= 30 => 0WS (1 CPU cycles) : Do nothing, keep latency to default  LL_FLASH_LATENCY_0 */
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE2_LATENCY1_FREQ)
-      {
-        /* 30 < HCLK <= 60 => 1WS (2 CPU cycles) */
-        latency = LL_FLASH_LATENCY_1;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE2_LATENCY2_FREQ)
-      {
-        /* 60 < HCLK <= 90 => 2WS (3 CPU cycles) */
-        latency = LL_FLASH_LATENCY_2;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE2_LATENCY3_FREQ)
-      {
-        /* 90 < HCLK <= 120 => 3WS (4 CPU cycles) */
-        latency = LL_FLASH_LATENCY_3;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE2_LATENCY4_FREQ)
-      {
-        /* 120 < HCLK <= 150 => 4WS (5 CPU cycles) */
-        latency = LL_FLASH_LATENCY_4;
-      }
-      else
-      {
-        status = ERROR;
-      }
-    }
-    else /* Voltage Scale 3 */
-    {
-      if (HCLK_Frequency  <= UTILS_SCALE3_LATENCY0_FREQ)
-      {
-        /* 0 < HCLK <= 20 => 0WS (1 CPU cycles) : Do nothing, keep latency to default  LL_FLASH_LATENCY_0 */
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE3_LATENCY1_FREQ)
-      {
-        /* 20 < HCLK <= 40 => 1WS (2 CPU cycles) */
-        latency = LL_FLASH_LATENCY_1;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE3_LATENCY2_FREQ)
-      {
-        /* 40 < HCLK <= 60 => 2WS (3 CPU cycles) */
-        latency = LL_FLASH_LATENCY_2;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE3_LATENCY3_FREQ)
-      {
-        /* 60 < HCLK <= 80 => 3WS (4 CPU cycles) */
-        latency = LL_FLASH_LATENCY_3;
-      }
-      else if (HCLK_Frequency <= UTILS_SCALE3_LATENCY4_FREQ)
-      {
-        /* 80 < HCLK <= 100 => 4WS (5 CPU cycles) */
-        latency = LL_FLASH_LATENCY_4;
-      }
-      else
-      {
-        status = ERROR;
-      }
-    }
-  }
+	/* Frequency cannot be equal to 0 */
+	if (HCLK_Frequency == 0U)
+		status = ERROR;
+	else {
+		if (LL_PWR_GetRegulVoltageScaling() == LL_PWR_REGU_VOLTAGE_SCALE0) {
+			if (HCLK_Frequency <= UTILS_SCALE0_LATENCY0_FREQ) {
+				/* 0 < HCLK <= 42 => 0WS (1 CPU cycles) : Do nothing, keep latency to default  LL_FLASH_LATENCY_0 */
+			} else if ((HCLK_Frequency <= UTILS_SCALE0_LATENCY1_FREQ)) {
+				/* 42 < HCLK <=84  => 1WS (2 CPU cycles) */
+				latency = LL_FLASH_LATENCY_1;
+			} else if (HCLK_Frequency <= UTILS_SCALE0_LATENCY2_FREQ) {
+				/* 84 < HCLK <= 126 => 2WS (3 CPU cycles) */
+				latency = LL_FLASH_LATENCY_2;
+			} else if (HCLK_Frequency <= UTILS_SCALE0_LATENCY3_FREQ) {
+				/* 126 < HCLK <= 168 => 3WS (4 CPU cycles) */
+				latency = LL_FLASH_LATENCY_3;
+			} else if (HCLK_Frequency <= UTILS_SCALE0_LATENCY4_FREQ) {
+				/* 168 < HCLK <= 210 => 4WS (5 CPU cycles) */
+				latency = LL_FLASH_LATENCY_4;
+			} else if (HCLK_Frequency <= UTILS_SCALE0_LATENCY5_FREQ) {
+				/* 210 < HCLK <= 250 => 5WS (6 CPU cycles) */
+				latency = LL_FLASH_LATENCY_5;
+			} else
+				status = ERROR;
+		} else if (LL_PWR_GetRegulVoltageScaling() == LL_PWR_REGU_VOLTAGE_SCALE1) {
+			if (HCLK_Frequency <= UTILS_SCALE1_LATENCY0_FREQ) {
+				/* 0 < HCLK <= 34 => 0WS (1 CPU cycles) : Do nothing, keep latency to default  LL_FLASH_LATENCY_0 */
+			} else if (HCLK_Frequency <= UTILS_SCALE1_LATENCY1_FREQ) {
+				/* 34 < HCLK <=68  => 1WS (2 CPU cycles) */
+				latency = LL_FLASH_LATENCY_1;
+			} else if (HCLK_Frequency <= UTILS_SCALE1_LATENCY2_FREQ) {
+				/* 68 < HCLK <= 102 => 2WS (3 CPU cycles) */
+				latency = LL_FLASH_LATENCY_2;
+			} else if (HCLK_Frequency <= UTILS_SCALE1_LATENCY3_FREQ) {
+				/* 102 < HCLK <= 136 => 3WS (4 CPU cycles) */
+				latency = LL_FLASH_LATENCY_3;
+			} else if (HCLK_Frequency <= UTILS_SCALE1_LATENCY4_FREQ) {
+				/* 136 < HCLK <= 170 => 4WS (5 CPU cycles) */
+				latency = LL_FLASH_LATENCY_4;
+			} else if (HCLK_Frequency <= UTILS_SCALE1_LATENCY5_FREQ) {
+				/* 170 < HCLK <= 200 => 5WS (6 CPU cycles) */
+				latency = LL_FLASH_LATENCY_5;
+			} else
+				status = ERROR;
+		} else if (LL_PWR_GetRegulVoltageScaling() == LL_PWR_REGU_VOLTAGE_SCALE2) {
+			if (HCLK_Frequency <= UTILS_SCALE2_LATENCY0_FREQ) {
+				/* 0 < HCLK <= 30 => 0WS (1 CPU cycles) : Do nothing, keep latency to default  LL_FLASH_LATENCY_0 */
+			} else if (HCLK_Frequency <= UTILS_SCALE2_LATENCY1_FREQ) {
+				/* 30 < HCLK <= 60 => 1WS (2 CPU cycles) */
+				latency = LL_FLASH_LATENCY_1;
+			} else if (HCLK_Frequency <= UTILS_SCALE2_LATENCY2_FREQ) {
+				/* 60 < HCLK <= 90 => 2WS (3 CPU cycles) */
+				latency = LL_FLASH_LATENCY_2;
+			} else if (HCLK_Frequency <= UTILS_SCALE2_LATENCY3_FREQ) {
+				/* 90 < HCLK <= 120 => 3WS (4 CPU cycles) */
+				latency = LL_FLASH_LATENCY_3;
+			} else if (HCLK_Frequency <= UTILS_SCALE2_LATENCY4_FREQ) {
+				/* 120 < HCLK <= 150 => 4WS (5 CPU cycles) */
+				latency = LL_FLASH_LATENCY_4;
+			} else
+				status = ERROR;
+		} else { /* Voltage Scale 3 */
+			if (HCLK_Frequency  <= UTILS_SCALE3_LATENCY0_FREQ) {
+				/* 0 < HCLK <= 20 => 0WS (1 CPU cycles) : Do nothing, keep latency to default  LL_FLASH_LATENCY_0 */
+			} else if (HCLK_Frequency <= UTILS_SCALE3_LATENCY1_FREQ) {
+				/* 20 < HCLK <= 40 => 1WS (2 CPU cycles) */
+				latency = LL_FLASH_LATENCY_1;
+			} else if (HCLK_Frequency <= UTILS_SCALE3_LATENCY2_FREQ) {
+				/* 40 < HCLK <= 60 => 2WS (3 CPU cycles) */
+				latency = LL_FLASH_LATENCY_2;
+			} else if (HCLK_Frequency <= UTILS_SCALE3_LATENCY3_FREQ) {
+				/* 60 < HCLK <= 80 => 3WS (4 CPU cycles) */
+				latency = LL_FLASH_LATENCY_3;
+			} else if (HCLK_Frequency <= UTILS_SCALE3_LATENCY4_FREQ) {
+				/* 80 < HCLK <= 100 => 4WS (5 CPU cycles) */
+				latency = LL_FLASH_LATENCY_4;
+			} else
+				status = ERROR;
+		}
+	}
 
-  if (status == SUCCESS)
-  {
-    LL_FLASH_SetLatency(latency);
+	if (status == SUCCESS) {
+		LL_FLASH_SetLatency(latency);
 
-    /* Check that the new number of wait states is taken into account to access the Flash
-    memory by reading the FLASH_ACR register */
-    timeout = 2;
-    do
-    {
-      /* Wait for Flash latency to be updated */
-      getlatency = LL_FLASH_GetLatency();
-      timeout--;
-    } while ((getlatency != latency) && (timeout > 0U));
+		/* Check that the new number of wait states is taken into account to access the Flash
+		memory by reading the FLASH_ACR register */
+		timeout = 2;
 
-    if (getlatency != latency)
-    {
-      status = ERROR;
-    }
-  }
-  return status;
+		do {
+			/* Wait for Flash latency to be updated */
+			getlatency = LL_FLASH_GetLatency();
+			timeout--;
+		} while ((getlatency != latency) && (timeout > 0U));
+
+		if (getlatency != latency)
+			status = ERROR;
+	}
+
+	return status;
 }
 
 /** @addtogroup UTILS_LL_Private_Functions
@@ -839,30 +752,30 @@ ErrorStatus LL_SetFlashLatency(uint32_t HCLK_Frequency)
   * @retval PLL output frequency (in Hz)
   */
 static uint32_t UTILS_GetPLLOutputFrequency(uint32_t PLL_InputFrequency,
-                                            const LL_UTILS_PLLInitTypeDef *UTILS_PLLInitStruct)
+		const LL_UTILS_PLLInitTypeDef *UTILS_PLLInitStruct)
 {
-  uint32_t pllfreq;
+	uint32_t pllfreq;
 
-  /* Check the parameters */
-  assert_param(IS_LL_UTILS_PLLM_VALUE(UTILS_PLLInitStruct->PLLM));
-  assert_param(IS_LL_UTILS_PLLN_VALUE(UTILS_PLLInitStruct->PLLN));
-  assert_param(IS_LL_UTILS_PLLP_VALUE(UTILS_PLLInitStruct->PLLP));
-  assert_param(IS_LL_UTILS_FRACN_VALUE(UTILS_PLLInitStruct->FRACN));
+	/* Check the parameters */
+	assert_param(IS_LL_UTILS_PLLM_VALUE(UTILS_PLLInitStruct->PLLM));
+	assert_param(IS_LL_UTILS_PLLN_VALUE(UTILS_PLLInitStruct->PLLN));
+	assert_param(IS_LL_UTILS_PLLP_VALUE(UTILS_PLLInitStruct->PLLP));
+	assert_param(IS_LL_UTILS_FRACN_VALUE(UTILS_PLLInitStruct->FRACN));
 
-  /* Check different PLL parameters according to RM                          */
-  /*  - PLLM: ensure that the VCO input frequency is in the correct range.   */
-  pllfreq = PLL_InputFrequency / (UTILS_PLLInitStruct->PLLM);
-  assert_param(IS_LL_UTILS_PLLVCO_INPUT(pllfreq,  UTILS_PLLInitStruct->VCO_Input));
+	/* Check different PLL parameters according to RM                          */
+	/*  - PLLM: ensure that the VCO input frequency is in the correct range.   */
+	pllfreq = PLL_InputFrequency / (UTILS_PLLInitStruct->PLLM);
+	assert_param(IS_LL_UTILS_PLLVCO_INPUT(pllfreq,  UTILS_PLLInitStruct->VCO_Input));
 
-  /*  - PLLN: ensure that the VCO output frequency is in the correct range.  */
-  pllfreq = pllfreq * (UTILS_PLLInitStruct->PLLN);
-  assert_param(IS_LL_UTILS_PLLVCO_OUTPUT(pllfreq,  UTILS_PLLInitStruct->VCO_Output));
+	/*  - PLLN: ensure that the VCO output frequency is in the correct range.  */
+	pllfreq = pllfreq * (UTILS_PLLInitStruct->PLLN);
+	assert_param(IS_LL_UTILS_PLLVCO_OUTPUT(pllfreq,  UTILS_PLLInitStruct->VCO_Output));
 
-  /*  - PLLP: ensure that PLL1P output frequency does not exceed the corresponding maximum voltage scale frequency.  */
-  pllfreq = pllfreq / (UTILS_PLLInitStruct->PLLP);
-  assert_param(IS_LL_UTILS_PLL_FREQUENCY(pllfreq));
+	/*  - PLLP: ensure that PLL1P output frequency does not exceed the corresponding maximum voltage scale frequency.  */
+	pllfreq = pllfreq / (UTILS_PLLInitStruct->PLLP);
+	assert_param(IS_LL_UTILS_PLL_FREQUENCY(pllfreq));
 
-  return pllfreq;
+	return pllfreq;
 }
 
 /**
@@ -873,16 +786,15 @@ static uint32_t UTILS_GetPLLOutputFrequency(uint32_t PLL_InputFrequency,
   */
 static ErrorStatus UTILS_PLL_IsBusy(void)
 {
-  ErrorStatus status = SUCCESS;
+	ErrorStatus status = SUCCESS;
 
-  /* Check if PLL1 is busy*/
-  if (LL_RCC_PLL1_IsReady() != 0U)
-  {
-    /* PLL configuration cannot be modified */
-    status = ERROR;
-  }
+	/* Check if PLL1 is busy*/
+	if (LL_RCC_PLL1_IsReady() != 0U) {
+		/* PLL configuration cannot be modified */
+		status = ERROR;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -895,72 +807,67 @@ static ErrorStatus UTILS_PLL_IsBusy(void)
   *          - ERROR: Problem to switch system to PLL1
   */
 static ErrorStatus UTILS_EnablePLLAndSwitchSystem(uint32_t SYSCLK_Frequency,
-                                                  LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct)
+		LL_UTILS_ClkInitTypeDef *UTILS_ClkInitStruct)
 {
-  ErrorStatus status = SUCCESS;
-  uint32_t hclk_frequency;
+	ErrorStatus status = SUCCESS;
+	uint32_t hclk_frequency;
 
-  assert_param(IS_LL_UTILS_SYSCLK_DIV(UTILS_ClkInitStruct->SYSCLKDivider));
-  assert_param(IS_LL_UTILS_APB1_DIV(UTILS_ClkInitStruct->APB1CLKDivider));
-  assert_param(IS_LL_UTILS_APB2_DIV(UTILS_ClkInitStruct->APB2CLKDivider));
-  assert_param(IS_LL_UTILS_APB3_DIV(UTILS_ClkInitStruct->APB3CLKDivider));
+	assert_param(IS_LL_UTILS_SYSCLK_DIV(UTILS_ClkInitStruct->SYSCLKDivider));
+	assert_param(IS_LL_UTILS_APB1_DIV(UTILS_ClkInitStruct->APB1CLKDivider));
+	assert_param(IS_LL_UTILS_APB2_DIV(UTILS_ClkInitStruct->APB2CLKDivider));
+	assert_param(IS_LL_UTILS_APB3_DIV(UTILS_ClkInitStruct->APB3CLKDivider));
 
-  /* Calculate HCLK frequency */
-  hclk_frequency = __LL_RCC_CALC_HCLK_FREQ(SYSCLK_Frequency, UTILS_ClkInitStruct->SYSCLKDivider);
+	/* Calculate HCLK frequency */
+	hclk_frequency = __LL_RCC_CALC_HCLK_FREQ(SYSCLK_Frequency, UTILS_ClkInitStruct->SYSCLKDivider);
 
-  /* Increasing the number of wait states because of higher CPU frequency */
-  if (SystemCoreClock < hclk_frequency)
-  {
-    /* Set FLASH latency to highest latency */
-    status = LL_SetFlashLatency(hclk_frequency);
-  }
+	/* Increasing the number of wait states because of higher CPU frequency */
+	if (SystemCoreClock < hclk_frequency) {
+		/* Set FLASH latency to highest latency */
+		status = LL_SetFlashLatency(hclk_frequency);
+	}
 
-  /* Update system clock configuration */
-  if (status == SUCCESS)
-  {
-    /* Enable PLL1 */
-    LL_RCC_PLL1_Enable();
-    LL_RCC_PLL1P_Enable();
-    while (LL_RCC_PLL1_IsReady() != 1U)
-    {
-      /* Wait for PLL ready */
-    }
+	/* Update system clock configuration */
+	if (status == SUCCESS) {
+		/* Enable PLL1 */
+		LL_RCC_PLL1_Enable();
+		LL_RCC_PLL1P_Enable();
 
-    /* Set All APBxPrescaler to the Highest Divider */
-    LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_16);
-    LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_16);
-    LL_RCC_SetAPB3Prescaler(LL_RCC_APB3_DIV_16);
+		while (LL_RCC_PLL1_IsReady() != 1U) {
+			/* Wait for PLL ready */
+		}
 
-    /* Set AHB prescaler*/
-    LL_RCC_SetAHBPrescaler(UTILS_ClkInitStruct->SYSCLKDivider);
+		/* Set All APBxPrescaler to the Highest Divider */
+		LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_16);
+		LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_16);
+		LL_RCC_SetAPB3Prescaler(LL_RCC_APB3_DIV_16);
 
-    /* Sysclk activation on the main PLL */
-    LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL1);
-    while (LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL1)
-    {
-      /* Wait for system clock switch to PLL */
-    }
+		/* Set AHB prescaler*/
+		LL_RCC_SetAHBPrescaler(UTILS_ClkInitStruct->SYSCLKDivider);
 
-    /* Set APB1, APB2 & APB3 prescaler*/
-    LL_RCC_SetAPB1Prescaler(UTILS_ClkInitStruct->APB1CLKDivider);
-    LL_RCC_SetAPB2Prescaler(UTILS_ClkInitStruct->APB2CLKDivider);
-    LL_RCC_SetAPB3Prescaler(UTILS_ClkInitStruct->APB3CLKDivider);
-  }
+		/* Sysclk activation on the main PLL */
+		LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL1);
 
-  /* Decreasing the number of wait states because of lower CPU frequency */
-  if (SystemCoreClock > hclk_frequency)
-  {
-    /* Set FLASH latency to lowest latency */
-    status = LL_SetFlashLatency(hclk_frequency);
-  }
+		while (LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL1) {
+			/* Wait for system clock switch to PLL */
+		}
 
-  /* Update SystemCoreClock variable */
-  if (status == SUCCESS)
-  {
-    LL_SetSystemCoreClock(hclk_frequency);
-  }
+		/* Set APB1, APB2 & APB3 prescaler*/
+		LL_RCC_SetAPB1Prescaler(UTILS_ClkInitStruct->APB1CLKDivider);
+		LL_RCC_SetAPB2Prescaler(UTILS_ClkInitStruct->APB2CLKDivider);
+		LL_RCC_SetAPB3Prescaler(UTILS_ClkInitStruct->APB3CLKDivider);
+	}
 
-  return status;
+	/* Decreasing the number of wait states because of lower CPU frequency */
+	if (SystemCoreClock > hclk_frequency) {
+		/* Set FLASH latency to lowest latency */
+		status = LL_SetFlashLatency(hclk_frequency);
+	}
+
+	/* Update SystemCoreClock variable */
+	if (status == SUCCESS)
+		LL_SetSystemCoreClock(hclk_frequency);
+
+	return status;
 }
 
 /**

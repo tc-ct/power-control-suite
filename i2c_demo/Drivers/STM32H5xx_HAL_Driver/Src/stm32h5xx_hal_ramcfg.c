@@ -184,48 +184,46 @@
   */
 HAL_StatusTypeDef HAL_RAMCFG_Init(RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Check the RAMCFG peripheral handle */
-  if (hramcfg == NULL)
-  {
-    return HAL_ERROR;
-  }
+	/* Check the RAMCFG peripheral handle */
+	if (hramcfg == NULL)
+		return HAL_ERROR;
 
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
 
-  /* Update RAMCFG peripheral state */
-  hramcfg->State = HAL_RAMCFG_STATE_BUSY;
+	/* Update RAMCFG peripheral state */
+	hramcfg->State = HAL_RAMCFG_STATE_BUSY;
 
 #if (USE_HAL_RAMCFG_REGISTER_CALLBACKS == 1)
-  /* Check if a valid MSP API was registered */
-  if (hramcfg->MspInitCallback == NULL)
-  {
-    /* Init the low level hardware */
-    hramcfg->MspInitCallback = HAL_RAMCFG_MspInit;
-  }
 
-  /* Init the low level hardware */
-  hramcfg->MspInitCallback(hramcfg);
+	/* Check if a valid MSP API was registered */
+	if (hramcfg->MspInitCallback == NULL) {
+		/* Init the low level hardware */
+		hramcfg->MspInitCallback = HAL_RAMCFG_MspInit;
+	}
+
+	/* Init the low level hardware */
+	hramcfg->MspInitCallback(hramcfg);
 #else
-  HAL_RAMCFG_MspInit(hramcfg);
+	HAL_RAMCFG_MspInit(hramcfg);
 #endif /* USE_HAL_RAMCFG_REGISTER_CALLBACKS */
 
-  /* Disable the ECC Address latch */
-  hramcfg->Instance->CR &= ~(RAMCFG_CR_ALE);
+	/* Disable the ECC Address latch */
+	hramcfg->Instance->CR &= ~(RAMCFG_CR_ALE);
 
-  /* Disable all RAMCFG interrupts */
-  __HAL_RAMCFG_DISABLE_IT(hramcfg, RAMCFG_IT_ALL);
+	/* Disable all RAMCFG interrupts */
+	__HAL_RAMCFG_DISABLE_IT(hramcfg, RAMCFG_IT_ALL);
 
-  /* Clear RAMCFG monitor flags */
-  __HAL_RAMCFG_CLEAR_FLAG(hramcfg, RAMCFG_FLAGS_ALL);
+	/* Clear RAMCFG monitor flags */
+	__HAL_RAMCFG_CLEAR_FLAG(hramcfg, RAMCFG_FLAGS_ALL);
 
-  /* Initialize the RAMCFG error code */
-  hramcfg->ErrorCode = HAL_RAMCFG_ERROR_NONE;
+	/* Initialize the RAMCFG error code */
+	hramcfg->ErrorCode = HAL_RAMCFG_ERROR_NONE;
 
-  /* Initialize the RAMCFG state */
-  hramcfg->State = HAL_RAMCFG_STATE_READY;
+	/* Initialize the RAMCFG state */
+	hramcfg->State = HAL_RAMCFG_STATE_READY;
 
-  return HAL_OK;
+	return HAL_OK;
 }
 
 /**
@@ -237,46 +235,44 @@ HAL_StatusTypeDef HAL_RAMCFG_Init(RAMCFG_HandleTypeDef *hramcfg)
   */
 HAL_StatusTypeDef HAL_RAMCFG_DeInit(RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Check the RAMCFG peripheral handle */
-  if (hramcfg == NULL)
-  {
-    return HAL_ERROR;
-  }
+	/* Check the RAMCFG peripheral handle */
+	if (hramcfg == NULL)
+		return HAL_ERROR;
 
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
 
-  /* Disable the ECC Address latch */
-  hramcfg->Instance->CR &= ~(RAMCFG_CR_ALE);
+	/* Disable the ECC Address latch */
+	hramcfg->Instance->CR &= ~(RAMCFG_CR_ALE);
 
-  /* Disable all RAMCFG interrupts */
-  __HAL_RAMCFG_DISABLE_IT(hramcfg, RAMCFG_IT_ALL);
+	/* Disable all RAMCFG interrupts */
+	__HAL_RAMCFG_DISABLE_IT(hramcfg, RAMCFG_IT_ALL);
 
-  /* Clear RAMCFG monitor flags */
-  __HAL_RAMCFG_CLEAR_FLAG(hramcfg, RAMCFG_FLAGS_ALL);
+	/* Clear RAMCFG monitor flags */
+	__HAL_RAMCFG_CLEAR_FLAG(hramcfg, RAMCFG_FLAGS_ALL);
 
 #if (USE_HAL_RAMCFG_REGISTER_CALLBACKS == 1)
-  /* Check if a valid MSP API was registered */
-  if (hramcfg->MspDeInitCallback != NULL)
-  {
-    /* Init the low level hardware */
-    hramcfg->MspDeInitCallback(hramcfg);
-  }
 
-  /* Clean callbacks */
-  hramcfg->DetectSingleErrorCallback = NULL;
-  hramcfg->DetectDoubleErrorCallback = NULL;
+	/* Check if a valid MSP API was registered */
+	if (hramcfg->MspDeInitCallback != NULL) {
+		/* Init the low level hardware */
+		hramcfg->MspDeInitCallback(hramcfg);
+	}
+
+	/* Clean callbacks */
+	hramcfg->DetectSingleErrorCallback = NULL;
+	hramcfg->DetectDoubleErrorCallback = NULL;
 #else
-  HAL_RAMCFG_MspDeInit(hramcfg);
+	HAL_RAMCFG_MspDeInit(hramcfg);
 #endif /* USE_HAL_RAMCFG_REGISTER_CALLBACKS */
 
-  /* Reset the RAMCFG error code */
-  hramcfg->ErrorCode = HAL_RAMCFG_ERROR_NONE;
+	/* Reset the RAMCFG error code */
+	hramcfg->ErrorCode = HAL_RAMCFG_ERROR_NONE;
 
-  /* Reset the RAMCFG state */
-  hramcfg->State = HAL_RAMCFG_STATE_RESET;
+	/* Reset the RAMCFG state */
+	hramcfg->State = HAL_RAMCFG_STATE_RESET;
 
-  return HAL_OK;
+	return HAL_OK;
 }
 
 /**
@@ -287,11 +283,11 @@ HAL_StatusTypeDef HAL_RAMCFG_DeInit(RAMCFG_HandleTypeDef *hramcfg)
   */
 __weak void HAL_RAMCFG_MspInit(RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(hramcfg);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(hramcfg);
 
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_RAMCFG_MspInit can be implemented in the user file      */
+	/* NOTE : This function should not be modified, when the callback is needed,
+	          the HAL_RAMCFG_MspInit can be implemented in the user file      */
 }
 
 /**
@@ -302,11 +298,11 @@ __weak void HAL_RAMCFG_MspInit(RAMCFG_HandleTypeDef *hramcfg)
   */
 __weak void HAL_RAMCFG_MspDeInit(RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(hramcfg);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(hramcfg);
 
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_RAMCFG_MspDeInit can be implemented in the user file    */
+	/* NOTE : This function should not be modified, when the callback is needed,
+	          the HAL_RAMCFG_MspDeInit can be implemented in the user file    */
 }
 /**
   * @}
@@ -353,39 +349,33 @@ __weak void HAL_RAMCFG_MspDeInit(RAMCFG_HandleTypeDef *hramcfg)
   */
 HAL_StatusTypeDef HAL_RAMCFG_StartECC(RAMCFG_HandleTypeDef *hramcfg)
 {
-  HAL_StatusTypeDef status = HAL_OK;
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
+	HAL_StatusTypeDef status = HAL_OK;
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
 
-  /* Check RAMCFG state */
-  if (hramcfg->State == HAL_RAMCFG_STATE_READY)
-  {
-    /* Update RAMCFG peripheral state */
-    hramcfg->State = HAL_RAMCFG_STATE_BUSY;
+	/* Check RAMCFG state */
+	if (hramcfg->State == HAL_RAMCFG_STATE_READY) {
+		/* Update RAMCFG peripheral state */
+		hramcfg->State = HAL_RAMCFG_STATE_BUSY;
 
-    /* Check if ECC mechanism is non active */
-    if ((hramcfg->Instance->CR & RAMCFG_CR_ECCE) != RAMCFG_CR_ECCE)
-    {
-      /* Start the SRAM ECC mechanism and latching the error address */
-      hramcfg->Instance->CR |= (RAMCFG_CR_ECCE | RAMCFG_CR_ALE);
-    }
-    else
-    {
-      /* Start latching the error address */
-      hramcfg->Instance->CR |= RAMCFG_CR_ALE;
-    }
+		/* Check if ECC mechanism is non active */
+		if ((hramcfg->Instance->CR & RAMCFG_CR_ECCE) != RAMCFG_CR_ECCE) {
+			/* Start the SRAM ECC mechanism and latching the error address */
+			hramcfg->Instance->CR |= (RAMCFG_CR_ECCE | RAMCFG_CR_ALE);
+		} else {
+			/* Start latching the error address */
+			hramcfg->Instance->CR |= RAMCFG_CR_ALE;
+		}
 
-    /* Update the RAMCFG state */
-    hramcfg->State = HAL_RAMCFG_STATE_READY;
-  }
-  else
-  {
-    /* Update the RAMCFG error code and return error  */
-    hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
-    status = HAL_ERROR;
-  }
+		/* Update the RAMCFG state */
+		hramcfg->State = HAL_RAMCFG_STATE_READY;
+	} else {
+		/* Update the RAMCFG error code and return error  */
+		hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
+		status = HAL_ERROR;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -397,37 +387,34 @@ HAL_StatusTypeDef HAL_RAMCFG_StartECC(RAMCFG_HandleTypeDef *hramcfg)
   */
 HAL_StatusTypeDef HAL_RAMCFG_StopECC(RAMCFG_HandleTypeDef *hramcfg)
 {
-  HAL_StatusTypeDef status = HAL_OK;
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
+	HAL_StatusTypeDef status = HAL_OK;
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
 
-  /* Check RAMCFG state */
-  if (hramcfg->State == HAL_RAMCFG_STATE_READY)
-  {
-    /* Update RAMCFG peripheral state */
-    hramcfg->State = HAL_RAMCFG_STATE_BUSY;
+	/* Check RAMCFG state */
+	if (hramcfg->State == HAL_RAMCFG_STATE_READY) {
+		/* Update RAMCFG peripheral state */
+		hramcfg->State = HAL_RAMCFG_STATE_BUSY;
 
-    /* Check if ECC mechanism is active */
-    if ((hramcfg->Instance->CR & RAMCFG_CR_ECCE) == RAMCFG_CR_ECCE)
-    {
-      /* Unlock the SRAM ECC bit */
-      WRITE_REG(hramcfg->Instance->ECCKEY, RAMCFG_ECC_KEY1);
-      WRITE_REG(hramcfg->Instance->ECCKEY, RAMCFG_ECC_KEY2);
+		/* Check if ECC mechanism is active */
+		if ((hramcfg->Instance->CR & RAMCFG_CR_ECCE) == RAMCFG_CR_ECCE) {
+			/* Unlock the SRAM ECC bit */
+			WRITE_REG(hramcfg->Instance->ECCKEY, RAMCFG_ECC_KEY1);
+			WRITE_REG(hramcfg->Instance->ECCKEY, RAMCFG_ECC_KEY2);
 
-      /* Stop the SRAM ECC mechanism and latching the error address */
-      hramcfg->Instance->CR &= ~(RAMCFG_CR_ECCE | RAMCFG_CR_ALE);
-    }
-    /* Update the RAMCFG state */
-    hramcfg->State = HAL_RAMCFG_STATE_READY;
-  }
-  else
-  {
-    /* Update the RAMCFG error code and return error  */
-    hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
-    status = HAL_ERROR;
-  }
+			/* Stop the SRAM ECC mechanism and latching the error address */
+			hramcfg->Instance->CR &= ~(RAMCFG_CR_ECCE | RAMCFG_CR_ALE);
+		}
 
-  return status;
+		/* Update the RAMCFG state */
+		hramcfg->State = HAL_RAMCFG_STATE_READY;
+	} else {
+		/* Update the RAMCFG error code and return error  */
+		hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
+		status = HAL_ERROR;
+	}
+
+	return status;
 }
 
 /**
@@ -442,32 +429,29 @@ HAL_StatusTypeDef HAL_RAMCFG_StopECC(RAMCFG_HandleTypeDef *hramcfg)
   */
 HAL_StatusTypeDef HAL_RAMCFG_EnableNotification(RAMCFG_HandleTypeDef *hramcfg, uint32_t Notifications)
 {
-  HAL_StatusTypeDef status = HAL_OK;
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
-  assert_param(IS_RAMCFG_INTERRUPT(Notifications));
+	HAL_StatusTypeDef status = HAL_OK;
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
+	assert_param(IS_RAMCFG_INTERRUPT(Notifications));
 
-  /* Check RAMCFG state */
-  if (hramcfg->State == HAL_RAMCFG_STATE_READY)
-  {
-    /* Update RAMCFG peripheral state */
-    hramcfg->State = HAL_RAMCFG_STATE_BUSY;
+	/* Check RAMCFG state */
+	if (hramcfg->State == HAL_RAMCFG_STATE_READY) {
+		/* Update RAMCFG peripheral state */
+		hramcfg->State = HAL_RAMCFG_STATE_BUSY;
 
-    /* Enable RAMCFG interrupts */
-    __HAL_RAMCFG_ENABLE_IT(hramcfg, Notifications);
+		/* Enable RAMCFG interrupts */
+		__HAL_RAMCFG_ENABLE_IT(hramcfg, Notifications);
 
-    /* Update the RAMCFG state */
-    hramcfg->State = HAL_RAMCFG_STATE_READY;
+		/* Update the RAMCFG state */
+		hramcfg->State = HAL_RAMCFG_STATE_READY;
 
-  }
-  else
-  {
-    /* Update the RAMCFG error code and return error */
-    hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
-    status = HAL_ERROR;
-  }
+	} else {
+		/* Update the RAMCFG error code and return error */
+		hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
+		status = HAL_ERROR;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -483,31 +467,28 @@ HAL_StatusTypeDef HAL_RAMCFG_EnableNotification(RAMCFG_HandleTypeDef *hramcfg, u
   */
 HAL_StatusTypeDef HAL_RAMCFG_DisableNotification(RAMCFG_HandleTypeDef *hramcfg, uint32_t Notifications)
 {
-  HAL_StatusTypeDef status = HAL_OK;
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
-  assert_param(IS_RAMCFG_INTERRUPT(Notifications));
+	HAL_StatusTypeDef status = HAL_OK;
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
+	assert_param(IS_RAMCFG_INTERRUPT(Notifications));
 
-  /* Check RAMCFG state */
-  if (hramcfg->State == HAL_RAMCFG_STATE_READY)
-  {
-    /* Update RAMCFG peripheral state */
-    hramcfg->State = HAL_RAMCFG_STATE_BUSY;
+	/* Check RAMCFG state */
+	if (hramcfg->State == HAL_RAMCFG_STATE_READY) {
+		/* Update RAMCFG peripheral state */
+		hramcfg->State = HAL_RAMCFG_STATE_BUSY;
 
-    /* Disable RAMCFG interrupts */
-    __HAL_RAMCFG_DISABLE_IT(hramcfg, Notifications);
+		/* Disable RAMCFG interrupts */
+		__HAL_RAMCFG_DISABLE_IT(hramcfg, Notifications);
 
-    /* Update the RAMCFG state */
-    hramcfg->State = HAL_RAMCFG_STATE_READY;
-  }
-  else
-  {
-    /* Update the RAMCFG error code and return error */
-    hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
-    status = HAL_ERROR;
-  }
+		/* Update the RAMCFG state */
+		hramcfg->State = HAL_RAMCFG_STATE_READY;
+	} else {
+		/* Update the RAMCFG error code and return error */
+		hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
+		status = HAL_ERROR;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -519,11 +500,11 @@ HAL_StatusTypeDef HAL_RAMCFG_DisableNotification(RAMCFG_HandleTypeDef *hramcfg, 
   */
 uint32_t HAL_RAMCFG_IsECCSingleErrorDetected(const RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
 
-  /* Return the state of SEDC flag */
-  return ((READ_BIT(hramcfg->Instance->ISR, RAMCFG_FLAG_SINGLEERR) == (RAMCFG_FLAG_SINGLEERR)) ? 1UL : 0UL);
+	/* Return the state of SEDC flag */
+	return ((READ_BIT(hramcfg->Instance->ISR, RAMCFG_FLAG_SINGLEERR) == (RAMCFG_FLAG_SINGLEERR)) ? 1UL : 0UL);
 }
 
 /**
@@ -535,11 +516,11 @@ uint32_t HAL_RAMCFG_IsECCSingleErrorDetected(const RAMCFG_HandleTypeDef *hramcfg
   */
 uint32_t HAL_RAMCFG_IsECCDoubleErrorDetected(const RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
 
-  /* Return the state of DED flag */
-  return ((READ_BIT(hramcfg->Instance->ISR, RAMCFG_FLAG_DOUBLEERR) == (RAMCFG_FLAG_DOUBLEERR)) ? 1UL : 0UL);
+	/* Return the state of DED flag */
+	return ((READ_BIT(hramcfg->Instance->ISR, RAMCFG_FLAG_DOUBLEERR) == (RAMCFG_FLAG_DOUBLEERR)) ? 1UL : 0UL);
 }
 
 /**
@@ -551,10 +532,10 @@ uint32_t HAL_RAMCFG_IsECCDoubleErrorDetected(const RAMCFG_HandleTypeDef *hramcfg
   */
 uint32_t HAL_RAMCFG_GetSingleErrorAddress(const RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
 
-  return hramcfg->Instance->SEAR;
+	return hramcfg->Instance->SEAR;
 }
 
 /**
@@ -566,10 +547,10 @@ uint32_t HAL_RAMCFG_GetSingleErrorAddress(const RAMCFG_HandleTypeDef *hramcfg)
   */
 uint32_t HAL_RAMCFG_GetDoubleErrorAddress(const RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ECC_INSTANCE(hramcfg->Instance));
 
-  return hramcfg->Instance->DEAR;
+	return hramcfg->Instance->DEAR;
 }
 
 /**
@@ -607,74 +588,61 @@ uint32_t HAL_RAMCFG_GetDoubleErrorAddress(const RAMCFG_HandleTypeDef *hramcfg)
   */
 HAL_StatusTypeDef HAL_RAMCFG_EnableWriteProtection(RAMCFG_HandleTypeDef *hramcfg, uint32_t StartPage, uint32_t NbPage)
 {
-  HAL_StatusTypeDef status = HAL_OK;
-  uint32_t page_mask_0 = 0U;
-  uint32_t page_mask_1 = 0U;
+	HAL_StatusTypeDef status = HAL_OK;
+	uint32_t page_mask_0 = 0U;
+	uint32_t page_mask_1 = 0U;
 
 #if defined (RAMCFG_WPR3_P64WP)
-  uint32_t page_mask_2 = 0U;
+	uint32_t page_mask_2 = 0U;
 #endif /* RAMCFG_WPR3_P64WP */
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_WP_INSTANCE(hramcfg->Instance));
-  assert_param(IS_RAMCFG_WRITEPROTECTION_PAGE(StartPage + NbPage));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_WP_INSTANCE(hramcfg->Instance));
+	assert_param(IS_RAMCFG_WRITEPROTECTION_PAGE(StartPage + NbPage));
 
-  /* Check RAMCFG state */
-  if (hramcfg->State == HAL_RAMCFG_STATE_READY)
-  {
-    /* Update RAMCFG peripheral state */
-    hramcfg->State = HAL_RAMCFG_STATE_BUSY;
+	/* Check RAMCFG state */
+	if (hramcfg->State == HAL_RAMCFG_STATE_READY) {
+		/* Update RAMCFG peripheral state */
+		hramcfg->State = HAL_RAMCFG_STATE_BUSY;
 
 #if defined (RAMCFG_WPR3_P64WP)
-    /* Repeat for page number to be protected */
-    for (uint32_t count = 0U; count < NbPage; count++)
-    {
-      if ((StartPage + count) < 32U)
-      {
-        page_mask_0 |= (1UL << (StartPage + count));
-      }
-      else if ((StartPage + count) < 64U)
-      {
-        page_mask_1 |= (1UL << ((StartPage + count) - 32U));
-      }
-      else
-      {
-        page_mask_2 |= (1UL << ((StartPage + count) - 64U));
-      }
-    }
 
-    /* Apply mask to protect pages */
-    SET_BIT(hramcfg->Instance->WPR1, page_mask_0);
-    SET_BIT(hramcfg->Instance->WPR2, page_mask_1);
-    SET_BIT(hramcfg->Instance->WPR3, page_mask_2);
+		/* Repeat for page number to be protected */
+		for (uint32_t count = 0U; count < NbPage; count++) {
+			if ((StartPage + count) < 32U)
+				page_mask_0 |= (1UL << (StartPage + count));
+			else if ((StartPage + count) < 64U)
+				page_mask_1 |= (1UL << ((StartPage + count) - 32U));
+			else
+				page_mask_2 |= (1UL << ((StartPage + count) - 64U));
+		}
+
+		/* Apply mask to protect pages */
+		SET_BIT(hramcfg->Instance->WPR1, page_mask_0);
+		SET_BIT(hramcfg->Instance->WPR2, page_mask_1);
+		SET_BIT(hramcfg->Instance->WPR3, page_mask_2);
 #else
-    /* Repeat for page number to be protected */
-    for (uint32_t count = 0U; count < NbPage; count++)
-    {
-      if ((StartPage + count) < 32U)
-      {
-        page_mask_0 |= (1UL << (StartPage + count));
-      }
-      else
-      {
-        page_mask_1 |= (1UL << ((StartPage + count) - 32U));
-      }
-    }
 
-    /* Apply mask to protect pages */
-    SET_BIT(hramcfg->Instance->WPR1, page_mask_0);
-    SET_BIT(hramcfg->Instance->WPR2, page_mask_1);
+		/* Repeat for page number to be protected */
+		for (uint32_t count = 0U; count < NbPage; count++) {
+			if ((StartPage + count) < 32U)
+				page_mask_0 |= (1UL << (StartPage + count));
+			else
+				page_mask_1 |= (1UL << ((StartPage + count) - 32U));
+		}
+
+		/* Apply mask to protect pages */
+		SET_BIT(hramcfg->Instance->WPR1, page_mask_0);
+		SET_BIT(hramcfg->Instance->WPR2, page_mask_1);
 #endif /* RAMCFG_WPR3_P64WP */
-    /* Update the RAMCFG state */
-    hramcfg->State = HAL_RAMCFG_STATE_READY;
-  }
-  else
-  {
-    /* Update the RAMCFG error code and return error  */
-    hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
-    status = HAL_ERROR;
-  }
+		/* Update the RAMCFG state */
+		hramcfg->State = HAL_RAMCFG_STATE_READY;
+	} else {
+		/* Update the RAMCFG error code and return error  */
+		hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
+		status = HAL_ERROR;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -707,52 +675,47 @@ HAL_StatusTypeDef HAL_RAMCFG_EnableWriteProtection(RAMCFG_HandleTypeDef *hramcfg
   */
 HAL_StatusTypeDef HAL_RAMCFG_Erase(RAMCFG_HandleTypeDef *hramcfg)
 {
-  uint32_t tickstart = HAL_GetTick();
+	uint32_t tickstart = HAL_GetTick();
 
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
 
-  /* Check RAMCFG state */
-  if (hramcfg->State == HAL_RAMCFG_STATE_READY)
-  {
-    /* Update RAMCFG peripheral state */
-    hramcfg->State = HAL_RAMCFG_STATE_BUSY;
+	/* Check RAMCFG state */
+	if (hramcfg->State == HAL_RAMCFG_STATE_READY) {
+		/* Update RAMCFG peripheral state */
+		hramcfg->State = HAL_RAMCFG_STATE_BUSY;
 
-    /* Unlock the RAMCFG erase bit */
-    WRITE_REG(hramcfg->Instance->ERKEYR, RAMCFG_ERASE_KEY1);
-    WRITE_REG(hramcfg->Instance->ERKEYR, RAMCFG_ERASE_KEY2);
+		/* Unlock the RAMCFG erase bit */
+		WRITE_REG(hramcfg->Instance->ERKEYR, RAMCFG_ERASE_KEY1);
+		WRITE_REG(hramcfg->Instance->ERKEYR, RAMCFG_ERASE_KEY2);
 
-    /* Start the SRAM erase operation */
-    hramcfg->Instance->CR |= RAMCFG_CR_SRAMER;
+		/* Start the SRAM erase operation */
+		hramcfg->Instance->CR |= RAMCFG_CR_SRAMER;
 
-    /*
-       Wait for the SRAM hardware erase operation to complete by polling on
-       SRAMBUSY flag to be reset.
-    */
-    while (__HAL_RAMCFG_GET_FLAG(hramcfg, RAMCFG_FLAG_SRAMBUSY) != 0U)
-    {
-      if ((HAL_GetTick() - tickstart) > RAMCFG_TIMEOUT_VALUE)
-      {
-        /* Update the RAMCFG error code */
-        hramcfg->ErrorCode = HAL_RAMCFG_ERROR_TIMEOUT;
+		/*
+		   Wait for the SRAM hardware erase operation to complete by polling on
+		   SRAMBUSY flag to be reset.
+		*/
+		while (__HAL_RAMCFG_GET_FLAG(hramcfg, RAMCFG_FLAG_SRAMBUSY) != 0U) {
+			if ((HAL_GetTick() - tickstart) > RAMCFG_TIMEOUT_VALUE) {
+				/* Update the RAMCFG error code */
+				hramcfg->ErrorCode = HAL_RAMCFG_ERROR_TIMEOUT;
 
-        /* Update the RAMCFG state and return error status */
-        hramcfg->State = HAL_RAMCFG_STATE_ERROR;
-        return HAL_ERROR;
-      }
-    }
-  }
-  else
-  {
-    /* Update the error code and return error status */
-    hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
-    return HAL_ERROR;
-  }
+				/* Update the RAMCFG state and return error status */
+				hramcfg->State = HAL_RAMCFG_STATE_ERROR;
+				return HAL_ERROR;
+			}
+		}
+	} else {
+		/* Update the error code and return error status */
+		hramcfg->ErrorCode = HAL_RAMCFG_ERROR_BUSY;
+		return HAL_ERROR;
+	}
 
-  /* Update the RAMCFG state */
-  hramcfg->State = HAL_RAMCFG_STATE_READY;
+	/* Update the RAMCFG state */
+	hramcfg->State = HAL_RAMCFG_STATE_READY;
 
-  return HAL_OK;
+	return HAL_OK;
 }
 
 /**
@@ -788,47 +751,45 @@ HAL_StatusTypeDef HAL_RAMCFG_Erase(RAMCFG_HandleTypeDef *hramcfg)
   */
 void HAL_RAMCFG_IRQHandler(RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Single Error Interrupt Management ****************************************/
-  if (__HAL_RAMCFG_GET_IT_SOURCE(hramcfg, RAMCFG_IT_SINGLEERR) != 0U)
-  {
-    if (__HAL_RAMCFG_GET_FLAG(hramcfg, RAMCFG_FLAG_SINGLEERR) != 0U)
-    {
-      /* Clear active flags */
-      __HAL_RAMCFG_CLEAR_FLAG(hramcfg, RAMCFG_FLAG_SINGLEERR);
+	/* Single Error Interrupt Management ****************************************/
+	if (__HAL_RAMCFG_GET_IT_SOURCE(hramcfg, RAMCFG_IT_SINGLEERR) != 0U) {
+		if (__HAL_RAMCFG_GET_FLAG(hramcfg, RAMCFG_FLAG_SINGLEERR) != 0U) {
+			/* Clear active flags */
+			__HAL_RAMCFG_CLEAR_FLAG(hramcfg, RAMCFG_FLAG_SINGLEERR);
 
 #if (USE_HAL_RAMCFG_REGISTER_CALLBACKS == 1)
-      /* Check if a valid single error callback is registered */
-      if (hramcfg->DetectSingleErrorCallback != NULL)
-      {
-        /* Single error detection callback */
-        hramcfg->DetectSingleErrorCallback(hramcfg);
-      }
-#else
-      HAL_RAMCFG_DetectSingleErrorCallback(hramcfg);
-#endif /* USE_HAL_RAMCFG_REGISTER_CALLBACKS */
-    }
-  }
 
-  /* Double Error Interrupt Management ****************************************/
-  if (__HAL_RAMCFG_GET_IT_SOURCE(hramcfg, RAMCFG_IT_DOUBLEERR) != 0U)
-  {
-    if (__HAL_RAMCFG_GET_FLAG(hramcfg, RAMCFG_FLAG_DOUBLEERR) != 0U)
-    {
-      /* Clear active flags */
-      __HAL_RAMCFG_CLEAR_FLAG(hramcfg, RAMCFG_FLAG_DOUBLEERR);
+			/* Check if a valid single error callback is registered */
+			if (hramcfg->DetectSingleErrorCallback != NULL) {
+				/* Single error detection callback */
+				hramcfg->DetectSingleErrorCallback(hramcfg);
+			}
+
+#else
+			HAL_RAMCFG_DetectSingleErrorCallback(hramcfg);
+#endif /* USE_HAL_RAMCFG_REGISTER_CALLBACKS */
+		}
+	}
+
+	/* Double Error Interrupt Management ****************************************/
+	if (__HAL_RAMCFG_GET_IT_SOURCE(hramcfg, RAMCFG_IT_DOUBLEERR) != 0U) {
+		if (__HAL_RAMCFG_GET_FLAG(hramcfg, RAMCFG_FLAG_DOUBLEERR) != 0U) {
+			/* Clear active flags */
+			__HAL_RAMCFG_CLEAR_FLAG(hramcfg, RAMCFG_FLAG_DOUBLEERR);
 
 #if (USE_HAL_RAMCFG_REGISTER_CALLBACKS == 1)
-      /* Check if a valid double error callback is registered */
-      if (hramcfg->DetectDoubleErrorCallback != NULL)
-      {
-        /* Double error detection callback */
-        hramcfg->DetectDoubleErrorCallback(hramcfg);
-      }
+
+			/* Check if a valid double error callback is registered */
+			if (hramcfg->DetectDoubleErrorCallback != NULL) {
+				/* Double error detection callback */
+				hramcfg->DetectDoubleErrorCallback(hramcfg);
+			}
+
 #else
-      HAL_RAMCFG_DetectDoubleErrorCallback(hramcfg);
+			HAL_RAMCFG_DetectDoubleErrorCallback(hramcfg);
 #endif /* USE_HAL_RAMCFG_REGISTER_CALLBACKS */
-    }
-  }
+		}
+	}
 }
 
 /**
@@ -839,12 +800,12 @@ void HAL_RAMCFG_IRQHandler(RAMCFG_HandleTypeDef *hramcfg)
   */
 __weak void HAL_RAMCFG_DetectSingleErrorCallback(RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(hramcfg);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(hramcfg);
 
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_RAMCFG_DetectSingleErrorCallback can be implemented in
-            the user file.                                                    */
+	/* NOTE : This function should not be modified, when the callback is needed,
+	          the HAL_RAMCFG_DetectSingleErrorCallback can be implemented in
+	          the user file.                                                    */
 }
 
 /**
@@ -855,12 +816,12 @@ __weak void HAL_RAMCFG_DetectSingleErrorCallback(RAMCFG_HandleTypeDef *hramcfg)
   */
 __weak void HAL_RAMCFG_DetectDoubleErrorCallback(RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(hramcfg);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(hramcfg);
 
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_RAMCFG_DetectDoubleErrorCallback can be implemented in
-            the user file.                                                    */
+	/* NOTE : This function should not be modified, when the callback is needed,
+	          the HAL_RAMCFG_DetectDoubleErrorCallback can be implemented in
+	          the user file.                                                    */
 }
 
 #if (USE_HAL_RAMCFG_REGISTER_CALLBACKS == 1)
@@ -875,82 +836,74 @@ __weak void HAL_RAMCFG_DetectDoubleErrorCallback(RAMCFG_HandleTypeDef *hramcfg)
   * @retval HAL status.
   */
 HAL_StatusTypeDef HAL_RAMCFG_RegisterCallback(RAMCFG_HandleTypeDef *hramcfg,
-                                              HAL_RAMCFG_CallbackIDTypeDef CallbackID,
-                                              void (* pCallback)(RAMCFG_HandleTypeDef *_hramcfg))
+		HAL_RAMCFG_CallbackIDTypeDef CallbackID,
+		void (* pCallback)(RAMCFG_HandleTypeDef *_hramcfg))
 {
-  HAL_StatusTypeDef status = HAL_OK;
+	HAL_StatusTypeDef status = HAL_OK;
 
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
 
-  if (pCallback == NULL)
-  {
-    /* Update the error code and return error */
-    hramcfg->ErrorCode |= HAL_RAMCFG_ERROR_INVALID_CALLBACK;
-    return HAL_ERROR;
-  }
+	if (pCallback == NULL) {
+		/* Update the error code and return error */
+		hramcfg->ErrorCode |= HAL_RAMCFG_ERROR_INVALID_CALLBACK;
+		return HAL_ERROR;
+	}
 
-  /* Check RAMCFG state */
-  if (hramcfg->State == HAL_RAMCFG_STATE_READY)
-  {
-    switch (CallbackID)
-    {
-      case  HAL_RAMCFG_SE_DETECT_CB_ID:
-        /* Register single error callback */
-        hramcfg->DetectSingleErrorCallback = pCallback;
-        break;
+	/* Check RAMCFG state */
+	if (hramcfg->State == HAL_RAMCFG_STATE_READY) {
+		switch (CallbackID) {
+			case  HAL_RAMCFG_SE_DETECT_CB_ID:
+				/* Register single error callback */
+				hramcfg->DetectSingleErrorCallback = pCallback;
+				break;
 
-      case  HAL_RAMCFG_DE_DETECT_CB_ID:
-        /* Register double error callback */
-        hramcfg->DetectDoubleErrorCallback = pCallback;
-        break;
+			case  HAL_RAMCFG_DE_DETECT_CB_ID:
+				/* Register double error callback */
+				hramcfg->DetectDoubleErrorCallback = pCallback;
+				break;
 
-      case HAL_RAMCFG_MSPINIT_CB_ID :
-        /* Register msp init callback */
-        hramcfg->MspInitCallback = pCallback;
-        break;
+			case HAL_RAMCFG_MSPINIT_CB_ID :
+				/* Register msp init callback */
+				hramcfg->MspInitCallback = pCallback;
+				break;
 
-      case HAL_RAMCFG_MSPDEINIT_CB_ID :
-        /* Register msp de-init callback */
-        hramcfg->MspDeInitCallback = pCallback;
-        break;
+			case HAL_RAMCFG_MSPDEINIT_CB_ID :
+				/* Register msp de-init callback */
+				hramcfg->MspDeInitCallback = pCallback;
+				break;
 
-      default:
-        /* Update the error code and return error */
-        hramcfg->ErrorCode |= HAL_RAMCFG_ERROR_INVALID_CALLBACK;
-        status = HAL_ERROR;
-        break;
-    }
-  }
-  else if (hramcfg->State == HAL_RAMCFG_STATE_RESET)
-  {
-    switch (CallbackID)
-    {
-      case HAL_RAMCFG_MSPINIT_CB_ID :
-        /* Register msp init callback */
-        hramcfg->MspInitCallback = pCallback;
-        break;
+			default:
+				/* Update the error code and return error */
+				hramcfg->ErrorCode |= HAL_RAMCFG_ERROR_INVALID_CALLBACK;
+				status = HAL_ERROR;
+				break;
+		}
+	} else if (hramcfg->State == HAL_RAMCFG_STATE_RESET) {
+		switch (CallbackID) {
+			case HAL_RAMCFG_MSPINIT_CB_ID :
+				/* Register msp init callback */
+				hramcfg->MspInitCallback = pCallback;
+				break;
 
-      case HAL_RAMCFG_MSPDEINIT_CB_ID :
-        /* Register msp de-init callback */
-        hramcfg->MspDeInitCallback = pCallback;
-        break;
+			case HAL_RAMCFG_MSPDEINIT_CB_ID :
+				/* Register msp de-init callback */
+				hramcfg->MspDeInitCallback = pCallback;
+				break;
 
-      default :
-        /* Update the error code and return error */
-        hramcfg->ErrorCode |= HAL_RAMCFG_ERROR_INVALID_CALLBACK;
-        status =  HAL_ERROR;
-        break;
-    }
-  }
-  else
-  {
-    /* Update the error code and return error  */
-    hramcfg->ErrorCode = HAL_RAMCFG_ERROR_INVALID_CALLBACK;
-    status = HAL_ERROR;
-  }
+			default :
+				/* Update the error code and return error */
+				hramcfg->ErrorCode |= HAL_RAMCFG_ERROR_INVALID_CALLBACK;
+				status =  HAL_ERROR;
+				break;
+		}
+	} else {
+		/* Update the error code and return error  */
+		hramcfg->ErrorCode = HAL_RAMCFG_ERROR_INVALID_CALLBACK;
+		status = HAL_ERROR;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -964,87 +917,80 @@ HAL_StatusTypeDef HAL_RAMCFG_RegisterCallback(RAMCFG_HandleTypeDef *hramcfg,
   */
 HAL_StatusTypeDef HAL_RAMCFG_UnRegisterCallback(RAMCFG_HandleTypeDef *hramcfg, HAL_RAMCFG_CallbackIDTypeDef CallbackID)
 {
-  HAL_StatusTypeDef status = HAL_OK;
+	HAL_StatusTypeDef status = HAL_OK;
 
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
 
-  /* Check RAMCFG state */
-  if (hramcfg->State == HAL_RAMCFG_STATE_READY)
-  {
-    switch (CallbackID)
-    {
-      case  HAL_RAMCFG_SE_DETECT_CB_ID:
-        /* UnRegister single error callback */
-        hramcfg->DetectSingleErrorCallback = NULL;
-        break;
+	/* Check RAMCFG state */
+	if (hramcfg->State == HAL_RAMCFG_STATE_READY) {
+		switch (CallbackID) {
+			case  HAL_RAMCFG_SE_DETECT_CB_ID:
+				/* UnRegister single error callback */
+				hramcfg->DetectSingleErrorCallback = NULL;
+				break;
 
-      case  HAL_RAMCFG_DE_DETECT_CB_ID:
-        /* UnRegister double error callback */
-        hramcfg->DetectDoubleErrorCallback = NULL;
-        break;
+			case  HAL_RAMCFG_DE_DETECT_CB_ID:
+				/* UnRegister double error callback */
+				hramcfg->DetectDoubleErrorCallback = NULL;
+				break;
 
-      case HAL_RAMCFG_MSPINIT_CB_ID :
-        /* UnRegister msp init callback */
-        hramcfg->MspInitCallback = NULL;
-        break;
+			case HAL_RAMCFG_MSPINIT_CB_ID :
+				/* UnRegister msp init callback */
+				hramcfg->MspInitCallback = NULL;
+				break;
 
-      case HAL_RAMCFG_MSPDEINIT_CB_ID :
-        /* UnRegister msp de-init callback */
-        hramcfg->MspDeInitCallback = NULL;
-        break;
+			case HAL_RAMCFG_MSPDEINIT_CB_ID :
+				/* UnRegister msp de-init callback */
+				hramcfg->MspDeInitCallback = NULL;
+				break;
 
-      case  HAL_RAMCFG_ALL_CB_ID:
-        /* UnRegister all available callbacks */
-        hramcfg->DetectSingleErrorCallback = NULL;
-        hramcfg->DetectDoubleErrorCallback = NULL;
-        hramcfg->MspDeInitCallback         = NULL;
-        hramcfg->MspInitCallback           = NULL;
-        break;
+			case  HAL_RAMCFG_ALL_CB_ID:
+				/* UnRegister all available callbacks */
+				hramcfg->DetectSingleErrorCallback = NULL;
+				hramcfg->DetectDoubleErrorCallback = NULL;
+				hramcfg->MspDeInitCallback         = NULL;
+				hramcfg->MspInitCallback           = NULL;
+				break;
 
-      default:
-        /* Return error status */
-        status = HAL_ERROR;
-        break;
-    }
-  }
-  else if (hramcfg->State == HAL_RAMCFG_STATE_RESET)
-  {
-    switch (CallbackID)
-    {
-      case HAL_RAMCFG_MSPINIT_CB_ID :
-        /* UnRegister msp init callback */
-        hramcfg->MspInitCallback = NULL;
-        break;
+			default:
+				/* Return error status */
+				status = HAL_ERROR;
+				break;
+		}
+	} else if (hramcfg->State == HAL_RAMCFG_STATE_RESET) {
+		switch (CallbackID) {
+			case HAL_RAMCFG_MSPINIT_CB_ID :
+				/* UnRegister msp init callback */
+				hramcfg->MspInitCallback = NULL;
+				break;
 
-      case HAL_RAMCFG_MSPDEINIT_CB_ID :
-        /* UnRegister msp de-init callback */
-        hramcfg->MspDeInitCallback = NULL;
-        break;
+			case HAL_RAMCFG_MSPDEINIT_CB_ID :
+				/* UnRegister msp de-init callback */
+				hramcfg->MspDeInitCallback = NULL;
+				break;
 
-      case  HAL_RAMCFG_ALL_CB_ID:
-        /* UnRegister all available callbacks */
-        hramcfg->MspDeInitCallback = NULL;
-        hramcfg->MspInitCallback   = NULL;
-        break;
+			case  HAL_RAMCFG_ALL_CB_ID:
+				/* UnRegister all available callbacks */
+				hramcfg->MspDeInitCallback = NULL;
+				hramcfg->MspInitCallback   = NULL;
+				break;
 
-      default :
-        /* Update the error code */
-        hramcfg->ErrorCode |= HAL_RAMCFG_ERROR_INVALID_CALLBACK;
+			default :
+				/* Update the error code */
+				hramcfg->ErrorCode |= HAL_RAMCFG_ERROR_INVALID_CALLBACK;
 
-        /* Update return status */
-        status =  HAL_ERROR;
-        break;
-    }
-  }
-  else
-  {
-    /* Update the error code and return error */
-    hramcfg->ErrorCode = HAL_RAMCFG_ERROR_INVALID_CALLBACK;
-    status = HAL_ERROR;
-  }
+				/* Update return status */
+				status =  HAL_ERROR;
+				break;
+		}
+	} else {
+		/* Update the error code and return error */
+		hramcfg->ErrorCode = HAL_RAMCFG_ERROR_INVALID_CALLBACK;
+		status = HAL_ERROR;
+	}
 
-  return status;
+	return status;
 }
 
 /**
@@ -1080,11 +1026,11 @@ HAL_StatusTypeDef HAL_RAMCFG_UnRegisterCallback(RAMCFG_HandleTypeDef *hramcfg, H
   */
 HAL_RAMCFG_StateTypeDef HAL_RAMCFG_GetState(const RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
 
-  /* Return the RAMCFG state */
-  return hramcfg->State;
+	/* Return the RAMCFG state */
+	return hramcfg->State;
 }
 
 /**
@@ -1096,11 +1042,11 @@ HAL_RAMCFG_StateTypeDef HAL_RAMCFG_GetState(const RAMCFG_HandleTypeDef *hramcfg)
   */
 uint32_t HAL_RAMCFG_GetError(const RAMCFG_HandleTypeDef *hramcfg)
 {
-  /* Check the parameters */
-  assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
+	/* Check the parameters */
+	assert_param(IS_RAMCFG_ALL_INSTANCE(hramcfg->Instance));
 
-  /* Return the RAMCFG error code */
-  return hramcfg->ErrorCode;
+	/* Return the RAMCFG error code */
+	return hramcfg->ErrorCode;
 }
 
 /**

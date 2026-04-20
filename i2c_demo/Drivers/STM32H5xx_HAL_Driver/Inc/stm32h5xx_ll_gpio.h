@@ -61,36 +61,35 @@ extern "C" {
 /**
   * @brief LL GPIO Init Structure definition
   */
-typedef struct
-{
-  uint32_t Pin;          /*!< Specifies the GPIO pins to be configured.
+typedef struct {
+	uint32_t Pin;          /*!< Specifies the GPIO pins to be configured.
                               This parameter can be any value of @ref GPIO_LL_EC_PIN */
 
-  uint32_t Mode;         /*!< Specifies the operating mode for the selected pins.
+	uint32_t Mode;         /*!< Specifies the operating mode for the selected pins.
                               This parameter can be a value of @ref GPIO_LL_EC_MODE.
 
                               GPIO HW configuration can be modified afterwards using unitary function
                               @ref LL_GPIO_SetPinMode().*/
 
-  uint32_t Speed;        /*!< Specifies the speed for the selected pins.
+	uint32_t Speed;        /*!< Specifies the speed for the selected pins.
                               This parameter can be a value of @ref GPIO_LL_EC_SPEED.
 
                               GPIO HW configuration can be modified afterwards using unitary function
                               @ref LL_GPIO_SetPinSpeed().*/
 
-  uint32_t OutputType;   /*!< Specifies the operating output type for the selected pins.
+	uint32_t OutputType;   /*!< Specifies the operating output type for the selected pins.
                               This parameter can be a value of @ref GPIO_LL_EC_OUTPUT.
 
                               GPIO HW configuration can be modified afterwards using unitary function
                               @ref LL_GPIO_SetPinOutputType().*/
 
-  uint32_t Pull;         /*!< Specifies the operating Pull-up/Pull down for the selected pins.
+	uint32_t Pull;         /*!< Specifies the operating Pull-up/Pull down for the selected pins.
                               This parameter can be a value of @ref GPIO_LL_EC_PULL.
 
                               GPIO HW configuration can be modified afterwards using unitary function
                               @ref LL_GPIO_SetPinPull().*/
 
-  uint32_t Alternate;    /*!< Specifies the Peripheral to be connected to the selected pins.
+	uint32_t Alternate;    /*!< Specifies the Peripheral to be connected to the selected pins.
                               This parameter can be a value of @ref GPIO_LL_EC_AF.
 
                               GPIO HW configuration can be modified afterwards using unitary function
@@ -282,8 +281,8 @@ typedef struct
   */
 __STATIC_INLINE void LL_GPIO_SetPinMode(GPIO_TypeDef *GPIOx, uint32_t Pin, uint32_t Mode)
 {
-  MODIFY_REG(GPIOx->MODER, (GPIO_MODER_MODE0 << (POSITION_VAL(Pin) * GPIO_MODER_MODE1_Pos)),
-             (Mode << (POSITION_VAL(Pin) * GPIO_MODER_MODE1_Pos)));
+	MODIFY_REG(GPIOx->MODER, (GPIO_MODER_MODE0 << (POSITION_VAL(Pin) * GPIO_MODER_MODE1_Pos)),
+		   (Mode << (POSITION_VAL(Pin) * GPIO_MODER_MODE1_Pos)));
 }
 
 /**
@@ -317,8 +316,8 @@ __STATIC_INLINE void LL_GPIO_SetPinMode(GPIO_TypeDef *GPIOx, uint32_t Pin, uint3
   */
 __STATIC_INLINE uint32_t LL_GPIO_GetPinMode(const GPIO_TypeDef *GPIOx, uint32_t Pin)
 {
-  return (uint32_t)(READ_BIT(GPIOx->MODER, (GPIO_MODER_MODE0 << (POSITION_VAL(Pin) * GPIO_MODER_MODE1_Pos))) >> \
-                    (POSITION_VAL(Pin) * GPIO_MODER_MODE1_Pos));
+	return (uint32_t)(READ_BIT(GPIOx->MODER, (GPIO_MODER_MODE0 << (POSITION_VAL(Pin) * GPIO_MODER_MODE1_Pos))) >> \
+			  (POSITION_VAL(Pin) * GPIO_MODER_MODE1_Pos));
 }
 
 /**
@@ -352,7 +351,7 @@ __STATIC_INLINE uint32_t LL_GPIO_GetPinMode(const GPIO_TypeDef *GPIOx, uint32_t 
   */
 __STATIC_INLINE void LL_GPIO_SetPinOutputType(GPIO_TypeDef *GPIOx, uint32_t PinMask, uint32_t OutputType)
 {
-  MODIFY_REG(GPIOx->OTYPER, PinMask, (PinMask * OutputType));
+	MODIFY_REG(GPIOx->OTYPER, PinMask, (PinMask * OutputType));
 }
 
 /**
@@ -386,7 +385,7 @@ __STATIC_INLINE void LL_GPIO_SetPinOutputType(GPIO_TypeDef *GPIOx, uint32_t PinM
   */
 __STATIC_INLINE uint32_t LL_GPIO_GetPinOutputType(const GPIO_TypeDef *GPIOx, uint32_t Pin)
 {
-  return (uint32_t)(READ_BIT(GPIOx->OTYPER, Pin) >> POSITION_VAL(Pin));
+	return (uint32_t)(READ_BIT(GPIOx->OTYPER, Pin) >> POSITION_VAL(Pin));
 }
 
 /**
@@ -423,8 +422,8 @@ __STATIC_INLINE uint32_t LL_GPIO_GetPinOutputType(const GPIO_TypeDef *GPIOx, uin
   */
 __STATIC_INLINE void LL_GPIO_SetPinSpeed(GPIO_TypeDef *GPIOx, uint32_t Pin, uint32_t  Speed)
 {
-  MODIFY_REG(GPIOx->OSPEEDR, (GPIO_OSPEEDR_OSPEED0 << (POSITION_VAL(Pin) * GPIO_OSPEEDR_OSPEED1_Pos)),
-             (Speed << (POSITION_VAL(Pin) * GPIO_OSPEEDR_OSPEED1_Pos)));
+	MODIFY_REG(GPIOx->OSPEEDR, (GPIO_OSPEEDR_OSPEED0 << (POSITION_VAL(Pin) * GPIO_OSPEEDR_OSPEED1_Pos)),
+		   (Speed << (POSITION_VAL(Pin) * GPIO_OSPEEDR_OSPEED1_Pos)));
 }
 
 /**
@@ -460,9 +459,9 @@ __STATIC_INLINE void LL_GPIO_SetPinSpeed(GPIO_TypeDef *GPIOx, uint32_t Pin, uint
   */
 __STATIC_INLINE uint32_t LL_GPIO_GetPinSpeed(const GPIO_TypeDef *GPIOx, uint32_t Pin)
 {
-  return (uint32_t)(READ_BIT(GPIOx->OSPEEDR, (GPIO_OSPEEDR_OSPEED0 << \
-                                              (POSITION_VAL(Pin) * GPIO_OSPEEDR_OSPEED1_Pos))) >> \
-                    (POSITION_VAL(Pin) * GPIO_OSPEEDR_OSPEED1_Pos));
+	return (uint32_t)(READ_BIT(GPIOx->OSPEEDR, (GPIO_OSPEEDR_OSPEED0 << \
+				   (POSITION_VAL(Pin) * GPIO_OSPEEDR_OSPEED1_Pos))) >> \
+			  (POSITION_VAL(Pin) * GPIO_OSPEEDR_OSPEED1_Pos));
 }
 
 /**
@@ -495,8 +494,8 @@ __STATIC_INLINE uint32_t LL_GPIO_GetPinSpeed(const GPIO_TypeDef *GPIOx, uint32_t
   */
 __STATIC_INLINE void LL_GPIO_SetPinPull(GPIO_TypeDef *GPIOx, uint32_t Pin, uint32_t Pull)
 {
-  MODIFY_REG(GPIOx->PUPDR, (GPIO_PUPDR_PUPD0 << (POSITION_VAL(Pin) * GPIO_PUPDR_PUPD1_Pos)),
-             (Pull << (POSITION_VAL(Pin) * GPIO_PUPDR_PUPD1_Pos)));
+	MODIFY_REG(GPIOx->PUPDR, (GPIO_PUPDR_PUPD0 << (POSITION_VAL(Pin) * GPIO_PUPDR_PUPD1_Pos)),
+		   (Pull << (POSITION_VAL(Pin) * GPIO_PUPDR_PUPD1_Pos)));
 }
 
 /**
@@ -528,8 +527,8 @@ __STATIC_INLINE void LL_GPIO_SetPinPull(GPIO_TypeDef *GPIOx, uint32_t Pin, uint3
   */
 __STATIC_INLINE uint32_t LL_GPIO_GetPinPull(const GPIO_TypeDef *GPIOx, uint32_t Pin)
 {
-  return (uint32_t)(READ_BIT(GPIOx->PUPDR, (GPIO_PUPDR_PUPD0 << (POSITION_VAL(Pin) * GPIO_PUPDR_PUPD1_Pos))) >> \
-                    (POSITION_VAL(Pin) * GPIO_PUPDR_PUPD1_Pos));
+	return (uint32_t)(READ_BIT(GPIOx->PUPDR, (GPIO_PUPDR_PUPD0 << (POSITION_VAL(Pin) * GPIO_PUPDR_PUPD1_Pos))) >> \
+			  (POSITION_VAL(Pin) * GPIO_PUPDR_PUPD1_Pos));
 }
 
 /**
@@ -568,8 +567,8 @@ __STATIC_INLINE uint32_t LL_GPIO_GetPinPull(const GPIO_TypeDef *GPIOx, uint32_t 
   */
 __STATIC_INLINE void LL_GPIO_SetAFPin_0_7(GPIO_TypeDef *GPIOx, uint32_t Pin, uint32_t Alternate)
 {
-  MODIFY_REG(GPIOx->AFR[0], (GPIO_AFRL_AFSEL0 << (POSITION_VAL(Pin) * GPIO_AFRL_AFSEL1_Pos)),
-             (Alternate << (POSITION_VAL(Pin) * GPIO_AFRL_AFSEL1_Pos)));
+	MODIFY_REG(GPIOx->AFR[0], (GPIO_AFRL_AFSEL0 << (POSITION_VAL(Pin) * GPIO_AFRL_AFSEL1_Pos)),
+		   (Alternate << (POSITION_VAL(Pin) * GPIO_AFRL_AFSEL1_Pos)));
 }
 
 /**
@@ -605,8 +604,8 @@ __STATIC_INLINE void LL_GPIO_SetAFPin_0_7(GPIO_TypeDef *GPIOx, uint32_t Pin, uin
   */
 __STATIC_INLINE uint32_t LL_GPIO_GetAFPin_0_7(const GPIO_TypeDef *GPIOx, uint32_t Pin)
 {
-  return (uint32_t)(READ_BIT(GPIOx->AFR[0], (GPIO_AFRL_AFSEL0 << (POSITION_VAL(Pin) * GPIO_AFRL_AFSEL1_Pos))) >> \
-                    (POSITION_VAL(Pin) * GPIO_AFRL_AFSEL1_Pos));
+	return (uint32_t)(READ_BIT(GPIOx->AFR[0], (GPIO_AFRL_AFSEL0 << (POSITION_VAL(Pin) * GPIO_AFRL_AFSEL1_Pos))) >> \
+			  (POSITION_VAL(Pin) * GPIO_AFRL_AFSEL1_Pos));
 }
 
 /**
@@ -645,8 +644,8 @@ __STATIC_INLINE uint32_t LL_GPIO_GetAFPin_0_7(const GPIO_TypeDef *GPIOx, uint32_
   */
 __STATIC_INLINE void LL_GPIO_SetAFPin_8_15(GPIO_TypeDef *GPIOx, uint32_t Pin, uint32_t Alternate)
 {
-  MODIFY_REG(GPIOx->AFR[1], (GPIO_AFRH_AFSEL8 << (POSITION_VAL(Pin >> 8U) * GPIO_AFRH_AFSEL9_Pos)),
-             (Alternate << (POSITION_VAL(Pin >> 8U) * GPIO_AFRH_AFSEL9_Pos)));
+	MODIFY_REG(GPIOx->AFR[1], (GPIO_AFRH_AFSEL8 << (POSITION_VAL(Pin >> 8U) * GPIO_AFRH_AFSEL9_Pos)),
+		   (Alternate << (POSITION_VAL(Pin >> 8U) * GPIO_AFRH_AFSEL9_Pos)));
 }
 
 /**
@@ -683,8 +682,8 @@ __STATIC_INLINE void LL_GPIO_SetAFPin_8_15(GPIO_TypeDef *GPIOx, uint32_t Pin, ui
   */
 __STATIC_INLINE uint32_t LL_GPIO_GetAFPin_8_15(const GPIO_TypeDef *GPIOx, uint32_t Pin)
 {
-  return (uint32_t)(READ_BIT(GPIOx->AFR[1], (GPIO_AFRH_AFSEL8 << (POSITION_VAL(Pin >> 8U) * GPIO_AFRH_AFSEL9_Pos))) >> \
-                    (POSITION_VAL(Pin >> 8U) * GPIO_AFRH_AFSEL9_Pos));
+	return (uint32_t)(READ_BIT(GPIOx->AFR[1], (GPIO_AFRH_AFSEL8 << (POSITION_VAL(Pin >> 8U) * GPIO_AFRH_AFSEL9_Pos))) >> \
+			  (POSITION_VAL(Pin >> 8U) * GPIO_AFRH_AFSEL9_Pos));
 }
 
 /**
@@ -718,13 +717,13 @@ __STATIC_INLINE uint32_t LL_GPIO_GetAFPin_8_15(const GPIO_TypeDef *GPIOx, uint32
   */
 __STATIC_INLINE void LL_GPIO_LockPin(GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  __IO uint32_t temp;
-  WRITE_REG(GPIOx->LCKR, GPIO_LCKR_LCKK | PinMask);
-  WRITE_REG(GPIOx->LCKR, PinMask);
-  WRITE_REG(GPIOx->LCKR, GPIO_LCKR_LCKK | PinMask);
-  /* Read LCKK register. This read is mandatory to complete key lock sequence */
-  temp = READ_REG(GPIOx->LCKR);
-  (void) temp;
+	__IO uint32_t temp;
+	WRITE_REG(GPIOx->LCKR, GPIO_LCKR_LCKK | PinMask);
+	WRITE_REG(GPIOx->LCKR, PinMask);
+	WRITE_REG(GPIOx->LCKR, GPIO_LCKR_LCKK | PinMask);
+	/* Read LCKK register. This read is mandatory to complete key lock sequence */
+	temp = READ_REG(GPIOx->LCKR);
+	(void) temp;
 }
 
 /**
@@ -753,7 +752,7 @@ __STATIC_INLINE void LL_GPIO_LockPin(GPIO_TypeDef *GPIOx, uint32_t PinMask)
   */
 __STATIC_INLINE uint32_t LL_GPIO_IsPinLocked(const GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  return ((READ_BIT(GPIOx->LCKR, PinMask) == (PinMask)) ? 1UL : 0UL);
+	return ((READ_BIT(GPIOx->LCKR, PinMask) == (PinMask)) ? 1UL : 0UL);
 }
 
 /**
@@ -764,7 +763,7 @@ __STATIC_INLINE uint32_t LL_GPIO_IsPinLocked(const GPIO_TypeDef *GPIOx, uint32_t
   */
 __STATIC_INLINE uint32_t LL_GPIO_IsAnyPinLocked(const GPIO_TypeDef *GPIOx)
 {
-  return ((READ_BIT(GPIOx->LCKR, GPIO_LCKR_LCKK) == (GPIO_LCKR_LCKK)) ? 1UL : 0UL);
+	return ((READ_BIT(GPIOx->LCKR, GPIO_LCKR_LCKK) == (GPIO_LCKR_LCKK)) ? 1UL : 0UL);
 }
 
 /**
@@ -783,7 +782,7 @@ __STATIC_INLINE uint32_t LL_GPIO_IsAnyPinLocked(const GPIO_TypeDef *GPIOx)
   */
 __STATIC_INLINE uint32_t LL_GPIO_ReadInputPort(const GPIO_TypeDef *GPIOx)
 {
-  return (uint32_t)(READ_REG(GPIOx->IDR));
+	return (uint32_t)(READ_REG(GPIOx->IDR));
 }
 
 /**
@@ -812,7 +811,7 @@ __STATIC_INLINE uint32_t LL_GPIO_ReadInputPort(const GPIO_TypeDef *GPIOx)
   */
 __STATIC_INLINE uint32_t LL_GPIO_IsInputPinSet(const GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  return ((READ_BIT(GPIOx->IDR, PinMask) == (PinMask)) ? 1UL : 0UL);
+	return ((READ_BIT(GPIOx->IDR, PinMask) == (PinMask)) ? 1UL : 0UL);
 }
 
 /**
@@ -824,7 +823,7 @@ __STATIC_INLINE uint32_t LL_GPIO_IsInputPinSet(const GPIO_TypeDef *GPIOx, uint32
   */
 __STATIC_INLINE void LL_GPIO_WriteOutputPort(GPIO_TypeDef *GPIOx, uint32_t PortValue)
 {
-  WRITE_REG(GPIOx->ODR, PortValue);
+	WRITE_REG(GPIOx->ODR, PortValue);
 }
 
 /**
@@ -835,7 +834,7 @@ __STATIC_INLINE void LL_GPIO_WriteOutputPort(GPIO_TypeDef *GPIOx, uint32_t PortV
   */
 __STATIC_INLINE uint32_t LL_GPIO_ReadOutputPort(const GPIO_TypeDef *GPIOx)
 {
-  return (uint32_t)(READ_REG(GPIOx->ODR));
+	return (uint32_t)(READ_REG(GPIOx->ODR));
 }
 
 /**
@@ -864,7 +863,7 @@ __STATIC_INLINE uint32_t LL_GPIO_ReadOutputPort(const GPIO_TypeDef *GPIOx)
   */
 __STATIC_INLINE uint32_t LL_GPIO_IsOutputPinSet(const GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  return ((READ_BIT(GPIOx->ODR, PinMask) == (PinMask)) ? 1UL : 0UL);
+	return ((READ_BIT(GPIOx->ODR, PinMask) == (PinMask)) ? 1UL : 0UL);
 }
 
 /**
@@ -893,7 +892,7 @@ __STATIC_INLINE uint32_t LL_GPIO_IsOutputPinSet(const GPIO_TypeDef *GPIOx, uint3
   */
 __STATIC_INLINE void LL_GPIO_SetOutputPin(GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  WRITE_REG(GPIOx->BSRR, PinMask);
+	WRITE_REG(GPIOx->BSRR, PinMask);
 }
 
 /**
@@ -922,7 +921,7 @@ __STATIC_INLINE void LL_GPIO_SetOutputPin(GPIO_TypeDef *GPIOx, uint32_t PinMask)
   */
 __STATIC_INLINE void LL_GPIO_ResetOutputPin(GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  WRITE_REG(GPIOx->BRR, PinMask);
+	WRITE_REG(GPIOx->BRR, PinMask);
 }
 
 /**
@@ -951,8 +950,8 @@ __STATIC_INLINE void LL_GPIO_ResetOutputPin(GPIO_TypeDef *GPIOx, uint32_t PinMas
   */
 __STATIC_INLINE void LL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  uint32_t odr = READ_REG(GPIOx->ODR);
-  WRITE_REG(GPIOx->BSRR, ((odr & PinMask) << 16u) | (~odr & PinMask));
+	uint32_t odr = READ_REG(GPIOx->ODR);
+	WRITE_REG(GPIOx->BSRR, ((odr & PinMask) << 16u) | (~odr & PinMask));
 }
 
 /**
@@ -983,7 +982,7 @@ __STATIC_INLINE void LL_GPIO_TogglePin(GPIO_TypeDef *GPIOx, uint32_t PinMask)
   */
 __STATIC_INLINE void LL_GPIO_EnableHighSPeedLowVoltage(GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  SET_BIT(GPIOx->HSLVR, PinMask);
+	SET_BIT(GPIOx->HSLVR, PinMask);
 }
 
 
@@ -1015,7 +1014,7 @@ __STATIC_INLINE void LL_GPIO_EnableHighSPeedLowVoltage(GPIO_TypeDef *GPIOx, uint
   */
 __STATIC_INLINE void LL_GPIO_DisableHighSPeedLowVoltage(GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  CLEAR_BIT(GPIOx->HSLVR, PinMask);
+	CLEAR_BIT(GPIOx->HSLVR, PinMask);
 }
 
 /**
@@ -1046,7 +1045,7 @@ __STATIC_INLINE void LL_GPIO_DisableHighSPeedLowVoltage(GPIO_TypeDef *GPIOx, uin
   */
 __STATIC_INLINE uint32_t LL_GPIO_IsEnabledHighSPeedLowVoltage(const GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  return ((READ_BIT(GPIOx->HSLVR, PinMask) == (PinMask)) ? 1UL : 0UL);
+	return ((READ_BIT(GPIOx->HSLVR, PinMask) == (PinMask)) ? 1UL : 0UL);
 }
 
 #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
@@ -1077,7 +1076,7 @@ __STATIC_INLINE uint32_t LL_GPIO_IsEnabledHighSPeedLowVoltage(const GPIO_TypeDef
   */
 __STATIC_INLINE void LL_GPIO_EnablePinSecure(GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  SET_BIT(GPIOx->SECCFGR, PinMask);
+	SET_BIT(GPIOx->SECCFGR, PinMask);
 }
 
 
@@ -1107,7 +1106,7 @@ __STATIC_INLINE void LL_GPIO_EnablePinSecure(GPIO_TypeDef *GPIOx, uint32_t PinMa
   */
 __STATIC_INLINE void LL_GPIO_DisablePinSecure(GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  CLEAR_BIT(GPIOx->SECCFGR, PinMask);
+	CLEAR_BIT(GPIOx->SECCFGR, PinMask);
 }
 
 #endif /* __ARM_FEATURE_CMSE */
@@ -1138,7 +1137,7 @@ __STATIC_INLINE void LL_GPIO_DisablePinSecure(GPIO_TypeDef *GPIOx, uint32_t PinM
   */
 __STATIC_INLINE uint32_t LL_GPIO_IsEnabledPinSecure(const GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  return ((READ_BIT(GPIOx->SECCFGR, PinMask) == (PinMask)) ? 1UL : 0UL);
+	return ((READ_BIT(GPIOx->SECCFGR, PinMask) == (PinMask)) ? 1UL : 0UL);
 }
 
 

@@ -51,46 +51,45 @@
 #include "arm_helium_utils.h"
 #include "arm_vec_math.h"
 
-float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
+float32_t arm_entropy_f32(const float32_t * pSrcA, uint32_t blockSize)
 {
-    uint32_t        blkCnt;
-    float32_t       accum=0.0f,p;
+	uint32_t        blkCnt;
+	float32_t       accum = 0.0f, p;
 
 
-    blkCnt = blockSize;
+	blkCnt = blockSize;
 
-    f32x4_t         vSum = vdupq_n_f32(0.0f);
-    /* Compute 4 outputs at a time */
-    blkCnt = blockSize >> 2U;
+	f32x4_t         vSum = vdupq_n_f32(0.0f);
+	/* Compute 4 outputs at a time */
+	blkCnt = blockSize >> 2U;
 
-    while (blkCnt > 0U)
-    {
-        f32x4_t         vecIn = vld1q(pSrcA);
+	while (blkCnt > 0U) {
+		f32x4_t         vecIn = vld1q(pSrcA);
 
-        vSum = vaddq_f32(vSum, vmulq(vecIn, vlogq_f32(vecIn)));
+		vSum = vaddq_f32(vSum, vmulq(vecIn, vlogq_f32(vecIn)));
 
-        /*
-         * Decrement the blockSize loop counter
-         * Advance vector source and destination pointers
-         */
-        pSrcA += 4;
-        blkCnt --;
-    }
+		/*
+		 * Decrement the blockSize loop counter
+		 * Advance vector source and destination pointers
+		 */
+		pSrcA += 4;
+		blkCnt --;
+	}
 
-    accum = vecAddAcrossF32Mve(vSum);
+	accum = vecAddAcrossF32Mve(vSum);
 
-    /* Tail */
-    blkCnt = blockSize & 0x3;
-    while(blkCnt > 0)
-    {
-       p = *pSrcA++;
-       accum += p * logf(p);
-       
-       blkCnt--;
-    
-    }
+	/* Tail */
+	blkCnt = blockSize & 0x3;
 
-    return (-accum);
+	while (blkCnt > 0) {
+		p = *pSrcA++;
+		accum += p * logf(p);
+
+		blkCnt--;
+
+	}
+
+	return (-accum);
 }
 
 #else
@@ -98,73 +97,72 @@ float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
 
 #include "NEMath.h"
 
-float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
+float32_t arm_entropy_f32(const float32_t * pSrcA, uint32_t blockSize)
 {
-    const float32_t *pIn;
-    uint32_t blkCnt;
-    float32_t accum, p;
+	const float32_t *pIn;
+	uint32_t blkCnt;
+	float32_t accum, p;
 
-    float32x4_t accumV;
-    float32x2_t accumV2;
-    float32x4_t tmpV, tmpV2;
- 
-    pIn = pSrcA;
+	float32x4_t accumV;
+	float32x2_t accumV2;
+	float32x4_t tmpV, tmpV2;
 
-    accum = 0.0f;
-    accumV = vdupq_n_f32(0.0f);
+	pIn = pSrcA;
 
-    blkCnt = blockSize >> 2;
-    while(blkCnt > 0)
-    {
-      tmpV = vld1q_f32(pIn);
-      pIn += 4;
+	accum = 0.0f;
+	accumV = vdupq_n_f32(0.0f);
 
-      tmpV2 = vlogq_f32(tmpV);
-      accumV = vmlaq_f32(accumV, tmpV, tmpV2);
-       
-      blkCnt--;
-    
-    }
+	blkCnt = blockSize >> 2;
 
-    accumV2 = vpadd_f32(vget_low_f32(accumV),vget_high_f32(accumV));
-    accum = vget_lane_f32(accumV2, 0) + vget_lane_f32(accumV2, 1);
-    
+	while (blkCnt > 0) {
+		tmpV = vld1q_f32(pIn);
+		pIn += 4;
 
-    blkCnt = blockSize & 3;
-    while(blkCnt > 0)
-    {
-       p = *pIn++;
-       accum += p * logf(p);
-       
-       blkCnt--;
-    
-    }
+		tmpV2 = vlogq_f32(tmpV);
+		accumV = vmlaq_f32(accumV, tmpV, tmpV2);
 
-    return(-accum);
+		blkCnt--;
+
+	}
+
+	accumV2 = vpadd_f32(vget_low_f32(accumV), vget_high_f32(accumV));
+	accum = vget_lane_f32(accumV2, 0) + vget_lane_f32(accumV2, 1);
+
+
+	blkCnt = blockSize & 3;
+
+	while (blkCnt > 0) {
+		p = *pIn++;
+		accum += p * logf(p);
+
+		blkCnt--;
+
+	}
+
+	return (-accum);
 }
 
 #else
-float32_t arm_entropy_f32(const float32_t * pSrcA,uint32_t blockSize)
+float32_t arm_entropy_f32(const float32_t * pSrcA, uint32_t blockSize)
 {
-    const float32_t *pIn;
-    uint32_t blkCnt;
-    float32_t accum, p;
- 
-    pIn = pSrcA;
-    blkCnt = blockSize;
+	const float32_t *pIn;
+	uint32_t blkCnt;
+	float32_t accum, p;
 
-    accum = 0.0f;
+	pIn = pSrcA;
+	blkCnt = blockSize;
 
-    while(blkCnt > 0)
-    {
-       p = *pIn++;
-       accum += p * logf(p);
-       
-       blkCnt--;
-    
-    }
+	accum = 0.0f;
 
-    return(-accum);
+	while (blkCnt > 0) {
+		p = *pIn++;
+		accum += p * logf(p);
+
+		blkCnt--;
+
+	}
+
+	return (-accum);
 }
 #endif
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */

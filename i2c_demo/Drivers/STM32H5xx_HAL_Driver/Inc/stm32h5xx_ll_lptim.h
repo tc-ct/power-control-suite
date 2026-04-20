@@ -43,46 +43,40 @@ extern "C" {
   * @{
   */
 
-static const uint8_t LL_LPTIM_SHIFT_TAB_CCxP[] =
-{
-  0U,                              /* CC1P */
-  16U                              /* CC2P */
+static const uint8_t LL_LPTIM_SHIFT_TAB_CCxP[] = {
+	0U,                              /* CC1P */
+	16U                              /* CC2P */
 };
 
-static const uint8_t LL_LPTIM_SHIFT_TAB_ICxF[] =
-{
-  0U,                              /* IC1F */
-  16U                              /* IC2F */
+static const uint8_t LL_LPTIM_SHIFT_TAB_ICxF[] = {
+	0U,                              /* IC1F */
+	16U                              /* IC2F */
 };
 
-static const uint8_t LL_LPTIM_SHIFT_TAB_ICxPSC[] =
-{
-  0U,                              /* IC1PSC */
-  16U                              /* IC2PSC */
+static const uint8_t LL_LPTIM_SHIFT_TAB_ICxPSC[] = {
+	0U,                              /* IC1PSC */
+	16U                              /* IC2PSC */
 };
 
-static const uint8_t LL_LPTIM_SHIFT_TAB_CCxSEL[] =
-{
-  0U,                              /* CC1SEL */
-  16U                              /* CC2SEL */
+static const uint8_t LL_LPTIM_SHIFT_TAB_CCxSEL[] = {
+	0U,                              /* CC1SEL */
+	16U                              /* CC2SEL */
 };
 
-static const uint8_t LL_LPTIM_SHIFT_TAB_CCxE[] =
-{
-  LPTIM_CCMR1_CC1E_Pos,            /* CC1E */
-  LPTIM_CCMR1_CC2E_Pos             /* CC2E */
+static const uint8_t LL_LPTIM_SHIFT_TAB_CCxE[] = {
+	LPTIM_CCMR1_CC1E_Pos,            /* CC1E */
+	LPTIM_CCMR1_CC2E_Pos             /* CC2E */
 };
 
-static const uint8_t LL_LPTIM_OFFSET_TAB_ICx[8][4] =
-{
-  {2, 7, 9, 13},
-  {3, 5, 6, 8},
-  {2, 3, 4, 5},
-  {2, 2, 3, 3},
-  {2, 2, 2, 2},
-  {2, 2, 2, 2},
-  {2, 2, 2, 2},
-  {2, 2, 2, 2}
+static const uint8_t LL_LPTIM_OFFSET_TAB_ICx[8][4] = {
+	{2, 7, 9, 13},
+	{3, 5, 6, 8},
+	{2, 3, 4, 5},
+	{2, 2, 3, 3},
+	{2, 2, 2, 2},
+	{2, 2, 2, 2},
+	{2, 2, 2, 2},
+	{2, 2, 2, 2}
 
 };
 
@@ -121,21 +115,20 @@ static const uint8_t LL_LPTIM_OFFSET_TAB_ICx[8][4] =
 /**
   * @brief  LPTIM Init structure definition
   */
-typedef struct
-{
-  uint32_t ClockSource;    /*!< Specifies the source of the clock used by the LPTIM instance.
+typedef struct {
+	uint32_t ClockSource;    /*!< Specifies the source of the clock used by the LPTIM instance.
                                 This parameter can be a value of @ref LPTIM_LL_EC_CLK_SOURCE.
 
                                 This feature can be modified afterwards using unitary
                                 function @ref LL_LPTIM_SetClockSource().*/
 
-  uint32_t Prescaler;      /*!< Specifies the prescaler division ratio.
+	uint32_t Prescaler;      /*!< Specifies the prescaler division ratio.
                                 This parameter can be a value of @ref LPTIM_LL_EC_PRESCALER.
 
                                 This feature can be modified afterwards using using unitary
                                 function @ref LL_LPTIM_SetPrescaler().*/
 
-  uint32_t Waveform;       /*!< Specifies the waveform shape.
+	uint32_t Waveform;       /*!< Specifies the waveform shape.
                                 This parameter can be a value of @ref LPTIM_LL_EC_OUTPUT_WAVEFORM.
 
                                 This feature can be modified afterwards using unitary
@@ -616,7 +609,7 @@ ErrorStatus LL_LPTIM_Init(LPTIM_TypeDef *LPTIMx, const LL_LPTIM_InitTypeDef *LPT
   */
 __STATIC_INLINE void LL_LPTIM_Enable(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->CR, LPTIM_CR_ENABLE);
+	SET_BIT(LPTIMx->CR, LPTIM_CR_ENABLE);
 }
 
 /**
@@ -627,7 +620,7 @@ __STATIC_INLINE void LL_LPTIM_Enable(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_Disable(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->CR, LPTIM_CR_ENABLE);
+	CLEAR_BIT(LPTIMx->CR, LPTIM_CR_ENABLE);
 }
 
 /**
@@ -638,7 +631,7 @@ __STATIC_INLINE void LL_LPTIM_Disable(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabled(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->CR, LPTIM_CR_ENABLE) == LPTIM_CR_ENABLE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->CR, LPTIM_CR_ENABLE) == LPTIM_CR_ENABLE) ? 1UL : 0UL));
 }
 
 /**
@@ -656,7 +649,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabled(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_StartCounter(LPTIM_TypeDef *LPTIMx, uint32_t OperatingMode)
 {
-  MODIFY_REG(LPTIMx->CR, LPTIM_CR_CNTSTRT | LPTIM_CR_SNGSTRT, OperatingMode);
+	MODIFY_REG(LPTIMx->CR, LPTIM_CR_CNTSTRT | LPTIM_CR_SNGSTRT, OperatingMode);
 }
 
 /**
@@ -669,7 +662,7 @@ __STATIC_INLINE void LL_LPTIM_StartCounter(LPTIM_TypeDef *LPTIMx, uint32_t Opera
   */
 __STATIC_INLINE void LL_LPTIM_EnableResetAfterRead(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->CR, LPTIM_CR_RSTARE);
+	SET_BIT(LPTIMx->CR, LPTIM_CR_RSTARE);
 }
 
 /**
@@ -680,7 +673,7 @@ __STATIC_INLINE void LL_LPTIM_EnableResetAfterRead(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableResetAfterRead(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->CR, LPTIM_CR_RSTARE);
+	CLEAR_BIT(LPTIMx->CR, LPTIM_CR_RSTARE);
 }
 
 /**
@@ -691,7 +684,7 @@ __STATIC_INLINE void LL_LPTIM_DisableResetAfterRead(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledResetAfterRead(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->CR, LPTIM_CR_RSTARE) == LPTIM_CR_RSTARE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->CR, LPTIM_CR_RSTARE) == LPTIM_CR_RSTARE) ? 1UL : 0UL));
 }
 
 /**
@@ -706,7 +699,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledResetAfterRead(const LPTIM_TypeDef *L
   */
 __STATIC_INLINE void LL_LPTIM_ResetCounter(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->CR, LPTIM_CR_COUNTRST);
+	SET_BIT(LPTIMx->CR, LPTIM_CR_COUNTRST);
 }
 
 /**
@@ -721,7 +714,7 @@ __STATIC_INLINE void LL_LPTIM_ResetCounter(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_SetUpdateMode(LPTIM_TypeDef *LPTIMx, uint32_t UpdateMode)
 {
-  MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_PRELOAD, UpdateMode);
+	MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_PRELOAD, UpdateMode);
 }
 
 /**
@@ -734,7 +727,7 @@ __STATIC_INLINE void LL_LPTIM_SetUpdateMode(LPTIM_TypeDef *LPTIMx, uint32_t Upda
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetUpdateMode(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_PRELOAD));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_PRELOAD));
 }
 
 /**
@@ -752,7 +745,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetUpdateMode(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_SetAutoReload(LPTIM_TypeDef *LPTIMx, uint32_t AutoReload)
 {
-  MODIFY_REG(LPTIMx->ARR, LPTIM_ARR_ARR, AutoReload);
+	MODIFY_REG(LPTIMx->ARR, LPTIM_ARR_ARR, AutoReload);
 }
 
 /**
@@ -763,7 +756,7 @@ __STATIC_INLINE void LL_LPTIM_SetAutoReload(LPTIM_TypeDef *LPTIMx, uint32_t Auto
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetAutoReload(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->ARR, LPTIM_ARR_ARR));
+	return (uint32_t)(READ_BIT(LPTIMx->ARR, LPTIM_ARR_ARR));
 }
 
 /**
@@ -776,7 +769,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetAutoReload(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_SetRepetition(LPTIM_TypeDef *LPTIMx, uint32_t Repetition)
 {
-  MODIFY_REG(LPTIMx->RCR, LPTIM_RCR_REP, Repetition);
+	MODIFY_REG(LPTIMx->RCR, LPTIM_RCR_REP, Repetition);
 }
 
 /**
@@ -787,7 +780,7 @@ __STATIC_INLINE void LL_LPTIM_SetRepetition(LPTIM_TypeDef *LPTIMx, uint32_t Repe
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetRepetition(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->RCR, LPTIM_RCR_REP));
+	return (uint32_t)(READ_BIT(LPTIMx->RCR, LPTIM_RCR_REP));
 }
 
 /**
@@ -802,7 +795,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetRepetition(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_CC_EnableChannel(LPTIM_TypeDef *LPTIMx, uint32_t Channel)
 {
-  SET_BIT(LPTIMx->CCMR1, 0x1UL << LL_LPTIM_SHIFT_TAB_CCxE[Channel]);
+	SET_BIT(LPTIMx->CCMR1, 0x1UL << LL_LPTIM_SHIFT_TAB_CCxE[Channel]);
 }
 
 /**
@@ -817,7 +810,7 @@ __STATIC_INLINE void LL_LPTIM_CC_EnableChannel(LPTIM_TypeDef *LPTIMx, uint32_t C
   */
 __STATIC_INLINE void LL_LPTIM_CC_DisableChannel(LPTIM_TypeDef *LPTIMx, uint32_t Channel)
 {
-  CLEAR_BIT(LPTIMx->CCMR1, 0x1UL << LL_LPTIM_SHIFT_TAB_CCxE[Channel]);
+	CLEAR_BIT(LPTIMx->CCMR1, 0x1UL << LL_LPTIM_SHIFT_TAB_CCxE[Channel]);
 }
 
 /**
@@ -832,8 +825,8 @@ __STATIC_INLINE void LL_LPTIM_CC_DisableChannel(LPTIM_TypeDef *LPTIMx, uint32_t 
   */
 __STATIC_INLINE uint32_t LL_LPTIM_CC_IsEnabledChannel(const LPTIM_TypeDef *LPTIMx, uint32_t Channel)
 {
-  return ((READ_BIT(LPTIMx->CCMR1, 0x1UL << LL_LPTIM_SHIFT_TAB_CCxE[Channel]) ==                                       \
-           (0x1UL << LL_LPTIM_SHIFT_TAB_CCxE[Channel])) ? 1UL : 0UL);
+	return ((READ_BIT(LPTIMx->CCMR1, 0x1UL << LL_LPTIM_SHIFT_TAB_CCxE[Channel]) ==                                       \
+		 (0x1UL << LL_LPTIM_SHIFT_TAB_CCxE[Channel])) ? 1UL : 0UL);
 
 }
 
@@ -850,7 +843,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_CC_IsEnabledChannel(const LPTIM_TypeDef *LPTIM
   */
 __STATIC_INLINE void LL_LPTIM_OC_SetCompareCH1(LPTIM_TypeDef *LPTIMx, uint32_t CompareValue)
 {
-  MODIFY_REG(LPTIMx->CCR1, LPTIM_CCR1_CCR1, CompareValue);
+	MODIFY_REG(LPTIMx->CCR1, LPTIM_CCR1_CCR1, CompareValue);
 }
 
 /**
@@ -861,7 +854,7 @@ __STATIC_INLINE void LL_LPTIM_OC_SetCompareCH1(LPTIM_TypeDef *LPTIMx, uint32_t C
   */
 __STATIC_INLINE uint32_t LL_LPTIM_OC_GetCompareCH1(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CCR1, LPTIM_CCR1_CCR1));
+	return (uint32_t)(READ_BIT(LPTIMx->CCR1, LPTIM_CCR1_CCR1));
 }
 
 /**
@@ -877,7 +870,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_OC_GetCompareCH1(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_OC_SetCompareCH2(LPTIM_TypeDef *LPTIMx, uint32_t CompareValue)
 {
-  MODIFY_REG(LPTIMx->CCR2, LPTIM_CCR2_CCR2, CompareValue);
+	MODIFY_REG(LPTIMx->CCR2, LPTIM_CCR2_CCR2, CompareValue);
 }
 
 /**
@@ -888,7 +881,7 @@ __STATIC_INLINE void LL_LPTIM_OC_SetCompareCH2(LPTIM_TypeDef *LPTIMx, uint32_t C
   */
 __STATIC_INLINE uint32_t LL_LPTIM_OC_GetCompareCH2(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CCR2, LPTIM_CCR2_CCR2));
+	return (uint32_t)(READ_BIT(LPTIMx->CCR2, LPTIM_CCR2_CCR2));
 }
 
 /**
@@ -903,7 +896,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_OC_GetCompareCH2(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetCounter(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CNT, LPTIM_CNT_CNT));
+	return (uint32_t)(READ_BIT(LPTIMx->CNT, LPTIM_CNT_CNT));
 }
 
 /**
@@ -918,7 +911,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetCounter(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_SetCounterMode(LPTIM_TypeDef *LPTIMx, uint32_t CounterMode)
 {
-  MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_COUNTMODE, CounterMode);
+	MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_COUNTMODE, CounterMode);
 }
 
 /**
@@ -931,7 +924,7 @@ __STATIC_INLINE void LL_LPTIM_SetCounterMode(LPTIM_TypeDef *LPTIMx, uint32_t Cou
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetCounterMode(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_COUNTMODE));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_COUNTMODE));
 }
 
 /**
@@ -945,7 +938,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetCounterMode(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_SetWaveform(LPTIM_TypeDef *LPTIMx, uint32_t Waveform)
 {
-  MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_WAVE, Waveform);
+	MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_WAVE, Waveform);
 }
 
 /**
@@ -958,7 +951,7 @@ __STATIC_INLINE void LL_LPTIM_SetWaveform(LPTIM_TypeDef *LPTIMx, uint32_t Wavefo
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetWaveform(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_WAVE));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_WAVE));
 }
 
 /**
@@ -977,16 +970,15 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetWaveform(const LPTIM_TypeDef *LPTIMx)
 __STATIC_INLINE void LL_LPTIM_OC_SetPolarity(LPTIM_TypeDef *LPTIMx, uint32_t Channel, uint32_t Polarity)
 {
 #if defined(LPTIM4)
-  if (LPTIMx == LPTIM4)
-  {
-    MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_WAVPOL, ((Polarity >> LPTIM_CCMR1_CC1P_Pos) << LPTIM_CFGR_WAVPOL_Pos));
-  }
-  else
+
+	if (LPTIMx == LPTIM4)
+		MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_WAVPOL, ((Polarity >> LPTIM_CCMR1_CC1P_Pos) << LPTIM_CFGR_WAVPOL_Pos));
+	else
 #endif /* LPTIM4 */
-  {
-    MODIFY_REG(LPTIMx->CCMR1, (LPTIM_CCMR1_CC1P << LL_LPTIM_SHIFT_TAB_CCxP[Channel]),
-               (Polarity << LL_LPTIM_SHIFT_TAB_CCxP[Channel]));
-  }
+	{
+		MODIFY_REG(LPTIMx->CCMR1, (LPTIM_CCMR1_CC1P << LL_LPTIM_SHIFT_TAB_CCxP[Channel]),
+			   (Polarity << LL_LPTIM_SHIFT_TAB_CCxP[Channel]));
+	}
 }
 
 /**
@@ -1004,16 +996,15 @@ __STATIC_INLINE void LL_LPTIM_OC_SetPolarity(LPTIM_TypeDef *LPTIMx, uint32_t Cha
 __STATIC_INLINE uint32_t LL_LPTIM_OC_GetPolarity(const LPTIM_TypeDef *LPTIMx, uint32_t Channel)
 {
 #if defined(LPTIM4)
-  if (LPTIMx == LPTIM4)
-  {
-    return (uint32_t)((READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_WAVPOL) >> LPTIM_CFGR_WAVPOL_Pos) << LPTIM_CCMR1_CC1P_Pos);
-  }
-  else
+
+	if (LPTIMx == LPTIM4)
+		return (uint32_t)((READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_WAVPOL) >> LPTIM_CFGR_WAVPOL_Pos) << LPTIM_CCMR1_CC1P_Pos);
+	else
 #endif /* LPTIM4 */
-  {
-    return (uint32_t)(READ_BIT(LPTIMx->CCMR1, LPTIM_CCMR1_CC1P << LL_LPTIM_SHIFT_TAB_CCxP[Channel]) >>                 \
-                      LL_LPTIM_SHIFT_TAB_CCxP[Channel]);
-  }
+	{
+		return (uint32_t)(READ_BIT(LPTIMx->CCMR1, LPTIM_CCMR1_CC1P << LL_LPTIM_SHIFT_TAB_CCxP[Channel]) >>                 \
+				  LL_LPTIM_SHIFT_TAB_CCxP[Channel]);
+	}
 }
 
 /**
@@ -1038,7 +1029,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_OC_GetPolarity(const LPTIM_TypeDef *LPTIMx, ui
   */
 __STATIC_INLINE void LL_LPTIM_SetPrescaler(LPTIM_TypeDef *LPTIMx, uint32_t Prescaler)
 {
-  MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_PRESC, Prescaler);
+	MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_PRESC, Prescaler);
 }
 
 /**
@@ -1057,7 +1048,7 @@ __STATIC_INLINE void LL_LPTIM_SetPrescaler(LPTIM_TypeDef *LPTIMx, uint32_t Presc
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetPrescaler(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_PRESC));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_PRESC));
 }
 
 /**
@@ -1076,7 +1067,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetPrescaler(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_SetInput1Src(LPTIM_TypeDef *LPTIMx, uint32_t Src)
 {
-  MODIFY_REG(LPTIMx->CFGR2, LPTIM_CFGR2_IN1SEL, Src);
+	MODIFY_REG(LPTIMx->CFGR2, LPTIM_CFGR2_IN1SEL, Src);
 }
 
 /**
@@ -1089,7 +1080,7 @@ __STATIC_INLINE void LL_LPTIM_SetInput1Src(LPTIM_TypeDef *LPTIMx, uint32_t Src)
   */
 __STATIC_INLINE void LL_LPTIM_SetInput2Src(LPTIM_TypeDef *LPTIMx, uint32_t Src)
 {
-  MODIFY_REG(LPTIMx->CFGR2, LPTIM_CFGR2_IN2SEL, Src);
+	MODIFY_REG(LPTIMx->CFGR2, LPTIM_CFGR2_IN2SEL, Src);
 }
 
 /**
@@ -1133,7 +1124,7 @@ __STATIC_INLINE void LL_LPTIM_SetInput2Src(LPTIM_TypeDef *LPTIMx, uint32_t Src)
   */
 __STATIC_INLINE void LL_LPTIM_SetRemap(LPTIM_TypeDef *LPTIMx, uint32_t Src)
 {
-  MODIFY_REG(LPTIMx->CFGR2, LPTIM_CFGR2_IC1SEL | LPTIM_CFGR2_IC2SEL, Src);
+	MODIFY_REG(LPTIMx->CFGR2, LPTIM_CFGR2_IC1SEL | LPTIM_CFGR2_IC2SEL, Src);
 }
 
 /**
@@ -1152,8 +1143,8 @@ __STATIC_INLINE void LL_LPTIM_SetRemap(LPTIM_TypeDef *LPTIMx, uint32_t Src)
   */
 __STATIC_INLINE void LL_LPTIM_IC_SetPolarity(LPTIM_TypeDef *LPTIMx, uint32_t Channel, uint32_t Polarity)
 {
-  MODIFY_REG(LPTIMx->CCMR1, LPTIM_CCMR1_CC1P << LL_LPTIM_SHIFT_TAB_CCxP[Channel],
-             Polarity << LL_LPTIM_SHIFT_TAB_CCxP[Channel]);
+	MODIFY_REG(LPTIMx->CCMR1, LPTIM_CCMR1_CC1P << LL_LPTIM_SHIFT_TAB_CCxP[Channel],
+		   Polarity << LL_LPTIM_SHIFT_TAB_CCxP[Channel]);
 }
 
 /**
@@ -1171,8 +1162,8 @@ __STATIC_INLINE void LL_LPTIM_IC_SetPolarity(LPTIM_TypeDef *LPTIMx, uint32_t Cha
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IC_GetPolarity(const LPTIM_TypeDef *LPTIMx, uint32_t Channel)
 {
-  return (uint32_t)((READ_BIT(LPTIMx->CCMR1, LPTIM_CCMR1_CC1P << LL_LPTIM_SHIFT_TAB_CCxP[Channel])) >>                 \
-                    LL_LPTIM_SHIFT_TAB_CCxP[Channel]);
+	return (uint32_t)((READ_BIT(LPTIMx->CCMR1, LPTIM_CCMR1_CC1P << LL_LPTIM_SHIFT_TAB_CCxP[Channel])) >>                 \
+			  LL_LPTIM_SHIFT_TAB_CCxP[Channel]);
 
 }
 
@@ -1193,8 +1184,8 @@ __STATIC_INLINE uint32_t LL_LPTIM_IC_GetPolarity(const LPTIM_TypeDef *LPTIMx, ui
   */
 __STATIC_INLINE void LL_LPTIM_IC_SetFilter(LPTIM_TypeDef *LPTIMx, uint32_t Channel, uint32_t Filter)
 {
-  MODIFY_REG(LPTIMx->CCMR1, LPTIM_CCMR1_IC1F << LL_LPTIM_SHIFT_TAB_ICxF[Channel],
-             Filter << LL_LPTIM_SHIFT_TAB_ICxF[Channel]);
+	MODIFY_REG(LPTIMx->CCMR1, LPTIM_CCMR1_IC1F << LL_LPTIM_SHIFT_TAB_ICxF[Channel],
+		   Filter << LL_LPTIM_SHIFT_TAB_ICxF[Channel]);
 }
 
 /**
@@ -1213,8 +1204,8 @@ __STATIC_INLINE void LL_LPTIM_IC_SetFilter(LPTIM_TypeDef *LPTIMx, uint32_t Chann
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IC_GetFilter(const LPTIM_TypeDef *LPTIMx, uint32_t Channel)
 {
-  return (uint32_t)((READ_BIT(LPTIMx->CCMR1, LPTIM_CCMR1_IC1F << LL_LPTIM_SHIFT_TAB_ICxF[Channel])) >>                 \
-                    LL_LPTIM_SHIFT_TAB_ICxF[Channel]);
+	return (uint32_t)((READ_BIT(LPTIMx->CCMR1, LPTIM_CCMR1_IC1F << LL_LPTIM_SHIFT_TAB_ICxF[Channel])) >>                 \
+			  LL_LPTIM_SHIFT_TAB_ICxF[Channel]);
 }
 
 /**
@@ -1234,8 +1225,8 @@ __STATIC_INLINE uint32_t LL_LPTIM_IC_GetFilter(const LPTIM_TypeDef *LPTIMx, uint
   */
 __STATIC_INLINE void LL_LPTIM_IC_SetPrescaler(LPTIM_TypeDef *LPTIMx, uint32_t Channel, uint32_t Prescaler)
 {
-  MODIFY_REG(LPTIMx->CCMR1, LPTIM_CCMR1_IC1PSC << LL_LPTIM_SHIFT_TAB_ICxPSC[Channel],
-             Prescaler << LL_LPTIM_SHIFT_TAB_ICxPSC[Channel]);
+	MODIFY_REG(LPTIMx->CCMR1, LPTIM_CCMR1_IC1PSC << LL_LPTIM_SHIFT_TAB_ICxPSC[Channel],
+		   Prescaler << LL_LPTIM_SHIFT_TAB_ICxPSC[Channel]);
 }
 
 /**
@@ -1254,8 +1245,8 @@ __STATIC_INLINE void LL_LPTIM_IC_SetPrescaler(LPTIM_TypeDef *LPTIMx, uint32_t Ch
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IC_GetPrescaler(const LPTIM_TypeDef *LPTIMx, uint32_t Channel)
 {
-  return (uint32_t)((READ_BIT(LPTIMx->CCMR1, LPTIM_CCMR1_IC1PSC << LL_LPTIM_SHIFT_TAB_ICxPSC[Channel])) >>             \
-                    LL_LPTIM_SHIFT_TAB_ICxPSC[Channel]);
+	return (uint32_t)((READ_BIT(LPTIMx->CCMR1, LPTIM_CCMR1_IC1PSC << LL_LPTIM_SHIFT_TAB_ICxPSC[Channel])) >>             \
+			  LL_LPTIM_SHIFT_TAB_ICxPSC[Channel]);
 }
 
 /**
@@ -1273,7 +1264,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IC_GetPrescaler(const LPTIM_TypeDef *LPTIMx, u
   */
 __STATIC_INLINE void  LL_LPTIM_CC_SetChannelMode(LPTIM_TypeDef *LPTIMx, uint32_t Channel, uint32_t CCMode)
 {
-  SET_BIT(LPTIMx->CCMR1, CCMode << LL_LPTIM_SHIFT_TAB_CCxSEL[Channel]);
+	SET_BIT(LPTIMx->CCMR1, CCMode << LL_LPTIM_SHIFT_TAB_CCxSEL[Channel]);
 }
 
 /**
@@ -1290,8 +1281,8 @@ __STATIC_INLINE void  LL_LPTIM_CC_SetChannelMode(LPTIM_TypeDef *LPTIMx, uint32_t
   */
 __STATIC_INLINE uint32_t  LL_LPTIM_CC_GetChannelMode(const LPTIM_TypeDef *LPTIMx, uint32_t Channel)
 {
-  return (uint32_t)((READ_BIT(LPTIMx->CCMR1, LPTIM_CCMR1_CC1SEL << LL_LPTIM_SHIFT_TAB_CCxSEL[Channel])) >>             \
-                    LL_LPTIM_SHIFT_TAB_CCxSEL[Channel]);
+	return (uint32_t)((READ_BIT(LPTIMx->CCMR1, LPTIM_CCMR1_CC1SEL << LL_LPTIM_SHIFT_TAB_CCxSEL[Channel])) >>             \
+			  LL_LPTIM_SHIFT_TAB_CCxSEL[Channel]);
 }
 
 /**
@@ -1305,7 +1296,7 @@ __STATIC_INLINE uint32_t  LL_LPTIM_CC_GetChannelMode(const LPTIM_TypeDef *LPTIMx
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IC_GetCaptureCH1(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CCR1, LPTIM_CCR1_CCR1));
+	return (uint32_t)(READ_BIT(LPTIMx->CCR1, LPTIM_CCR1_CCR1));
 }
 
 /**
@@ -1319,7 +1310,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IC_GetCaptureCH1(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IC_GetCaptureCH2(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CCR2, LPTIM_CCR2_CCR2));
+	return (uint32_t)(READ_BIT(LPTIMx->CCR2, LPTIM_CCR2_CCR2));
 }
 
 /**
@@ -1344,7 +1335,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IC_GetCaptureCH2(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableTimeout(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->CFGR, LPTIM_CFGR_TIMOUT);
+	SET_BIT(LPTIMx->CFGR, LPTIM_CFGR_TIMOUT);
 }
 
 /**
@@ -1358,7 +1349,7 @@ __STATIC_INLINE void LL_LPTIM_EnableTimeout(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableTimeout(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->CFGR, LPTIM_CFGR_TIMOUT);
+	CLEAR_BIT(LPTIMx->CFGR, LPTIM_CFGR_TIMOUT);
 }
 
 /**
@@ -1369,7 +1360,7 @@ __STATIC_INLINE void LL_LPTIM_DisableTimeout(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledTimeout(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_TIMOUT) == LPTIM_CFGR_TIMOUT) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_TIMOUT) == LPTIM_CFGR_TIMOUT) ? 1UL : 0UL));
 }
 
 /**
@@ -1381,7 +1372,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledTimeout(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_TrigSw(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->CFGR, LPTIM_CFGR_TRIGEN);
+	CLEAR_BIT(LPTIMx->CFGR, LPTIM_CFGR_TRIGEN);
 }
 
 /**
@@ -1418,7 +1409,7 @@ __STATIC_INLINE void LL_LPTIM_TrigSw(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_ConfigTrigger(LPTIM_TypeDef *LPTIMx, uint32_t Source, uint32_t Filter, uint32_t Polarity)
 {
-  MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_TRIGSEL | LPTIM_CFGR_TRGFLT | LPTIM_CFGR_TRIGEN, Source | Filter | Polarity);
+	MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_TRIGSEL | LPTIM_CFGR_TRGFLT | LPTIM_CFGR_TRIGEN, Source | Filter | Polarity);
 }
 
 /**
@@ -1440,7 +1431,7 @@ __STATIC_INLINE void LL_LPTIM_ConfigTrigger(LPTIM_TypeDef *LPTIMx, uint32_t Sour
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetTriggerSource(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_TRIGSEL));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_TRIGSEL));
 }
 
 /**
@@ -1455,7 +1446,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetTriggerSource(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetTriggerFilter(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_TRGFLT));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_TRGFLT));
 }
 
 /**
@@ -1469,7 +1460,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetTriggerFilter(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetTriggerPolarity(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_TRIGEN));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_TRIGEN));
 }
 
 /**
@@ -1492,7 +1483,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetTriggerPolarity(const LPTIM_TypeDef *LPTIMx
   */
 __STATIC_INLINE void LL_LPTIM_SetClockSource(LPTIM_TypeDef *LPTIMx, uint32_t ClockSource)
 {
-  MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_CKSEL, ClockSource);
+	MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_CKSEL, ClockSource);
 }
 
 /**
@@ -1505,7 +1496,7 @@ __STATIC_INLINE void LL_LPTIM_SetClockSource(LPTIM_TypeDef *LPTIMx, uint32_t Clo
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetClockSource(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_CKSEL));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_CKSEL));
 }
 
 /**
@@ -1533,7 +1524,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetClockSource(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_ConfigClock(LPTIM_TypeDef *LPTIMx, uint32_t ClockFilter, uint32_t ClockPolarity)
 {
-  MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_CKFLT | LPTIM_CFGR_CKPOL, ClockFilter | ClockPolarity);
+	MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_CKFLT | LPTIM_CFGR_CKPOL, ClockFilter | ClockPolarity);
 }
 
 /**
@@ -1547,7 +1538,7 @@ __STATIC_INLINE void LL_LPTIM_ConfigClock(LPTIM_TypeDef *LPTIMx, uint32_t ClockF
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetClockPolarity(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_CKPOL));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_CKPOL));
 }
 
 /**
@@ -1562,7 +1553,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetClockPolarity(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetClockFilter(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_CKFLT));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_CKFLT));
 }
 
 /**
@@ -1586,7 +1577,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetClockFilter(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_SetEncoderMode(LPTIM_TypeDef *LPTIMx, uint32_t EncoderMode)
 {
-  MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_CKPOL, EncoderMode);
+	MODIFY_REG(LPTIMx->CFGR, LPTIM_CFGR_CKPOL, EncoderMode);
 }
 
 /**
@@ -1600,7 +1591,7 @@ __STATIC_INLINE void LL_LPTIM_SetEncoderMode(LPTIM_TypeDef *LPTIMx, uint32_t Enc
   */
 __STATIC_INLINE uint32_t LL_LPTIM_GetEncoderMode(const LPTIM_TypeDef *LPTIMx)
 {
-  return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_CKPOL));
+	return (uint32_t)(READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_CKPOL));
 }
 
 /**
@@ -1616,7 +1607,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_GetEncoderMode(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableEncoderMode(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->CFGR, LPTIM_CFGR_ENC);
+	SET_BIT(LPTIMx->CFGR, LPTIM_CFGR_ENC);
 }
 
 /**
@@ -1628,7 +1619,7 @@ __STATIC_INLINE void LL_LPTIM_EnableEncoderMode(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableEncoderMode(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->CFGR, LPTIM_CFGR_ENC);
+	CLEAR_BIT(LPTIMx->CFGR, LPTIM_CFGR_ENC);
 }
 
 /**
@@ -1639,7 +1630,7 @@ __STATIC_INLINE void LL_LPTIM_DisableEncoderMode(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledEncoderMode(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_ENC) == LPTIM_CFGR_ENC) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->CFGR, LPTIM_CFGR_ENC) == LPTIM_CFGR_ENC) ? 1UL : 0UL));
 }
 
 /**
@@ -1658,7 +1649,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledEncoderMode(const LPTIM_TypeDef *LPTI
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_CC1(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_CC1CF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_CC1CF);
 }
 
 /**
@@ -1669,7 +1660,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_CC1(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CC1(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CC1IF) == LPTIM_ISR_CC1IF) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CC1IF) == LPTIM_ISR_CC1IF) ? 1UL : 0UL));
 }
 
 /**
@@ -1680,7 +1671,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CC1(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_CC2(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_CC2CF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_CC2CF);
 }
 
 /**
@@ -1691,7 +1682,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_CC2(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CC2(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CC2IF) == LPTIM_ISR_CC2IF) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CC2IF) == LPTIM_ISR_CC2IF) ? 1UL : 0UL));
 }
 
 /**
@@ -1702,7 +1693,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CC2(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_CC1O(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_CC1OCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_CC1OCF);
 }
 
 /**
@@ -1713,7 +1704,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_CC1O(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CC1O(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CC1OF) == LPTIM_ISR_CC1OF) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CC1OF) == LPTIM_ISR_CC1OF) ? 1UL : 0UL));
 }
 
 /**
@@ -1724,7 +1715,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CC1O(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_CC2O(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_CC2OCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_CC2OCF);
 }
 
 /**
@@ -1735,7 +1726,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_CC2O(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CC2O(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CC2OF) == LPTIM_ISR_CC2OF) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CC2OF) == LPTIM_ISR_CC2OF) ? 1UL : 0UL));
 }
 /**
   * @brief  Clear the autoreload match flag (ARRMCF)
@@ -1745,7 +1736,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CC2O(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_ARRM(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_ARRMCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_ARRMCF);
 }
 
 /**
@@ -1756,7 +1747,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_ARRM(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_ARRM(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_ARRM) == LPTIM_ISR_ARRM) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_ARRM) == LPTIM_ISR_ARRM) ? 1UL : 0UL));
 }
 
 /**
@@ -1767,7 +1758,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_ARRM(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_EXTTRIG(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_EXTTRIGCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_EXTTRIGCF);
 }
 
 /**
@@ -1778,7 +1769,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_EXTTRIG(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_EXTTRIG(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_EXTTRIG) == LPTIM_ISR_EXTTRIG) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_EXTTRIG) == LPTIM_ISR_EXTTRIG) ? 1UL : 0UL));
 }
 
 /**
@@ -1789,7 +1780,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_EXTTRIG(const LPTIM_TypeDef *LPTI
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_CMP1OK(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_CMP1OKCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_CMP1OKCF);
 }
 
 /**
@@ -1801,7 +1792,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_CMP1OK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CMP1OK(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CMP1OK) == LPTIM_ISR_CMP1OK) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CMP1OK) == LPTIM_ISR_CMP1OK) ? 1UL : 0UL));
 }
 
 /**
@@ -1812,7 +1803,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CMP1OK(const LPTIM_TypeDef *LPTIM
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_CMP2OK(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_CMP2OKCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_CMP2OKCF);
 }
 
 /**
@@ -1824,7 +1815,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_CMP2OK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CMP2OK(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CMP2OK) == LPTIM_ISR_CMP2OK) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_CMP2OK) == LPTIM_ISR_CMP2OK) ? 1UL : 0UL));
 }
 
 /**
@@ -1835,7 +1826,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_CMP2OK(const LPTIM_TypeDef *LPTIM
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_DIEROK(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_DIEROKCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_DIEROKCF);
 }
 
 /**
@@ -1847,7 +1838,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_DIEROK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_DIEROK(const LPTIM_TypeDef *LPTIMx)
 {
-  return ((READ_BIT(LPTIMx->ISR, LPTIM_ISR_DIEROK) == (LPTIM_ISR_DIEROK)) ? 1UL : 0UL);
+	return ((READ_BIT(LPTIMx->ISR, LPTIM_ISR_DIEROK) == (LPTIM_ISR_DIEROK)) ? 1UL : 0UL);
 }
 
 /**
@@ -1858,7 +1849,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_DIEROK(const LPTIM_TypeDef *LPTIM
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_ARROK(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_ARROKCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_ARROKCF);
 }
 
 /**
@@ -1870,7 +1861,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_ARROK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_ARROK(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_ARROK) == LPTIM_ISR_ARROK) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_ARROK) == LPTIM_ISR_ARROK) ? 1UL : 0UL));
 }
 
 /**
@@ -1881,7 +1872,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_ARROK(const LPTIM_TypeDef *LPTIMx
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_UP(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_UPCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_UPCF);
 }
 
 /**
@@ -1893,7 +1884,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_UP(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_UP(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_UP) == LPTIM_ISR_UP) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_UP) == LPTIM_ISR_UP) ? 1UL : 0UL));
 }
 
 /**
@@ -1904,7 +1895,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_UP(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_DOWN(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_DOWNCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_DOWNCF);
 }
 
 /**
@@ -1916,7 +1907,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_DOWN(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_DOWN(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_DOWN) == LPTIM_ISR_DOWN) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->ISR, LPTIM_ISR_DOWN) == LPTIM_ISR_DOWN) ? 1UL : 0UL));
 }
 
 /**
@@ -1927,7 +1918,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_DOWN(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_REPOK(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_REPOKCF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_REPOKCF);
 }
 
 /**
@@ -1939,7 +1930,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_REPOK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_REPOK(const LPTIM_TypeDef *LPTIMx)
 {
-  return ((READ_BIT(LPTIMx->ISR, LPTIM_ISR_REPOK) == (LPTIM_ISR_REPOK)) ? 1UL : 0UL);
+	return ((READ_BIT(LPTIMx->ISR, LPTIM_ISR_REPOK) == (LPTIM_ISR_REPOK)) ? 1UL : 0UL);
 }
 
 /**
@@ -1950,7 +1941,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_REPOK(const LPTIM_TypeDef *LPTIMx
   */
 __STATIC_INLINE void LL_LPTIM_ClearFlag_UE(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->ICR, LPTIM_ICR_UECF);
+	SET_BIT(LPTIMx->ICR, LPTIM_ICR_UECF);
 }
 
 /**
@@ -1961,7 +1952,7 @@ __STATIC_INLINE void LL_LPTIM_ClearFlag_UE(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_UE(const LPTIM_TypeDef *LPTIMx)
 {
-  return ((READ_BIT(LPTIMx->ISR, LPTIM_ISR_UE) == (LPTIM_ISR_UE)) ? 1UL : 0UL);
+	return ((READ_BIT(LPTIMx->ISR, LPTIM_ISR_UE) == (LPTIM_ISR_UE)) ? 1UL : 0UL);
 }
 
 /**
@@ -1979,7 +1970,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsActiveFlag_UE(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_CC1(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC1IE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC1IE);
 }
 
 /**
@@ -1990,7 +1981,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_CC1(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_CC1(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC1IE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC1IE);
 }
 
 /**
@@ -2001,7 +1992,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_CC1(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CC1(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC1IE) == LPTIM_DIER_CC1IE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC1IE) == LPTIM_DIER_CC1IE) ? 1UL : 0UL));
 }
 
 /**
@@ -2012,7 +2003,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CC1(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_CC2(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC2IE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC2IE);
 }
 
 /**
@@ -2023,7 +2014,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_CC2(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_CC2(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC2IE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC2IE);
 }
 
 /**
@@ -2034,7 +2025,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_CC2(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CC2(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC2IE) == LPTIM_DIER_CC2IE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC2IE) == LPTIM_DIER_CC2IE) ? 1UL : 0UL));
 }
 
 /**
@@ -2045,7 +2036,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CC2(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_CC1O(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC1OIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC1OIE);
 }
 
 /**
@@ -2056,7 +2047,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_CC1O(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_CC1O(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC1OIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC1OIE);
 }
 
 /**
@@ -2067,7 +2058,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_CC1O(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CC1O(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC1OIE) == LPTIM_DIER_CC1OIE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC1OIE) == LPTIM_DIER_CC1OIE) ? 1UL : 0UL));
 }
 
 /**
@@ -2078,7 +2069,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CC1O(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_CC2O(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC2OIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC2OIE);
 }
 
 /**
@@ -2089,7 +2080,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_CC2O(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_CC2O(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC2OIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC2OIE);
 }
 
 /**
@@ -2100,7 +2091,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_CC2O(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CC2O(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC2OIE) == LPTIM_DIER_CC2OIE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC2OIE) == LPTIM_DIER_CC2OIE) ? 1UL : 0UL));
 }
 
 /**
@@ -2111,7 +2102,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CC2O(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_ARRM(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_ARRMIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_ARRMIE);
 }
 
 /**
@@ -2122,7 +2113,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_ARRM(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_ARRM(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_ARRMIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_ARRMIE);
 }
 
 /**
@@ -2133,7 +2124,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_ARRM(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_ARRM(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_ARRMIE) == LPTIM_DIER_ARRMIE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_ARRMIE) == LPTIM_DIER_ARRMIE) ? 1UL : 0UL));
 }
 
 /**
@@ -2144,7 +2135,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_ARRM(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_EXTTRIG(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_EXTTRIGIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_EXTTRIGIE);
 }
 
 /**
@@ -2155,7 +2146,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_EXTTRIG(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_EXTTRIG(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_EXTTRIGIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_EXTTRIGIE);
 }
 
 /**
@@ -2166,7 +2157,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_EXTTRIG(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_EXTTRIG(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_EXTTRIGIE) == LPTIM_DIER_EXTTRIGIE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_EXTTRIGIE) == LPTIM_DIER_EXTTRIGIE) ? 1UL : 0UL));
 }
 
 /**
@@ -2177,7 +2168,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_EXTTRIG(const LPTIM_TypeDef *LPTIM
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_CMP1OK(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_CMP1OKIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_CMP1OKIE);
 }
 
 /**
@@ -2188,7 +2179,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_CMP1OK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_CMP1OK(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CMP1OKIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CMP1OKIE);
 }
 
 /**
@@ -2199,7 +2190,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_CMP1OK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CMP1OK(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CMP1OKIE) == LPTIM_DIER_CMP1OKIE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CMP1OKIE) == LPTIM_DIER_CMP1OKIE) ? 1UL : 0UL));
 }
 
 /**
@@ -2210,7 +2201,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CMP1OK(const LPTIM_TypeDef *LPTIMx
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_CMP2OK(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_CMP2OKIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_CMP2OKIE);
 }
 
 /**
@@ -2221,7 +2212,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_CMP2OK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_CMP2OK(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CMP2OKIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CMP2OKIE);
 }
 
 /**
@@ -2232,7 +2223,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_CMP2OK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CMP2OK(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CMP2OKIE) == LPTIM_DIER_CMP2OKIE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CMP2OKIE) == LPTIM_DIER_CMP2OKIE) ? 1UL : 0UL));
 }
 
 /**
@@ -2243,7 +2234,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_CMP2OK(const LPTIM_TypeDef *LPTIMx
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_ARROK(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_ARROKIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_ARROKIE);
 }
 
 /**
@@ -2254,7 +2245,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_ARROK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_ARROK(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_ARROKIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_ARROKIE);
 }
 
 /**
@@ -2265,7 +2256,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_ARROK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_ARROK(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_ARROKIE) == LPTIM_DIER_ARROKIE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_ARROKIE) == LPTIM_DIER_ARROKIE) ? 1UL : 0UL));
 }
 
 /**
@@ -2276,7 +2267,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_ARROK(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_UP(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_UPIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_UPIE);
 }
 
 /**
@@ -2287,7 +2278,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_UP(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_UP(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_UPIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_UPIE);
 }
 
 /**
@@ -2298,7 +2289,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_UP(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_UP(const LPTIM_TypeDef *LPTIMx)
 {
-  return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_UPIE) == LPTIM_DIER_UPIE) ? 1UL : 0UL));
+	return (((READ_BIT(LPTIMx->DIER, LPTIM_DIER_UPIE) == LPTIM_DIER_UPIE) ? 1UL : 0UL));
 }
 
 /**
@@ -2309,7 +2300,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_UP(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_DOWN(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_DOWNIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_DOWNIE);
 }
 
 /**
@@ -2320,7 +2311,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_DOWN(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_DOWN(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_DOWNIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_DOWNIE);
 }
 
 /**
@@ -2331,7 +2322,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_DOWN(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_DOWN(const LPTIM_TypeDef *LPTIMx)
 {
-  return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_DOWNIE) == LPTIM_DIER_DOWNIE) ? 1UL : 0UL);
+	return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_DOWNIE) == LPTIM_DIER_DOWNIE) ? 1UL : 0UL);
 }
 
 /**
@@ -2342,7 +2333,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_DOWN(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_REPOK(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_REPOKIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_REPOKIE);
 }
 
 /**
@@ -2353,7 +2344,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_REPOK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_REPOK(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_REPOKIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_REPOKIE);
 }
 
 /**
@@ -2364,7 +2355,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_REPOK(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_REPOK(const LPTIM_TypeDef *LPTIMx)
 {
-  return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_REPOKIE) == (LPTIM_DIER_REPOKIE)) ? 1UL : 0UL);
+	return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_REPOKIE) == (LPTIM_DIER_REPOKIE)) ? 1UL : 0UL);
 }
 
 /**
@@ -2375,7 +2366,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_REPOK(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableIT_UE(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_UEIE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_UEIE);
 }
 
 /**
@@ -2386,7 +2377,7 @@ __STATIC_INLINE void LL_LPTIM_EnableIT_UE(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableIT_UE(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_UEIE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_UEIE);
 }
 
 /**
@@ -2397,7 +2388,7 @@ __STATIC_INLINE void LL_LPTIM_DisableIT_UE(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_UE(const LPTIM_TypeDef *LPTIMx)
 {
-  return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_UEIE) == (LPTIM_DIER_UEIE)) ? 1UL : 0UL);
+	return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_UEIE) == (LPTIM_DIER_UEIE)) ? 1UL : 0UL);
 }
 /**
   * @}
@@ -2415,7 +2406,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledIT_UE(const LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_EnableDMAReq_UPDATE(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_UEDE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_UEDE);
 }
 
 /**
@@ -2426,7 +2417,7 @@ __STATIC_INLINE void LL_LPTIM_EnableDMAReq_UPDATE(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableDMAReq_UPDATE(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_UEDE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_UEDE);
 }
 
 /**
@@ -2437,7 +2428,7 @@ __STATIC_INLINE void LL_LPTIM_DisableDMAReq_UPDATE(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledDMAReq_UPDATE(const LPTIM_TypeDef *LPTIMx)
 {
-  return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_UEDE) == (LPTIM_DIER_UEDE)) ? 1UL : 0UL);
+	return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_UEDE) == (LPTIM_DIER_UEDE)) ? 1UL : 0UL);
 }
 
 /**
@@ -2448,7 +2439,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledDMAReq_UPDATE(const LPTIM_TypeDef *LP
   */
 __STATIC_INLINE void LL_LPTIM_EnableDMAReq_CC1(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC1DE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC1DE);
 }
 
 /**
@@ -2459,7 +2450,7 @@ __STATIC_INLINE void LL_LPTIM_EnableDMAReq_CC1(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableDMAReq_CC1(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC1DE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC1DE);
 }
 
 /**
@@ -2470,7 +2461,7 @@ __STATIC_INLINE void LL_LPTIM_DisableDMAReq_CC1(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledDMAReq_CC1(const LPTIM_TypeDef *LPTIMx)
 {
-  return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC1DE) == (LPTIM_DIER_CC1DE)) ? 1UL : 0UL);
+	return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC1DE) == (LPTIM_DIER_CC1DE)) ? 1UL : 0UL);
 }
 
 /**
@@ -2481,7 +2472,7 @@ __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledDMAReq_CC1(const LPTIM_TypeDef *LPTIM
   */
 __STATIC_INLINE void LL_LPTIM_EnableDMAReq_CC2(LPTIM_TypeDef *LPTIMx)
 {
-  SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC2DE);
+	SET_BIT(LPTIMx->DIER, LPTIM_DIER_CC2DE);
 }
 
 /**
@@ -2492,7 +2483,7 @@ __STATIC_INLINE void LL_LPTIM_EnableDMAReq_CC2(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE void LL_LPTIM_DisableDMAReq_CC2(LPTIM_TypeDef *LPTIMx)
 {
-  CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC2DE);
+	CLEAR_BIT(LPTIMx->DIER, LPTIM_DIER_CC2DE);
 }
 
 /**
@@ -2503,7 +2494,7 @@ __STATIC_INLINE void LL_LPTIM_DisableDMAReq_CC2(LPTIM_TypeDef *LPTIMx)
   */
 __STATIC_INLINE uint32_t LL_LPTIM_IsEnabledDMAReq_CC2(const LPTIM_TypeDef *LPTIMx)
 {
-  return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC2DE) == (LPTIM_DIER_CC2DE)) ? 1UL : 0UL);
+	return ((READ_BIT(LPTIMx->DIER, LPTIM_DIER_CC2DE) == (LPTIM_DIER_CC2DE)) ? 1UL : 0UL);
 }
 
 /**

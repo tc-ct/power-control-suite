@@ -44,13 +44,12 @@ extern "C" {
 /**
   * @brief  PWR PVD configuration structure definition
   */
-typedef struct
-{
-  uint32_t PVDLevel; /*!< Specifies the PVD detection level.
+typedef struct {
+	uint32_t PVDLevel; /*!< Specifies the PVD detection level.
                           This parameter can be a value of
                           @ref PWR_PVD_Detection_Level.                       */
 
-  uint32_t Mode;     /*!< Specifies the operating mode for the selected pins.
+	uint32_t Mode;     /*!< Specifies the operating mode for the selected pins.
                           This parameter can be a value of @ref PWR_PVD_Mode. */
 } PWR_PVDTypeDef;
 /**

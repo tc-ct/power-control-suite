@@ -42,39 +42,38 @@
 
 void arm_nn_add_q7(const q7_t *input, q31_t *output, uint32_t block_size)
 {
-    uint32_t block_count;
-    q31_t result = 0;
+	uint32_t block_count;
+	q31_t result = 0;
 #if defined(ARM_MATH_DSP) && !defined(ARM_MATH_MVEI)
-    /* Loop unrolling: Compute 4 outputs at a time */
-    block_count = block_size >> 2U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	block_count = block_size >> 2U;
 
-    while (block_count > 0U)
-    {
-        const int32_t mult_q15x2 = (1UL << 16) | 1UL;
-        q31_t in_q7x4 = arm_nn_read_q7x4_ia(&input);
-        q31_t temp_q15x2 = __SXTAB16(__SXTB16(in_q7x4), __ROR((uint32_t)in_q7x4, 8));
+	while (block_count > 0U) {
+		const int32_t mult_q15x2 = (1UL << 16) | 1UL;
+		q31_t in_q7x4 = arm_nn_read_q7x4_ia(&input);
+		q31_t temp_q15x2 = __SXTAB16(__SXTB16(in_q7x4), __ROR((uint32_t)in_q7x4, 8));
 
-        result = __SMLAD(temp_q15x2, mult_q15x2, result);
+		result = __SMLAD(temp_q15x2, mult_q15x2, result);
 
-        /* Decrement loop counter */
-        block_count--;
-    }
+		/* Decrement loop counter */
+		block_count--;
+	}
 
-    /* Loop unrolling: Compute remaining outputs */
-    block_count = block_size & 0x3;
+	/* Loop unrolling: Compute remaining outputs */
+	block_count = block_size & 0x3;
 #else
-    block_count = block_size;
+	block_count = block_size;
 #endif
-    while (block_count > 0U)
-    {
-        /* Add and store result in destination buffer. */
-        result += *input++;
 
-        /* Decrement loop counter */
-        block_count--;
-    }
+	while (block_count > 0U) {
+		/* Add and store result in destination buffer. */
+		result += *input++;
 
-    *output = result;
+		/* Decrement loop counter */
+		block_count--;
+	}
+
+	*output = result;
 }
 
 /**

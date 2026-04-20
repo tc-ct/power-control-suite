@@ -51,367 +51,370 @@
 #include "arm_helium_utils.h"
 
 void arm_mat_vec_mult_q7(
-    const arm_matrix_instance_q7 * pSrcMat,
-    const q7_t     *pSrcVec,
-    q7_t           *pDstVec)
+	const arm_matrix_instance_q7 * pSrcMat,
+	const q7_t     *pSrcVec,
+	q7_t           *pDstVec)
 {
-    const q7_t *pMatSrc = pSrcMat->pData;
-    const q7_t *pMat0, *pMat1;
-    uint32_t     numRows = pSrcMat->numRows;
-    uint32_t     numCols = pSrcMat->numCols;
-    q7_t       *px;
-    int32_t      row;
-    uint16_t     blkCnt;           /* loop counters */
+	const q7_t *pMatSrc = pSrcMat->pData;
+	const q7_t *pMat0, *pMat1;
+	uint32_t     numRows = pSrcMat->numRows;
+	uint32_t     numCols = pSrcMat->numCols;
+	q7_t       *px;
+	int32_t      row;
+	uint16_t     blkCnt;           /* loop counters */
 
-    row = numRows;
-    px = pDstVec;
+	row = numRows;
+	px = pDstVec;
 
-    /*
-     * compute 4x64-bit accumulators per loop
-     */
-    while (row >= 4)
-    {
-        q7_t const *pMat0Vec, *pMat1Vec, *pMat2Vec, *pMat3Vec, *pVec;
-        const q7_t  *pMat2, *pMat3;
-        q7_t const  *pSrcVecPtr = pSrcVec;
-        q31_t        acc0, acc1, acc2, acc3;
-        q7x16_t      vecMatA0, vecMatA1, vecMatA2, vecMatA3, vecIn;
+	/*
+	 * compute 4x64-bit accumulators per loop
+	 */
+	while (row >= 4) {
+		q7_t const *pMat0Vec, *pMat1Vec, *pMat2Vec, *pMat3Vec, *pVec;
+		const q7_t  *pMat2, *pMat3;
+		q7_t const  *pSrcVecPtr = pSrcVec;
+		q31_t        acc0, acc1, acc2, acc3;
+		q7x16_t      vecMatA0, vecMatA1, vecMatA2, vecMatA3, vecIn;
 
-        pVec = pSrcVec;
-        /*
-         * Initialize the pointer pIn1 to point to the starting address of the column being processed
-         */
-        pMat0 = pMatSrc;
-        pMat1 = pMat0 + numCols;
-        pMat2 = pMat1 + numCols;
-        pMat3 = pMat2 + numCols;
+		pVec = pSrcVec;
+		/*
+		 * Initialize the pointer pIn1 to point to the starting address of the column being processed
+		 */
+		pMat0 = pMatSrc;
+		pMat1 = pMat0 + numCols;
+		pMat2 = pMat1 + numCols;
+		pMat3 = pMat2 + numCols;
 
-        acc0 = 0L;
-        acc1 = 0L;
-        acc2 = 0L;
-        acc3 = 0L;
+		acc0 = 0L;
+		acc1 = 0L;
+		acc2 = 0L;
+		acc3 = 0L;
 
-        pMat0Vec = pMat0;
-        pMat1Vec = pMat1;
-        pMat2Vec = pMat2;
-        pMat3Vec = pMat3;
-        pVec = pSrcVecPtr;
+		pMat0Vec = pMat0;
+		pMat1Vec = pMat1;
+		pMat2Vec = pMat2;
+		pMat3Vec = pMat3;
+		pVec = pSrcVecPtr;
 
-        blkCnt = numCols >> 4;
-        while (blkCnt > 0U)
-        {
+		blkCnt = numCols >> 4;
 
-            vecMatA0 = vld1q(pMat0Vec); 
-            pMat0Vec += 16;
-            vecMatA1 = vld1q(pMat1Vec); 
-            pMat1Vec += 16;
-            vecMatA2 = vld1q(pMat2Vec); 
-            pMat2Vec += 16;
-            vecMatA3 = vld1q(pMat3Vec); 
-            pMat3Vec += 16;
-            vecIn = vld1q(pVec);        
-            pVec += 16;
+		while (blkCnt > 0U) {
 
-            acc0 = vmladavaq(acc0, vecIn, vecMatA0);
-            acc1 = vmladavaq(acc1, vecIn, vecMatA1);
-            acc2 = vmladavaq(acc2, vecIn, vecMatA2);
-            acc3 = vmladavaq(acc3, vecIn, vecMatA3);
+			vecMatA0 = vld1q(pMat0Vec);
+			pMat0Vec += 16;
+			vecMatA1 = vld1q(pMat1Vec);
+			pMat1Vec += 16;
+			vecMatA2 = vld1q(pMat2Vec);
+			pMat2Vec += 16;
+			vecMatA3 = vld1q(pMat3Vec);
+			pMat3Vec += 16;
+			vecIn = vld1q(pVec);
+			pVec += 16;
 
-            blkCnt--;
-        }
-        /*
-         * tail
-         * (will be merged thru tail predication)
-         */
-        blkCnt = numCols & 0xF;
-        if (blkCnt > 0U)
-        {
-            mve_pred16_t p0 = vctp8q(blkCnt);
+			acc0 = vmladavaq(acc0, vecIn, vecMatA0);
+			acc1 = vmladavaq(acc1, vecIn, vecMatA1);
+			acc2 = vmladavaq(acc2, vecIn, vecMatA2);
+			acc3 = vmladavaq(acc3, vecIn, vecMatA3);
 
-            vecMatA0 = vld1q(pMat0Vec);
-            vecMatA1 = vld1q(pMat1Vec);
-            vecMatA2 = vld1q(pMat2Vec);
-            vecMatA3 = vld1q(pMat3Vec);
-            vecIn = vldrbq_z_s8(pVec, p0);
+			blkCnt--;
+		}
 
-            acc0 = vmladavaq(acc0, vecIn, vecMatA0);
-            acc1 = vmladavaq(acc1, vecIn, vecMatA1);
-            acc2 = vmladavaq(acc2, vecIn, vecMatA2);
-            acc3 = vmladavaq(acc3, vecIn, vecMatA3);
-        }
+		/*
+		 * tail
+		 * (will be merged thru tail predication)
+		 */
+		blkCnt = numCols & 0xF;
 
-        *px++ = __SSAT(acc0 >> 7, 8);
-        *px++ = __SSAT(acc1 >> 7, 8);
-        *px++ = __SSAT(acc2 >> 7, 8);
-        *px++ = __SSAT(acc3 >> 7, 8);
+		if (blkCnt > 0U) {
+			mve_pred16_t p0 = vctp8q(blkCnt);
 
-        pMatSrc += numCols * 4;
-        /*
-         * Decrement the row loop counter
-         */
-        row -= 4;
-    }
+			vecMatA0 = vld1q(pMat0Vec);
+			vecMatA1 = vld1q(pMat1Vec);
+			vecMatA2 = vld1q(pMat2Vec);
+			vecMatA3 = vld1q(pMat3Vec);
+			vecIn = vldrbq_z_s8(pVec, p0);
 
-    /*
-     * process any remaining rows pair
-     */
-    if (row >= 2)
-    {
-        q7_t const  *pMat0Vec, *pMat1Vec, *pVec;
-        q7_t const  *pSrcVecPtr = pSrcVec;
-        q31_t         acc0, acc1;
-        q7x16_t     vecMatA0, vecMatA1, vecIn;
+			acc0 = vmladavaq(acc0, vecIn, vecMatA0);
+			acc1 = vmladavaq(acc1, vecIn, vecMatA1);
+			acc2 = vmladavaq(acc2, vecIn, vecMatA2);
+			acc3 = vmladavaq(acc3, vecIn, vecMatA3);
+		}
 
-        /*
-         * For every row wise process, the pInVec pointer is set
-         * to the starting address of the vector
-         */
-        pVec = pSrcVec;
+		*px++ = __SSAT(acc0 >> 7, 8);
+		*px++ = __SSAT(acc1 >> 7, 8);
+		*px++ = __SSAT(acc2 >> 7, 8);
+		*px++ = __SSAT(acc3 >> 7, 8);
 
-        /*
-         * Initialize the pointer pIn1 to point to the starting address of the column being processed
-         */
-        pMat0 = pMatSrc;
-        pMat1 = pMat0 + numCols;
+		pMatSrc += numCols * 4;
+		/*
+		 * Decrement the row loop counter
+		 */
+		row -= 4;
+	}
 
-        acc0 = 0;
-        acc1 = 0;
+	/*
+	 * process any remaining rows pair
+	 */
+	if (row >= 2) {
+		q7_t const  *pMat0Vec, *pMat1Vec, *pVec;
+		q7_t const  *pSrcVecPtr = pSrcVec;
+		q31_t         acc0, acc1;
+		q7x16_t     vecMatA0, vecMatA1, vecIn;
 
-        pMat0Vec = pMat0;
-        pMat1Vec = pMat1;
-        pVec = pSrcVecPtr;
+		/*
+		 * For every row wise process, the pInVec pointer is set
+		 * to the starting address of the vector
+		 */
+		pVec = pSrcVec;
 
-        blkCnt = numCols >> 4;
-        while (blkCnt > 0U)
-        {
-            vecMatA0 = vld1q(pMat0Vec); 
-            pMat0Vec += 16;
-            vecMatA1 = vld1q(pMat1Vec); 
-            pMat1Vec += 16;
-            vecIn = vld1q(pVec);        
-            pVec += 16;
+		/*
+		 * Initialize the pointer pIn1 to point to the starting address of the column being processed
+		 */
+		pMat0 = pMatSrc;
+		pMat1 = pMat0 + numCols;
 
-            acc0 = vmladavaq(acc0, vecIn, vecMatA0);
-            acc1 = vmladavaq(acc1, vecIn, vecMatA1);
+		acc0 = 0;
+		acc1 = 0;
 
-            blkCnt--;
-        }
+		pMat0Vec = pMat0;
+		pMat1Vec = pMat1;
+		pVec = pSrcVecPtr;
 
-        /*
-         * tail
-         * (will be merged thru tail predication)
-         */
-        blkCnt = numCols & 0xF;
-        if (blkCnt > 0U)
-        {
-            mve_pred16_t p0 = vctp8q(blkCnt);
+		blkCnt = numCols >> 4;
 
-            vecMatA0 = vld1q(pMat0Vec);
-            vecMatA1 = vld1q(pMat1Vec);
-            vecIn = vldrbq_z_s8(pVec, p0);
+		while (blkCnt > 0U) {
+			vecMatA0 = vld1q(pMat0Vec);
+			pMat0Vec += 16;
+			vecMatA1 = vld1q(pMat1Vec);
+			pMat1Vec += 16;
+			vecIn = vld1q(pVec);
+			pVec += 16;
 
-            acc0 = vmladavaq(acc0, vecIn, vecMatA0);
-            acc1 = vmladavaq(acc1, vecIn, vecMatA1);
-        }
+			acc0 = vmladavaq(acc0, vecIn, vecMatA0);
+			acc1 = vmladavaq(acc1, vecIn, vecMatA1);
 
-        *px++ = __SSAT(acc0 >> 7, 8);
-        *px++ = __SSAT(acc1 >> 7, 8);
+			blkCnt--;
+		}
 
-        pMatSrc += numCols * 2;
-        /*
-         * Decrement the row loop counter
-         */
-        row -= 2;
-    }
+		/*
+		 * tail
+		 * (will be merged thru tail predication)
+		 */
+		blkCnt = numCols & 0xF;
 
-    if (row >= 1)
-    {
-        q7_t const  *pMat0Vec, *pVec;
-        q7_t const  *pSrcVecPtr = pSrcVec;
-        q31_t         acc0;
-        q7x16_t     vecMatA0, vecIn;
+		if (blkCnt > 0U) {
+			mve_pred16_t p0 = vctp8q(blkCnt);
 
-        /*
-         * For every row wise process, the pInVec pointer is set
-         * to the starting address of the vector
-         */
-        pVec = pSrcVec;
+			vecMatA0 = vld1q(pMat0Vec);
+			vecMatA1 = vld1q(pMat1Vec);
+			vecIn = vldrbq_z_s8(pVec, p0);
 
-        /*
-         * Initialize the pointer pIn1 to point to the starting address of the column being processed
-         */
-        pMat0 = pMatSrc;
+			acc0 = vmladavaq(acc0, vecIn, vecMatA0);
+			acc1 = vmladavaq(acc1, vecIn, vecMatA1);
+		}
 
-        acc0 = 0LL;
+		*px++ = __SSAT(acc0 >> 7, 8);
+		*px++ = __SSAT(acc1 >> 7, 8);
 
-        pMat0Vec = pMat0;
-        pVec = pSrcVecPtr;
+		pMatSrc += numCols * 2;
+		/*
+		 * Decrement the row loop counter
+		 */
+		row -= 2;
+	}
 
-        blkCnt = numCols >> 4;
-        while (blkCnt > 0U)
-        {
-            vecMatA0 = vld1q(pMat0Vec); 
-            pMat0Vec += 16;
-            vecIn = vld1q(pVec);        
-            pVec += 16;
+	if (row >= 1) {
+		q7_t const  *pMat0Vec, *pVec;
+		q7_t const  *pSrcVecPtr = pSrcVec;
+		q31_t         acc0;
+		q7x16_t     vecMatA0, vecIn;
 
-            acc0 = vmladavaq(acc0, vecIn, vecMatA0);
-            blkCnt--;
-        }
-        /*
-         * tail
-         * (will be merged thru tail predication)
-         */
-        blkCnt = numCols & 0xF;
-        if (blkCnt > 0U)
-        {
-            mve_pred16_t p0 = vctp8q(blkCnt);
+		/*
+		 * For every row wise process, the pInVec pointer is set
+		 * to the starting address of the vector
+		 */
+		pVec = pSrcVec;
 
-            vecMatA0 = vld1q(pMat0Vec);
-            vecIn = vldrbq_z_s8(pVec, p0);
-            acc0 = vmladavaq(acc0, vecIn, vecMatA0);
-        }
-        *px++ = __SSAT(acc0 >> 7, 8);
-    }
+		/*
+		 * Initialize the pointer pIn1 to point to the starting address of the column being processed
+		 */
+		pMat0 = pMatSrc;
+
+		acc0 = 0LL;
+
+		pMat0Vec = pMat0;
+		pVec = pSrcVecPtr;
+
+		blkCnt = numCols >> 4;
+
+		while (blkCnt > 0U) {
+			vecMatA0 = vld1q(pMat0Vec);
+			pMat0Vec += 16;
+			vecIn = vld1q(pVec);
+			pVec += 16;
+
+			acc0 = vmladavaq(acc0, vecIn, vecMatA0);
+			blkCnt--;
+		}
+
+		/*
+		 * tail
+		 * (will be merged thru tail predication)
+		 */
+		blkCnt = numCols & 0xF;
+
+		if (blkCnt > 0U) {
+			mve_pred16_t p0 = vctp8q(blkCnt);
+
+			vecMatA0 = vld1q(pMat0Vec);
+			vecIn = vldrbq_z_s8(pVec, p0);
+			acc0 = vmladavaq(acc0, vecIn, vecMatA0);
+		}
+
+		*px++ = __SSAT(acc0 >> 7, 8);
+	}
 }
 
 #else
 void arm_mat_vec_mult_q7(const arm_matrix_instance_q7 *pSrcMat, const q7_t *pVec, q7_t *pDst)
 {
-    uint32_t numRows = pSrcMat->numRows;
-    uint32_t numCols = pSrcMat->numCols;
-    const q7_t *pSrcA = pSrcMat->pData;
-    const q7_t *pInA1;       /* input data matrix pointer of Q7 type */
-    const q7_t *pInA2;       /* input data matrix pointer of Q7 type */
-    const q7_t *pInA3;       /* input data matrix pointer of Q7 type */
-    const q7_t *pInA4;       /* input data matrix pointer of Q7 type */
-    const q7_t *pInVec;      /* input data vector pointer of Q7 type */
-    q7_t *px;                /* output data pointer */
-    uint32_t i, row, colCnt; /* loop counters */
+	uint32_t numRows = pSrcMat->numRows;
+	uint32_t numCols = pSrcMat->numCols;
+	const q7_t *pSrcA = pSrcMat->pData;
+	const q7_t *pInA1;       /* input data matrix pointer of Q7 type */
+	const q7_t *pInA2;       /* input data matrix pointer of Q7 type */
+	const q7_t *pInA3;       /* input data matrix pointer of Q7 type */
+	const q7_t *pInA4;       /* input data matrix pointer of Q7 type */
+	const q7_t *pInVec;      /* input data vector pointer of Q7 type */
+	q7_t *px;                /* output data pointer */
+	uint32_t i, row, colCnt; /* loop counters */
 
-    q31_t matData, matData2, vecData, vecData2;
-
-
-    /* Process 4 rows at a time */
-    row = numRows >> 2;
-    i = 0u;
-    px = pDst;
+	q31_t matData, matData2, vecData, vecData2;
 
 
-
-    /* The following loop performs the dot-product of each row in pSrcA with the vector */
-    while (row > 0) {
-        /* Initialize accumulators */
-        q31_t sum1 = 0;
-        q31_t sum2 = 0;
-        q31_t sum3 = 0;
-        q31_t sum4 = 0;
-
-        /* For every row wise process, the pInVec pointer is set
-         ** to the starting address of the vector */
-        pInVec = pVec;
-
-        /* Loop unrolling: process 4 columns per iteration */
-        colCnt = numCols >> 2;
-
-        /* Initialize row pointers so we can track 4 rows at once */
-        pInA1 = pSrcA + i;
-        pInA2 = pInA1 + numCols;
-        pInA3 = pInA2 + numCols;
-        pInA4 = pInA3 + numCols;
+	/* Process 4 rows at a time */
+	row = numRows >> 2;
+	i = 0u;
+	px = pDst;
 
 
-        // Inner loop: matrix-vector multiplication
 
-        while (colCnt > 0u) {
-            // Read 4 values from vector
-            vecData = read_q7x4_ia (&pInVec);
-            vecData2 = __SXTB16(__ROR(vecData, 8));
-            vecData = __SXTB16(vecData);
-            // Read 16 values from the matrix - 4 values from each of 4 rows, and do multiply accumulate
-            matData = read_q7x4_ia (&pInA1);
-            matData2 = __SXTB16(__ROR(matData, 8));
-            matData = __SXTB16(matData);
-            sum1 = __SMLAD(matData, vecData, sum1);
-            sum1 = __SMLAD(matData2, vecData2, sum1);
-            matData = read_q7x4_ia (&pInA2);
-            matData2 = __SXTB16(__ROR(matData, 8));
-            matData = __SXTB16(matData);
-            sum2 = __SMLAD(matData, vecData, sum2);
-            sum2 = __SMLAD(matData2, vecData2, sum2);
-            matData = read_q7x4_ia (&pInA3);
-            matData2 = __SXTB16(__ROR(matData, 8));
-            matData = __SXTB16(matData);
-            sum3 = __SMLAD(matData, vecData, sum3);
-            sum3 = __SMLAD(matData2, vecData2, sum3);
-            matData = read_q7x4_ia (&pInA4);
-            matData2 = __SXTB16(__ROR(matData, 8));
-            matData = __SXTB16(matData);
-            sum4 = __SMLAD(matData, vecData, sum4);
-            sum4 = __SMLAD(matData2, vecData2, sum4);
+	/* The following loop performs the dot-product of each row in pSrcA with the vector */
+	while (row > 0) {
+		/* Initialize accumulators */
+		q31_t sum1 = 0;
+		q31_t sum2 = 0;
+		q31_t sum3 = 0;
+		q31_t sum4 = 0;
 
-            // Decrement the loop counter
-            colCnt--;
-        }
+		/* For every row wise process, the pInVec pointer is set
+		 ** to the starting address of the vector */
+		pInVec = pVec;
 
-        /* process any remaining columns */
+		/* Loop unrolling: process 4 columns per iteration */
+		colCnt = numCols >> 2;
 
-        colCnt = numCols & 3u;
+		/* Initialize row pointers so we can track 4 rows at once */
+		pInA1 = pSrcA + i;
+		pInA2 = pInA1 + numCols;
+		pInA3 = pInA2 + numCols;
+		pInA4 = pInA3 + numCols;
 
-        while (colCnt > 0) {
-            vecData = *pInVec++;
-            sum1 += *pInA1++ * vecData;
-            sum2 += *pInA2++ * vecData;
-            sum3 += *pInA3++ * vecData;
-            sum4 += *pInA4++ * vecData;
-            colCnt--;
-        }
 
-        /* Saturate and store the result in the destination buffer */
-        *px++ = (q7_t)(__SSAT((sum1 >> 7), 8));
-        *px++ = (q7_t)(__SSAT((sum2 >> 7), 8));
-        *px++ = (q7_t)(__SSAT((sum3 >> 7), 8));
-        *px++ = (q7_t)(__SSAT((sum4 >> 7), 8));
+		// Inner loop: matrix-vector multiplication
 
-        i = i + numCols * 4;
+		while (colCnt > 0u) {
+			// Read 4 values from vector
+			vecData = read_q7x4_ia (&pInVec);
+			vecData2 = __SXTB16(__ROR(vecData, 8));
+			vecData = __SXTB16(vecData);
+			// Read 16 values from the matrix - 4 values from each of 4 rows, and do multiply accumulate
+			matData = read_q7x4_ia (&pInA1);
+			matData2 = __SXTB16(__ROR(matData, 8));
+			matData = __SXTB16(matData);
+			sum1 = __SMLAD(matData, vecData, sum1);
+			sum1 = __SMLAD(matData2, vecData2, sum1);
+			matData = read_q7x4_ia (&pInA2);
+			matData2 = __SXTB16(__ROR(matData, 8));
+			matData = __SXTB16(matData);
+			sum2 = __SMLAD(matData, vecData, sum2);
+			sum2 = __SMLAD(matData2, vecData2, sum2);
+			matData = read_q7x4_ia (&pInA3);
+			matData2 = __SXTB16(__ROR(matData, 8));
+			matData = __SXTB16(matData);
+			sum3 = __SMLAD(matData, vecData, sum3);
+			sum3 = __SMLAD(matData2, vecData2, sum3);
+			matData = read_q7x4_ia (&pInA4);
+			matData2 = __SXTB16(__ROR(matData, 8));
+			matData = __SXTB16(matData);
+			sum4 = __SMLAD(matData, vecData, sum4);
+			sum4 = __SMLAD(matData2, vecData2, sum4);
 
-        /* Decrement the row loop counter */
-        row--;
-    }
+			// Decrement the loop counter
+			colCnt--;
+		}
 
-    /* process any remaining rows */
-    row = numRows & 3u;
-    while (row > 0) {
+		/* process any remaining columns */
 
-        q31_t sum = 0;
-        pInVec = pVec;
-        pInA1 = pSrcA + i;
+		colCnt = numCols & 3u;
 
-        // loop unrolling - process 4 elements at a time
-        colCnt = numCols >> 2;
+		while (colCnt > 0) {
+			vecData = *pInVec++;
+			sum1 += *pInA1++ * vecData;
+			sum2 += *pInA2++ * vecData;
+			sum3 += *pInA3++ * vecData;
+			sum4 += *pInA4++ * vecData;
+			colCnt--;
+		}
 
-        while (colCnt > 0) {
-            vecData = read_q7x4_ia (&pInVec);
-            vecData2 = __SXTB16(__ROR(vecData, 8));
-            vecData = __SXTB16(vecData);
-            matData = read_q7x4_ia (&pInA1);
-            matData2 = __SXTB16(__ROR(matData, 8));
-            matData = __SXTB16(matData);
-            sum = __SMLAD(matData, vecData, sum);
-            sum = __SMLAD(matData2, vecData2, sum);
-            colCnt--;
-        }
+		/* Saturate and store the result in the destination buffer */
+		*px++ = (q7_t)(__SSAT((sum1 >> 7), 8));
+		*px++ = (q7_t)(__SSAT((sum2 >> 7), 8));
+		*px++ = (q7_t)(__SSAT((sum3 >> 7), 8));
+		*px++ = (q7_t)(__SSAT((sum4 >> 7), 8));
 
-        // process remainder of row
-        colCnt = numCols & 3u;
-        while (colCnt > 0) {
-            sum += *pInA1++ * *pInVec++;
-            colCnt--;
-        }
-        *px++ = (q7_t)(__SSAT((sum >> 7), 8));
-        i = i + numCols;
-        row--;
-    }
+		i = i + numCols * 4;
+
+		/* Decrement the row loop counter */
+		row--;
+	}
+
+	/* process any remaining rows */
+	row = numRows & 3u;
+
+	while (row > 0) {
+
+		q31_t sum = 0;
+		pInVec = pVec;
+		pInA1 = pSrcA + i;
+
+		// loop unrolling - process 4 elements at a time
+		colCnt = numCols >> 2;
+
+		while (colCnt > 0) {
+			vecData = read_q7x4_ia (&pInVec);
+			vecData2 = __SXTB16(__ROR(vecData, 8));
+			vecData = __SXTB16(vecData);
+			matData = read_q7x4_ia (&pInA1);
+			matData2 = __SXTB16(__ROR(matData, 8));
+			matData = __SXTB16(matData);
+			sum = __SMLAD(matData, vecData, sum);
+			sum = __SMLAD(matData2, vecData2, sum);
+			colCnt--;
+		}
+
+		// process remainder of row
+		colCnt = numCols & 3u;
+
+		while (colCnt > 0) {
+			sum += *pInA1++ * *pInVec++;
+			colCnt--;
+		}
+
+		*px++ = (q7_t)(__SSAT((sum >> 7), 8));
+		i = i + numCols;
+		row--;
+	}
 }
 #endif /* defined(ARM_MATH_MVEI) */
 

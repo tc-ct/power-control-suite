@@ -64,204 +64,203 @@
 
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
-void arm_barycenter_f16(const float16_t *in, 
-  const float16_t *weights, 
-  float16_t *out, 
-  uint32_t nbVectors,
-  uint32_t vecDim)
+void arm_barycenter_f16(const float16_t *in,
+			const float16_t *weights,
+			float16_t *out,
+			uint32_t nbVectors,
+			uint32_t vecDim)
 {
-    const float16_t *pIn, *pW;
-    const float16_t *pIn1, *pIn2, *pIn3, *pIn4;
-    float16_t      *pOut;
-    uint32_t        blkCntVector, blkCntSample;
-    float16_t       accum, w;
+	const float16_t *pIn, *pW;
+	const float16_t *pIn1, *pIn2, *pIn3, *pIn4;
+	float16_t      *pOut;
+	uint32_t        blkCntVector, blkCntSample;
+	float16_t       accum, w;
 
-    blkCntVector = nbVectors;
-    blkCntSample = vecDim;
+	blkCntVector = nbVectors;
+	blkCntSample = vecDim;
 
-    accum = 0.0f;
+	accum = 0.0f;
 
-    pW = weights;
-    pIn = in;
-
-
-    arm_fill_f16(0.0f, out, vecDim);
+	pW = weights;
+	pIn = in;
 
 
-    /* Sum */
-    pIn1 = pIn;
-    pIn2 = pIn1 + vecDim;
-    pIn3 = pIn2 + vecDim;
-    pIn4 = pIn3 + vecDim;
+	arm_fill_f16(0.0f, out, vecDim);
 
-    blkCntVector = nbVectors >> 2;
-    while (blkCntVector > 0) 
-    {
-        f16x8_t         outV, inV1, inV2, inV3, inV4;
-        float16_t       w1, w2, w3, w4;
 
-        pOut = out;
-        w1 = *pW++;
-        w2 = *pW++;
-        w3 = *pW++;
-        w4 = *pW++;
-        accum += (_Float16)w1 + (_Float16)w2 + (_Float16)w3 + (_Float16)w4;
+	/* Sum */
+	pIn1 = pIn;
+	pIn2 = pIn1 + vecDim;
+	pIn3 = pIn2 + vecDim;
+	pIn4 = pIn3 + vecDim;
 
-        blkCntSample = vecDim >> 3;
-        while (blkCntSample > 0) {
-            outV = vld1q((const float16_t *) pOut);
-            inV1 = vld1q(pIn1);
-            inV2 = vld1q(pIn2);
-            inV3 = vld1q(pIn3);
-            inV4 = vld1q(pIn4);
-            outV = vfmaq(outV, inV1, w1);
-            outV = vfmaq(outV, inV2, w2);
-            outV = vfmaq(outV, inV3, w3);
-            outV = vfmaq(outV, inV4, w4);
-            vst1q(pOut, outV);
+	blkCntVector = nbVectors >> 2;
 
-            pOut += 8;
-            pIn1 += 8;
-            pIn2 += 8;
-            pIn3 += 8;
-            pIn4 += 8;
+	while (blkCntVector > 0) {
+		f16x8_t         outV, inV1, inV2, inV3, inV4;
+		float16_t       w1, w2, w3, w4;
 
-            blkCntSample--;
-        }
+		pOut = out;
+		w1 = *pW++;
+		w2 = *pW++;
+		w3 = *pW++;
+		w4 = *pW++;
+		accum += (_Float16)w1 + (_Float16)w2 + (_Float16)w3 + (_Float16)w4;
 
-        blkCntSample = vecDim & 7;
-        while (blkCntSample > 0) {
-            *pOut = (_Float16)*pOut + (_Float16)*pIn1++ * (_Float16)w1;
-            *pOut = (_Float16)*pOut + (_Float16)*pIn2++ * (_Float16)w2;
-            *pOut = (_Float16)*pOut + (_Float16)*pIn3++ * (_Float16)w3;
-            *pOut = (_Float16)*pOut + (_Float16)*pIn4++ * (_Float16)w4;
-            pOut++;
-            blkCntSample--;
-        }
+		blkCntSample = vecDim >> 3;
 
-        pIn1 += 3 * vecDim;
-        pIn2 += 3 * vecDim;
-        pIn3 += 3 * vecDim;
-        pIn4 += 3 * vecDim;
+		while (blkCntSample > 0) {
+			outV = vld1q((const float16_t *) pOut);
+			inV1 = vld1q(pIn1);
+			inV2 = vld1q(pIn2);
+			inV3 = vld1q(pIn3);
+			inV4 = vld1q(pIn4);
+			outV = vfmaq(outV, inV1, w1);
+			outV = vfmaq(outV, inV2, w2);
+			outV = vfmaq(outV, inV3, w3);
+			outV = vfmaq(outV, inV4, w4);
+			vst1q(pOut, outV);
 
-        blkCntVector--;
-    }
+			pOut += 8;
+			pIn1 += 8;
+			pIn2 += 8;
+			pIn3 += 8;
+			pIn4 += 8;
 
-    pIn = pIn1;
+			blkCntSample--;
+		}
 
-    blkCntVector = nbVectors & 3;
-    while (blkCntVector > 0) 
-    {
-        f16x8_t         inV, outV;
+		blkCntSample = vecDim & 7;
 
-        pOut = out;
-        w = *pW++;
-        accum += (_Float16)w;
+		while (blkCntSample > 0) {
+			*pOut = (_Float16) * pOut + (_Float16) * pIn1++ * (_Float16)w1;
+			*pOut = (_Float16) * pOut + (_Float16) * pIn2++ * (_Float16)w2;
+			*pOut = (_Float16) * pOut + (_Float16) * pIn3++ * (_Float16)w3;
+			*pOut = (_Float16) * pOut + (_Float16) * pIn4++ * (_Float16)w4;
+			pOut++;
+			blkCntSample--;
+		}
 
-        blkCntSample = vecDim >> 3;
-        while (blkCntSample > 0) 
-        {
-            outV = vld1q_f16(pOut);
-            inV = vld1q_f16(pIn);
-            outV = vfmaq(outV, inV, w);
-            vst1q_f16(pOut, outV);
-            pOut += 8;
-            pIn += 8;
+		pIn1 += 3 * vecDim;
+		pIn2 += 3 * vecDim;
+		pIn3 += 3 * vecDim;
+		pIn4 += 3 * vecDim;
 
-            blkCntSample--;
-        }
+		blkCntVector--;
+	}
 
-        blkCntSample = vecDim & 7;
-        while (blkCntSample > 0) 
-        {
-            *pOut = (_Float16)*pOut + (_Float16)*pIn++ * (_Float16)w;
-            pOut++;
-            blkCntSample--;
-        }
+	pIn = pIn1;
 
-        blkCntVector--;
-    }
+	blkCntVector = nbVectors & 3;
 
-    /* Normalize */
-    pOut = out;
-    accum = 1.0f16 / (_Float16)accum;
+	while (blkCntVector > 0) {
+		f16x8_t         inV, outV;
 
-    blkCntSample = vecDim >> 3;
-    while (blkCntSample > 0) 
-    {
-        f16x8_t         tmp;
+		pOut = out;
+		w = *pW++;
+		accum += (_Float16)w;
 
-        tmp = vld1q((const float16_t *) pOut);
-        tmp = vmulq(tmp, accum);
-        vst1q(pOut, tmp);
-        pOut += 8;
-        blkCntSample--;
-    }
+		blkCntSample = vecDim >> 3;
 
-    blkCntSample = vecDim & 7;
-    while (blkCntSample > 0) 
-    {
-        *pOut = (_Float16)*pOut * (_Float16)accum;
-        pOut++;
-        blkCntSample--;
-    }
+		while (blkCntSample > 0) {
+			outV = vld1q_f16(pOut);
+			inV = vld1q_f16(pIn);
+			outV = vfmaq(outV, inV, w);
+			vst1q_f16(pOut, outV);
+			pOut += 8;
+			pIn += 8;
+
+			blkCntSample--;
+		}
+
+		blkCntSample = vecDim & 7;
+
+		while (blkCntSample > 0) {
+			*pOut = (_Float16) * pOut + (_Float16) * pIn++ * (_Float16)w;
+			pOut++;
+			blkCntSample--;
+		}
+
+		blkCntVector--;
+	}
+
+	/* Normalize */
+	pOut = out;
+	accum = 1.0f16 / (_Float16)accum;
+
+	blkCntSample = vecDim >> 3;
+
+	while (blkCntSample > 0) {
+		f16x8_t         tmp;
+
+		tmp = vld1q((const float16_t *) pOut);
+		tmp = vmulq(tmp, accum);
+		vst1q(pOut, tmp);
+		pOut += 8;
+		blkCntSample--;
+	}
+
+	blkCntSample = vecDim & 7;
+
+	while (blkCntSample > 0) {
+		*pOut = (_Float16) * pOut * (_Float16)accum;
+		pOut++;
+		blkCntSample--;
+	}
 }
 #else
-void arm_barycenter_f16(const float16_t *in, const float16_t *weights, float16_t *out, uint32_t nbVectors,uint32_t vecDim)
+void arm_barycenter_f16(const float16_t *in, const float16_t *weights, float16_t *out, uint32_t nbVectors, uint32_t vecDim)
 {
 
-   const float16_t *pIn,*pW;
-   float16_t *pOut;
-   uint32_t blkCntVector,blkCntSample;
-   float16_t accum, w;
+	const float16_t *pIn, *pW;
+	float16_t *pOut;
+	uint32_t blkCntVector, blkCntSample;
+	float16_t accum, w;
 
-   blkCntVector = nbVectors;
-   blkCntSample = vecDim;
+	blkCntVector = nbVectors;
+	blkCntSample = vecDim;
 
-   accum = 0.0f16;
+	accum = 0.0f16;
 
-   pW = weights;
-   pIn = in;
+	pW = weights;
+	pIn = in;
 
-   /* Set counters to 0 */
-   blkCntSample = vecDim;
-   pOut = out;
+	/* Set counters to 0 */
+	blkCntSample = vecDim;
+	pOut = out;
 
-   while(blkCntSample > 0)
-   {
-         *pOut = 0.0f16;
-         pOut++;
-         blkCntSample--;
-   }
+	while (blkCntSample > 0) {
+		*pOut = 0.0f16;
+		pOut++;
+		blkCntSample--;
+	}
 
-   /* Sum */
-   while(blkCntVector > 0)
-   {
-      pOut = out;
-      w = *pW++;
-      accum += (_Float16)w;
+	/* Sum */
+	while (blkCntVector > 0) {
+		pOut = out;
+		w = *pW++;
+		accum += (_Float16)w;
 
-      blkCntSample = vecDim;
-      while(blkCntSample > 0)
-      {
-          *pOut = (_Float16)*pOut + (_Float16)*pIn++ * (_Float16)w;
-          pOut++;
-          blkCntSample--;
-      }
+		blkCntSample = vecDim;
 
-      blkCntVector--;
-   }
+		while (blkCntSample > 0) {
+			*pOut = (_Float16) * pOut + (_Float16) * pIn++ * (_Float16)w;
+			pOut++;
+			blkCntSample--;
+		}
 
-   /* Normalize */
-   blkCntSample = vecDim;
-   pOut = out;
+		blkCntVector--;
+	}
 
-   while(blkCntSample > 0)
-   {
-         *pOut = (_Float16)*pOut / (_Float16)accum;
-         pOut++;
-         blkCntSample--;
-   }
+	/* Normalize */
+	blkCntSample = vecDim;
+	pOut = out;
+
+	while (blkCntSample > 0) {
+		*pOut = (_Float16) * pOut / (_Float16)accum;
+		pOut++;
+		blkCntSample--;
+	}
 
 }
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
@@ -270,5 +269,5 @@ void arm_barycenter_f16(const float16_t *in, const float16_t *weights, float16_t
  * @} end of barycenter group
  */
 
-#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
 

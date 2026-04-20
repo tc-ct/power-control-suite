@@ -55,83 +55,79 @@
 #if defined(ARM_MATH_MVE_FLOAT16) && !defined(ARM_MATH_AUTOVECTORIZE)
 
 void arm_min_no_idx_f16(
-    const float16_t *pSrc,
-    uint32_t   blockSize,
-    float16_t *pResult)
+	const float16_t *pSrc,
+	uint32_t   blockSize,
+	float16_t *pResult)
 {
-   f16x8_t     vecSrc;
-   f16x8_t     curExtremValVec = vdupq_n_f16(F16_MAX);
-   float16_t   minValue = F16_MAX;
-   float16_t   newVal;
-   uint32_t    blkCnt;
+	f16x8_t     vecSrc;
+	f16x8_t     curExtremValVec = vdupq_n_f16(F16_MAX);
+	float16_t   minValue = F16_MAX;
+	float16_t   newVal;
+	uint32_t    blkCnt;
 
-   /* Loop unrolling: Compute 4 outputs at a time */
-   blkCnt = blockSize >> 3U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = blockSize >> 3U;
 
-   while (blkCnt > 0U)
-   {
+	while (blkCnt > 0U) {
 
-        vecSrc = vldrhq_f16(pSrc);
-        /*
-         * update per-lane min.
-         */
-        curExtremValVec = vminnmq(vecSrc, curExtremValVec);
-        /*
-         * Decrement the blockSize loop counter
-         * Advance vector source and destination pointers
-         */
-        pSrc += 8;
-        blkCnt --;
-    }
-    /*
-     * Get min value across the vector
-     */
-    minValue = vminnmvq(minValue, curExtremValVec);
+		vecSrc = vldrhq_f16(pSrc);
+		/*
+		 * update per-lane min.
+		 */
+		curExtremValVec = vminnmq(vecSrc, curExtremValVec);
+		/*
+		 * Decrement the blockSize loop counter
+		 * Advance vector source and destination pointers
+		 */
+		pSrc += 8;
+		blkCnt --;
+	}
 
-    blkCnt = blockSize & 7;
+	/*
+	 * Get min value across the vector
+	 */
+	minValue = vminnmvq(minValue, curExtremValVec);
 
-    while (blkCnt > 0U)
-    {
-        newVal = *pSrc++;
+	blkCnt = blockSize & 7;
 
-        /* compare for the minimum value */
-        if ((_Float16)minValue > (_Float16)newVal)
-        {
-            /* Update the minimum value and it's index */
-            minValue = newVal;
-        }
+	while (blkCnt > 0U) {
+		newVal = *pSrc++;
 
-        blkCnt --;
-    }
+		/* compare for the minimum value */
+		if ((_Float16)minValue > (_Float16)newVal) {
+			/* Update the minimum value and it's index */
+			minValue = newVal;
+		}
 
-    *pResult = minValue;
+		blkCnt --;
+	}
+
+	*pResult = minValue;
 }
 
 #else
 
 void arm_min_no_idx_f16(
-    const float16_t *pSrc,
-    uint32_t   blockSize,
-    float16_t *pResult)
+	const float16_t *pSrc,
+	uint32_t   blockSize,
+	float16_t *pResult)
 {
-   float16_t   minValue = F16_MAX;
-   float16_t   newVal;
+	float16_t   minValue = F16_MAX;
+	float16_t   newVal;
 
-   while (blockSize > 0U)
-   {
-       newVal = *pSrc++;
-   
-       /* compare for the minimum value */
-       if ((_Float16)minValue > (_Float16)newVal)
-       {
-           /* Update the minimum value and it's index */
-           minValue = newVal;
-       }
-   
-       blockSize --;
-   }
-    
-   *pResult = minValue;
+	while (blockSize > 0U) {
+		newVal = *pSrc++;
+
+		/* compare for the minimum value */
+		if ((_Float16)minValue > (_Float16)newVal) {
+			/* Update the minimum value and it's index */
+			minValue = newVal;
+		}
+
+		blockSize --;
+	}
+
+	*pResult = minValue;
 }
 
 #endif /* defined(ARM_MATH_MVEF) && !defined(ARM_MATH_AUTOVECTORIZE) */
@@ -140,5 +136,5 @@ void arm_min_no_idx_f16(
   @} end of Min group
  */
 
-#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */ 
+#endif /* #if defined(ARM_FLOAT16_SUPPORTED) */
 

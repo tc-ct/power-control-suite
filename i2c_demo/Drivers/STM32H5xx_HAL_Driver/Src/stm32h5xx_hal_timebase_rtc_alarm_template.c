@@ -114,106 +114,99 @@ void TimeBase_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc);
   */
 HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 {
-  HAL_StatusTypeDef  status;
+	HAL_StatusTypeDef  status;
 
-  RCC_OscInitTypeDef        RCC_OscInitStruct;
-  RCC_PeriphCLKInitTypeDef  PeriphClkInitStruct;
+	RCC_OscInitTypeDef        RCC_OscInitStruct;
+	RCC_PeriphCLKInitTypeDef  PeriphClkInitStruct;
 
-  /* Disable bkup domain protection */
-  HAL_PWR_EnableBkUpAccess();
+	/* Disable bkup domain protection */
+	HAL_PWR_EnableBkUpAccess();
 
-  /* Force and Release the Backup domain reset */
-  __HAL_RCC_BACKUPRESET_FORCE();
-  __HAL_RCC_BACKUPRESET_RELEASE();
+	/* Force and Release the Backup domain reset */
+	__HAL_RCC_BACKUPRESET_FORCE();
+	__HAL_RCC_BACKUPRESET_RELEASE();
 
-  /* Enable RTC Clock */
-  __HAL_RCC_RTC_ENABLE();
-  __HAL_RCC_RTC_CLK_ENABLE();
+	/* Enable RTC Clock */
+	__HAL_RCC_RTC_ENABLE();
+	__HAL_RCC_RTC_CLK_ENABLE();
 
 #if defined (RTC_CLOCK_SOURCE_LSE)
-  /* Configure LSE as RTC clock source */
-  RCC_OscInitStruct.OscillatorType      = RCC_OSCILLATORTYPE_LSE;
-  RCC_OscInitStruct.PLL.PLLState        = RCC_PLL_NONE;
-  RCC_OscInitStruct.LSEState            = RCC_LSE_ON;
-  PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
+	/* Configure LSE as RTC clock source */
+	RCC_OscInitStruct.OscillatorType      = RCC_OSCILLATORTYPE_LSE;
+	RCC_OscInitStruct.PLL.PLLState        = RCC_PLL_NONE;
+	RCC_OscInitStruct.LSEState            = RCC_LSE_ON;
+	PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
 #elif defined (RTC_CLOCK_SOURCE_LSI)
-  /* Configure LSI as RTC clock source */
-  RCC_OscInitStruct.OscillatorType      = RCC_OSCILLATORTYPE_LSI;
-  RCC_OscInitStruct.PLL.PLLState        = RCC_PLL_NONE;
-  RCC_OscInitStruct.LSIState            = RCC_LSI_ON;
-  PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
+	/* Configure LSI as RTC clock source */
+	RCC_OscInitStruct.OscillatorType      = RCC_OSCILLATORTYPE_LSI;
+	RCC_OscInitStruct.PLL.PLLState        = RCC_PLL_NONE;
+	RCC_OscInitStruct.LSIState            = RCC_LSI_ON;
+	PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
 #elif defined (RTC_CLOCK_SOURCE_HSE)
-  /* Configure HSE as RTC clock source */
-  RCC_OscInitStruct.OscillatorType      = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.PLL.PLLState        = RCC_PLL_NONE;
-  RCC_OscInitStruct.HSEState            = RCC_HSE_ON;
-  PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_HSE_DIV32;
+	/* Configure HSE as RTC clock source */
+	RCC_OscInitStruct.OscillatorType      = RCC_OSCILLATORTYPE_HSE;
+	RCC_OscInitStruct.PLL.PLLState        = RCC_PLL_NONE;
+	RCC_OscInitStruct.HSEState            = RCC_HSE_ON;
+	PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_HSE_DIV32;
 #else
 #error Please select the RTC Clock source
 #endif /* RTC_CLOCK_SOURCE_LSE */
 
-  status = HAL_RCC_OscConfig(&RCC_OscInitStruct);
+	status = HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
-  if (status == HAL_OK)
-  {
-    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
-    status = HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
-  }
+	if (status == HAL_OK) {
+		PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
+		status = HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
+	}
 
-  if (status == HAL_OK)
-  {
-    hRTC_Handle.Instance = RTC;
-    hRTC_Handle.Init.HourFormat     = RTC_HOURFORMAT_24;
-    hRTC_Handle.Init.AsynchPrediv   = RTC_ASYNCH_PREDIV;
-    hRTC_Handle.Init.SynchPrediv    = RTC_SYNCH_PREDIV;
-    hRTC_Handle.Init.OutPut         = RTC_OUTPUT_DISABLE;
-    hRTC_Handle.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
-    hRTC_Handle.Init.OutPutType     = RTC_OUTPUT_TYPE_OPENDRAIN;
-    hRTC_Handle.Init.BinMode        = RTC_BINARY_NONE;
+	if (status == HAL_OK) {
+		hRTC_Handle.Instance = RTC;
+		hRTC_Handle.Init.HourFormat     = RTC_HOURFORMAT_24;
+		hRTC_Handle.Init.AsynchPrediv   = RTC_ASYNCH_PREDIV;
+		hRTC_Handle.Init.SynchPrediv    = RTC_SYNCH_PREDIV;
+		hRTC_Handle.Init.OutPut         = RTC_OUTPUT_DISABLE;
+		hRTC_Handle.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+		hRTC_Handle.Init.OutPutType     = RTC_OUTPUT_TYPE_OPENDRAIN;
+		hRTC_Handle.Init.BinMode        = RTC_BINARY_NONE;
 
-    status = HAL_RTC_Init(&hRTC_Handle);
+		status = HAL_RTC_Init(&hRTC_Handle);
 
 #if (USE_HAL_RTC_REGISTER_CALLBACKS == 1U)
-    HAL_RTC_RegisterCallback(&hRTC_Handle, HAL_RTC_ALARM_A_EVENT_CB_ID, TimeBase_RTC_AlarmAEventCallback);
+		HAL_RTC_RegisterCallback(&hRTC_Handle, HAL_RTC_ALARM_A_EVENT_CB_ID, TimeBase_RTC_AlarmAEventCallback);
 #endif /* USE_HAL_RTC_REGISTER_CALLBACKS */
-  }
+	}
 
-  if (status == HAL_OK)
-  {
-    /* RTC variables */
-    RTC_AlarmTypeDef RTC_AlarmStructure;
+	if (status == HAL_OK) {
+		/* RTC variables */
+		RTC_AlarmTypeDef RTC_AlarmStructure;
 
-    /* RTC Alarm Generation */
-    RTC_AlarmStructure.Alarm                = RTC_ALARM_A;
-    RTC_AlarmStructure.AlarmDateWeekDay     = RTC_WEEKDAY_MONDAY;
-    RTC_AlarmStructure.AlarmDateWeekDaySel  = RTC_ALARMDATEWEEKDAYSEL_DATE;
-    /* Mask all and keep only subsecond, to have one match in each time base 1ms(uwTickFreq) */
-    RTC_AlarmStructure.AlarmMask            = RTC_ALARMMASK_ALL;
-    RTC_AlarmStructure.AlarmSubSecondMask   = RTC_ALARMSUBSECONDMASK_NONE;
-    RTC_AlarmStructure.AlarmTime.TimeFormat = RTC_HOURFORMAT_24;
-    RTC_AlarmStructure.AlarmTime.Hours      = 0;
-    RTC_AlarmStructure.AlarmTime.Minutes    = 0;
-    RTC_AlarmStructure.AlarmTime.Seconds    = 0;
-    RTC_AlarmStructure.AlarmTime.SubSeconds = 0;
+		/* RTC Alarm Generation */
+		RTC_AlarmStructure.Alarm                = RTC_ALARM_A;
+		RTC_AlarmStructure.AlarmDateWeekDay     = RTC_WEEKDAY_MONDAY;
+		RTC_AlarmStructure.AlarmDateWeekDaySel  = RTC_ALARMDATEWEEKDAYSEL_DATE;
+		/* Mask all and keep only subsecond, to have one match in each time base 1ms(uwTickFreq) */
+		RTC_AlarmStructure.AlarmMask            = RTC_ALARMMASK_ALL;
+		RTC_AlarmStructure.AlarmSubSecondMask   = RTC_ALARMSUBSECONDMASK_NONE;
+		RTC_AlarmStructure.AlarmTime.TimeFormat = RTC_HOURFORMAT_24;
+		RTC_AlarmStructure.AlarmTime.Hours      = 0;
+		RTC_AlarmStructure.AlarmTime.Minutes    = 0;
+		RTC_AlarmStructure.AlarmTime.Seconds    = 0;
+		RTC_AlarmStructure.AlarmTime.SubSeconds = 0;
 
-    /* Set the specified RTC Alarm with Interrupt */
-    status = HAL_RTC_SetAlarm_IT(&hRTC_Handle, &RTC_AlarmStructure, RTC_FORMAT_BCD);
-  }
+		/* Set the specified RTC Alarm with Interrupt */
+		status = HAL_RTC_SetAlarm_IT(&hRTC_Handle, &RTC_AlarmStructure, RTC_FORMAT_BCD);
+	}
 
-  if (TickPriority < (1UL << __NVIC_PRIO_BITS))
-  {
-    /* Enable the RTC global Interrupt */
-    HAL_NVIC_SetPriority(RTC_IRQn, TickPriority, 0);
-    uwTickPrio = TickPriority;
-  }
-  else
-  {
-    status = HAL_ERROR;
-  }
+	if (TickPriority < (1UL << __NVIC_PRIO_BITS)) {
+		/* Enable the RTC global Interrupt */
+		HAL_NVIC_SetPriority(RTC_IRQn, TickPriority, 0);
+		uwTickPrio = TickPriority;
+	} else
+		status = HAL_ERROR;
 
-  HAL_NVIC_EnableIRQ(RTC_IRQn);
+	HAL_NVIC_EnableIRQ(RTC_IRQn);
 
-  return status;
+	return status;
 }
 
 /**
@@ -223,12 +216,12 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
   */
 void HAL_SuspendTick(void)
 {
-  /* Disable the write protection for RTC registers */
-  __HAL_RTC_WRITEPROTECTION_DISABLE(&hRTC_Handle);
-  /* Disable RTC ALARM update Interrupt */
-  __HAL_RTC_ALARM_DISABLE_IT(&hRTC_Handle, RTC_IT_ALRA);
-  /* Enable the write protection for RTC registers */
-  __HAL_RTC_WRITEPROTECTION_ENABLE(&hRTC_Handle);
+	/* Disable the write protection for RTC registers */
+	__HAL_RTC_WRITEPROTECTION_DISABLE(&hRTC_Handle);
+	/* Disable RTC ALARM update Interrupt */
+	__HAL_RTC_ALARM_DISABLE_IT(&hRTC_Handle, RTC_IT_ALRA);
+	/* Enable the write protection for RTC registers */
+	__HAL_RTC_WRITEPROTECTION_ENABLE(&hRTC_Handle);
 }
 
 /**
@@ -238,12 +231,12 @@ void HAL_SuspendTick(void)
   */
 void HAL_ResumeTick(void)
 {
-  /* Disable the write protection for RTC registers */
-  __HAL_RTC_WRITEPROTECTION_DISABLE(&hRTC_Handle);
-  /* Enable RTC ALARM Update interrupt */
-  __HAL_RTC_ALARM_ENABLE_IT(&hRTC_Handle, RTC_IT_ALRA);
-  /* Enable the write protection for RTC registers */
-  __HAL_RTC_WRITEPROTECTION_ENABLE(&hRTC_Handle);
+	/* Disable the write protection for RTC registers */
+	__HAL_RTC_WRITEPROTECTION_DISABLE(&hRTC_Handle);
+	/* Enable RTC ALARM Update interrupt */
+	__HAL_RTC_ALARM_ENABLE_IT(&hRTC_Handle, RTC_IT_ALRA);
+	/* Enable the write protection for RTC registers */
+	__HAL_RTC_WRITEPROTECTION_ENABLE(&hRTC_Handle);
 }
 
 /**
@@ -260,10 +253,10 @@ void TimeBase_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
 #endif /* USE_HAL_RTC_REGISTER_CALLBACKS */
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(hrtc);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(hrtc);
 
-  HAL_IncTick();
+	HAL_IncTick();
 }
 
 /**
@@ -272,7 +265,7 @@ void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
   */
 void RTC_IRQHandler(void)
 {
-  HAL_RTC_AlarmIRQHandler(&hRTC_Handle);
+	HAL_RTC_AlarmIRQHandler(&hRTC_Handle);
 }
 
 /**

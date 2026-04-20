@@ -54,123 +54,121 @@
  */
 #if defined(ARM_MATH_MVEI) && !defined(ARM_MATH_AUTOVECTORIZE)
 void arm_mse_q7(
-  const q7_t * pSrcA,
-  const q7_t * pSrcB,
-        uint32_t blockSize,
-        q7_t * pResult)
+	const q7_t * pSrcA,
+	const q7_t * pSrcB,
+	uint32_t blockSize,
+	q7_t * pResult)
 {
-    uint32_t  blkCnt;           /* loop counters */
-    q7x16_t vecSrcA,vecSrcB;
-    q31_t   sum = 0LL;
+	uint32_t  blkCnt;           /* loop counters */
+	q7x16_t vecSrcA, vecSrcB;
+	q31_t   sum = 0LL;
 
-   /* Compute 16 outputs at a time */
-    blkCnt = blockSize >> 4U;
-    while (blkCnt > 0U)
-    {
-        vecSrcA = vld1q(pSrcA);
-        vecSrcB = vld1q(pSrcB);
+	/* Compute 16 outputs at a time */
+	blkCnt = blockSize >> 4U;
 
-        vecSrcA = vshrq(vecSrcA,1);
-        vecSrcB = vshrq(vecSrcB,1);
+	while (blkCnt > 0U) {
+		vecSrcA = vld1q(pSrcA);
+		vecSrcB = vld1q(pSrcB);
 
-        vecSrcA = vqsubq(vecSrcA,vecSrcB);
-        /*
-         * sum lanes
-         */
-        sum = vmladavaq(sum, vecSrcA, vecSrcA);
+		vecSrcA = vshrq(vecSrcA, 1);
+		vecSrcB = vshrq(vecSrcB, 1);
 
-        blkCnt--;
-        pSrcA += 16;
-        pSrcB += 16;
-    }
+		vecSrcA = vqsubq(vecSrcA, vecSrcB);
+		/*
+		 * sum lanes
+		 */
+		sum = vmladavaq(sum, vecSrcA, vecSrcA);
 
-    /*
-     * tail
-     */
-    blkCnt = blockSize & 0xF;
-    if (blkCnt > 0U)
-    {
-        mve_pred16_t p0 = vctp8q(blkCnt);
-        vecSrcA = vld1q(pSrcA);
-        vecSrcB = vld1q(pSrcB);
+		blkCnt--;
+		pSrcA += 16;
+		pSrcB += 16;
+	}
 
-        vecSrcA = vshrq(vecSrcA,1);
-        vecSrcB = vshrq(vecSrcB,1);
+	/*
+	 * tail
+	 */
+	blkCnt = blockSize & 0xF;
 
-        vecSrcA = vqsubq(vecSrcA,vecSrcB);
+	if (blkCnt > 0U) {
+		mve_pred16_t p0 = vctp8q(blkCnt);
+		vecSrcA = vld1q(pSrcA);
+		vecSrcB = vld1q(pSrcB);
 
-        sum = vmladavaq_p(sum, vecSrcA, vecSrcA, p0);
-    }
+		vecSrcA = vshrq(vecSrcA, 1);
+		vecSrcB = vshrq(vecSrcB, 1);
 
-    *pResult = (q7_t) __SSAT((q15_t) (sum / blockSize)>>5, 8);
+		vecSrcA = vqsubq(vecSrcA, vecSrcB);
+
+		sum = vmladavaq_p(sum, vecSrcA, vecSrcA, p0);
+	}
+
+	*pResult = (q7_t) __SSAT((q15_t) (sum / blockSize) >> 5, 8);
 }
 #else
 void arm_mse_q7(
-  const q7_t * pSrcA,
-  const q7_t * pSrcB,
-        uint32_t blockSize,
-        q7_t * pResult)
+	const q7_t * pSrcA,
+	const q7_t * pSrcB,
+	uint32_t blockSize,
+	q7_t * pResult)
 {
-        uint32_t blkCnt;                               /* Loop counter */
-        q31_t sum = 0;                                 /* Temporary result storage */
-        q7_t inA,inB;                                       /* Temporary variable to store input value */
+	uint32_t blkCnt;                               /* Loop counter */
+	q31_t sum = 0;                                 /* Temporary result storage */
+	q7_t inA, inB;                                      /* Temporary variable to store input value */
 
 
 #if defined (ARM_MATH_LOOPUNROLL)
 
-  /* Loop unrolling: Compute 4 outputs at a time */
-  blkCnt = blockSize >> 2U;
+	/* Loop unrolling: Compute 4 outputs at a time */
+	blkCnt = blockSize >> 2U;
 
-  while (blkCnt > 0U)
-  {
-    inA = *pSrcA++ >> 1;
-    inB = *pSrcB++ >> 1;
-    inA = (q7_t) __SSAT((q15_t) inA - (q15_t)inB, 8);
-    sum += ((q15_t) inA * inA);
+	while (blkCnt > 0U) {
+		inA = *pSrcA++ >> 1;
+		inB = *pSrcB++ >> 1;
+		inA = (q7_t) __SSAT((q15_t) inA - (q15_t)inB, 8);
+		sum += ((q15_t) inA * inA);
 
-    inA = *pSrcA++ >> 1;
-    inB = *pSrcB++ >> 1;
-    inA = (q7_t) __SSAT((q15_t) inA - (q15_t)inB, 8);
-    sum += ((q15_t) inA * inA);
+		inA = *pSrcA++ >> 1;
+		inB = *pSrcB++ >> 1;
+		inA = (q7_t) __SSAT((q15_t) inA - (q15_t)inB, 8);
+		sum += ((q15_t) inA * inA);
 
-    inA = *pSrcA++ >> 1;
-    inB = *pSrcB++ >> 1;
-    inA = (q7_t) __SSAT((q15_t) inA - (q15_t)inB, 8);
-    sum += ((q15_t) inA * inA);
+		inA = *pSrcA++ >> 1;
+		inB = *pSrcB++ >> 1;
+		inA = (q7_t) __SSAT((q15_t) inA - (q15_t)inB, 8);
+		sum += ((q15_t) inA * inA);
 
-    inA = *pSrcA++ >> 1;
-    inB = *pSrcB++ >> 1;
-    inA = (q7_t) __SSAT((q15_t) inA - (q15_t)inB, 8);
-    sum += ((q15_t) inA * inA);
+		inA = *pSrcA++ >> 1;
+		inB = *pSrcB++ >> 1;
+		inA = (q7_t) __SSAT((q15_t) inA - (q15_t)inB, 8);
+		sum += ((q15_t) inA * inA);
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* Loop unrolling: Compute remaining outputs */
-  blkCnt = blockSize % 0x4U;
+	/* Loop unrolling: Compute remaining outputs */
+	blkCnt = blockSize % 0x4U;
 
 #else
 
-  /* Initialize blkCnt with number of samples */
-  blkCnt = blockSize;
+	/* Initialize blkCnt with number of samples */
+	blkCnt = blockSize;
 
 #endif /* #if defined (ARM_MATH_LOOPUNROLL) */
 
-  while (blkCnt > 0U)
-  {
-    inA = *pSrcA++ >> 1;
-    inB = *pSrcB++ >> 1;
+	while (blkCnt > 0U) {
+		inA = *pSrcA++ >> 1;
+		inB = *pSrcB++ >> 1;
 
-    inA = (q7_t) __SSAT((q15_t) inA - (q15_t)inB, 8);
-    sum += ((q15_t) inA * inA);
+		inA = (q7_t) __SSAT((q15_t) inA - (q15_t)inB, 8);
+		sum += ((q15_t) inA * inA);
 
-    /* Decrement loop counter */
-    blkCnt--;
-  }
+		/* Decrement loop counter */
+		blkCnt--;
+	}
 
-  /* Store result in q7 format */
-  *pResult = (q7_t) __SSAT((q15_t) (sum / blockSize)>>5, 8);;
+	/* Store result in q7 format */
+	*pResult = (q7_t) __SSAT((q15_t) (sum / blockSize) >> 5, 8);;
 }
 #endif /* defined(ARM_MATH_MVEI) */
 

@@ -62,26 +62,30 @@
 //   data:   pointer to sequence bit data
 //   return: none
 #if ((DAP_SWD != 0) || (DAP_JTAG != 0))
-void SWJ_Sequence (uint32_t count, const uint8_t *data) {
-  uint32_t val;
-  uint32_t n;
+void SWJ_Sequence (uint32_t count, const uint8_t *data)
+{
+	uint32_t val;
+	uint32_t n;
 
-  val = 0U;
-  n = 0U;
-  while (count--) {
-    if (n == 0U) {
-      val = *data++;
-      n = 8U;
-    }
-    if (val & 1U) {
-      PIN_SWDIO_TMS_SET();
-    } else {
-      PIN_SWDIO_TMS_CLR();
-    }
-    SW_CLOCK_CYCLE();
-    val >>= 1;
-    n--;
-  }
+	val = 0U;
+	n = 0U;
+
+	while (count--) {
+		if (n == 0U) {
+			val = *data++;
+			n = 8U;
+		}
+
+		if (val & 1U)
+			PIN_SWDIO_TMS_SET();
+
+		else
+			PIN_SWDIO_TMS_CLR();
+
+		SW_CLOCK_CYCLE();
+		val >>= 1;
+		n--;
+	}
 }
 #endif
 
@@ -92,36 +96,40 @@ void SWJ_Sequence (uint32_t count, const uint8_t *data) {
 //   swdi:   pointer to SWDIO captured data
 //   return: none
 #if (DAP_SWD != 0)
-void SWD_Sequence (uint32_t info, const uint8_t *swdo, uint8_t *swdi) {
-  uint32_t val;
-  uint32_t bit;
-  uint32_t n, k;
+void SWD_Sequence (uint32_t info, const uint8_t *swdo, uint8_t *swdi)
+{
+	uint32_t val;
+	uint32_t bit;
+	uint32_t n, k;
 
-  n = info & SWD_SEQUENCE_CLK;
-  if (n == 0U) {
-    n = 64U;
-  }
+	n = info & SWD_SEQUENCE_CLK;
 
-  if (info & SWD_SEQUENCE_DIN) {
-    while (n) {
-      val = 0U;
-      for (k = 8U; k && n; k--, n--) {
-        SW_READ_BIT(bit);
-        val >>= 1;
-        val  |= bit << 7;
-      }
-      val >>= k;
-      *swdi++ = (uint8_t)val;
-    }
-  } else {
-    while (n) {
-      val = *swdo++;
-      for (k = 8U; k && n; k--, n--) {
-        SW_WRITE_BIT(val);
-        val >>= 1;
-      }
-    }
-  }
+	if (n == 0U)
+		n = 64U;
+
+	if (info & SWD_SEQUENCE_DIN) {
+		while (n) {
+			val = 0U;
+
+			for (k = 8U; k && n; k--, n--) {
+				SW_READ_BIT(bit);
+				val >>= 1;
+				val  |= bit << 7;
+			}
+
+			val >>= k;
+			*swdi++ = (uint8_t)val;
+		}
+	} else {
+		while (n) {
+			val = *swdo++;
+
+			for (k = 8U; k && n; k--, n--) {
+				SW_WRITE_BIT(val);
+				val >>= 1;
+			}
+		}
+	}
 }
 #endif
 
@@ -274,12 +282,13 @@ SWD_TransferFunction(Slow)
 //   request: A[3:2] RnW APnDP
 //   data:    DATA[31:0]
 //   return:  ACK[2:0]
-uint8_t  SWD_Transfer(uint32_t request, uint32_t *data) {
-  if (DAP_Data.fast_clock) {
-    return SWD_TransferFast(request, data);
-  } else {
-    return SWD_TransferSlow(request, data);
-  }
+uint8_t  SWD_Transfer(uint32_t request, uint32_t *data)
+{
+	if (DAP_Data.fast_clock)
+		return SWD_TransferFast(request, data);
+
+	else
+		return SWD_TransferSlow(request, data);
 }
 
 

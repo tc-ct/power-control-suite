@@ -58,51 +58,45 @@
  */
 
 arm_status arm_divide_q15(q15_t numerator,
-  q15_t denominator,
-  q15_t *quotient,
-  int16_t *shift)
+			  q15_t denominator,
+			  q15_t *quotient,
+			  int16_t *shift)
 {
-  int16_t sign=0;
-  q31_t temp;
-  int16_t shiftForNormalizing;
+	int16_t sign = 0;
+	q31_t temp;
+	int16_t shiftForNormalizing;
 
-  *shift = 0;
+	*shift = 0;
 
-  sign = (numerator>>15) ^ (denominator>>15);
+	sign = (numerator >> 15) ^ (denominator >> 15);
 
-  if (denominator == 0)
-  {
-     if (sign)
-     {
-        *quotient = 0x8000;
-     }
-     else
-     {
-        *quotient = 0x7FFF;
-     }
-     return(ARM_MATH_NANINF);
-  }
+	if (denominator == 0) {
+		if (sign)
+			*quotient = 0x8000;
+		else
+			*quotient = 0x7FFF;
 
-  arm_abs_q15(&numerator,&numerator,1);
-  arm_abs_q15(&denominator,&denominator,1);
-  
-  temp = ((q31_t)numerator << 15) / ((q31_t)denominator);
+		return (ARM_MATH_NANINF);
+	}
 
-  shiftForNormalizing= 17 - __CLZ(temp);
-  if (shiftForNormalizing > 0)
-  {
-     *shift = shiftForNormalizing;
-     temp = temp >> shiftForNormalizing;
-  }
+	arm_abs_q15(&numerator, &numerator, 1);
+	arm_abs_q15(&denominator, &denominator, 1);
 
-  if (sign)
-  {
-    temp = -temp;
-  }
+	temp = ((q31_t)numerator << 15) / ((q31_t)denominator);
 
-  *quotient=temp;
+	shiftForNormalizing = 17 - __CLZ(temp);
 
-  return(ARM_MATH_SUCCESS);
+	if (shiftForNormalizing > 0) {
+		*shift = shiftForNormalizing;
+		temp = temp >> shiftForNormalizing;
+	}
+
+	if (sign)
+		temp = -temp;
+
+	*quotient = temp;
+
+	return (ARM_MATH_SUCCESS);
 }
 
 /**

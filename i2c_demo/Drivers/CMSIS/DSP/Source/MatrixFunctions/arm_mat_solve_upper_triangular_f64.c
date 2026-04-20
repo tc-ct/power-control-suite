@@ -46,72 +46,66 @@
    * @param[out] dst The solution X of UT . X = A
    * @return The function returns ARM_MATH_SINGULAR, if the system can't be solved.
   */
-  arm_status arm_mat_solve_upper_triangular_f64(
-  const arm_matrix_instance_f64 * ut,
-  const arm_matrix_instance_f64 * a,
-  arm_matrix_instance_f64 * dst)
-  {
-arm_status status;                             /* status of matrix inverse */
+arm_status arm_mat_solve_upper_triangular_f64(
+	const arm_matrix_instance_f64 * ut,
+	const arm_matrix_instance_f64 * a,
+	arm_matrix_instance_f64 * dst)
+{
+	arm_status status;                             /* status of matrix inverse */
 
 
 #ifdef ARM_MATH_MATRIX_CHECK
 
-  /* Check for matrix mismatch condition */
-  if ((ut->numRows != ut->numCols) ||
-      (ut->numRows != a->numRows)   )
-  {
-    /* Set status as ARM_MATH_SIZE_MISMATCH */
-    status = ARM_MATH_SIZE_MISMATCH;
-  }
-  else
+	/* Check for matrix mismatch condition */
+	if ((ut->numRows != ut->numCols) ||
+	    (ut->numRows != a->numRows)   ) {
+		/* Set status as ARM_MATH_SIZE_MISMATCH */
+		status = ARM_MATH_SIZE_MISMATCH;
+	} else
 
 #endif /* #ifdef ARM_MATH_MATRIX_CHECK */
 
-  {
+	{
 
-    int i,j,k,n,cols;
+		int i, j, k, n, cols;
 
-    float64_t *pX = dst->pData;
-    float64_t *pUT = ut->pData;
-    float64_t *pA = a->pData;
+		float64_t *pX = dst->pData;
+		float64_t *pUT = ut->pData;
+		float64_t *pA = a->pData;
 
-    float64_t *ut_row;
-    float64_t *a_col;
+		float64_t *ut_row;
+		float64_t *a_col;
 
-    n = dst->numRows;
-    cols = dst->numCols;
+		n = dst->numRows;
+		cols = dst->numCols;
 
-    for(j=0; j < cols; j ++)
-    {
-       a_col = &pA[j];
+		for (j = 0; j < cols; j ++) {
+			a_col = &pA[j];
 
-       for(i=n-1; i >= 0 ; i--)
-       {
-            float64_t tmp=a_col[i * cols];
+			for (i = n - 1; i >= 0 ; i--) {
+				float64_t tmp = a_col[i * cols];
 
-            ut_row = &pUT[n*i];
+				ut_row = &pUT[n * i];
 
-            for(k=n-1; k > i; k--)
-            {
-                tmp -= ut_row[k] * pX[cols*k+j];
-            }
+				for (k = n - 1; k > i; k--)
+					tmp -= ut_row[k] * pX[cols * k + j];
 
-            if (ut_row[i]==0.0)
-            {
-              return(ARM_MATH_SINGULAR);
-            }
-            tmp = tmp / ut_row[i];
-            pX[i*cols+j] = tmp;
-       }
+				if (ut_row[i] == 0.0)
+					return (ARM_MATH_SINGULAR);
 
-    }
-    status = ARM_MATH_SUCCESS;
+				tmp = tmp / ut_row[i];
+				pX[i * cols + j] = tmp;
+			}
 
-  }
+		}
 
-  
-  /* Return to application */
-  return (status);
+		status = ARM_MATH_SUCCESS;
+
+	}
+
+
+	/* Return to application */
+	return (status);
 }
 
 

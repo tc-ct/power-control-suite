@@ -69,80 +69,71 @@ void TimeBase_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
   */
 HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 {
-  RCC_ClkInitTypeDef    clkconfig;
-  uint32_t              uwTimclock;
-  uint32_t              uwAPB1Prescaler;
-  uint32_t              uwPrescalerValue;
-  uint32_t              pFLatency;
-  HAL_StatusTypeDef     status;
+	RCC_ClkInitTypeDef    clkconfig;
+	uint32_t              uwTimclock;
+	uint32_t              uwAPB1Prescaler;
+	uint32_t              uwPrescalerValue;
+	uint32_t              pFLatency;
+	HAL_StatusTypeDef     status;
 
-  /* Enable TIM6 clock */
-  __HAL_RCC_TIM6_CLK_ENABLE();
+	/* Enable TIM6 clock */
+	__HAL_RCC_TIM6_CLK_ENABLE();
 
-  /* Get clock configuration */
-  HAL_RCC_GetClockConfig(&clkconfig, &pFLatency);
+	/* Get clock configuration */
+	HAL_RCC_GetClockConfig(&clkconfig, &pFLatency);
 
-  /* Get APB1 prescaler */
-  uwAPB1Prescaler = clkconfig.APB1CLKDivider;
+	/* Get APB1 prescaler */
+	uwAPB1Prescaler = clkconfig.APB1CLKDivider;
 
-  /* Compute TIM6 clock */
-  if (uwAPB1Prescaler == RCC_HCLK_DIV1)
-  {
-    uwTimclock = HAL_RCC_GetPCLK1Freq();
-  }
-  else
-  {
-    uwTimclock = 2UL * HAL_RCC_GetPCLK1Freq();
-  }
+	/* Compute TIM6 clock */
+	if (uwAPB1Prescaler == RCC_HCLK_DIV1)
+		uwTimclock = HAL_RCC_GetPCLK1Freq();
+	else
+		uwTimclock = 2UL * HAL_RCC_GetPCLK1Freq();
 
-  /* Compute the prescaler value to have TIM6 counter clock equal to 100KHz */
-  uwPrescalerValue = (uint32_t)((uwTimclock / 100000U) - 1U);
+	/* Compute the prescaler value to have TIM6 counter clock equal to 100KHz */
+	uwPrescalerValue = (uint32_t)((uwTimclock / 100000U) - 1U);
 
-  /* Initialize TIM6 */
-  TimHandle.Instance = TIM6;
+	/* Initialize TIM6 */
+	TimHandle.Instance = TIM6;
 
-  /* Initialize TIMx peripheral as follow:
-  + Period = [(TIM6CLK/1000) - 1]. to have a (1/1000) s time base.
-  + Prescaler = (uwTimclock/100000 - 1) to have a 100KHz counter clock.
-  + ClockDivision = 0
-  + Counter direction = Up
-  */
-  TimHandle.Init.Period = (100000U / 1000U) - 1U;
-  TimHandle.Init.Prescaler = uwPrescalerValue;
-  TimHandle.Init.ClockDivision = 0;
-  TimHandle.Init.CounterMode = TIM_COUNTERMODE_UP;
-  status = HAL_TIM_Base_Init(&TimHandle);
+	/* Initialize TIMx peripheral as follow:
+	+ Period = [(TIM6CLK/1000) - 1]. to have a (1/1000) s time base.
+	+ Prescaler = (uwTimclock/100000 - 1) to have a 100KHz counter clock.
+	+ ClockDivision = 0
+	+ Counter direction = Up
+	*/
+	TimHandle.Init.Period = (100000U / 1000U) - 1U;
+	TimHandle.Init.Prescaler = uwPrescalerValue;
+	TimHandle.Init.ClockDivision = 0;
+	TimHandle.Init.CounterMode = TIM_COUNTERMODE_UP;
+	status = HAL_TIM_Base_Init(&TimHandle);
 
 #if (USE_HAL_TIM_REGISTER_CALLBACKS == 1U)
-  if (status == HAL_OK)
-  {
-    status = HAL_TIM_RegisterCallback(&TimHandle, HAL_TIM_PERIOD_ELAPSED_CB_ID, TimeBase_TIM_PeriodElapsedCallback);
-  }
+
+	if (status == HAL_OK)
+		status = HAL_TIM_RegisterCallback(&TimHandle, HAL_TIM_PERIOD_ELAPSED_CB_ID, TimeBase_TIM_PeriodElapsedCallback);
+
 #endif /* USE_HAL_TIM_REGISTER_CALLBACKS */
 
-  if (status == HAL_OK)
-  {
-    /* Start the TIM time Base generation in interrupt mode */
-    status = HAL_TIM_Base_Start_IT(&TimHandle);
-    if (status == HAL_OK)
-    {
-      if (TickPriority < (1UL << __NVIC_PRIO_BITS))
-      {
-        /* Enable the TIM6 global Interrupt */
-        HAL_NVIC_SetPriority(TIM6_IRQn, TickPriority, 0);
-        uwTickPrio = TickPriority;
-      }
-      else
-      {
-        status = HAL_ERROR;
-      }
-    }
-  }
+	if (status == HAL_OK) {
+		/* Start the TIM time Base generation in interrupt mode */
+		status = HAL_TIM_Base_Start_IT(&TimHandle);
 
-  HAL_NVIC_EnableIRQ(TIM6_IRQn);
+		if (status == HAL_OK) {
+			if (TickPriority < (1UL << __NVIC_PRIO_BITS)) {
+				/* Enable the TIM6 global Interrupt */
+				HAL_NVIC_SetPriority(TIM6_IRQn, TickPriority, 0);
+				uwTickPrio = TickPriority;
+			} else
+				status = HAL_ERROR;
+		}
+	}
 
-  /* Return function status */
-  return status;
+	HAL_NVIC_EnableIRQ(TIM6_IRQn);
+
+	/* Return function status */
+	return status;
 }
 
 /**
@@ -153,8 +144,8 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
   */
 void HAL_SuspendTick(void)
 {
-  /* Disable TIM6 update Interrupt */
-  __HAL_TIM_DISABLE_IT(&TimHandle, TIM_IT_UPDATE);
+	/* Disable TIM6 update Interrupt */
+	__HAL_TIM_DISABLE_IT(&TimHandle, TIM_IT_UPDATE);
 }
 
 /**
@@ -165,8 +156,8 @@ void HAL_SuspendTick(void)
   */
 void HAL_ResumeTick(void)
 {
-  /* Enable TIM6 Update interrupt */
-  __HAL_TIM_ENABLE_IT(&TimHandle, TIM_IT_UPDATE);
+	/* Enable TIM6 Update interrupt */
+	__HAL_TIM_ENABLE_IT(&TimHandle, TIM_IT_UPDATE);
 }
 
 /**
@@ -183,10 +174,10 @@ void TimeBase_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 #endif /* USE_HAL_TIM_REGISTER_CALLBACKS */
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(htim);
+	/* Prevent unused argument(s) compilation warning */
+	UNUSED(htim);
 
-  HAL_IncTick();
+	HAL_IncTick();
 }
 
 /**
@@ -196,7 +187,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   */
 void TIM6_IRQHandler(void)
 {
-  HAL_TIM_IRQHandler(&TimHandle);
+	HAL_TIM_IRQHandler(&TimHandle);
 }
 
 /**

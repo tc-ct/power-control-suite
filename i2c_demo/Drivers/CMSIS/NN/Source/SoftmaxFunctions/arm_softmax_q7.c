@@ -60,46 +60,41 @@
 
 void arm_softmax_q7(const q7_t *vec_in, const uint16_t dim_vec, q7_t *p_out)
 {
-    q31_t sum;
-    int16_t i;
-    uint8_t shift;
-    q15_t base;
-    base = -128;
+	q31_t sum;
+	int16_t i;
+	uint8_t shift;
+	q15_t base;
+	base = -128;
 
-    /* We first search for the maximum */
-    for (i = 0; i < dim_vec; i++)
-    {
-        if (vec_in[i] > base)
-        {
-            base = vec_in[i];
-        }
-    }
+	/* We first search for the maximum */
+	for (i = 0; i < dim_vec; i++) {
+		if (vec_in[i] > base)
+			base = vec_in[i];
+	}
 
-    /*
-     * So the base is set to max-8, meaning
-     * that we ignore really small values.
-     * anyway, they will be 0 after shrinking to q7_t.
-     */
-    base = base - (1 << 3);
+	/*
+	 * So the base is set to max-8, meaning
+	 * that we ignore really small values.
+	 * anyway, they will be 0 after shrinking to q7_t.
+	 */
+	base = base - (1 << 3);
 
-    sum = 0;
+	sum = 0;
 
-    for (i = 0; i < dim_vec; i++)
-    {
-        shift = (uint8_t)__USAT(vec_in[i] - base, 3);
-        sum += 0x1 << shift;
-    }
+	for (i = 0; i < dim_vec; i++) {
+		shift = (uint8_t)__USAT(vec_in[i] - base, 3);
+		sum += 0x1 << shift;
+	}
 
-    /* This is effectively (0x1 << 20) / sum */
-    int output_base = (1 << 20) / sum;
+	/* This is effectively (0x1 << 20) / sum */
+	int output_base = (1 << 20) / sum;
 
-    for (i = 0; i < dim_vec; i++)
-    {
+	for (i = 0; i < dim_vec; i++) {
 
-        /* Here minimum value of 13+base-vec_in[i] will be 5 */
-        shift = (uint8_t)__USAT(13 + base - vec_in[i], 5);
-        p_out[i] = (q7_t)__SSAT((output_base >> shift), 8);
-    }
+		/* Here minimum value of 13+base-vec_in[i] will be 5 */
+		shift = (uint8_t)__USAT(13 + base - vec_in[i], 5);
+		p_out[i] = (q7_t)__SSAT((output_base >> shift), 8);
+	}
 }
 
 /**
