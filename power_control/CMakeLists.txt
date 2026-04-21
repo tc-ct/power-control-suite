@@ -10,9 +10,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 追加路径（保留原有内容）
-list(APPEND CMAKE_PREFIX_PATH "./third_party/")
-
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../common/third_party/")
 set(HAL_SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../common/hal")
+set(THIRD_PARTY_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../common/third_party/")
 
 # 查找hidapi库
 find_package(hidapi REQUIRED)
@@ -42,7 +42,7 @@ set(PROJECT_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${HAL_SRC_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/third_party
+    ${THIRD_PARTY_PATH}
     ${HIDAPI_INCLUDE_DIRS}
 )
 
@@ -103,7 +103,7 @@ endif()
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/third_party/bin/hidapi.dll"
+        "${THIRD_PARTY_PATH}/bin/hidapi.dll"
         $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
