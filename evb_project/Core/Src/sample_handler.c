@@ -101,40 +101,34 @@ void SendSampleReport()
 }
 
 
-void SampleCurrentData()
-{
-	// 读取 I2C1
-	for (uint8_t i = 0; i < I2C1_INA238_NUM; i++) {
-		INA238_ReadRawData(&hsmbus1, i2c1_dev_addrs[i], &sample_pkg.channel_curr_ma[i],
-				   INA238_DATA_CURRENT, MAX_CURRENT1);
-	}
-
-	// 读取 I2C2
-	for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
-		INA238_ReadRawData(&hsmbus2, i2c2_dev_addrs[i], &sample_pkg.channel_curr_ma[I2C1_INA238_NUM + i],
-				   INA238_DATA_CURRENT, MAX_CURRENT2);
-	}
-
-	INA260_ReadRawData(&hsmbus2, INA260_DEV_ADDR, &sample_pkg.channel_curr_ma[I2C1_INA238_NUM + I2C2_INA238_NUM],
-			   INA260_DATA_CURRENT);
-
+void SampleCurrentData(){
+  // 读取 I2C1
+  for (uint8_t i = 0; i < I2C1_INA238_NUM; i++) {
+    INA238_ReadRawData(&hsmbus1, i2c1_dev_addrs[i], &sample_pkg.channel_curr_reg[i],
+                    INA238_DATA_CURRENT,MAX_CURRENT1);
+  }
+  // 读取 I2C2
+  for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
+    INA238_ReadRawData(&hsmbus2, i2c2_dev_addrs[i], &sample_pkg.channel_curr_reg[I2C1_INA238_NUM+i],
+                    INA238_DATA_CURRENT,MAX_CURRENT2);
+  }
+  INA260_ReadRawData(&hsmbus2, INA260_DEV_ADDR, &sample_pkg.channel_curr_reg[I2C1_INA238_NUM+I2C2_INA238_NUM],
+                  INA260_DATA_CURRENT);
+    
 }
 
-void SampleVoltageData()
-{
-	// 读取 I2C1
-	for (uint8_t i = 0; i < I2C1_INA238_NUM; i++) {
-		INA238_ReadRawData(&hsmbus1, i2c1_dev_addrs[i], &sample_pkg.channel_volt_mv[i],
-				   INA238_DATA_VBUS, MAX_CURRENT1);
-	}
-
-	// 读取 I2C2
-	for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
-		INA238_ReadRawData(&hsmbus2, i2c2_dev_addrs[i], &sample_pkg.channel_volt_mv[I2C1_INA238_NUM + i],
-				   INA238_DATA_VBUS, MAX_CURRENT2);
-	}
-
-	INA260_ReadRawData(&hsmbus2, INA260_DEV_ADDR, &sample_pkg.channel_volt_mv[I2C1_INA238_NUM + I2C2_INA238_NUM],
-			   INA260_DATA_BUS_VOLTAGE);
-
+void SampleVoltageData(){
+  // 读取 I2C1
+  for (uint8_t i = 0; i < I2C1_INA238_NUM; i++) {
+    INA238_ReadRawData(&hsmbus1, i2c1_dev_addrs[i], &sample_pkg.channel_volt_reg[i],
+                    INA238_DATA_VBUS,MAX_CURRENT1);
+  }
+  // 读取 I2C2
+  for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
+    INA238_ReadRawData(&hsmbus2, i2c2_dev_addrs[i], &sample_pkg.channel_volt_reg[I2C1_INA238_NUM+i],
+                    INA238_DATA_VBUS,MAX_CURRENT2);
+  }
+  INA260_ReadRawData(&hsmbus2, INA260_DEV_ADDR, &sample_pkg.channel_volt_reg[I2C1_INA238_NUM+I2C2_INA238_NUM],
+                  INA260_DATA_BUS_VOLTAGE);
+  
 }

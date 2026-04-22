@@ -15,8 +15,8 @@ void Protocol_PackVoltageConfig(VoltageConfigPacket* pkt, PowerSupplyConfig* cfg
     pkt->device_id = cfg->dac_device;
     pkt->channel = cfg->dac_channel;
     pkt->dac_value = cfg->dac_value;
-    pkt->enable_pin = cfg->enable_pin; // 可根据需要设置使能引脚
-    pkt->pin_port = cfg->enable_port; // 可根据需要设置使能引脚端口
+    pkt->enable_pin = cfg->enable_pin; // 可根据需要设置使能引�?
+    pkt->pin_port = cfg->enable_port; // 可根据需要设置使能引脚端�?
 }
 
 void Protocol_PackPinConfig(PinConfigPacket* pkt, uint8_t port, uint16_t pin, uint8_t level) {
@@ -45,24 +45,25 @@ void Protocol_ParseSampleData(const uint8_t* data, int length, SampleDataPacketT
         LOG_ERROR("Received sample data too short: %d bytes, expected %zu bytes", length, sizeof(SampleDataPacket));
         return;
     }
+    out->timestamp = pkt->timestamp;
 
-    // for process raw current data
+    // Parse raw current registers: LSB constants are in A/LSB, convert to mA.
     for (uint8_t i = 0; i < I2C1_INA238_NUM; i++) {
-        out->channel_curr_ma[i] = (int16_t)pkt->channel_curr_ma[i] * INA238_CURRENT_LSB(MAX_CURRENT1);   /* 1μA/LSB -> mA */
+        out->channel_curr_ma[i] = (int16_t)pkt->channel_curr_reg[i] * INA238_CURRENT_LSB(MAX_CURRENT1) * 1000.0f;   /* A -> mA */
     }
     // 读取 I2C2
     for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
-        out->channel_curr_ma[I2C1_INA238_NUM + i] = (int16_t)pkt->channel_curr_ma[I2C1_INA238_NUM + i] * INA238_CURRENT_LSB(MAX_CURRENT2);   /* 1μA/LSB -> mA */
+        out->channel_curr_ma[I2C1_INA238_NUM + i] = (int16_t)pkt->channel_curr_reg[I2C1_INA238_NUM + i] * INA238_CURRENT_LSB(MAX_CURRENT2) * 1000.0f;   /* A -> mA */
     }
-    out->channel_curr_ma[SAMPLE_DATA_COUNT - 1] = ((int16_t)pkt->channel_curr_ma[SAMPLE_DATA_COUNT - 1]) * INA260_CURRENT_LSB;
+    out->channel_curr_ma[SAMPLE_DATA_COUNT - 1] = ((int16_t)pkt->channel_curr_reg[SAMPLE_DATA_COUNT - 1]) * INA260_CURRENT_LSB * 1000.0f;   /* A -> mA */
 
     // for process raw voltage data
     for (uint8_t i = 0; i < SAMPLE_DATA_COUNT - 1; i++) {
-        out->channel_volt_mv[i] = pkt->channel_volt_mv[i] * INA238_VBUS_LSB_V;   /* 5μV/LSB -> mV */
+        out->channel_volt_mv[i] = pkt->channel_volt_reg[i] * INA238_VBUS_LSB_V * 1000.0f;   /* V -> mV */
         // LOG_INFO("Voltage data[%d]=%.4f", i, out->channel_volt_mv[i]);
-        // LOG_INFO("Voltage Raw data[%d]=%d ", i, pkt->channel_volt_mv[i]);
+        // LOG_INFO("Voltage Raw data[%d]=%d ", i, pkt->channel_volt_reg[i]);
     }
-    out->channel_volt_mv[SAMPLE_DATA_COUNT - 1] = (pkt->channel_volt_mv[SAMPLE_DATA_COUNT - 1] & 0x7FFF) * INA260_BUSVOLTAGE_LSB;
+    out->channel_volt_mv[SAMPLE_DATA_COUNT - 1] = (pkt->channel_volt_reg[SAMPLE_DATA_COUNT - 1] & 0x7FFF) * INA260_BUSVOLTAGE_LSB * 1000.0f;
 }
 
 void SendVoltageConfig(USBDriver& dev, PowerSupplyConfig* cfg) {
@@ -124,18 +125,20 @@ float GetActualVoltage(USBDriver& dev, int means_pt) {
     // Start sampling voltage data
     SendStartSample(dev, SAMPLE_TYPE_VOLTAGE);
 
-    // get voltage from stm32
+    // get voltage from stm32 (parsed values are in mV)
     uint8_t buffer[USB_REPORT_SIZE];
     int bytes = dev.receive(buffer, USB_REPORT_SIZE);
     SampleDataPacket pkt;
     SampleDataPacketTF pk_tf;
     Protocol_ParseSampleData(buffer, bytes, &pk_tf);
 
-    // memcpy(voltages, pkt.channel_volt_mv, sizeof(voltages));
-    // LOG_INFO("Voltage data[%d]=%.4f", idx, pk_tf.channel_volt_mv[idx]);
+    // memcpy(voltages, pkt.channel_volt_reg, sizeof(voltages));
+    // LOG_INFO("Voltage data[%d]=%.4f mV", idx, pk_tf.channel_volt_mv[idx]);
 
     // Stop sampling
     SendStopSample(dev, SAMPLE_TYPE_VOLTAGE);
     
-    return pk_tf.channel_volt_mv[idx];
+    // GetActualVoltage returns volts.
+    return pk_tf.channel_volt_mv[idx] / 1000.0f;
 }
+

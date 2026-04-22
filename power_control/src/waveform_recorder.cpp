@@ -6,6 +6,8 @@
 #include <QFileInfo>
 #include <QTextStream>
 
+#include "stm32_comm.h"
+
 void WaveformRecorder::start(const QString& baseDirectory)
 {
     packets_.clear();
@@ -64,45 +66,31 @@ bool WaveformRecorder::exportCsv(const QString& filePath)
     }
 
     QTextStream stream(&file);
-    stream << "voltage_timestamp_ms,voltage_type";
+    stream << "voltage_timestamp_ms";
     for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-        stream << ",channel_" << i;
+        stream << ",channel_" << i << "_mv";
     }
-    stream << ",current_timestamp_ms,current_type";
+    stream << ",current_timestamp_ms";
     for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-        stream << ",channel_" << i;
+        stream << ",channel_" << i << "_ma";
     }
     stream << "\n";
 
-    const int kBlockColumns = 2 + SAMPLE_DATA_COUNT;
-    auto writeEmptyColumns = [&](int columnCount) {
-        for (int i = 0; i < columnCount; ++i) {
-            stream << ',';
-        }
-    };
-
     for (const SampleDataPacket& packet : packets_) {
-        if (packet.type == I2C_DATA_VBUS) {
-            stream << packet.timestamp << ",voltage";
-            for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-                stream << ',' << packet.channel_volt_mv[i];
-            }
-            writeEmptyColumns(kBlockColumns);
-            stream << "\n";
-            continue;
-        }
+        SampleDataPacketTF_t parsed{};
+        Protocol_ParseSampleData(
+            reinterpret_cast<const uint8_t*>(&packet),
+            static_cast<int>(sizeof(packet)),
+            &parsed);
 
-        if (packet.type == I2C_DATA_CURRENT) {
-            writeEmptyColumns(kBlockColumns);
-            stream << packet.timestamp << ",current";
-            for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-                stream << ',' << packet.channel_curr_ma[i];
-            }
-            stream << "\n";
-            continue;
+        stream << packet.timestamp;
+        for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
+            stream << ',' << parsed.channel_volt_mv[i];
         }
-
-        writeEmptyColumns(kBlockColumns * 2);
+        stream << ',' << packet.timestamp;
+        for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
+            stream << ',' << parsed.channel_curr_ma[i];
+        }
         stream << "\n";
     }
 

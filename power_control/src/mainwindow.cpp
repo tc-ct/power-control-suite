@@ -31,6 +31,7 @@
 #include "config_service.h"
 #include "device_session_service.h"
 #include "debug_window.h"
+#include "adc_def.h"
 #include "stm32_comm.h"
 #include "waveform_recorder.h"
 #include "waveform_widget.h"
@@ -365,23 +366,7 @@ void MainWindow::onDataReceived(const SampleDataPacket& packet) {
 }
 
 void MainWindow::updateSampleValuesFromPacket(const SampleDataPacketTF& packet) {
-    // if (packet.type == I2C_DATA_VBUS) {
-    //     for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-    //         // sampled_volt_[i] = packet.channel_volt_mv[i];
-    //         has_sampled_volt_[i] = true;
-    //     }
-    // } else if (packet.type == I2C_DATA_CURRENT) {
-    //     for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-    //         // sampled_curr_[i] = packet.channel_curr_ma[i];
-    //         has_sampled_curr_[i] = true;
-    //     }
-    // } else {
-    //     return;
-    // }
-
     for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-        // sampled_volt_[i] = packet.channel_volt_mv[i];
-        // sampled_curr_[i] = packet.channel_curr_ma[i];
         has_sampled_volt_[i] = true;
         has_sampled_curr_[i] = true;
     }
@@ -561,14 +546,14 @@ void MainWindow::startTestModeThread() {
             SampleDataPacket packet{};
             packet.report_id = 0;
             packet.timestamp = tick * 80;
-            packet.type = (tick % 2 == 0) ? I2C_DATA_VBUS : I2C_DATA_CURRENT;
 
             for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
                 const float basePhase = static_cast<float>(tick) * 0.16f + static_cast<float>(i) * 0.22f;
                 const float volt = 12000.0f + 1200.0f * std::sin(basePhase);
                 const float curr = 850.0f + 260.0f * std::sin(basePhase + 1.1f);
-                packet.channel_volt_mv[i] = static_cast<uint16_t>(std::max(0.0f, volt));
-                packet.channel_curr_ma[i] = static_cast<uint16_t>(std::max(0.0f, curr));
+                const float voltReg = volt / (INA238_VBUS_LSB_V * 1000.0f);
+                packet.channel_volt_reg[i] = static_cast<uint16_t>(std::clamp(voltReg, 0.0f, 65535.0f));
+                packet.channel_curr_reg[i] = static_cast<uint16_t>(std::max(0.0f, curr));
             }
 
             QMetaObject::invokeMethod(this, [this, packet]() {

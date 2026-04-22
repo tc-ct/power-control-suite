@@ -183,7 +183,7 @@ void WaveformWidget::paintEvent(QPaintEvent* event)
 
     painter.setPen(QColor(84, 99, 115));
     painter.setFont(QFont(QStringLiteral("Microsoft YaHei UI"), 9));
-    painter.drawText(QPointF(contentRect.left(), contentRect.top() - 4), QStringLiteral("Waveform"));
+//    painter.drawText(QPointF(contentRect.left(), contentRect.top() - 4), QStringLiteral("Waveform"));
     painter.drawText(QPointF(contentRect.left(), fullRect.bottom() - 8), QStringLiteral("Time (s)"));
 
     const bool hideOriginalWaveform = !is_expanded_view_ && expanded_dialog_ && expanded_dialog_->isVisible();

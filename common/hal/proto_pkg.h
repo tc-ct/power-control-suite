@@ -126,17 +126,16 @@ typedef struct VoltageConfigPacket {
 } VoltageConfigPacket_t;
 
 /* 采样数据结构（STM32 -> PC） */
-typedef struct SampleDataPacket {
-	union {
-		struct {
-			uint8_t report_id;     // 报告ID（通常为0）
-			uint8_t type;     // 数据类型
-			uint32_t timestamp;           // 时间戳(ms)
-			uint16_t channel_volt_mv[SAMPLE_DATA_COUNT]; // 通道 电压
-			uint16_t channel_curr_ma[SAMPLE_DATA_COUNT]; // 通道 电流
-		};
-		uint8_t bytes[USB_REPORT_SIZE];           // 整个数据包的字节视图
-	};
+typedef struct SampleDataPacket{
+union {
+struct {
+    uint8_t report_id;     // 报告ID（通常为0）
+    uint32_t timestamp;           // 时间戳(ms)
+    uint16_t channel_volt_reg[SAMPLE_DATA_COUNT]; // raw voltage register values
+    uint16_t channel_curr_reg[SAMPLE_DATA_COUNT]; // raw current register values
+};
+uint8_t bytes[USB_REPORT_SIZE];           // 整个数据包的字节视图
+};
 } SampleDataPacket_t;
 
 /* 转换后采样数据结构（STM32 -> PC） */
