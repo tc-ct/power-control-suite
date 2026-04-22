@@ -26,12 +26,14 @@
 #include <chrono>
 #include <cmath>
 #include <cstring>
+#include <exception>
 #include <thread>
 
 #include "config_service.h"
 #include "device_session_service.h"
 #include "debug_window.h"
 #include "adc_def.h"
+#include "power_control.h"
 #include "stm32_comm.h"
 #include "waveform_recorder.h"
 #include "waveform_widget.h"
@@ -147,9 +149,15 @@ MainWindow::MainWindow(QWidget *parent)
     test_mode_action_ = toolsMenu->addAction(QStringLiteral("测试模式"));
     test_mode_action_->setCheckable(true);
     connect(test_mode_action_, &QAction::toggled, this, &MainWindow::onToggleTestMode);
+    power_on_button_ = new QPushButton(QStringLiteral("上电"), this);
+    ui->statusLayout->insertWidget(3, power_on_button_);
+    connect(power_on_button_, &QPushButton::clicked, this, &MainWindow::onPowerOnClicked);
+    calibration_toggle_button_ = new QPushButton(this);
+    ui->statusLayout->insertWidget(4, calibration_toggle_button_);
+    connect(calibration_toggle_button_, &QPushButton::clicked, this, &MainWindow::onToggleCalibrationClicked);
     record_button_ = new QPushButton(QStringLiteral("开始录制"), this);
     record_button_->setEnabled(false);
-    ui->statusLayout->insertWidget(3, record_button_);
+    ui->statusLayout->insertWidget(5, record_button_);
     connect(record_button_, &QPushButton::clicked, this, &MainWindow::onToggleRecording);
 
     const int buttonWidth = qMax(
@@ -162,6 +170,11 @@ MainWindow::MainWindow(QWidget *parent)
         button->setMinimumWidth(buttonWidth);
         button->setMinimumHeight(buttonHeight);
     }
+    power_on_button_->setMinimumWidth(buttonWidth);
+    power_on_button_->setMinimumHeight(buttonHeight);
+    calibration_toggle_button_->setMinimumWidth(buttonWidth);
+    calibration_toggle_button_->setMinimumHeight(buttonHeight);
+    refreshCalibrationButtonText();
 
     const int leftLabelWidth = qMax(ui->configPathLabel->sizeHint().width(), ui->deviceNameLabel->sizeHint().width());
     ui->configPathLabel->setMinimumWidth(leftLabelWidth);
@@ -254,6 +267,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     stopRecording(false);
+    waitPowerOnThread();
     stopTestModeThread();
     delete ui;
 }
@@ -285,6 +299,89 @@ void MainWindow::addConfigPathOption(const QString& filePath) {
 void MainWindow::appendLog(const QString& message) {
     ui->logEdit->appendPlainText(message);
     statusBar()->showMessage(message, 3000);
+}
+
+void MainWindow::waitPowerOnThread() {
+    if (power_on_thread_.joinable()) {
+        power_on_thread_.join();
+    }
+}
+
+void MainWindow::refreshCalibrationButtonText() {
+    if (!calibration_toggle_button_) {
+        return;
+    }
+    const bool calibrationEnabled = config_service_ && config_service_->config().calibration_en;
+    calibration_toggle_button_->setText(calibrationEnabled ? QStringLiteral("校准: 开") : QStringLiteral("校准: 关"));
+}
+
+void MainWindow::onToggleCalibrationClicked() {
+    if (!config_service_) {
+        return;
+    }
+    if (power_on_running_.load()) {
+        appendLog(QStringLiteral("上电进行中，暂不可切换校准状态"));
+        return;
+    }
+    PowersConfig& config = config_service_->mutableConfig();
+    config.calibration_en = !config.calibration_en;
+    refreshCalibrationButtonText();
+    appendLog(config.calibration_en ? QStringLiteral("校准已开启") : QStringLiteral("校准已关闭"));
+}
+
+void MainWindow::onPowerOnClicked() {
+    if (!session_service_ || !session_service_->isOpen()) {
+        QMessageBox::information(this, QStringLiteral("设备未连接"), QStringLiteral("请先打开设备后再执行上电。"));
+        return;
+    }
+    if (session_service_->isSampling()) {
+        QMessageBox::information(this, QStringLiteral("采样进行中"), QStringLiteral("请先停止采样后再执行上电。"));
+        appendLog(QStringLiteral("采样进行中，禁止执行上电"));
+        return;
+    }
+    if (test_mode_running_.load()) {
+        QMessageBox::information(this, QStringLiteral("测试模式进行中"), QStringLiteral("请先关闭测试模式后再执行上电。"));
+        appendLog(QStringLiteral("测试模式进行中，禁止执行上电"));
+        return;
+    }
+    if (!config_service_) {
+        appendLog(QStringLiteral("配置服务不可用，无法执行上电"));
+        return;
+    }
+    if (power_on_running_.load()) {
+        appendLog(QStringLiteral("上电任务正在执行，请稍候"));
+        return;
+    }
+
+    USBDriver* driver = session_service_->driver();
+    if (!driver || !driver->isOpen()) {
+        appendLog(QStringLiteral("设备驱动不可用，无法执行上电"));
+        return;
+    }
+
+    waitPowerOnThread();
+    power_on_running_.store(true);
+    updateConnectionState();
+    appendLog(QStringLiteral("开始执行上电流程..."));
+
+    PowersConfig configSnapshot = config_service_->config();
+    power_on_thread_ = std::thread([this, driver, configSnapshot]() mutable {
+        QString message = QStringLiteral("上电完成");
+        try {
+            PowerController controller(&configSnapshot);
+            controller.ConfigVoltages(*driver);
+        } catch (const std::exception& ex) {
+            message = QStringLiteral("上电失败: %1").arg(QString::fromLocal8Bit(ex.what()));
+        } catch (...) {
+            message = QStringLiteral("上电失败: 未知异常");
+        }
+
+        QMetaObject::invokeMethod(this, [this, message]() {
+            appendLog(message);
+            power_on_running_.store(false);
+            updateConnectionState();
+        }, Qt::QueuedConnection);
+    });
 }
 
 void MainWindow::refreshSampleTable() {
@@ -410,10 +507,19 @@ void MainWindow::refreshDeviceList() {
 void MainWindow::updateConnectionState() {
     const bool isOpen = session_service_ && session_service_->isOpen();
     const bool isSampling = session_service_ && session_service_->isSampling();
+    const bool isPoweringOn = power_on_running_.load();
     ui->openButton->setText(isOpen ? QStringLiteral("关闭设备") : QStringLiteral("打开设备"));
     ui->statusValueLabel->setText(isOpen ? QStringLiteral("已连接") : QStringLiteral("未连接"));
-    ui->sampleToggleButton->setEnabled(isOpen);
+    ui->openButton->setEnabled(!isPoweringOn);
+    ui->sampleToggleButton->setEnabled(isOpen && !isPoweringOn);
     ui->sampleToggleButton->setText(isSampling ? QStringLiteral("停止采样") : QStringLiteral("开始采样"));
+    if (power_on_button_) {
+        power_on_button_->setEnabled(isOpen && !isPoweringOn);
+    }
+    if (calibration_toggle_button_) {
+        calibration_toggle_button_->setEnabled(!isPoweringOn);
+    }
+    refreshCalibrationButtonText();
     if (record_button_) {
         const bool isRecording = waveform_recorder_ && waveform_recorder_->isRecording();
         record_button_->setEnabled(isRecording || isOpen || test_mode_running_.load());
@@ -445,6 +551,10 @@ void MainWindow::onQueryDevices() {
 
 void MainWindow::onToggleOpenDevice() {
     if (!session_service_) {
+        return;
+    }
+    if (power_on_running_.load()) {
+        appendLog(QStringLiteral("上电进行中，暂不可打开或关闭设备"));
         return;
     }
 
@@ -489,6 +599,12 @@ void MainWindow::onToggleSampling() {
         return;
     }
 
+    if (power_on_running_.load()) {
+        QMessageBox::information(this, QStringLiteral("上电进行中"), QStringLiteral("请等待上电完成后再操作采样。"));
+        appendLog(QStringLiteral("上电进行中，暂不可切换采样"));
+        return;
+    }
+
     if (!session_service_->isSampling()) {
         if (test_mode_running_.load()) {
             if (test_mode_action_) {
@@ -522,6 +638,14 @@ void MainWindow::onToggleTestMode(bool enabled) {
 
 void MainWindow::startTestModeThread() {
     if (test_mode_running_.load()) {
+        return;
+    }
+    if (power_on_running_.load()) {
+        if (test_mode_action_) {
+            const QSignalBlocker blocker(test_mode_action_);
+            test_mode_action_->setChecked(false);
+        }
+        appendLog(QStringLiteral("上电进行中，无法启动测试模式"));
         return;
     }
 
@@ -678,6 +802,7 @@ void MainWindow::onLoadConfig() {
     }
 
     refreshSampleTable();
+    refreshCalibrationButtonText();
     addConfigPathOption(filePath);
     appendLog(QStringLiteral("配置加载成功: %1").arg(QDir::toNativeSeparators(filePath)));
 }

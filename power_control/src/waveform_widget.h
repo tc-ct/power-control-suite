@@ -36,14 +36,18 @@ private:
 	void syncExpandedView();
 	void openExpandedView();
 
-	std::array<QVector<QPointF>, SAMPLE_DATA_COUNT> voltage_series_;
-	std::array<QVector<QPointF>, SAMPLE_DATA_COUNT> current_series_;
-	std::array<bool, SAMPLE_DATA_COUNT> voltage_enabled_{};
-	std::array<bool, SAMPLE_DATA_COUNT> current_enabled_{};
-	int max_points_ = 240;
-	bool is_expanded_view_ = false;
-	QPointer<QDialog> expanded_dialog_;
-	WaveformWidget *expanded_widget_ = nullptr;
+    std::array<QVector<QPointF>, SAMPLE_DATA_COUNT> voltage_series_;
+    std::array<QVector<QPointF>, SAMPLE_DATA_COUNT> current_series_;
+    std::array<bool, SAMPLE_DATA_COUNT> voltage_enabled_{};
+    std::array<bool, SAMPLE_DATA_COUNT> current_enabled_{};
+    bool time_origin_initialized_ = false;
+    qreal time_origin_seconds_ = 0.0;
+    qreal latest_time_seconds_ = 0.0;
+    static constexpr qreal kTimeWindowSeconds = 10.0;
+    int max_points_ = 240;
+    bool is_expanded_view_ = false;
+    QPointer<QDialog> expanded_dialog_;
+    WaveformWidget* expanded_widget_ = nullptr;
 };
 
 #endif // WAVEFORM_WIDGET_H

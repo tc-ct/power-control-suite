@@ -57,6 +57,9 @@ void WaveformWidget::clearSamples()
     }
     voltage_enabled_.fill(false);
     current_enabled_.fill(false);
+    time_origin_initialized_ = false;
+    time_origin_seconds_ = 0.0;
+    latest_time_seconds_ = 0.0;
     syncExpandedView();
     update();
 }
@@ -73,6 +76,12 @@ void WaveformWidget::appendSamples(
     }
 
     const qreal timestampSeconds = static_cast<qreal>(timestampMs) / 1000.0;
+    if (!time_origin_initialized_ || timestampSeconds < time_origin_seconds_) {
+        time_origin_seconds_ = timestampSeconds;
+        time_origin_initialized_ = true;
+    }
+    const qreal relativeSeconds = qMax(0.0, timestampSeconds - time_origin_seconds_);
+    latest_time_seconds_ = qMax(latest_time_seconds_, relativeSeconds);
 
     for (int channel = 0; channel < SAMPLE_DATA_COUNT; ++channel) {
         activeFlags[channel] = enabled[channel];
@@ -82,7 +91,7 @@ void WaveformWidget::appendSamples(
             continue;
         }
 
-        points.push_back(QPointF(timestampSeconds, static_cast<qreal>(values[channel])));
+        points.push_back(QPointF(relativeSeconds, static_cast<qreal>(values[channel])));
         if (points.size() > max_points_) {
             points.remove(0, points.size() - max_points_);
         }
@@ -102,6 +111,9 @@ void WaveformWidget::syncExpandedView()
     expanded_widget_->current_series_ = current_series_;
     expanded_widget_->voltage_enabled_ = voltage_enabled_;
     expanded_widget_->current_enabled_ = current_enabled_;
+    expanded_widget_->time_origin_initialized_ = time_origin_initialized_;
+    expanded_widget_->time_origin_seconds_ = time_origin_seconds_;
+    expanded_widget_->latest_time_seconds_ = latest_time_seconds_;
     expanded_widget_->max_points_ = max_points_;
     expanded_widget_->update();
 }
@@ -244,51 +256,12 @@ void WaveformWidget::paintEvent(QPaintEvent* event)
         return qMakePair(minV - margin, maxV + margin);
     };
 
-    auto computeTimeRange = [](const std::array<QVector<QPointF>, SAMPLE_DATA_COUNT>& series,
-                               const std::array<bool, SAMPLE_DATA_COUNT>& enabled) {
-        bool initialized = false;
-        qreal minTime = 0.0;
-        qreal maxTime = 0.0;
-        for (int channel = 0; channel < SAMPLE_DATA_COUNT; ++channel) {
-            if (!enabled[channel]) {
-                continue;
-            }
-            for (const QPointF& point : series[channel]) {
-                if (!initialized) {
-                    minTime = point.x();
-                    maxTime = point.x();
-                    initialized = true;
-                } else {
-                    minTime = qMin(minTime, point.x());
-                    maxTime = qMax(maxTime, point.x());
-                }
-            }
-        }
-        return qMakePair(minTime, maxTime);
-    };
-
-    auto voltageTimeRange = computeTimeRange(voltage_series_, voltage_enabled_);
-    auto currentTimeRange = computeTimeRange(current_series_, current_enabled_);
+    const qreal latestTime = qMax(0.0, latest_time_seconds_);
     qreal minTime = 0.0;
-    qreal maxTime = 1.0;
-    bool hasTimeRange = false;
-    if (hasVoltageData) {
-        minTime = voltageTimeRange.first;
-        maxTime = voltageTimeRange.second;
-        hasTimeRange = true;
-    }
-    if (hasCurrentData) {
-        if (!hasTimeRange) {
-            minTime = currentTimeRange.first;
-            maxTime = currentTimeRange.second;
-            hasTimeRange = true;
-        } else {
-            minTime = qMin(minTime, currentTimeRange.first);
-            maxTime = qMax(maxTime, currentTimeRange.second);
-        }
-    }
-    if (!hasTimeRange || qFuzzyCompare(minTime, maxTime)) {
-        maxTime = minTime + 1.0;
+    qreal maxTime = kTimeWindowSeconds;
+    if (latestTime > kTimeWindowSeconds) {
+        minTime = latestTime - kTimeWindowSeconds;
+        maxTime = latestTime;
     }
 
     auto buildPath = [minTime, maxTime](const QVector<QPointF>& points, const QRectF& plotRect, float minValue, float maxValue) {
@@ -298,15 +271,76 @@ void WaveformWidget::paintEvent(QPaintEvent* event)
         }
         const qreal timeSpan = qMax(1e-6, maxTime - minTime);
         const qreal denom = qMax(1e-6, static_cast<double>(maxValue - minValue));
-        for (int i = 0; i < points.size(); ++i) {
-            const qreal x = plotRect.left() + ((points[i].x() - minTime) / timeSpan) * plotRect.width();
-            const qreal ratio = qBound(0.0, static_cast<double>((points[i].y() - minValue) / denom), 1.0);
-            const qreal y = plotRect.bottom() - ratio * plotRect.height();
-            if (i == 0) {
-                path.moveTo(x, y);
-            } else {
-                path.lineTo(x, y);
+
+        auto mapToPlot = [&](const QPointF& p) {
+            const qreal xRatio = qBound(0.0, static_cast<double>((p.x() - minTime) / timeSpan), 1.0);
+            const qreal x = plotRect.left() + xRatio * plotRect.width();
+            const qreal yRatio = qBound(0.0, static_cast<double>((p.y() - minValue) / denom), 1.0);
+            const qreal y = plotRect.bottom() - yRatio * plotRect.height();
+            return QPointF(x, y);
+        };
+
+        auto clipSegmentByTimeWindow = [minTime, maxTime](const QPointF& in0, const QPointF& in1, QPointF* out0, QPointF* out1) {
+            const qreal x0 = in0.x();
+            const qreal x1 = in1.x();
+            if ((x0 < minTime && x1 < minTime) || (x0 > maxTime && x1 > maxTime)) {
+                return false;
             }
+
+            QPointF p0 = in0;
+            QPointF p1 = in1;
+            const qreal dx = x1 - x0;
+            if (!qFuzzyIsNull(dx)) {
+                if (p0.x() < minTime) {
+                    const qreal t = (minTime - x0) / dx;
+                    p0.setX(minTime);
+                    p0.setY(in0.y() + (in1.y() - in0.y()) * t);
+                } else if (p0.x() > maxTime) {
+                    const qreal t = (maxTime - x0) / dx;
+                    p0.setX(maxTime);
+                    p0.setY(in0.y() + (in1.y() - in0.y()) * t);
+                }
+
+                if (p1.x() < minTime) {
+                    const qreal t = (minTime - x0) / dx;
+                    p1.setX(minTime);
+                    p1.setY(in0.y() + (in1.y() - in0.y()) * t);
+                } else if (p1.x() > maxTime) {
+                    const qreal t = (maxTime - x0) / dx;
+                    p1.setX(maxTime);
+                    p1.setY(in0.y() + (in1.y() - in0.y()) * t);
+                }
+            } else if (x0 < minTime || x0 > maxTime) {
+                return false;
+            }
+
+            *out0 = p0;
+            *out1 = p1;
+            return true;
+        };
+
+        bool hasSubPath = false;
+        QPointF lastEnd;
+        for (int i = 1; i < points.size(); ++i) {
+            QPointF clipped0;
+            QPointF clipped1;
+            if (!clipSegmentByTimeWindow(points[i - 1], points[i], &clipped0, &clipped1)) {
+                hasSubPath = false;
+                continue;
+            }
+
+            const QPointF start = mapToPlot(clipped0);
+            const QPointF end = mapToPlot(clipped1);
+            const bool continuous = hasSubPath
+                && qFuzzyCompare(start.x() + 1.0, lastEnd.x() + 1.0)
+                && qFuzzyCompare(start.y() + 1.0, lastEnd.y() + 1.0);
+
+            if (!continuous) {
+                path.moveTo(start);
+            }
+            path.lineTo(end);
+            lastEnd = end;
+            hasSubPath = true;
         }
         return path;
     };
@@ -338,6 +372,9 @@ void WaveformWidget::paintEvent(QPaintEvent* event)
         painter.setPen(QColor(84, 99, 115));
         painter.drawText(QRectF(plotRect.left(), plotRect.top() - 14, 140, 14), Qt::AlignLeft | Qt::AlignVCenter, title);
 
+        painter.save();
+        // Keep waveform rendering strictly inside the panel frame.
+        painter.setClipRect(plotRect.adjusted(0.5, 0.5, -0.5, -0.5));
         for (int channel = 0; channel < SAMPLE_DATA_COUNT; ++channel) {
             if (!enabled[channel] || series[channel].size() < 2) {
                 continue;
@@ -347,6 +384,7 @@ void WaveformWidget::paintEvent(QPaintEvent* event)
             painter.setPen(linePen);
             painter.drawPath(buildPath(series[channel], plotRect, range.first, range.second));
         }
+        painter.restore();
     };
 
     if (hasVoltageData) {
