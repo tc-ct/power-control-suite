@@ -7,9 +7,12 @@
 #include <QFileInfo>
 #include <QBoxLayout>
 #include <QApplication>
+#include <QComboBox>
 #include <QEvent>
 #include <QHeaderView>
+#include <QHBoxLayout>
 #include <QKeyEvent>
+#include <QLabel>
 #include <QMouseEvent>
 #include <QMetaObject>
 #include <QMessageBox>
@@ -34,6 +37,7 @@
 #include "debug_window.h"
 #include "adc_def.h"
 #include "power_control.h"
+#include "sample_channel_map.h"
 #include "stm32_comm.h"
 #include "waveform_recorder.h"
 #include "waveform_widget.h"
@@ -50,6 +54,20 @@ QString buildDeviceDisplayName(const USBDeviceInfo& device) {
         ? QStringLiteral("Unknown")
         : QString::fromWCharArray(device.manufacturer.c_str());
     return product != QStringLiteral("Unknown") ? product : manufacturer;
+}
+
+SampleDataPacketTF reorderPacketToDisplayOrder(const SampleDataPacketTF& rawPacket) {
+    SampleDataPacketTF displayPacket{};
+    displayPacket.timestamp = rawPacket.timestamp;
+    for (int displayId = 0; displayId < SAMPLE_DATA_COUNT; ++displayId) {
+        const int rawIndex = sample_channel_map::displayToRaw(displayId);
+        if (rawIndex < 0 || rawIndex >= SAMPLE_DATA_COUNT) {
+            continue;
+        }
+        displayPacket.channel_volt_mv[displayId] = rawPacket.channel_volt_mv[rawIndex];
+        displayPacket.channel_curr_ma[displayId] = rawPacket.channel_curr_ma[rawIndex];
+    }
+    return displayPacket;
 }
 
 class CenteredCheckBoxDelegate final : public QStyledItemDelegate
@@ -244,6 +262,7 @@ MainWindow::MainWindow(QWidget *parent)
             headerItem->setTextAlignment(Qt::AlignCenter);
         }
     }
+    setupSampleModeSelector();
 
     connect(ui->queryButton, &QPushButton::clicked, this, &MainWindow::onQueryDevices);
     connect(ui->openButton, &QPushButton::clicked, this, &MainWindow::onToggleOpenDevice);
@@ -294,6 +313,96 @@ void MainWindow::addConfigPathOption(const QString& filePath) {
     }
 
     ui->configPathComboBox->setCurrentIndex(index);
+}
+
+void MainWindow::setupSampleModeSelector() {
+    QVBoxLayout* sampleLayout = qobject_cast<QVBoxLayout*>(ui->sampleGroupBox->layout());
+    if (!sampleLayout) {
+        return;
+    }
+
+    auto* modeLayout = new QHBoxLayout();
+    auto* modeLabel = new QLabel(QStringLiteral("显示模式"), ui->sampleGroupBox);
+    sample_mode_combo_ = new QComboBox(ui->sampleGroupBox);
+    sample_mode_combo_->addItem(QStringLiteral("按电源ID"), static_cast<int>(SampleTableDisplayMode::PowerId));
+    sample_mode_combo_->addItem(QStringLiteral("按采样通道"), static_cast<int>(SampleTableDisplayMode::SampleChannel));
+    sample_mode_combo_->setCurrentIndex(0);
+
+    modeLayout->addWidget(modeLabel);
+    modeLayout->addWidget(sample_mode_combo_);
+    modeLayout->addStretch(1);
+    sampleLayout->insertLayout(0, modeLayout);
+
+    connect(sample_mode_combo_, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index) {
+        if (!sample_mode_combo_ || index < 0) {
+            return;
+        }
+        const SampleTableDisplayMode mode = static_cast<SampleTableDisplayMode>(sample_mode_combo_->itemData(index).toInt());
+        if (mode == sample_table_mode_) {
+            return;
+        }
+        sample_table_mode_ = mode;
+        rebuildSampleRowMap();
+        refreshSampleTable();
+    });
+}
+
+void MainWindow::rebuildSampleRowMap() {
+    sample_row_map_.clear();
+    if (!config_service_) {
+        return;
+    }
+
+    const PowersConfig& config = config_service_->config();
+    if (sample_table_mode_ == SampleTableDisplayMode::PowerId) {
+        sample_row_map_.reserve(POWER_SUPPLY_COUNT);
+        for (int powerId = 0; powerId < POWER_SUPPLY_COUNT; ++powerId) {
+            const int rawIndex = config.supplies[powerId].means_pt;
+            const int sampleId = sample_channel_map::rawToDisplay(rawIndex);
+            const bool valid = sampleId >= 0 && sampleId < SAMPLE_DATA_COUNT;
+            SampleTableRowMapping mapping;
+            mapping.display_id = powerId;
+            mapping.power_id = powerId;
+            mapping.sample_id = valid ? sampleId : -1;
+            mapping.data_index = valid ? sampleId : -1;
+            mapping.valid = valid;
+            sample_row_map_.push_back(mapping);
+        }
+        return;
+    }
+
+    sample_row_map_.reserve(SAMPLE_DATA_COUNT);
+    for (int sampleId = 0; sampleId < SAMPLE_DATA_COUNT; ++sampleId) {
+        SampleTableRowMapping mapping;
+        mapping.display_id = sampleId;
+        mapping.power_id = -1;
+        mapping.sample_id = sampleId;
+        mapping.data_index = sampleId;
+        mapping.valid = true;
+        sample_row_map_.push_back(mapping);
+    }
+}
+
+int MainWindow::sampleIdForRow(int row) const {
+    if (row < 0 || row >= static_cast<int>(sample_row_map_.size())) {
+        return -1;
+    }
+    const SampleTableRowMapping& mapping = sample_row_map_[row];
+    if (!mapping.valid || mapping.sample_id < 0 || mapping.sample_id >= SAMPLE_DATA_COUNT) {
+        return -1;
+    }
+    return mapping.sample_id;
+}
+
+int MainWindow::dataIndexForRow(int row) const {
+    if (row < 0 || row >= static_cast<int>(sample_row_map_.size())) {
+        return -1;
+    }
+    const SampleTableRowMapping& mapping = sample_row_map_[row];
+    if (!mapping.valid || mapping.data_index < 0 || mapping.data_index >= SAMPLE_DATA_COUNT) {
+        return -1;
+    }
+    return mapping.data_index;
 }
 
 void MainWindow::appendLog(const QString& message) {
@@ -389,46 +498,82 @@ void MainWindow::refreshSampleTable() {
         return;
     }
 
+    if (sample_row_map_.empty()) {
+        rebuildSampleRowMap();
+    }
+
     const PowersConfig& config = config_service_->config();
     const QSignalBlocker blocker(ui->sampleTableWidget);
     refreshing_sample_table_ = true;
-    ui->sampleTableWidget->setRowCount(SAMPLE_DATA_COUNT);
+    ui->sampleTableWidget->setRowCount(static_cast<int>(sample_row_map_.size()));
 
-    for (int sampleId = 0; sampleId < SAMPLE_DATA_COUNT; ++sampleId) {
-        const SampleConfig& cfg = config.sample_cfg[sampleId];
-        const QString name = cfg.name[0] == '\0'
-            ? QStringLiteral("Sample %1").arg(sampleId)
-            : QString::fromLocal8Bit(cfg.name);
-        QTableWidgetItem* idItem = new QTableWidgetItem(QString::number(sampleId));
+    for (int row = 0; row < static_cast<int>(sample_row_map_.size()); ++row) {
+        const SampleTableRowMapping& mapping = sample_row_map_[row];
+        const int sampleId = sampleIdForRow(row);
+        const int dataIndex = dataIndexForRow(row);
+        const bool validSample = sampleId >= 0;
+        const bool validData = dataIndex >= 0;
+        const bool validRow = validSample && validData;
+
+        QString name = QStringLiteral("N/A");
+        if (sample_table_mode_ == SampleTableDisplayMode::PowerId) {
+            if (validRow && mapping.power_id >= 0 && mapping.power_id < POWER_SUPPLY_COUNT) {
+                const PowerSupplyConfig& supply = config.supplies[mapping.power_id];
+                name = supply.name[0] == '\0'
+                    ? QStringLiteral("Power %1").arg(mapping.power_id)
+                    : QString::fromLocal8Bit(supply.name);
+            } else if (validRow) {
+                name = QStringLiteral("Power %1").arg(mapping.display_id);
+            }
+        } else if (validSample) {
+            const SampleConfig& cfg = config.sample_cfg[sampleId];
+            name = cfg.name[0] == '\0'
+                ? QStringLiteral("Sample %1").arg(sampleId)
+                : QString::fromLocal8Bit(cfg.name);
+        }
+
+        QTableWidgetItem* idItem = new QTableWidgetItem(QString::number(mapping.display_id));
         idItem->setTextAlignment(Qt::AlignCenter);
-        ui->sampleTableWidget->setItem(sampleId, 0, idItem);
-        ui->sampleTableWidget->setItem(sampleId, 1, new QTableWidgetItem(name));
+        ui->sampleTableWidget->setItem(row, 0, idItem);
+        ui->sampleTableWidget->setItem(row, 1, new QTableWidgetItem(name));
 
         QTableWidgetItem* voltEnItem = new QTableWidgetItem();
-        voltEnItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
-        voltEnItem->setCheckState(cfg.volt_en ? Qt::Checked : Qt::Unchecked);
+        if (validRow) {
+            const SampleConfig& cfg = config.sample_cfg[sampleId];
+            voltEnItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+            voltEnItem->setCheckState(cfg.volt_en ? Qt::Checked : Qt::Unchecked);
+        } else {
+            voltEnItem->setFlags(Qt::ItemIsSelectable);
+            voltEnItem->setCheckState(Qt::Unchecked);
+        }
         voltEnItem->setTextAlignment(Qt::AlignCenter);
-        ui->sampleTableWidget->setItem(sampleId, 2, voltEnItem);
+        ui->sampleTableWidget->setItem(row, 2, voltEnItem);
 
         QTableWidgetItem* currEnItem = new QTableWidgetItem();
-        currEnItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
-        currEnItem->setCheckState(cfg.current_en ? Qt::Checked : Qt::Unchecked);
+        if (validRow) {
+            const SampleConfig& cfg = config.sample_cfg[sampleId];
+            currEnItem->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable);
+            currEnItem->setCheckState(cfg.current_en ? Qt::Checked : Qt::Unchecked);
+        } else {
+            currEnItem->setFlags(Qt::ItemIsSelectable);
+            currEnItem->setCheckState(Qt::Unchecked);
+        }
         currEnItem->setTextAlignment(Qt::AlignCenter);
-        ui->sampleTableWidget->setItem(sampleId, 4, currEnItem);
+        ui->sampleTableWidget->setItem(row, 4, currEnItem);
 
-        const QString voltText = has_sampled_volt_[sampleId]
-            ? QString::number(sampled_volt_[sampleId])
-            : QStringLiteral("--");
-        const QString currText = has_sampled_curr_[sampleId]
-            ? QString::number(sampled_curr_[sampleId])
-            : QStringLiteral("--");
+        const QString voltText = validData
+            ? (has_sampled_volt_[dataIndex] ? QString::number(sampled_volt_[dataIndex]) : QStringLiteral("--"))
+            : QStringLiteral("N/A");
+        const QString currText = validData
+            ? (has_sampled_curr_[dataIndex] ? QString::number(sampled_curr_[dataIndex]) : QStringLiteral("--"))
+            : QStringLiteral("N/A");
         QTableWidgetItem* voltValueItem = new QTableWidgetItem(voltText);
         voltValueItem->setTextAlignment(Qt::AlignCenter);
-        ui->sampleTableWidget->setItem(sampleId, 3, voltValueItem);
+        ui->sampleTableWidget->setItem(row, 3, voltValueItem);
 
         QTableWidgetItem* currValueItem = new QTableWidgetItem(currText);
         currValueItem->setTextAlignment(Qt::AlignCenter);
-        ui->sampleTableWidget->setItem(sampleId, 5, currValueItem);
+        ui->sampleTableWidget->setItem(row, 5, currValueItem);
     }
     refreshing_sample_table_ = false;
 }
@@ -439,31 +584,58 @@ void MainWindow::onSampleTableItemChanged(QTableWidgetItem* item) {
     }
 
     const int row = item->row();
-    if (row < 0 || row >= SAMPLE_DATA_COUNT) {
+    if (row < 0 || row >= static_cast<int>(sample_row_map_.size())) {
+        return;
+    }
+
+    const int sampleId = sampleIdForRow(row);
+    if (sampleId < 0) {
         return;
     }
 
     PowersConfig& config = config_service_->mutableConfig();
     if (item->column() == 2) {
-        config.sample_cfg[row].volt_en = (item->checkState() == Qt::Checked);
+        config.sample_cfg[sampleId].volt_en = (item->checkState() == Qt::Checked);
     } else if (item->column() == 4) {
-        config.sample_cfg[row].current_en = (item->checkState() == Qt::Checked);
+        config.sample_cfg[sampleId].current_en = (item->checkState() == Qt::Checked);
+    } else {
+        return;
+    }
+
+    bool duplicateSampleId = false;
+    for (int i = 0; i < static_cast<int>(sample_row_map_.size()); ++i) {
+        if (i == row) {
+            continue;
+        }
+        if (!sample_row_map_[i].valid) {
+            continue;
+        }
+        if (sample_row_map_[i].sample_id == sampleId) {
+            duplicateSampleId = true;
+            break;
+        }
+    }
+    if (duplicateSampleId) {
+        refreshSampleTable();
     }
 }
 
 void MainWindow::onDataReceived(const SampleDataPacket& packet) {
-    SampleDataPacketTF pk_tf;
-    Protocol_ParseSampleData(reinterpret_cast<const uint8_t*>(&packet), sizeof(packet), &pk_tf);
+    SampleDataPacketTF rawPacketTF;
+    Protocol_ParseSampleData(reinterpret_cast<const uint8_t*>(&packet), sizeof(packet), &rawPacketTF);
+    const SampleDataPacketTF displayPacketTF = reorderPacketToDisplayOrder(rawPacketTF);
 
     if (waveform_recorder_) {
         waveform_recorder_->appendPacket(packet);
     }
 
-    updateSampleValuesFromPacket(pk_tf);
+    updateSampleValuesFromPacket(displayPacketTF);
 }
 
 void MainWindow::updateSampleValuesFromPacket(const SampleDataPacketTF& packet) {
     for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
+        sampled_volt_[i] = packet.channel_volt_mv[i];
+        sampled_curr_[i] = packet.channel_curr_ma[i];
         has_sampled_volt_[i] = true;
         has_sampled_curr_[i] = true;
     }
@@ -473,13 +645,22 @@ void MainWindow::updateSampleValuesFromPacket(const SampleDataPacketTF& packet) 
         waveform_widget_->updateFromPacket(packet, config);
     }
 
+    if (sample_row_map_.empty()) {
+        rebuildSampleRowMap();
+    }
+
     const QSignalBlocker blocker(ui->sampleTableWidget);
-    for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-        if (QTableWidgetItem* voltItem = ui->sampleTableWidget->item(i, 3)) {
-            voltItem->setText(has_sampled_volt_[i] ? QString::number(packet.channel_volt_mv[i]) : QStringLiteral("--"));
+    for (int row = 0; row < static_cast<int>(sample_row_map_.size()); ++row) {
+        const int dataIndex = dataIndexForRow(row);
+        if (QTableWidgetItem* voltItem = ui->sampleTableWidget->item(row, 3)) {
+            voltItem->setText(dataIndex >= 0
+                ? (has_sampled_volt_[dataIndex] ? QString::number(sampled_volt_[dataIndex]) : QStringLiteral("--"))
+                : QStringLiteral("N/A"));
         }
-        if (QTableWidgetItem* currItem = ui->sampleTableWidget->item(i, 5)) {
-            currItem->setText(has_sampled_curr_[i] ? QString::number(packet.channel_curr_ma[i]) : QStringLiteral("--"));
+        if (QTableWidgetItem* currItem = ui->sampleTableWidget->item(row, 5)) {
+            currItem->setText(dataIndex >= 0
+                ? (has_sampled_curr_[dataIndex] ? QString::number(sampled_curr_[dataIndex]) : QStringLiteral("--"))
+                : QStringLiteral("N/A"));
         }
     }
 }
@@ -801,6 +982,7 @@ void MainWindow::onLoadConfig() {
         return;
     }
 
+    rebuildSampleRowMap();
     refreshSampleTable();
     refreshCalibrationButtonText();
     addConfigPathOption(filePath);

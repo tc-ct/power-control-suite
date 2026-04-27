@@ -26,6 +26,20 @@ class ConfigService;
 class QAction;
 class QPushButton;
 class WaveformRecorder;
+class QComboBox;
+
+enum class SampleTableDisplayMode {
+    PowerId,
+    SampleChannel,
+};
+
+struct SampleTableRowMapping {
+    int display_id = -1;
+    int power_id = -1;
+    int sample_id = -1;
+    int data_index = -1;
+    bool valid = false;
+};
 
 class MainWindow : public QMainWindow
 {
@@ -52,6 +66,10 @@ private:
     QString currentConfigPath() const;
     QString defaultConfigPath() const;
     void addConfigPathOption(const QString& filePath);
+    void setupSampleModeSelector();
+    void rebuildSampleRowMap();
+    int sampleIdForRow(int row) const;
+    int dataIndexForRow(int row) const;
     void refreshSampleTable();
     void onDataReceived(const SampleDataPacket& packet);
     void updateSampleValuesFromPacket(const SampleDataPacketTF& packet);
@@ -72,7 +90,10 @@ private:
     std::array<float, SAMPLE_DATA_COUNT> sampled_curr_{};
     std::array<bool, SAMPLE_DATA_COUNT> has_sampled_volt_{};
     std::array<bool, SAMPLE_DATA_COUNT> has_sampled_curr_{};
+    SampleTableDisplayMode sample_table_mode_ = SampleTableDisplayMode::PowerId;
+    std::vector<SampleTableRowMapping> sample_row_map_{};
     bool refreshing_sample_table_ = false;
+    QComboBox* sample_mode_combo_ = nullptr;
     WaveformWidget* waveform_widget_ = nullptr;
     std::vector<DebugInterfaceWindow*> debug_windows_;
     QAction* test_mode_action_ = nullptr;

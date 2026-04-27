@@ -22,7 +22,7 @@ private:
 
 	static const int kDacMaxCode = 4095;
 	static const int kSampleCount = 6;
-	static const int kMaxCalibrationIterations = 3;
+	static const int kMaxCalibrationIterations = 5;
 };
 
 #endif // POWER_H

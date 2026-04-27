@@ -6,6 +6,7 @@
 #include <QFileInfo>
 #include <QTextStream>
 
+#include "sample_channel_map.h"
 #include "stm32_comm.h"
 
 void WaveformRecorder::start(const QString& baseDirectory)
@@ -85,11 +86,13 @@ bool WaveformRecorder::exportCsv(const QString& filePath)
 
         stream << packet.timestamp;
         for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-            stream << ',' << parsed.channel_volt_mv[i];
+            const int rawIndex = sample_channel_map::displayToRaw(i);
+            stream << ',' << (rawIndex >= 0 ? parsed.channel_volt_mv[rawIndex] : 0.0f);
         }
         stream << ',' << packet.timestamp;
         for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
-            stream << ',' << parsed.channel_curr_ma[i];
+            const int rawIndex = sample_channel_map::displayToRaw(i);
+            stream << ',' << (rawIndex >= 0 ? parsed.channel_curr_ma[rawIndex] : 0.0f);
         }
         stream << "\n";
     }
