@@ -47,6 +47,7 @@ bool DeviceSessionService::openDevice(const QString& path) {
     });
 
     state_machine_.onDeviceOpened();
+    sample_packet_gate_state_.store(SamplePacketGateState::PassThrough);
     emit samplingChanged(false);
     emit connectionChanged(true);
     return true;
@@ -57,6 +58,7 @@ void DeviceSessionService::closeDevice() {
         state_machine_.onDeviceClosed();
         debug_session_depth_ = 0;
         debug_resume_sampling_ = false;
+        sample_packet_gate_state_.store(SamplePacketGateState::PassThrough);
         emit samplingChanged(false);
         emit connectionChanged(false);
         return;
@@ -67,6 +69,7 @@ void DeviceSessionService::closeDevice() {
     state_machine_.onDeviceClosed();
     debug_session_depth_ = 0;
     debug_resume_sampling_ = false;
+    sample_packet_gate_state_.store(SamplePacketGateState::PassThrough);
     emit samplingChanged(false);
     emit connectionChanged(false);
 }
@@ -86,6 +89,7 @@ void DeviceSessionService::startSampling(const PowersConfig& config) {
 
     last_sampling_config_ = config;
     has_last_sampling_config_ = true;
+    sample_packet_gate_state_.store(SamplePacketGateState::DropFirstPacketAfterStart);
     sendSamplingCommand(true, config);
     state_machine_.onSamplingStarted();
     emit samplingChanged(true);
@@ -98,6 +102,7 @@ void DeviceSessionService::stopSampling(const PowersConfig& config) {
 
     last_sampling_config_ = config;
     has_last_sampling_config_ = true;
+    sample_packet_gate_state_.store(SamplePacketGateState::DropUntilNextStart);
     sendSamplingCommand(false, config);
     state_machine_.onSamplingStopped();
     emit samplingChanged(false);
@@ -205,6 +210,15 @@ void DeviceSessionService::onRawDataReceived(const uint8_t* data, int length) {
 
     SampleDataPacket packet{};
     memcpy(&packet, data, sizeof(SampleDataPacket));
+
+    const SamplePacketGateState gate = sample_packet_gate_state_.load();
+    if (gate == SamplePacketGateState::DropUntilNextStart) {
+        return;
+    }
+    if (gate == SamplePacketGateState::DropFirstPacketAfterStart) {
+        sample_packet_gate_state_.store(SamplePacketGateState::PassThrough);
+        return;
+    }
 
     QMetaObject::invokeMethod(this, [this, packet]() {
         emit samplePacketReceived(packet);

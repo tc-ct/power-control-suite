@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 
+#include <atomic>
 #include <cstdint>
 #include <memory>
 #include <vector>
@@ -47,6 +48,12 @@ signals:
 	void debugResponseReceived(const DebugResponsePacket_t& packet);
 
 private:
+	enum class SamplePacketGateState : uint8_t {
+		PassThrough = 0,
+		DropUntilNextStart = 1,
+		DropFirstPacketAfterStart = 2,
+	};
+
 	void sendSamplingCommand(bool start, const PowersConfig& config);
 	void onRawDataReceived(const uint8_t* data, int length);
 
@@ -60,6 +67,7 @@ private:
 	uint16_t next_debug_req_id_ = 1;
 	int debug_session_depth_ = 0;
 	bool debug_resume_sampling_ = false;
+	std::atomic<SamplePacketGateState> sample_packet_gate_state_ {SamplePacketGateState::PassThrough};
 };
 
 #endif // DEVICE_SESSION_SERVICE_H
