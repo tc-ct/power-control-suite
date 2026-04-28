@@ -110,8 +110,7 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory
         "$<TARGET_FILE_DIR:${PROJECT_NAME}>/config"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/config/power_config.json"
-        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/config/power_config.json")
+        "${CMAKE_SOURCE_DIR}/config/power_config.json"        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/config/power_config.json")
 
 
 

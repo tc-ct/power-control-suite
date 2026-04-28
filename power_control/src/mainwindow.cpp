@@ -990,9 +990,7 @@ void MainWindow::onLoadConfig() {
 }
 
 void MainWindow::onOpenDebugInterface() {
-    auto* debugWindow = new DebugInterfaceWindow([this]() -> USBDriver* {
-        return session_service_ ? session_service_->driver() : nullptr;
-    });
+    auto* debugWindow = new DebugInterfaceWindow(session_service_.get());
 
     debug_windows_.push_back(debugWindow);
     connect(debugWindow, &QObject::destroyed, this, [this, debugWindow]() {

@@ -28,6 +28,8 @@
 #define DOWNLOAD_PACKET_SIZE                64
 #define SAMPLE_DATA_COUNT                   27
 #define POWER_SUPPLY_COUNT                  18
+#define DEBUG_REQ_MAX_DATA_LEN              (DOWNLOAD_PACKET_SIZE - 11U)
+#define DEBUG_RESP_MAX_DATA_LEN             (USB_REPORT_SIZE - 15U)
 
 #pragma pack(push, 1)
 
@@ -45,6 +47,32 @@ typedef enum {
 	CMD_SPI_WRITE = 0x0a,             // SPI写命令
 	CMD_SPI_READ = 0x0b,              // SPI读命令
 } CmdType_t;
+
+typedef enum {
+	DEBUG_BUS_NONE = 0,
+	DEBUG_BUS_I2C1 = 1,
+	DEBUG_BUS_I2C2 = 2,
+	DEBUG_BUS_SPI1 = 3,
+} DebugBus_t;
+
+typedef enum {
+	DEBUG_STATUS_OK = 0,
+	DEBUG_STATUS_UNSUPPORTED = 1,
+	DEBUG_STATUS_INVALID_PARAM = 2,
+	DEBUG_STATUS_HAL_ERROR = 3,
+	DEBUG_STATUS_TIMEOUT = 4,
+} DebugStatus_t;
+
+typedef enum {
+	DEBUG_ERR_NONE = 0,
+	DEBUG_ERR_INVALID_BUS = 1,
+	DEBUG_ERR_INVALID_CS = 2,
+	DEBUG_ERR_INVALID_LEN = 3,
+	DEBUG_ERR_HAL_BUSY = 4,
+	DEBUG_ERR_HAL_FAIL = 5,
+	DEBUG_ERR_HAL_TIMEOUT = 6,
+	DEBUG_ERR_SMBUS_ERROR = 7,
+} DebugError_t;
 
 
 /* 发送数据类型枚举 */
@@ -144,6 +172,41 @@ typedef struct SampleDataPacketTF {
 	float channel_volt_mv[SAMPLE_DATA_COUNT]; // 通道 电压
 	float channel_curr_ma[SAMPLE_DATA_COUNT]; // 通道 电流
 } SampleDataPacketTF_t;
+
+/* Debug request (PC -> STM32), fixed 64 bytes */
+typedef struct DebugRequestPacket {
+	union {
+		struct {
+			uint8_t cmd_id;
+			uint16_t req_id;
+			uint8_t bus_id;
+			uint8_t target_id;
+			uint8_t reg_len;
+			uint8_t data_len;
+			uint32_t reg_addr;
+			uint8_t data[DEBUG_REQ_MAX_DATA_LEN];
+		};
+		uint8_t bytes[DOWNLOAD_PACKET_SIZE];
+	};
+} DebugRequestPacket_t;
+
+/* Debug response (STM32 -> PC), fixed 128 bytes */
+typedef struct DebugResponsePacket {
+	union {
+		struct {
+			uint8_t report_id;
+			uint8_t magic[4]; /* 'D', 'B', 'G', '1' */
+			uint16_t req_id;
+			uint8_t cmd_id;
+			uint8_t status;
+			uint8_t error_code;
+			uint8_t data_len;
+			uint32_t reg_addr;
+			uint8_t data[DEBUG_RESP_MAX_DATA_LEN];
+		};
+		uint8_t bytes[USB_REPORT_SIZE];
+	};
+} DebugResponsePacket_t;
 
 
 #pragma pack(pop)
