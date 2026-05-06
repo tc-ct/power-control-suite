@@ -15,6 +15,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QMetaObject>
+#include <QEventLoop>
 #include <QMessageBox>
 #include <QMenu>
 #include <QMenuBar>
@@ -24,6 +25,7 @@
 #include <QStyledItemDelegate>
 #include <QStyleOptionButton>
 #include <QTableWidgetItem>
+#include <QTimer>
 #include <QVBoxLayout>
 #include <algorithm>
 #include <chrono>
@@ -45,6 +47,16 @@
 namespace {
 constexpr uint16_t kDefaultVid = 0x0483;
 constexpr uint16_t kDefaultPid = 0x5750;
+constexpr uint8_t kIna238ShuntCalRegAddr = 0x02;
+constexpr int kDebugTimeoutMs = 1000;
+constexpr int kIna238ShuntCalRetryCount = 1;
+constexpr int kIna238ShuntCalWriteGapMs = 5;
+constexpr std::array<uint8_t, I2C1_INA238_NUM> kI2c1Ina238DevAddrs = {
+    0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C
+};
+constexpr std::array<uint8_t, I2C2_INA238_NUM> kI2c2Ina238DevAddrs = {
+    0x40, 0x41, 0x42, 0x43, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D
+};
 
 QString buildDeviceDisplayName(const USBDeviceInfo& device) {
     const QString product = device.product.empty()
@@ -416,6 +428,188 @@ void MainWindow::waitPowerOnThread() {
     }
 }
 
+bool MainWindow::sendDebugRequestAndWait(const DebugRequestPacket_t& request,
+                                         DebugResponsePacket_t& response,
+                                         int timeoutMs) {
+    if (!session_service_ || !session_service_->isOpen()) {
+        return false;
+    }
+    if (!session_service_->enterDebugSession()) {
+        return false;
+    }
+
+    const bool ok = sendDebugRequestAndWaitInSession(request, response, timeoutMs);
+    session_service_->exitDebugSession();
+    return ok;
+}
+
+bool MainWindow::sendDebugRequestAndWaitInSession(const DebugRequestPacket_t& request,
+                                                  DebugResponsePacket_t& response,
+                                                  int timeoutMs) {
+    if (!session_service_ || !session_service_->isOpen()) {
+        return false;
+    }
+
+    QEventLoop loop(this);
+    QTimer timer(this);
+    timer.setSingleShot(true);
+
+    bool received = false;
+    QMetaObject::Connection responseConnection = connect(
+        session_service_.get(),
+        &DeviceSessionService::debugResponseReceived,
+        &loop,
+        [&](const DebugResponsePacket_t& packet) {
+            if (packet.req_id != request.req_id) {
+                return;
+            }
+            response = packet;
+            received = true;
+            loop.quit();
+        });
+    QMetaObject::Connection timeoutConnection = connect(&timer, &QTimer::timeout, &loop, [&]() {
+        loop.quit();
+    });
+
+    const bool sent = session_service_->sendDebugRequest(request);
+    if (sent) {
+        timer.start(timeoutMs);
+        loop.exec();
+    }
+
+    disconnect(responseConnection);
+    disconnect(timeoutConnection);
+    return sent && received;
+}
+
+uint16_t MainWindow::calculateIna238ShuntCal(const SampleConfig& sampleCfg) const {
+    if (sampleCfg.shunt_ohm <= 0.0f || sampleCfg.max_current_a <= 0.0f) {
+        return 0;
+    }
+
+    const float current_lsb = sampleCfg.max_current_a / 32768.0f;
+    const float shunt_cal_float = 819.2e6f * current_lsb * sampleCfg.shunt_ohm * 4.0f;
+    const float clamped = std::clamp(shunt_cal_float, 0.0f, 65535.0f);
+    return static_cast<uint16_t>(clamped);
+}
+
+void MainWindow::configureIna238ShuntCalibration(const PowersConfig& config) {
+    int successCount = 0;
+    int failCount = 0;
+    int skippedCount = 0;
+
+    appendLog(QStringLiteral("开始下发 INA238 SHUNT_CAL ..."));
+    if (!session_service_ || !session_service_->isOpen()) {
+        appendLog(QStringLiteral("SHUNT_CAL 下发失败: 设备未打开"));
+        return;
+    }
+    if (!session_service_->enterDebugSession()) {
+        appendLog(QStringLiteral("SHUNT_CAL 下发失败: 无法进入 Debug 会话"));
+        return;
+    }
+
+    for (int sampleId = 0; sampleId < SAMPLE_DATA_COUNT; ++sampleId) {
+        const int rawIndex = sample_channel_map::displayToRaw(sampleId);
+        if (rawIndex < 0 || rawIndex >= SAMPLE_DATA_COUNT) {
+            ++skippedCount;
+            appendLog(QStringLiteral("SHUNT_CAL 跳过: sample %1 映射无效").arg(sampleId));
+            continue;
+        }
+        if (rawIndex == SAMPLE_DATA_COUNT - 1) {
+            ++skippedCount;
+            continue;
+        }
+
+        uint8_t busId = 0;
+        uint8_t devAddr = 0;
+        if (rawIndex < I2C1_INA238_NUM) {
+            busId = DEBUG_BUS_I2C1;
+            devAddr = kI2c1Ina238DevAddrs[rawIndex];
+        } else {
+            const int indexOnBus2 = rawIndex - I2C1_INA238_NUM;
+            if (indexOnBus2 < 0 || indexOnBus2 >= I2C2_INA238_NUM) {
+                ++skippedCount;
+                appendLog(QStringLiteral("SHUNT_CAL 跳过: raw %1 超出 I2C2 映射范围").arg(rawIndex));
+                continue;
+            }
+            busId = DEBUG_BUS_I2C2;
+            devAddr = kI2c2Ina238DevAddrs[indexOnBus2];
+        }
+
+        const SampleConfig& sampleCfg = config.sample_cfg[sampleId];
+        const uint16_t shuntCal = calculateIna238ShuntCal(sampleCfg);
+        if (shuntCal == 0) {
+            ++failCount;
+            appendLog(QStringLiteral("SHUNT_CAL 失败: sample %1 参数无效(shunt=%2, max_current=%3)")
+                          .arg(sampleId)
+                          .arg(sampleCfg.shunt_ohm)
+                          .arg(sampleCfg.max_current_a));
+            continue;
+        }
+
+        DebugRequestPacket_t request{};
+        request.cmd_id = CMD_I2C_WRITE;
+        request.bus_id = busId;
+        request.target_id = devAddr;
+        request.reg_len = 1;
+        request.data_len = 2;
+        request.reg_addr = kIna238ShuntCalRegAddr;
+        request.data[0] = static_cast<uint8_t>((shuntCal >> 8) & 0xFFU);
+        request.data[1] = static_cast<uint8_t>(shuntCal & 0xFFU);
+
+        DebugResponsePacket_t response{};
+        bool ok = false;
+        int attempt = 0;
+        for (; attempt <= kIna238ShuntCalRetryCount; ++attempt) {
+            request.req_id = session_service_->allocateDebugRequestId();
+            ok = sendDebugRequestAndWaitInSession(request, response, kDebugTimeoutMs);
+            if (ok) {
+                break;
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(kIna238ShuntCalWriteGapMs));
+        }
+
+        if (!ok) {
+            ++failCount;
+            appendLog(QStringLiteral("SHUNT_CAL 写入超时/发送失败: sample=%1 raw=%2 bus=%3 dev=0x%4")
+                          .arg(sampleId)
+                          .arg(rawIndex)
+                          .arg(busId)
+                          .arg(devAddr, 2, 16, QLatin1Char('0')));
+            continue;
+        }
+
+        if (attempt > 0) {
+            appendLog(QStringLiteral("SHUNT_CAL 重试成功: sample=%1 raw=%2 bus=%3 dev=0x%4")
+                          .arg(sampleId)
+                          .arg(rawIndex)
+                          .arg(busId)
+                          .arg(devAddr, 2, 16, QLatin1Char('0')));
+        }
+
+        if (response.status != DEBUG_STATUS_OK) {
+            ++failCount;
+            appendLog(QStringLiteral("SHUNT_CAL 写入失败: sample=%1 raw=%2 bus=%3 dev=0x%4 status=%5 err=%6")
+                          .arg(sampleId)
+                          .arg(rawIndex)
+                          .arg(busId)
+                          .arg(devAddr, 2, 16, QLatin1Char('0'))
+                          .arg(static_cast<int>(response.status))
+                          .arg(static_cast<int>(response.error_code)));
+            continue;
+        }
+
+        ++successCount;
+        std::this_thread::sleep_for(std::chrono::milliseconds(kIna238ShuntCalWriteGapMs));
+    }
+
+    session_service_->exitDebugSession();
+    appendLog(QStringLiteral("SHUNT_CAL 下发完成: success=%1, failed=%2, skipped=%3")
+                  .arg(successCount)
+                  .arg(failCount)
+                  .arg(skippedCount));
+}
+
 void MainWindow::refreshCalibrationButtonText() {
     if (!calibration_toggle_button_) {
         return;
@@ -474,6 +668,7 @@ void MainWindow::onPowerOnClicked() {
     appendLog(QStringLiteral("开始执行上电流程..."));
 
     PowersConfig configSnapshot = config_service_->config();
+    configureIna238ShuntCalibration(configSnapshot);
     power_on_thread_ = std::thread([this, driver, configSnapshot]() mutable {
         QString message = QStringLiteral("上电完成");
         try {
@@ -622,7 +817,8 @@ void MainWindow::onSampleTableItemChanged(QTableWidgetItem* item) {
 
 void MainWindow::onDataReceived(const SampleDataPacket& packet) {
     SampleDataPacketTF rawPacketTF;
-    Protocol_ParseSampleData(reinterpret_cast<const uint8_t*>(&packet), sizeof(packet), &rawPacketTF);
+    const PowersConfig* config = config_service_ ? &config_service_->config() : nullptr;
+    Protocol_ParseSampleData(reinterpret_cast<const uint8_t*>(&packet), sizeof(packet), &rawPacketTF, config);
     const SampleDataPacketTF displayPacketTF = reorderPacketToDisplayOrder(rawPacketTF);
 
     if (waveform_recorder_) {
@@ -935,7 +1131,8 @@ void MainWindow::stopRecording(bool exportFile) {
         return;
     }
 
-    if (waveform_recorder_->exportCsv(filePath)) {
+    const PowersConfig* config = config_service_ ? &config_service_->config() : nullptr;
+    if (waveform_recorder_->exportCsv(filePath, config)) {
         QMessageBox::information(this, QStringLiteral("保存成功"), QStringLiteral("波形录制已保存到: %1").arg(QDir::toNativeSeparators(filePath)));
         appendLog(QStringLiteral("波形录制保存成功: %1").arg(QDir::toNativeSeparators(filePath)));
         appendLog(QStringLiteral("波形录制已保存"));

@@ -63,6 +63,10 @@ private slots:
     void onToggleRecording();
 
 private:
+    bool sendDebugRequestAndWait(const DebugRequestPacket_t& request, DebugResponsePacket_t& response, int timeoutMs = 1000);
+    bool sendDebugRequestAndWaitInSession(const DebugRequestPacket_t& request, DebugResponsePacket_t& response, int timeoutMs = 1000);
+    void configureIna238ShuntCalibration(const PowersConfig& config);
+    uint16_t calculateIna238ShuntCal(const SampleConfig& sampleCfg) const;
     QString currentConfigPath() const;
     QString defaultConfigPath() const;
     void addConfigPathOption(const QString& filePath);

@@ -142,7 +142,11 @@ static bool parse_power_sample_object(const nlohmann::json& item, SampleConfig* 
     memset(cfg, 0, sizeof(*cfg));
 
     try {
-        if (!item.contains("id") || !item.contains("volt_en") || !item.contains("curr_en")) {
+        if (!item.contains("id")
+            || !item.contains("volt_en")
+            || !item.contains("curr_en")
+            || !item.contains("shunt_ohm")
+            || !item.contains("max_current_a")) {
             return false;
         }
 
@@ -154,6 +158,11 @@ static bool parse_power_sample_object(const nlohmann::json& item, SampleConfig* 
         *out_sample_id = sample_id;
         cfg->volt_en = item["volt_en"];
         cfg->current_en = item["curr_en"];
+        cfg->shunt_ohm = item["shunt_ohm"];
+        cfg->max_current_a = item["max_current_a"];
+        if (cfg->shunt_ohm <= 0.0f || cfg->max_current_a <= 0.0f) {
+            return false;
+        }
 
         if (item.contains("n") && item["n"].is_string()) {
             const std::string name = item["n"];

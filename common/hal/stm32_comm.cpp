@@ -9,14 +9,38 @@
 #include "adc_def.h"
 #include "stm32_comm.h"
 
+namespace {
+constexpr int kRawToDisplaySampleId[SAMPLE_DATA_COUNT] = {
+    8, 7, 9, 6, 19, 13, 14, 0, 1, 2, 17, 18, 16, 12, 11, 15, 3, 5, 20, 21, 22, 23, 24, 25, 26, 4, 10
+};
+
+float GetIna238MaxCurrentForRawIndex(const PowersConfig* config, uint8_t raw_index) {
+    const float fallback = (raw_index < I2C1_INA238_NUM) ? MAX_CURRENT1 : MAX_CURRENT2;
+    if (config == nullptr) {
+        return fallback;
+    }
+    if (raw_index >= SAMPLE_DATA_COUNT) {
+        return fallback;
+    }
+
+    const int sample_id = kRawToDisplaySampleId[raw_index];
+    if (sample_id < 0 || sample_id >= SAMPLE_DATA_COUNT) {
+        return fallback;
+    }
+
+    const float configured = config->sample_cfg[sample_id].max_current_a;
+    return configured > 0.0f ? configured : fallback;
+}
+}
+
 void Protocol_PackVoltageConfig(VoltageConfigPacket* pkt, PowerSupplyConfig* cfg) {
     memset(pkt, 0, sizeof(VoltageConfigPacket));
     pkt->cmd_id = CMD_SET_VOLTAGE;
     pkt->device_id = cfg->dac_device;
     pkt->channel = cfg->dac_channel;
     pkt->dac_value = cfg->dac_value;
-    pkt->enable_pin = cfg->enable_pin; // 可根据需要设置使能引�?
-    pkt->pin_port = cfg->enable_port; // 可根据需要设置使能引脚端�?
+    pkt->enable_pin = cfg->enable_pin; // 鍙牴鎹渶瑕佽缃娇鑳藉紩锟?
+    pkt->pin_port = cfg->enable_port; // 鍙牴鎹渶瑕佽缃娇鑳藉紩鑴氱锟?
 }
 
 void Protocol_PackPinConfig(PinConfigPacket* pkt, uint8_t port, uint16_t pin, uint8_t level) {
@@ -39,7 +63,7 @@ void ProProtocol_PackSampleOnceConfig(SampleConfigPacket* pkt) {
     pkt->cmd_id = CMD_SAMPLING_ONCE;
 }
 
-void Protocol_ParseSampleData(const uint8_t* data, int length, SampleDataPacketTF_t* out) {
+void Protocol_ParseSampleData(const uint8_t* data, int length, SampleDataPacketTF_t* out, const PowersConfig* config) {
     SampleDataPacket* pkt = reinterpret_cast<SampleDataPacket*>(const_cast<uint8_t*>(data));
     if (length < static_cast<int>(sizeof(SampleDataPacket))) {
         LOG_ERROR("Received sample data too short: %d bytes, expected %zu bytes", length, sizeof(SampleDataPacket));
@@ -47,15 +71,15 @@ void Protocol_ParseSampleData(const uint8_t* data, int length, SampleDataPacketT
     }
     out->timestamp = pkt->timestamp;
 
-    // Parse raw current registers: LSB constants are in A/LSB, convert to mA.
-    for (uint8_t i = 0; i < I2C1_INA238_NUM; i++) {
-        out->channel_curr_ma[i] = (int16_t)pkt->channel_curr_reg[i] * INA238_CURRENT_LSB(MAX_CURRENT1) * 1000.0f;   /* A -> mA */
+    // Parse INA238 current registers (raw index 0~25): A/LSB -> mA.
+    for (uint8_t raw_index = 0; raw_index < SAMPLE_DATA_COUNT - 1; ++raw_index) {
+        const float max_current = GetIna238MaxCurrentForRawIndex(config, raw_index);
+        out->channel_curr_ma[raw_index] =
+            static_cast<int16_t>(pkt->channel_curr_reg[raw_index]) * INA238_CURRENT_LSB(max_current) * 1000.0f;
     }
-    // 读取 I2C2
-    for (uint8_t i = 0; i < I2C2_INA238_NUM; i++) {
-        out->channel_curr_ma[I2C1_INA238_NUM + i] = (int16_t)pkt->channel_curr_reg[I2C1_INA238_NUM + i] * INA238_CURRENT_LSB(MAX_CURRENT2) * 1000.0f;   /* A -> mA */
-    }
-    out->channel_curr_ma[SAMPLE_DATA_COUNT - 1] = ((int16_t)pkt->channel_curr_reg[SAMPLE_DATA_COUNT - 1]) * INA260_CURRENT_LSB * 1000.0f;   /* A -> mA */
+    // Parse INA260 current register (raw index 26): fixed LSB.
+    out->channel_curr_ma[SAMPLE_DATA_COUNT - 1] =
+        static_cast<int16_t>(pkt->channel_curr_reg[SAMPLE_DATA_COUNT - 1]) * INA260_CURRENT_LSB * 1000.0f;
 
     // for process raw voltage data
     for (uint8_t i = 0; i < SAMPLE_DATA_COUNT - 1; i++) {

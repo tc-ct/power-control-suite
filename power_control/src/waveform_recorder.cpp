@@ -59,7 +59,7 @@ QString WaveformRecorder::lastRecordDirectory() const
     return last_record_directory_;
 }
 
-bool WaveformRecorder::exportCsv(const QString& filePath)
+bool WaveformRecorder::exportCsv(const QString& filePath, const PowersConfig* config)
 {
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
@@ -82,7 +82,8 @@ bool WaveformRecorder::exportCsv(const QString& filePath)
         Protocol_ParseSampleData(
             reinterpret_cast<const uint8_t*>(&packet),
             static_cast<int>(sizeof(packet)),
-            &parsed);
+            &parsed,
+            config);
 
         stream << packet.timestamp;
         for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {

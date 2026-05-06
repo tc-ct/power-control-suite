@@ -46,6 +46,8 @@ extern SPI_HandleTypeDef hspi1;
 #define USB_MSG_QUEUE_DEPTH 32U
 #define DEBUG_IO_TIMEOUT_MS 100U
 #define DEBUG_SPI_TIMEOUT_MS 100U
+#define DEBUG_RESP_SEND_TIMEOUT_MS 20U
+#define DEBUG_RESP_SEND_RETRY_DELAY_MS 1U
 
 #define DEBUG_MAGIC_0 ((uint8_t)'D')
 #define DEBUG_MAGIC_1 ((uint8_t)'B')
@@ -67,6 +69,24 @@ static volatile uint32_t g_usb_dropped = 0;
 
 static VoltageConfigPacket_t g_power_cfg[POWER_SUPPLY_COUNT];
 static uint8_t g_power_index = 0;
+static DebugResponsePacket_t g_debug_response[2];
+static uint8_t g_debug_response_index = 0;
+
+static uint8_t SendDebugResponseReport(uint8_t *report)
+{
+	uint8_t result;
+	uint32_t start = HAL_GetTick();
+
+	do {
+		result = USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, report, USB_REPORT_SIZE);
+		if (result != (uint8_t)USBD_BUSY)
+			return result;
+
+		HAL_Delay(DEBUG_RESP_SEND_RETRY_DELAY_MS);
+	} while ((HAL_GetTick() - start) < DEBUG_RESP_SEND_TIMEOUT_MS);
+
+	return result;
+}
 
 static void SendDebugResponse(const DebugRequestPacket_t *req,
 			      uint8_t status,
@@ -75,25 +95,32 @@ static void SendDebugResponse(const DebugRequestPacket_t *req,
 			      const uint8_t *data,
 			      uint8_t data_len)
 {
-	DebugResponsePacket_t response;
+	DebugResponsePacket_t *response;
+	uint8_t result;
 
-	memset(&response, 0, sizeof(response));
-	response.report_id = ADC_REPORT_ID;
-	response.magic[0] = DEBUG_MAGIC_0;
-	response.magic[1] = DEBUG_MAGIC_1;
-	response.magic[2] = DEBUG_MAGIC_2;
-	response.magic[3] = DEBUG_MAGIC_3;
-	response.req_id = (req != NULL) ? req->req_id : 0U;
-	response.cmd_id = (req != NULL) ? req->cmd_id : 0U;
-	response.status = status;
-	response.error_code = error_code;
-	response.reg_addr = reg_addr;
+	g_debug_response_index ^= 1U;
+	response = &g_debug_response[g_debug_response_index];
+
+	memset(response, 0, sizeof(*response));
+	response->report_id = ADC_REPORT_ID;
+	response->magic[0] = DEBUG_MAGIC_0;
+	response->magic[1] = DEBUG_MAGIC_1;
+	response->magic[2] = DEBUG_MAGIC_2;
+	response->magic[3] = DEBUG_MAGIC_3;
+	response->req_id = (req != NULL) ? req->req_id : 0U;
+	response->cmd_id = (req != NULL) ? req->cmd_id : 0U;
+	response->status = status;
+	response->error_code = error_code;
+	response->reg_addr = reg_addr;
 	if (data_len > DEBUG_RESP_MAX_DATA_LEN)
 		data_len = DEBUG_RESP_MAX_DATA_LEN;
-	response.data_len = data_len;
+	response->data_len = data_len;
 	if (data != NULL && data_len > 0U)
-		memcpy(response.data, data, data_len);
-	USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, response.bytes, USB_REPORT_SIZE);
+		memcpy(response->data, data, data_len);
+
+	result = SendDebugResponseReport(response->bytes);
+	if (result != (uint8_t)USBD_OK)
+		USBD_ErrLog("Debug response send failed: result=%u\r\n", result);
 }
 
 static uint8_t DebugErrorFromHal(HAL_StatusTypeDef status)

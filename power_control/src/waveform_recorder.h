@@ -20,7 +20,7 @@ public:
 
 	QString defaultFilePath() const;
 	QString lastRecordDirectory() const;
-	bool exportCsv(const QString& filePath);
+	bool exportCsv(const QString& filePath, const PowersConfig* config = nullptr);
 
 private:
 	bool is_recording_ = false;

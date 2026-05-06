@@ -33,6 +33,8 @@ typedef struct {
 typedef struct {
 	bool volt_en;     // 是否采样电压
 	bool current_en;  // 是否采样电流
+	float shunt_ohm;
+	float max_current_a;
 	char name[POWER_SUPPLY_NAME_MAX];
 } SampleConfig;
 
