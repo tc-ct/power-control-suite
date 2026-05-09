@@ -48,6 +48,7 @@ typedef struct {
 	bool calibration_en;
 	bool volt_sample_en;
 	bool curr_sample_en;
+	int soc_por_delay_ms;
 	SequenceConfig sequences[POWER_SUPPLY_COUNT];
 	PowerSupplyConfig supplies[POWER_SUPPLY_COUNT];
 	SampleConfig sample_cfg[SAMPLE_DATA_COUNT]; // 采样配置

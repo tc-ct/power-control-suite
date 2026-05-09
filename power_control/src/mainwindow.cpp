@@ -1395,11 +1395,12 @@ void MainWindow::onPowerOnClicked() {
             message = QStringLiteral("上电失败: 未知异常");
         }
 
-        QMetaObject::invokeMethod(this, [this, message]() {
+        const int socPorDelayMs = configSnapshot.soc_por_delay_ms;
+        QMetaObject::invokeMethod(this, [this, message, socPorDelayMs]() {
             appendLog(message);
             power_on_completed_ = message == QStringLiteral("上电完成");
             if (power_on_completed_) {
-                QTimer::singleShot(kSocPorReleaseDelayMs, this, [this]() {
+                QTimer::singleShot(socPorDelayMs, this, [this]() {
                     if (power_on_completed_ && !power_on_running_.load() && !calibration_running_.load()) {
                         setSocPorLevel(true, true);
                     }

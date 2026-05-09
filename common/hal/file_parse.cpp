@@ -6,12 +6,17 @@
 #include "file_parse.h"
 #include "json.hpp"
 
-static bool parse_power_up_sequence(const nlohmann::json& seq_array, SequenceConfig out_seq[POWER_SUPPLY_COUNT]) {
-    if (!seq_array.is_array() || seq_array.size() != POWER_SUPPLY_COUNT) {
+static bool parse_power_up_sequence(const nlohmann::json& seq_array,
+                                    SequenceConfig out_seq[POWER_SUPPLY_COUNT],
+                                    int* soc_por_delay_ms) {
+    if (!seq_array.is_array()
+        || (seq_array.size() != POWER_SUPPLY_COUNT && seq_array.size() != POWER_SUPPLY_COUNT + 1)) {
         return false;
     }
 
     std::array<bool, POWER_SUPPLY_COUNT> used = {false};
+    bool soc_por_used = false;
+    size_t sequence_index = 0;
 
     for (size_t i = 0; i < seq_array.size(); ++i) {
         const auto& item = seq_array[i];
@@ -21,22 +26,40 @@ static bool parse_power_up_sequence(const nlohmann::json& seq_array, SequenceCon
 
         int id = item["id"];
         int delay_ms = item["delay_ms"];
-        if (id < 0 || id >= POWER_SUPPLY_COUNT || delay_ms < 0 || used[id]) {
+        if (delay_ms < 0) {
             return false;
         }
 
-        out_seq[i].sequence = id;
-        out_seq[i].interval_ms = delay_ms;
+        if (id == POWER_SUPPLY_COUNT) {
+            if (!soc_por_delay_ms || soc_por_used) {
+                return false;
+            }
+            *soc_por_delay_ms = delay_ms;
+            soc_por_used = true;
+            continue;
+        }
+
+        if (id < 0 || id >= POWER_SUPPLY_COUNT || used[id]) {
+            return false;
+        }
+
+        if (sequence_index >= POWER_SUPPLY_COUNT) {
+            return false;
+        }
+
+        out_seq[sequence_index].sequence = id;
+        out_seq[sequence_index].interval_ms = delay_ms;
 
         if (item.contains("n") && item["n"].is_string()) {
             std::string name = item["n"];
-            strncpy(out_seq[i].name, name.c_str(), sizeof(out_seq[i].name) - 1);
-            out_seq[i].name[sizeof(out_seq[i].name) - 1] = '\0';
+            strncpy(out_seq[sequence_index].name, name.c_str(), sizeof(out_seq[sequence_index].name) - 1);
+            out_seq[sequence_index].name[sizeof(out_seq[sequence_index].name) - 1] = '\0';
         } else {
-            out_seq[i].name[0] = '\0';
+            out_seq[sequence_index].name[0] = '\0';
         }
 
         used[id] = true;
+        ++sequence_index;
     }
 
     for (int id = 0; id < POWER_SUPPLY_COUNT; ++id) {
@@ -229,6 +252,8 @@ bool LoadPowerConfig(const char* file_path, PowersConfig* out_configs) {
         // 解析JSON
         nlohmann::json j = nlohmann::json::parse(content);
 
+        out_configs->soc_por_delay_ms = 1;
+
         // 验证根结构
         if (!j.contains("power_supplies") || !j["power_supplies"].is_array()) {
             return false;
@@ -245,7 +270,9 @@ bool LoadPowerConfig(const char* file_path, PowersConfig* out_configs) {
         }
 
         if (j.contains("power_up_sequence")) {
-            if (!parse_power_up_sequence(j["power_up_sequence"], out_configs->sequences)) {
+            if (!parse_power_up_sequence(j["power_up_sequence"],
+                                         out_configs->sequences,
+                                         &out_configs->soc_por_delay_ms)) {
                 return false;
             }
         }
