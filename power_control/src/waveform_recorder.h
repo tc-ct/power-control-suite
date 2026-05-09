@@ -11,14 +11,14 @@ class WaveformRecorder
 {
 public:
 	void start(const QString& baseDirectory);
-	void stop();
+	void stop(); 
 	bool isRecording() const;
 
 	void appendPacket(const SampleDataPacket& packet);
 	bool hasData() const;
 	void clear();
 
-	QString defaultFilePath() const;
+	QString defaultFilePath() const;   
 	QString lastRecordDirectory() const;
 	bool exportCsv(const QString& filePath, const PowersConfig* config = nullptr);
 

@@ -108,7 +108,7 @@ void SendSampleConfig(USBDriver& dev, int state, int type) {
     dev.send(reinterpret_cast<uint8_t*>(&sample_cfg), sizeof(sample_cfg));
 }
 
-void SendSampleOnceConfig(USBDriver& dev){
+void SendSampleOnceConfig(USBDriver& dev) {
     SampleConfigPacket sample_cfg;
     ProProtocol_PackSampleOnceConfig(&sample_cfg);
     dev.send(reinterpret_cast<uint8_t*>(&sample_cfg), sizeof(sample_cfg));
