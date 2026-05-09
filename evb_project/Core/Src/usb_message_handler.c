@@ -257,6 +257,9 @@ static GPIO_TypeDef *GetPortFromIndex(uint8_t port_index)
 		case 1:
 			return GPIOC;
 
+		case 2:
+			return GPIOD;
+
 		default:
 			return NULL;
 	}
@@ -366,7 +369,7 @@ static void HandleSetPin(const uint8_t *payload)
 	const PinConfigPacket_t *pin = (const PinConfigPacket_t *)payload;
 	GPIO_TypeDef *port = GetPortFromIndex(pin->port);
 
-	if (port == NULL)
+	if (port == NULL || pin->pin >= 16U)
 		return;
 
 	{

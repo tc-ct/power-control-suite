@@ -18,8 +18,6 @@ public:
 	explicit WaveformWidget(QWidget* parent = nullptr);
 
 	void updateFromPacket(const SampleDataPacketTF& packet, const PowersConfig* config);
-	void addVoltageSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT> &enabled);
-	void addCurrentSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT> &enabled);
 	void clearSamples();
 
 protected:

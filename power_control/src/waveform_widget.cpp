@@ -10,6 +10,26 @@
 
 #include <algorithm>
 #include <array>
+#include <cmath>
+#include <functional>
+
+namespace {
+QString formatCurrentAxisValue(float milliamps)
+{
+    if (!std::isfinite(milliamps)) {
+        return QStringLiteral("--");
+    }
+
+    const double absValue = std::abs(static_cast<double>(milliamps));
+    if (absValue < 1e-12) {
+        return QStringLiteral("0.000");
+    }
+
+    const int digitsBeforeDecimal = static_cast<int>(std::floor(std::log10(absValue))) + 1;
+    const int decimals = std::max(0, 4 - digitsBeforeDecimal);
+    return QString::number(static_cast<double>(milliamps), 'f', decimals);
+}
+}
 
 WaveformWidget::WaveformWidget(QWidget* parent)
     : QWidget(parent)
@@ -30,22 +50,15 @@ void WaveformWidget::updateFromPacket(const SampleDataPacketTF& packet, const Po
         voltageEnabled[i] = config->sample_cfg[i].volt_en;
         currentEnabled[i] = config->sample_cfg[i].current_en;
     }
-    // addVoltageSamples(packet.timestamp, packet.channel_volt_mv, voltageEnabled);
-    // addCurrentSamples(packet.timestamp, packet.channel_curr_ma, currentEnabled);
 
-    appendSamples(voltage_series_, voltage_enabled_, packet.timestamp, packet.channel_volt_mv, voltageEnabled);
+    std::array<float, SAMPLE_DATA_COUNT> voltageValuesV{};
+    for (int i = 0; i < SAMPLE_DATA_COUNT; ++i) {
+        voltageValuesV[i] = packet.channel_volt_mv[i] / 1000.0f;
+    }
+
+    appendSamples(voltage_series_, voltage_enabled_, packet.timestamp, voltageValuesV.data(), voltageEnabled);
     appendSamples(current_series_, current_enabled_, packet.timestamp, packet.channel_curr_ma, currentEnabled);
 }
-
-// void WaveformWidget::addVoltageSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled)
-// {
-//     appendSamples(voltage_series_, voltage_enabled_, timestampMs, values, enabled);
-// }
-
-// void WaveformWidget::addCurrentSamples(uint32_t timestampMs, const float* values, const std::array<bool, SAMPLE_DATA_COUNT>& enabled)
-// {
-//     appendSamples(current_series_, current_enabled_, timestampMs, values, enabled);
-// }
 
 void WaveformWidget::clearSamples()
 {
@@ -347,7 +360,7 @@ void WaveformWidget::paintEvent(QPaintEvent* event)
 
     auto drawPanel = [&](const QRectF& plotRect,
                          const QString& title,
-                         const QString& unit,
+                         const std::function<QString(float)>& valueFormatter,
                          const std::array<QVector<QPointF>, SAMPLE_DATA_COUNT>& series,
                          const std::array<bool, SAMPLE_DATA_COUNT>& enabled) {
         painter.setPen(QPen(QColor(228, 235, 242), 1, Qt::DashLine));
@@ -366,7 +379,7 @@ void WaveformWidget::paintEvent(QPaintEvent* event)
             painter.drawText(
                 QRectF(2, y - 8, leftPadding - 8, 16),
                 Qt::AlignRight | Qt::AlignVCenter,
-                QStringLiteral("%1%2").arg(QString::number(value, 'f', 0), unit));
+                valueFormatter(value));
         }
 
         painter.setPen(QColor(84, 99, 115));
@@ -388,14 +401,24 @@ void WaveformWidget::paintEvent(QPaintEvent* event)
     };
 
     if (hasVoltageData) {
-        drawPanel(voltageRect, QStringLiteral("Voltage (mV)"), QStringLiteral("mV"), voltage_series_, voltage_enabled_);
+        drawPanel(
+            voltageRect,
+            QStringLiteral("Voltage (V)"),
+            [](float value) { return QString::number(static_cast<double>(value), 'f', 3); },
+            voltage_series_,
+            voltage_enabled_);
     } else {
         painter.setPen(QColor(148, 163, 184));
         painter.drawText(voltageRect, Qt::AlignCenter, QStringLiteral("无已启用电压波形"));
     }
 
     if (hasCurrentData) {
-        drawPanel(currentRect, QStringLiteral("Current (mA)"), QStringLiteral("mA"), current_series_, current_enabled_);
+        drawPanel(
+            currentRect,
+            QStringLiteral("Current (mA)"),
+            [](float value) { return formatCurrentAxisValue(value); },
+            current_series_,
+            current_enabled_);
     } else {
         painter.setPen(QColor(148, 163, 184));
         painter.drawText(currentRect, Qt::AlignCenter, QStringLiteral("无已启用电流波形"));

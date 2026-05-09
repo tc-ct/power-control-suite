@@ -39,8 +39,8 @@ void Protocol_PackVoltageConfig(VoltageConfigPacket* pkt, PowerSupplyConfig* cfg
     pkt->device_id = cfg->dac_device;
     pkt->channel = cfg->dac_channel;
     pkt->dac_value = cfg->dac_value;
-    pkt->enable_pin = cfg->enable_pin; // 鍙牴鎹渶瑕佽缃娇鑳藉紩锟?
-    pkt->pin_port = cfg->enable_port; // 鍙牴鎹渶瑕佽缃娇鑳藉紩鑴氱锟?
+    pkt->enable_pin = cfg->enable_pin; 
+    pkt->pin_port = cfg->enable_port; 
 }
 
 void Protocol_PackPinConfig(PinConfigPacket* pkt, uint8_t port, uint16_t pin, uint8_t level) {

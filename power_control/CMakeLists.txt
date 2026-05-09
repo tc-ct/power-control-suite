@@ -28,7 +28,6 @@ set(PROJECT_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/config_service.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/device_session_service.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/sampling_state_machine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/debug_window.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/waveform_widget.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/waveform_recorder.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/log.cpp

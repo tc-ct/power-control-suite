@@ -6,211 +6,305 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1280</width>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
-    <string>USB Power Control</string>
+   <string>USB Power Control</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QGroupBox" name="deviceGroupBox">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>8</number>
+    </property>
+    <property name="leftMargin">
+     <number>8</number>
+    </property>
+    <property name="topMargin">
+     <number>8</number>
+    </property>
+    <property name="rightMargin">
+     <number>8</number>
+    </property>
+    <property name="bottomMargin">
+     <number>8</number>
+    </property>
+    <item>
+     <widget class="QGroupBox" name="deviceGroupBox">
+      <property name="title">
+       <string>USB连接</string>
+      </property>
+      <layout class="QGridLayout" name="usbGridLayout">
+       <property name="horizontalSpacing">
+        <number>8</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>6</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="deviceNameLabel">
+         <property name="text">
+          <string>设备名称</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="deviceComboBox"/>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="queryButton">
+         <property name="text">
+          <string>查询设备</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QPushButton" name="openButton">
+         <property name="text">
+          <string>打开设备</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="configPathLabel">
+         <property name="text">
+          <string>配置文件</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="configPathComboBox">
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+         <property name="sizeAdjustPolicy">
+          <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="browseConfigButton">
+         <property name="text">
+          <string>Browse</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QPushButton" name="loadConfigButton">
+         <property name="text">
+          <string>Load</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="bodyLayout">
+      <property name="spacing">
+       <number>8</number>
+      </property>
+      <item>
+       <widget class="QGroupBox" name="sampleGroupBox">
         <property name="title">
-         <string>USB 设备连接</string>
+         <string>电压设置 / 读数显示</string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <layout class="QVBoxLayout" name="sampleGroupLayout">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="sampleModeHostLayout">
            <item>
-            <layout class="QHBoxLayout" name="configLayout">
-             <item>
-              <widget class="QLabel" name="configPathLabel">
-               <property name="text">
-                <string>配置文件</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="configPathComboBox">
-               <property name="editable">
-                <bool>true</bool>
-               </property>
-               <property name="sizeAdjustPolicy">
-                <enum>QComboBox::AdjustToMinimumContentsLengthWithIcon</enum>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="browseConfigButton">
-               <property name="text">
-                <string>Browse</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="loadConfigButton">
-               <property name="text">
-                <string>Load</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <spacer name="sampleModeSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
-         <item>
-          <layout class="QHBoxLayout" name="controlLayout">
-                <item>
-              <widget class="QLabel" name="deviceNameLabel">
-               <property name="text">
-                <string>设备名称</string>
-               </property>
-              </widget>
-                </item>
-              <item>
-               <widget class="QComboBox" name="deviceComboBox"/>
-              </item>
-            <item>
-             <widget class="QPushButton" name="queryButton">
-              <property name="text">
-                <string>查询设备</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="openButton">
-              <property name="text">
-                <string>打开设备</string>
-              </property>
-             </widget>
-            </item>
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="statusLayout">
-            <item>
-             <widget class="QLabel" name="statusLabel">
-              <property name="text">
-                <string>连接状态:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="statusValueLabel">
-              <property name="text">
-                <string>未连接</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="sampleToggleButton">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>开始采样</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-              </property>
-             </spacer>
-            </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QWidget" name="waveformHost">
+          <widget class="QTableWidget" name="sampleTableWidget">
            <property name="minimumSize">
             <size>
-             <width>0</width>
-             <height>180</height>
+             <width>560</width>
+             <height>0</height>
             </size>
            </property>
+           <property name="columnCount">
+            <number>7</number>
+           </property>
+           <property name="rowCount">
+            <number>0</number>
+           </property>
+           <column>
+            <property name="text">
+             <string>ID</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>电源名称</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>设定值(V)</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>显示</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>电压(V)</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>显示</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>电流(mA)</string>
+            </property>
+           </column>
           </widget>
          </item>
         </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="sampleGroupBox">
-       <property name="title">
-        <string>Power Samples</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="rightLayout">
+        <property name="spacing">
+         <number>8</number>
+        </property>
         <item>
-         <widget class="QTableWidget" name="sampleTableWidget">
-          <property name="columnCount">
-           <number>6</number>
+         <widget class="QGroupBox" name="waveformGroupBox">
+          <property name="title">
+           <string>波形显示</string>
           </property>
-          <property name="rowCount">
-           <number>0</number>
+          <layout class="QVBoxLayout" name="waveformLayout">
+           <property name="leftMargin">
+            <number>4</number>
+           </property>
+           <property name="topMargin">
+            <number>4</number>
+           </property>
+           <property name="rightMargin">
+            <number>4</number>
+           </property>
+           <property name="bottomMargin">
+            <number>4</number>
+           </property>
+           <item>
+            <widget class="QWidget" name="waveformHost">
+             <property name="minimumSize">
+              <size>
+               <width>520</width>
+               <height>260</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="debugGroupBox">
+          <property name="title">
+           <string>Debug</string>
           </property>
-          <column>
-           <property name="text">
-            <string>ID</string>
+          <layout class="QVBoxLayout" name="debugHostLayout">
+           <property name="leftMargin">
+            <number>4</number>
            </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>name</string>
+           <property name="topMargin">
+            <number>4</number>
            </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>volt_en</string>
+           <property name="rightMargin">
+            <number>4</number>
            </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>sam_volt</string>
+           <property name="bottomMargin">
+            <number>4</number>
            </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>curr_en</string>
+           <item>
+            <widget class="QWidget" name="debugHost">
+             <property name="minimumSize">
+              <size>
+               <width>520</width>
+               <height>150</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="ctrlGroupBox">
+          <property name="title">
+           <string>Ctrl</string>
+          </property>
+          <layout class="QHBoxLayout" name="ctrlOuterLayout">
+           <property name="spacing">
+            <number>12</number>
            </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>sam_curr</string>
-           </property>
-          </column>
+           <item>
+            <widget class="QWidget" name="ctrlHost">
+             <property name="minimumSize">
+              <size>
+               <width>320</width>
+               <height>120</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="logGroupBox">
-        <property name="title">
-         <string>操作日志</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <widget class="QPlainTextEdit" name="logEdit">
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-          </widget>
-         </item>
-        </layout>
-      </widget>
-     </item>
-    </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="logGroupBox">
+      <property name="visible">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>操作日志</string>
+      </property>
+      <layout class="QVBoxLayout" name="logLayout">
+       <item>
+        <widget class="QPlainTextEdit" name="logEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1280</width>
      <height>25</height>
     </rect>
    </property>
